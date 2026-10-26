@@ -37,13 +37,13 @@ DEFAULT_PLAN = {
     "offsets_confirmed": False,
     "instructions": "Watch the original clip and adjust every stage boundary and sample offset before confirming.",
     "stages": [
-        {"id": "initial_correct", "declared_label": "screwdriver left; pliers right; hands out; fully uncovered",
+        {"id": "initial_correct", "declared_label": "fork left; spoon right; hands out; fully uncovered",
          "start_seconds": 0, "end_seconds": 8, "sample_seconds": [3, 5]},
-        {"id": "wrong_region", "declared_label": "screwdriver right; pliers right; hands out; fully uncovered",
+        {"id": "wrong_region", "declared_label": "fork right; spoon right; hands out; fully uncovered",
          "start_seconds": 13, "end_seconds": 21, "sample_seconds": [16, 18]},
         {"id": "occluded", "declared_label": "whole tray covered by opaque board; contents not visible",
          "start_seconds": 26, "end_seconds": 34, "sample_seconds": [29, 31]},
-        {"id": "corrected", "declared_label": "fresh correction: screwdriver left; pliers right; hands out; uncovered",
+        {"id": "corrected", "declared_label": "fresh correction: fork left; spoon right; hands out; uncovered",
          "start_seconds": 39, "end_seconds": 47, "sample_seconds": [42, 44]},
     ],
 }

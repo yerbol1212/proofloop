@@ -2,7 +2,7 @@
 
 The session runner connects an approved location protocol, calibrated regions and selected original video frames to SAM, the deterministic checker and the bounded planner. It evaluates a recorded procedure; it does not control a robot, recognize every action or establish that a person followed its later proposal.
 
-Start with the [phone recording checklist](CAPTURE.md). One continuous clip, at most 120 seconds, contains four stable checkpoints. The current session supports two distinct target tool classes and two regions. Each checkpoint uses exactly two original frames at least one second apart. Stage labels and ownership are human declarations, and the original video remains local.
+Start with the [phone recording checklist](CAPTURE.md). One continuous clip, at most 120 seconds, contains four stable checkpoints. The current session supports two distinct target object classes and two regions. Each checkpoint uses exactly two original frames at least one second apart. Stage labels and ownership are human declarations, and the original video remains local.
 
 ## Evidence flow
 
@@ -12,31 +12,33 @@ Start with the [phone recording checklist](CAPTURE.md). One continuous clip, at 
 4. Review the complete session contract before approval. Its hash binds the protocol, rectangles, concepts, uniqueness flags, clip hash, stage windows, frame hashes and actual source timestamps. Any edit requires a new approval.
 5. Run at most 16 new SAM image calls, with no retries. Invalid approvals, changed files and invalid timelines stop before inference. A malformed returned source/model/decoder binding stops further calls immediately. The original source and frames are checked again before the report can support a completed loop.
 
+The [cutlery preset](../examples/cutlery/README.md) supplies an authored, unapproved fork-left/spoon-right starter and concrete SAM concepts. It does not supply calibrated camera rectangles or establish that your real cutlery is detectable. The `unique_target: true` flags are proposed scene assumptions that the operator must confirm during session approval.
+
 The initial correct stage can pass from current positive evidence. At the end of that hold, the declared movement begins and old facts are invalidated. The wrong-placement stage can fail from stable positive location evidence. The planner proposes a move and a subsequent inspection under a small declared action model. Its prediction never becomes a measured fact.
 
-Covering invalidates evidence again; an unavailable tool stays unknown. The correction starts a new attempt and invalidates the old state. Only fresh post-correction frame evidence can support the final pass. The original wrong or unknown result remains in the trace.
+Covering invalidates evidence again; an unavailable object stays unknown. The correction starts a new attempt and invalidates the old state. Only fresh post-correction frame evidence can support the final pass. The original wrong or unknown result remains in the trace.
 
 ## Local commands
 
-After capture extraction, create two private JSON files: `artifacts/local/regions.json` maps `left` and `right` to approved normalized `[x1,y1,x2,y2]` rectangles; `artifacts/local/concepts.json` maps `screwdriver` and `pliers` to their corresponding concrete SAM noun phrases. Rectangles must be nonoverlapping and match the actual camera view.
+After capture extraction, create the private file `artifacts/local/regions.json`, mapping `left` and `right` to approved normalized `[x1,y1,x2,y2]` rectangles. They must be nonoverlapping and match the actual camera view. Review `examples/cutlery/concepts.json`, which maps `fork` and `spoon` to those concrete SAM noun phrases; use a separate private concepts file if the reviewed terms need changing.
 
 Draft a protocol without claiming it is already approved:
 
 ```bash
 .venv/bin/python -m proofloop.compiler \
-  --requirements 'The unique screwdriver must be located in left and the unique pliers in right.' \
-  --objects screwdriver pliers --regions left right \
-  --predicate-kind location --unique-objects screwdriver pliers
+  --requirements 'The unique fork must be located in left and the unique spoon in right.' \
+  --objects fork spoon --regions left right \
+  --predicate-kind location --unique-objects fork spoon
 ```
 
-Use the printed draft path in place of `COMPILED_DRAFT`:
+Use the printed Spark draft path in place of `COMPILED_DRAFT`. The authored `examples/cutlery/protocol.json` can also be used as an explicit unapproved starter, but it must not be described as a Spark-generated result:
 
 ```bash
 .venv/bin/python -m proofloop.session draft \
   --capture inputs/local/phone/run-01/manifest.json \
   --protocol COMPILED_DRAFT \
   --regions artifacts/local/regions.json \
-  --concepts artifacts/local/concepts.json \
+  --concepts examples/cutlery/concepts.json \
   --output artifacts/local/session-draft.json
 ```
 
@@ -58,7 +60,7 @@ These commands never silently approve a model draft. Local approval records an o
 
 The report contains `stage_statuses`, `trace`, `gates`, reported usage, failures and provenance. `recorded_observation_loop_supported` means the selected recorded observations support the scripted pass → fail → unknown → fresh pass pattern under the approved contract. It does not mean an action was automatically recognized or executed. `physical_action_execution_verified` remains false.
 
-The planner's optimality is limited to its declared finite model: moving one tool costs 1 and a subsequent inspection costs 0.25. Physical obstacles, collisions and robot motion are outside that model. Unknown locations request inspection before a move is planned.
+The planner's optimality is limited to its declared finite model: moving one object costs 1 and a subsequent inspection costs 0.25. Physical obstacles, collisions and robot motion are outside that model. Unknown locations request inspection before a move is planned.
 
 The [authored session diagnostic](../artifacts/feasibility/session-oracle-20261026.json) exercises this flow with synthetic SAM-shaped results and zero model requests. The [decoder experiment](../artifacts/feasibility/capture-decoder-20261026.md) uses actual FFmpeg on generated color patterns. Neither is a phone-camera model result. Real phone footage is the next evidence gate.
 

@@ -46,6 +46,8 @@ class CapturePlanTests(unittest.TestCase):
         self.assertEqual([[3, 5], [16, 18], [29, 31], [42, 44]],
                          [stage["sample_seconds"] for stage in stages])
         self.assertFalse(plan["offsets_confirmed"])
+        self.assertEqual("fork left; spoon right; hands out; fully uncovered", stages[0]["declared_label"])
+        self.assertEqual("fork right; spoon right; hands out; fully uncovered", stages[1]["declared_label"])
         self.assertEqual("human_declared_not_model_inferred", plan["ground_truth_origin"])
 
     def test_default_plan_returns_an_independent_copy(self):

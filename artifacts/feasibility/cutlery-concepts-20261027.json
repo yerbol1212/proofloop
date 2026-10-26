@@ -1,0 +1,99 @@
+{
+  "schema_version": "1.0",
+  "experiment": "live_sam_cutlery_concept_probe",
+  "date_local": "2026-10-27",
+  "timezone": "Asia/Almaty",
+  "inference_origin": "live_meta_api",
+  "input_origin": "imagegen_synthetic",
+  "source_manifest": "inputs/synthetic-cutlery/manifest.json",
+  "physical_validation": false,
+  "stability_validation": false,
+  "concepts": {
+    "fork": {
+      "model": "sam-3.1",
+      "source_sha256": "b77715549ff6ffd230a92284b8ad499c839d5f851cbe47b50fd11c3dba736fe2",
+      "parsed_detections": 1,
+      "regions_from_box": [
+        "left"
+      ],
+      "reported_confidences": [
+        0.9609756469726562
+      ],
+      "decoded_foreground_pixels": [
+        43663
+      ],
+      "latency_seconds": 3.332
+    },
+    "spoon": {
+      "model": "sam-3.1",
+      "source_sha256": "b77715549ff6ffd230a92284b8ad499c839d5f851cbe47b50fd11c3dba736fe2",
+      "parsed_detections": 1,
+      "regions_from_box": [
+        "right"
+      ],
+      "reported_confidences": [
+        0.9649122953414917
+      ],
+      "decoded_foreground_pixels": [
+        63063
+      ],
+      "latency_seconds": 2.294
+    }
+  },
+  "limits": [
+    "Only one generated view was tested.",
+    "Confidence is a reported model score, not a calibrated correctness probability.",
+    "No phone-camera performance, absence, exact count or correction is established."
+  ],
+  "usage": {
+    "request_attempts": 2,
+    "input_tokens": 0,
+    "output_tokens": 0,
+    "sam_images": 2,
+    "spark_requests_with_unreported_token_usage": 0,
+    "unsuccessful_spark_requests_with_reported_token_usage": 0,
+    "estimated_usd": 0.005,
+    "estimate_note": "Published Standard rates; includes reported Spark tokens from rejected responses. Excludes unreported usage, unsuccessful SAM images and ambiguous charges. Not a billing hard stop.",
+    "requests": [
+      {
+        "endpoint": "responses",
+        "model": "sam-3.1",
+        "attempt": 1,
+        "status": "ok",
+        "usage": {
+          "input_tokens": 0,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 0,
+          "images_processed": 1
+        },
+        "latency_seconds": 3.332
+      },
+      {
+        "endpoint": "responses",
+        "model": "sam-3.1",
+        "attempt": 1,
+        "status": "ok",
+        "usage": {
+          "input_tokens": 0,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 0,
+          "output_tokens_details": {
+            "reasoning_tokens": 0
+          },
+          "total_tokens": 0,
+          "images_processed": 1
+        },
+        "latency_seconds": 2.294
+      }
+    ]
+  },
+  "expected_positive_detections_supported": true
+}

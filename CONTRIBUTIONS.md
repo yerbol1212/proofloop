@@ -18,6 +18,7 @@ Project development began on 26 October 2026 after the hackathon kickoff. The re
 - Positive placement predicates, explicit unique-target scene contracts and separate Spark compiler modes for counts, visibility and location.
 - Phone-video preflight and timestamp-preserving JPEG extraction, including display rotation and source/hash binding.
 - Reviewable recorded-session contracts that bind calibration, model concepts, selected frames and unique-target assumptions.
+- Authored fork/spoon capture preset with unapproved placement requirements and separate camera calibration.
 - Stage-isolated correction traces with movement/occlusion invalidation, a bounded hypothetical repair and fresh post-correction evidence.
 
 This list describes the implementation scope; live and physical validation status is recorded separately in `docs/FEASIBILITY.md`.

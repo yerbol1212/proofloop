@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "origin": "authored_unapproved_starter",
+  "approved": false,
+  "requires_human_approval": true,
+  "uniqueness_confirmed": false,
+  "camera_calibration_included": false,
+  "protocol": {
+    "id": "proofloop-cutlery",
+    "version": "authored-draft-1",
+    "objects": [
+      "fork",
+      "spoon"
+    ],
+    "regions": [
+      "left",
+      "right"
+    ],
+    "checks": [
+      {
+        "id": "fork-left",
+        "kind": "location",
+        "object_id": "fork",
+        "region_id": "left",
+        "max_age_ms": 30000,
+        "min_confidence": 0.8,
+        "min_stable_samples": 2,
+        "unique_target": true
+      },
+      {
+        "id": "spoon-right",
+        "kind": "location",
+        "object_id": "spoon",
+        "region_id": "right",
+        "max_age_ms": 30000,
+        "min_confidence": 0.8,
+        "min_stable_samples": 2,
+        "unique_target": true
+      }
+    ],
+    "steps": [],
+    "checkpoints": []
+  },
+  "content_hash": "a6a8f7a0790eca56968e2002f237a82f30d332cf7665662cbee1dca6f787e04d"
+}
