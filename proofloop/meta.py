@@ -323,15 +323,24 @@ class MetaClient:
                     result = json.loads(body)
                 if not isinstance(result, dict):
                     raise MetaAPIError("Meta response was not a JSON object")
+                # An incomplete generation can contain billable reasoning
+                # tokens. Retain its usage before rejecting it as evidence.
+                entry["usage"] = _reported_usage(result.get("usage"))
                 if result.get("error") or (endpoint == "responses" and result.get("status") != "completed"):
-                    raise MetaAPIError("Meta response did not complete successfully", code="incomplete_response")
-                entry.update(status="ok", usage=_reported_usage(result.get("usage")))
+                    raise MetaAPIError("Meta response did not complete successfully", code="incomplete_response",
+                                       response=result)
+                entry["status"] = "ok"
                 return result
             except HTTPError as error:
                 code = None
+                error_body = None
                 try:
-                    error_body = json.loads(error.read(64 * 1024))
-                    candidate = error_body.get("error", {}).get("code")
+                    parsed_error = json.loads(error.read(64 * 1024))
+                    if isinstance(parsed_error, dict):
+                        error_body = parsed_error
+                        if "usage" in error_body:
+                            entry["usage"] = _reported_usage(error_body["usage"])
+                    candidate = (error_body or {}).get("error", {}).get("code")
                     # Never include body/message text; it can echo request content.
                     if (isinstance(candidate, str) and re.fullmatch(r"[a-z_]{1,64}", candidate)
                             and self._api_key not in candidate):
@@ -343,7 +352,7 @@ class MetaClient:
                     self._sleep(min(2 ** attempt, 4))
                     continue
                 raise MetaAPIError(f"Meta API HTTP {error.code}" + (f" ({code})" if code else ""),
-                                   status=error.code, code=code) from None
+                                   status=error.code, code=code, response=error_body) from None
             except (URLError, TimeoutError, OSError) as error:
                 # Do not retry ambiguous connection failures: the server may bill
                 # an inference that completed before the client lost connection.
@@ -426,23 +435,31 @@ class MetaClient:
         estimate = 0.0
         input_tokens = output_tokens = images = 0
         usage_unreported = 0
+        unsuccessful_with_tokens = 0
         for entry in self.ledger:
-            if entry.get("status") != "ok":
-                continue
             if entry.get("model") == SPARK_MODEL:
+                if entry.get("status") != "ok" and "usage" not in entry:
+                    continue  # No response usage survived an ambiguous failure.
                 usage = _reported_usage(entry.get("usage"))
                 if any(type(usage.get(field)) is not int or usage[field] < 0
                        for field in ("input_tokens", "output_tokens")):
                     usage_unreported += 1
+                if entry.get("status") != "ok" and any(
+                    type(usage.get(field)) is int and usage[field] >= 0
+                    for field in ("input_tokens", "output_tokens")
+                ):
+                    unsuccessful_with_tokens += 1
                 input_tokens += _reported_tokens(usage.get("input_tokens"))
                 output_tokens += _reported_tokens(usage.get("output_tokens"))
-            elif entry.get("model") == SAM_MODEL:
+            elif entry.get("model") == SAM_MODEL and entry.get("status") == "ok":
                 images += 1
         estimate += input_tokens * 1.25 / 1_000_000 + output_tokens * 4.25 / 1_000_000
         estimate += images * 0.0025
         return {"request_attempts": len(self.ledger), "input_tokens": input_tokens,
                 "output_tokens": output_tokens, "sam_images": images,
                 "spark_requests_with_unreported_token_usage": usage_unreported,
+                "unsuccessful_spark_requests_with_reported_token_usage": unsuccessful_with_tokens,
                 "estimated_usd": round(estimate, 6),
-                "estimate_note": "Published Standard rates; excludes unreported usage and failed/ambiguous requests. Not a billing hard stop.",
+                "estimate_note": "Published Standard rates; includes reported Spark tokens from rejected responses. "
+                                 "Excludes unreported usage, unsuccessful SAM images and ambiguous charges. Not a billing hard stop.",
                 "requests": self.ledger}

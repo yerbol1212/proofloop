@@ -111,6 +111,48 @@ class AdapterTests(unittest.TestCase):
             with self.assertRaises(MetaAPIError):
                 client.spark_json("test", SMOKE_SCHEMA)
 
+    def test_incomplete_response_preserves_local_trace_and_billable_usage(self):
+        provider_response = {
+            "status": "incomplete", "incomplete_details": {"reason": "max_output_tokens"},
+            "usage": {"input_tokens": 1000, "output_tokens": 100,
+                      "output_tokens_details": {"reasoning_tokens": 100}},
+        }
+        client = MetaClient("key", opener=lambda *a, **k: response(provider_response))
+        with self.assertRaises(MetaAPIError) as caught:
+            client.spark_json("test", SMOKE_SCHEMA)
+        self.assertEqual(provider_response, caught.exception.response)
+        self.assertEqual("invalid_response", client.ledger[0]["status"])
+        self.assertEqual(provider_response["usage"], client.ledger[0]["usage"])
+        report = client.usage_summary()
+        self.assertEqual(1000, report["input_tokens"])
+        self.assertEqual(100, report["output_tokens"])
+        self.assertAlmostEqual(.001675, report["estimated_usd"])
+        self.assertEqual(1, report["unsuccessful_spark_requests_with_reported_token_usage"])
+
+    def test_error_envelope_is_rejected_even_with_completed_status_and_usage(self):
+        provider_response = lane("{}")
+        provider_response["error"] = {"code": "server_error", "message": "private input echo"}
+        client = MetaClient("key", opener=lambda *a, **k: response(provider_response))
+        with self.assertRaises(MetaAPIError) as caught:
+            client.spark_json("test", SMOKE_SCHEMA)
+        self.assertEqual(provider_response, caught.exception.response)
+        self.assertNotIn("private input echo", str(caught.exception) + json.dumps(client.ledger))
+        self.assertEqual("invalid_response", client.ledger[0]["status"])
+        self.assertEqual(20, client.usage_summary()["output_tokens"])
+
+    def test_http_error_preserves_reported_usage_without_success(self):
+        provider_response = {"error": {"code": "server_error", "message": "private input echo"},
+                             "usage": {"input_tokens": 10, "output_tokens": 20}}
+        def opener(*args, **kwargs):
+            raise HTTPError("https://api.meta.ai/v1/responses", 500, "", {}, response(provider_response))
+        client = MetaClient("key", opener=opener)
+        with self.assertRaises(MetaAPIError) as caught:
+            client.spark_json("test", SMOKE_SCHEMA)
+        self.assertEqual(provider_response, caught.exception.response)
+        self.assertNotIn("private input echo", str(caught.exception) + json.dumps(client.ledger))
+        self.assertEqual("http_error", client.ledger[0]["status"])
+        self.assertEqual(20, client.usage_summary()["output_tokens"])
+
     def test_malformed_output_collection_rejected(self):
         for output in [None, {}, [None], [{"type": "message", "content": [None]}]]:
             with self.assertRaises(MetaAPIError):
@@ -141,6 +183,17 @@ class AdapterTests(unittest.TestCase):
                           "usage": {"input_tokens": 1000, "output_tokens": 100}},
                          {"status": "ok", "model": SAM_MODEL}]
         self.assertAlmostEqual(client.usage_summary()["estimated_usd"], .004175)
+
+    def test_budget_omits_unknown_charges_without_calling_them_successful(self):
+        client = MetaClient("key", opener=lambda *a, **k: response(lane("")))
+        client.ledger = [{"status": "network_error", "model": SPARK_MODEL},
+                         {"status": "invalid_response", "model": SPARK_MODEL, "usage": {}},
+                         {"status": "invalid_response", "model": SAM_MODEL}]
+        report = client.usage_summary()
+        self.assertEqual(0, report["estimated_usd"])
+        self.assertEqual(0, report["sam_images"])
+        self.assertEqual(1, report["spark_requests_with_unreported_token_usage"])
+        self.assertEqual(0, report["unsuccessful_spark_requests_with_reported_token_usage"])
 
     def test_unreported_or_malformed_usage_does_not_lose_audit_report(self):
         value = {"project": "ProofLoop", "requires_fresh_evidence": True, "result_when_occluded": "unknown"}

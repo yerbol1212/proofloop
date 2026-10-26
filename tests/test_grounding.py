@@ -19,18 +19,19 @@ def protocol(kind="visible", expected=True, *, min_stable_samples=2):
                                     "expected": expected, "min_stable_samples": min_stable_samples}]})
 
 
+def decoded_mask(width, height, raster=None):
+    raster = bytes([1] * (width * height)) if raster is None else bytes(raster)
+    return {"width": width, "height": height, "decoded": True,
+            "raster_format": "base64_row_major_uint8_0_or_1",
+            "raster_base64": base64.b64encode(raster).decode(), "foreground_pixels": sum(raster),
+            "raster_sha256": hashlib.sha256(raster).hexdigest()}
+
+
 def detection(*, x1=1, x2=3, object_id=0, confidence=0.95):
-    raster = bytearray(100)
-    for y in range(2, 5):
-        for x in range(x1, x2 + 1):
-            raster[y * 10 + x] = 1
     return {"frame": 0, "object_id": object_id,
             "box": {"x1": x1, "y1": 2, "x2": x2, "y2": 4, "width": 10, "height": 10},
             "confidence": confidence,
-            "mask": {"width": 10, "height": 10, "decoded": True,
-                     "raster_format": "base64_row_major_uint8_0_or_1",
-                     "raster_base64": base64.b64encode(raster).decode(), "foreground_pixels": sum(raster),
-                     "raster_sha256": hashlib.sha256(raster).hexdigest()}}
+            "mask": decoded_mask(x2 - x1 + 1, 3)}
 
 
 def sample(number, *, objects=None, timestamp=None, image_id=None, origin="mock_adapter_test"):
@@ -64,6 +65,47 @@ class SamGroundingTests(unittest.TestCase):
         self.assertEqual(2, observation.stable_samples)
         self.assertFalse(observation.fully_visible)
         self.assertFalse(observation.absence_validated)
+        self.assertEqual(Status.PASS, status(task, result))
+
+    def test_box_local_raster_uses_nonzero_source_offset(self):
+        _, result = grounded([sample(1), sample(2)])
+        detection_result = result.evidence["sources"][0]["detections"][0]
+        self.assertEqual((0.1, 0.2, 0.4, 0.5), detection_result["foreground"])
+        self.assertEqual(detection_result["box"], detection_result["foreground"])
+
+    def test_resampled_raster_pixel_edges_map_through_box_extent(self):
+        record = detection(x1=0, x2=3)
+        record["box"].update(y1=2, y2=5)
+        record["mask"] = decoded_mask(2, 2, [0, 1, 0, 0])
+        task, result = grounded([sample(1, objects=[record]), sample(2, objects=[record])])
+        foreground = result.evidence["sources"][0]["detections"][0]["foreground"]
+        self.assertEqual((0.2, 0.2, 0.4, 0.4), foreground)
+        self.assertEqual(Status.PASS, status(task, result))
+
+    def test_synthetic_mask_with_live_observed_geometry_maps_to_left_region(self):
+        # Only dimensions/box metadata match the live synthetic scene. This
+        # all-ones test raster is authored here, not copied model output.
+        record = detection()
+        record["box"] = {"x1": 301, "y1": 159, "x2": 418, "y2": 1044,
+                         "width": 1254, "height": 1254}
+        record["mask"] = decoded_mask(118, 886)
+        task, result = grounded([sample(1, objects=[record]), sample(2, objects=[record])])
+        foreground = result.evidence["sources"][0]["detections"][0]["foreground"]
+        expected = (301 / 1254, 159 / 1254, 419 / 1254, 1045 / 1254)
+        for actual, target in zip(foreground, expected):
+            self.assertAlmostEqual(actual, target)
+        self.assertEqual(Status.PASS, status(task, result))
+
+    def test_whole_image_box_retains_whole_image_mask_geometry(self):
+        record = detection()
+        record["box"].update(x1=0, y1=0, x2=9, y2=9)
+        raster = bytearray(100)
+        raster[21] = 1
+        record["mask"] = decoded_mask(10, 10, raster)
+        task, result = grounded([sample(1, objects=[record]), sample(2, objects=[record])],
+                                regions={"left": (0, 0, 1, 1)})
+        foreground = result.evidence["sources"][0]["detections"][0]["foreground"]
+        self.assertEqual((0.1, 0.2, 0.2, 0.3), foreground)
         self.assertEqual(Status.PASS, status(task, result))
 
     def test_identical_hashes_cannot_supply_stability(self):
@@ -142,10 +184,11 @@ class SamGroundingTests(unittest.TestCase):
         self.assertEqual("mock-sam-shape", audit["reported_model"])
         self.assertNotIn("is_live", audit)
 
-    def test_foreground_outside_box_region_is_unknown(self):
-        bad = detection()
-        other = detection(x1=6, x2=7)
-        bad["mask"] = other["mask"]
+    def test_foreground_inside_region_does_not_override_crossing_box(self):
+        bad = detection(x1=3, x2=6)
+        # Foreground occupies the left half of the local box, entirely inside
+        # the left region. The box still crosses its boundary and is ambiguous.
+        bad["mask"] = decoded_mask(4, 3, [1, 0, 0, 0] * 3)
         task, result = grounded([sample(1, objects=[bad]), sample(2, objects=[bad])])
         self.assertEqual(Status.UNKNOWN, status(task, result))
 
@@ -155,7 +198,7 @@ class SamGroundingTests(unittest.TestCase):
         task, result = grounded([sample(1, objects=[bad]), sample(2, objects=[bad])])
         self.assertEqual(Status.UNKNOWN, status(task, result))
 
-    def test_unconfirmed_mask_to_source_resize_is_unknown(self):
+    def test_raster_dimensions_must_match_decoded_bytes(self):
         bad = detection()
         bad["mask"]["width"] = 5
         task, result = grounded([sample(1, objects=[bad]), sample(2, objects=[bad])])

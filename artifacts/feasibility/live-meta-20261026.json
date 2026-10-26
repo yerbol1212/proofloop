@@ -1,0 +1,346 @@
+{
+  "schema_version": "1.0",
+  "date_utc": "2026-10-26",
+  "inference_origin": "live_meta_api",
+  "models": {
+    "spark": "muse-spark-1.3",
+    "sam": "sam-3.1"
+  },
+  "inputs": {
+    "origin": "imagegen_synthetic",
+    "manifest": "inputs/synthetic/manifest.json",
+    "physical_measurement": false,
+    "held_out_benchmark": false
+  },
+  "access_gates": {
+    "model_list": "pass",
+    "spark_structured_output": "pass",
+    "sam_transport_and_parse": "pass",
+    "sam_nonempty_grounding": "pass",
+    "sam_official_mask_decode": "pass"
+  },
+  "compiler": {
+    "drafts": [
+      {
+        "model": "muse-spark-1.3",
+        "content_hash": "3dfb596bf9e1fc94a0a56896030e06051a078a6a4d6b4edd8a927c91ebb0ce88",
+        "approved": false,
+        "requires_human_approval": true,
+        "latency_seconds": 4.974,
+        "model_usage": {
+          "input_tokens": 341,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 943,
+          "output_tokens_details": {
+            "reasoning_tokens": 836
+          },
+          "total_tokens": 1284
+        },
+        "protocol": {
+          "id": "proofloop-task",
+          "version": "draft-1",
+          "objects": [
+            "screwdriver",
+            "pliers"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "checks": [
+            {
+              "id": "check-screwdriver-left",
+              "kind": "count",
+              "object_id": "screwdriver",
+              "region_id": "left",
+              "expected": 1,
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2
+            },
+            {
+              "id": "check-pliers-right",
+              "kind": "count",
+              "object_id": "pliers",
+              "region_id": "right",
+              "expected": 1,
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2
+            }
+          ],
+          "steps": [],
+          "checkpoints": []
+        }
+      },
+      {
+        "model": "muse-spark-1.3",
+        "content_hash": "b17cfa33ff2db49a2450500f464c3f4019d9e541dd2616d6f2645bef93f91e5c",
+        "approved": false,
+        "requires_human_approval": true,
+        "latency_seconds": 3.571,
+        "model_usage": {
+          "input_tokens": 341,
+          "input_tokens_details": {
+            "cached_tokens": 0
+          },
+          "output_tokens": 1029,
+          "output_tokens_details": {
+            "reasoning_tokens": 922
+          },
+          "total_tokens": 1370
+        },
+        "protocol": {
+          "id": "proofloop-task",
+          "version": "draft-1",
+          "objects": [
+            "screwdriver",
+            "pliers"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "checks": [
+            {
+              "id": "check-screwdriver-right",
+              "kind": "count",
+              "object_id": "screwdriver",
+              "region_id": "right",
+              "expected": 1,
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2
+            },
+            {
+              "id": "check-pliers-left",
+              "kind": "count",
+              "object_id": "pliers",
+              "region_id": "left",
+              "expected": 1,
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2
+            }
+          ],
+          "steps": [],
+          "checkpoints": []
+        }
+      }
+    ],
+    "requirements_edit_changed_semantics": true,
+    "requires_human_approval": true,
+    "integrated_exact_count_pass_claimed": false
+  },
+  "sam_scenes": {
+    "gates": {
+      "all_eight_sam_results_available": true,
+      "positive_visibility_two_distinct_generated_sources": true,
+      "wrong_region_positive_screwdriver_right_supported": true,
+      "wrong_region_left_absence_not_claimed": true,
+      "occluded_screwdriver_remains_unknown": true
+    },
+    "scene_results": {
+      "correct.png": {
+        "checks": {
+          "screwdriver-left": "unknown",
+          "pliers-right": "unknown"
+        },
+        "detections": [
+          {
+            "object_id": "screwdriver",
+            "source_sha256": "043dd7e157b6c0d1f767538d65c5b1826b2cded184569cd9b8d9ef9192a76dbf",
+            "input_origin": "imagegen_synthetic",
+            "reported_model": "sam-3.1",
+            "reported_detection_count": 1,
+            "supported_detection_count": 1,
+            "regions": [
+              "left"
+            ],
+            "reported_confidences": [
+              0.949367105960846
+            ],
+            "unknown_reason": null
+          },
+          {
+            "object_id": "pliers",
+            "source_sha256": "043dd7e157b6c0d1f767538d65c5b1826b2cded184569cd9b8d9ef9192a76dbf",
+            "input_origin": "imagegen_synthetic",
+            "reported_model": "sam-3.1",
+            "reported_detection_count": 1,
+            "supported_detection_count": 1,
+            "regions": [
+              "right"
+            ],
+            "reported_confidences": [
+              0.9609756469726562
+            ],
+            "unknown_reason": null
+          }
+        ]
+      },
+      "correct-variant.png": {
+        "checks": {
+          "screwdriver-left": "unknown",
+          "pliers-right": "unknown"
+        },
+        "detections": [
+          {
+            "object_id": "screwdriver",
+            "source_sha256": "786f9b1cd6e688f29d98a47b6889aff89e9bc3c83fffb5700fb85e60293db95c",
+            "input_origin": "imagegen_synthetic",
+            "reported_model": "sam-3.1",
+            "reported_detection_count": 1,
+            "supported_detection_count": 1,
+            "regions": [
+              "left"
+            ],
+            "reported_confidences": [
+              0.949367105960846
+            ],
+            "unknown_reason": null
+          },
+          {
+            "object_id": "pliers",
+            "source_sha256": "786f9b1cd6e688f29d98a47b6889aff89e9bc3c83fffb5700fb85e60293db95c",
+            "input_origin": "imagegen_synthetic",
+            "reported_model": "sam-3.1",
+            "reported_detection_count": 1,
+            "supported_detection_count": 1,
+            "regions": [
+              "right"
+            ],
+            "reported_confidences": [
+              0.9609756469726562
+            ],
+            "unknown_reason": null
+          }
+        ]
+      },
+      "wrong-region.png": {
+        "checks": {
+          "screwdriver-left": "unknown",
+          "pliers-right": "unknown"
+        },
+        "detections": [
+          {
+            "object_id": "screwdriver",
+            "source_sha256": "6ed10b85e05e13e92e15b3967dd95b0ba372cd75646d1c72d637219aae0f0022",
+            "input_origin": "imagegen_synthetic",
+            "reported_model": "sam-3.1",
+            "reported_detection_count": 1,
+            "supported_detection_count": 1,
+            "regions": [
+              "right"
+            ],
+            "reported_confidences": [
+              0.9569892287254333
+            ],
+            "unknown_reason": null
+          },
+          {
+            "object_id": "pliers",
+            "source_sha256": "6ed10b85e05e13e92e15b3967dd95b0ba372cd75646d1c72d637219aae0f0022",
+            "input_origin": "imagegen_synthetic",
+            "reported_model": "sam-3.1",
+            "reported_detection_count": 1,
+            "supported_detection_count": 1,
+            "regions": [
+              "right"
+            ],
+            "reported_confidences": [
+              0.9532163739204407
+            ],
+            "unknown_reason": null
+          }
+        ]
+      },
+      "occluded.png": {
+        "checks": {
+          "screwdriver-left": "unknown",
+          "pliers-right": "unknown"
+        },
+        "detections": [
+          {
+            "object_id": "screwdriver",
+            "source_sha256": "9609211d2bd3ff193989277edeae7e232dcbc22ef65356c05cf84352c9a753db",
+            "input_origin": "imagegen_synthetic",
+            "reported_model": "sam-3.1",
+            "reported_detection_count": 0,
+            "supported_detection_count": 0,
+            "regions": [],
+            "reported_confidences": [],
+            "unknown_reason": "Zero or unavailable detections do not prove absence"
+          },
+          {
+            "object_id": "pliers",
+            "source_sha256": "9609211d2bd3ff193989277edeae7e232dcbc22ef65356c05cf84352c9a753db",
+            "input_origin": "imagegen_synthetic",
+            "reported_model": "sam-3.1",
+            "reported_detection_count": 1,
+            "supported_detection_count": 1,
+            "regions": [
+              "right"
+            ],
+            "reported_confidences": [
+              0.9649122953414917
+            ],
+            "unknown_reason": null
+          }
+        ]
+      }
+    },
+    "positive_pair_checks": {
+      "screwdriver-left": "pass",
+      "pliers-right": "pass"
+    }
+  },
+  "latency_seconds": {
+    "spark_requests": [
+      2.352,
+      4.974,
+      3.571
+    ],
+    "sam_requests": [
+      2.734,
+      3.2,
+      2.034,
+      1.875,
+      4.137,
+      8.464,
+      2.336,
+      1.897,
+      2.628
+    ],
+    "sam_median": 2.628,
+    "sam_min": 1.875,
+    "sam_max": 8.464
+  },
+  "usage": {
+    "total_http_requests": 13,
+    "model_list_requests": 1,
+    "spark_requests": 3,
+    "sam_image_requests": 9,
+    "spark_input_tokens": 719,
+    "spark_output_tokens_including_reasoning": 2382,
+    "sam_images_processed": 9,
+    "estimated_usd": 0.03352225,
+    "pricing_source": "https://dev.meta.ai/docs/pricing-rate-limits",
+    "estimate_note": "Standard list-price estimate from reported usage, not an invoice or credit-balance measurement."
+  },
+  "limits": [
+    "Generated shared-reference edits are not independent physical trials.",
+    "Wrong-region and occluded images are single observations; stability stays unproven.",
+    "Zero detections never establish physical absence or complete visibility.",
+    "Reported model confidence is not a calibrated correctness probability.",
+    "Rectangles and concept-to-object mappings are manually specified for these generated views.",
+    "No physical repair, phone-camera performance, or industrial reliability is established.",
+    "The compiler generated exact-count drafts; the live perception experiment used a separate authored visibility protocol.",
+    "Exact counts require independently justified completeness; the SAM bridge does not establish that contract.",
+    "No full demonstration-to-protocol-to-physical-repair loop has been validated.",
+    "Synthetic evidence has authored timestamps for checker integration, not measured camera time.",
+    "Tiny selected fixtures cannot establish accuracy, robustness or comparative superiority."
+  ]
+}

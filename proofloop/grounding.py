@@ -109,8 +109,10 @@ def _detection(record: Any, regions: Mapping[str, tuple[float, ...]]) -> dict[st
         raise ValidationError("decoded official-parser raster is required")
     mask_width = _integer(mask.get("width"), "mask width", minimum=1)
     mask_height = _integer(mask.get("height"), "mask height", minimum=1)
-    if mask_width != width or mask_height != height:
-        raise ValidationError("mask-to-source geometry needs equal dimensions; other mappings are unsupported")
+    # SAM masks are box-local rasters. Their origin is the returned box's
+    # top-left, not the source image's origin; the official parser exposes
+    # those box bounds independently of the raster dimensions. Map pixel-cell
+    # edges through the box extent, including when the raster is resampled.
     if mask_width * mask_height > _MAX_MASK_PIXELS:
         raise ValidationError("decoded raster exceeds the grounding pixel limit")
     try:
@@ -135,8 +137,13 @@ def _detection(record: Any, regions: Mapping[str, tuple[float, ...]]) -> dict[st
             pixel_y, pixel_x = divmod(index, mask_width)
             min_x, min_y = min(min_x, pixel_x), min(min_y, pixel_y)
             max_x, max_y = max(max_x, pixel_x), max(max_y, pixel_y)
-    normalized_foreground = (min_x / mask_width, min_y / mask_height,
-                             (max_x + 1) / mask_width, (max_y + 1) / mask_height)
+    box_width, box_height = x2 - x1 + 1, y2 - y1 + 1
+    normalized_foreground = (
+        (x1 + min_x / mask_width * box_width) / width,
+        (y1 + min_y / mask_height * box_height) / height,
+        (x1 + (max_x + 1) / mask_width * box_width) / width,
+        (y1 + (max_y + 1) / mask_height * box_height) / height,
+    )
     containing = [region_id for region_id, rectangle in regions.items()
                   if _inside(normalized_box, rectangle) and _inside(normalized_foreground, rectangle)]
     if len(containing) != 1:

@@ -2,11 +2,11 @@
 
 Executable checks and evidence-linked correction for bounded physical workflows.
 
-ProofLoop turns a confirmed procedure into inspectable checks, evaluates observations as **pass**, **fail** or **unknown**, and searches a small declared action model for a correction. Corrections require fresh observations before the result changes. Muse Spark and SAM 3.1 are the intended reasoning and perception models.
+ProofLoop turns a confirmed procedure into inspectable checks, evaluates observations as **pass**, **fail** or **unknown**, and searches a small declared action model for a correction. Corrections require fresh observations before the result changes. Muse Spark drafts checks and SAM 3.1 grounds image observations.
 
 ## Current status
 
-This repository is the initial feasibility implementation for the Meta Global AI Developer Hackathon. Offline diagnostic cases are explicitly synthetic oracle observations. Live access tests use real Meta APIs when a valid key and billing access are available. Neither synthetic fixtures nor mocked API tests establish physical perception quality.
+This repository is the initial feasibility implementation for the Meta Global AI Developer Hackathon. Real Spark compilation and SAM grounding passed initial checks on generated tabletop images on 26 October 2026. The [measured report](artifacts/feasibility/live-meta-20261026.md) records results and limits. Offline diagnostic cases are explicitly synthetic oracle observations. Camera performance and the complete physical correction loop remain unvalidated.
 
 See [feasibility status](docs/FEASIBILITY.md), [capture checklist](docs/CAPTURE.md) and [contributions](CONTRIBUTIONS.md).
 
@@ -24,6 +24,8 @@ The diagnostic report records the exact cases and evidence origin. It is not an 
 ## Run real model access checks
 
 Copy `.env.example` to `.env.local` and save `META_API_KEY` locally. The local file is ignored by Git. Meta account billing requirements must be satisfied. No key belongs in source files, screenshots, chat or public artifacts.
+
+For an editable local password form, run `python3 tools/key_setup.py`, open the printed loopback URL, save the key, then stop the server with Ctrl+C. The key stays in `.env.local`.
 
 ```bash
 python3 -m proofloop.smoke --models-only
@@ -45,13 +47,21 @@ python3 -m proofloop.compiler \
 
 The compiler calls Spark and validates the resulting protocol against the allowed inventory and checker vocabulary. This initial lowering supports exact-count predicates. It rejects unsupported or ambiguous requirements and does not infer mandatory step order from a successful video. A draft is always unapproved and saved locally for human review; it is not immediately used to judge a run. Temporal checks and actions currently come from explicit authored specifications.
 
-No live compilation result is claimed until the account-access gate is complete. Mocked compiler tests only test contracts and rejection behavior.
+Two live compilation drafts matched the requested requirements, including an edit that swapped required regions. They remain unapproved. Mocked compiler tests additionally exercise contracts and rejection behavior.
 
 ## Generated scene inputs
 
-The [synthetic fixture set](inputs/synthetic/README.md) includes correct, wrong-region and occluded conditions, plus a second correct variant. Exact prompts and source hashes are included. These generated images can exercise real API transport and parsing once account access is ready; they are not camera observations or a completed physical repair.
+The [synthetic fixture set](inputs/synthetic/README.md) includes correct, wrong-region and occluded conditions, plus a second correct variant. Exact prompts and source hashes are included. These generated images exercised real API transport, official mask decoding and grounding; they are not camera observations or a completed physical repair.
+
+```bash
+python -m proofloop.live_scenes --output artifacts/local/my-new-scene-run
+```
+
+This makes at most eight SAM calls with no retries. Reports and raw outputs stay local. Use a new output directory, or explicitly `--resume` to reuse matching completed responses. The harness labels reuse and checks source hashes.
 
 `proofloop.grounding` connects parsed SAM image masks to approved checker predicates. It preserves provenance, requires distinct supporting image hashes, and returns unknown for missing/ambiguous perception. Positive detections supply visibility or count lower bounds, never automatic proof of absence or an exact count.
+
+The live scene harness uses a separate authored visibility protocol. The exact-count compiler and perception path still need a justified completeness contract before they can certify those counts together.
 
 ## Scope
 
