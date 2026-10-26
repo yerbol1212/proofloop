@@ -9,6 +9,9 @@ Project development began on 26 October 2026 after the hackathon kickoff. The re
 - Bounded repair planning with explicit preconditions, effects and action costs.
 - Synthetic oracle diagnostic fixtures and transparent result reporting.
 - Meta Responses API adapter and credential-safe live access tests.
+- Spark protocol draft compiler with local validation and mandatory human review.
+- Conservative SAM-mask-to-checker grounding with explicit evidence provenance.
+- Four generated scene inputs with prompt and source-hash manifests, labeled synthetic.
 
 This list describes the implementation scope; live and physical validation status is recorded separately in `docs/FEASIBILITY.md`.
 

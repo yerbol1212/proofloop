@@ -142,13 +142,26 @@ class AdapterTests(unittest.TestCase):
                          {"status": "ok", "model": SAM_MODEL}]
         self.assertAlmostEqual(client.usage_summary()["estimated_usd"], .004175)
 
+    def test_unreported_or_malformed_usage_does_not_lose_audit_report(self):
+        value = {"project": "ProofLoop", "requires_fresh_evidence": True, "result_when_occluded": "unknown"}
+        for usage in [None, [], "not-reported", {"input_tokens": "bad", "output_tokens": -1},
+                      {"input_tokens": True, "output_tokens": 1.5}]:
+            provider_response = lane(json.dumps(value))
+            provider_response["usage"] = usage
+            client = MetaClient("key", opener=lambda *a, **k: response(provider_response))
+            client.spark_json("test", SMOKE_SCHEMA)
+            report = client.usage_summary()
+            self.assertEqual(report["spark_requests_with_unreported_token_usage"], 1)
+            self.assertEqual(report["estimated_usd"], 0)
+            json.dumps(report)  # Audit serialization remains possible.
+
 
 class SAMParserTests(unittest.TestCase):
     def test_sparse_frame_and_object_ids_and_mask_preservation(self):
         text = SAM_TEXT.replace("<0f>", "<30f>") + "\n" + SAM_TEXT.replace("<0f>", "<2f>")
         records = parse_sam_boxes(text)
         self.assertEqual([r["frame"] for r in records], [30, 2])
-        self.assertEqual(records[0]["mask"]["encoded_payload"], "abc")
+        self.assertEqual(records[0]["mask"]["encoded_payload"], "!abc")
         self.assertFalse(records[0]["mask"]["decoded"])
 
     def test_zero_matches_is_not_a_physical_absence_result(self):
@@ -198,10 +211,12 @@ class SAMParserTests(unittest.TestCase):
             self.skipTest("Optional official parser requires Python >=3.10 and meta-sam-parser==0.1.0")
         # This encoded 5x5 example comes from Meta's public package README.
         text = ("<0f>2<|box;x1=1;y1=2;x2=5;y2=6;w=10;h=20|>"
-                "<|mask;x=0;y=0;data=5,5,!!!!!!(QO(0lu8?|>")
+                "<|mask;x=0;y=0;data=5,5,!!!!!(QO(0lu8?|>")
         decoded = decode_sam_masks(parse_sam_boxes(text))
         self.assertTrue(decoded[0]["mask"]["decoded"])
-        self.assertGreater(decoded[0]["mask"]["foreground_pixels"], 0)
+        self.assertEqual(decoded[0]["mask"]["foreground_pixels"], 10)
+        # Regression: the wire marker is part of the official payload contract.
+        self.assertEqual(decoded[0]["mask"]["encoded_payload"], "!!!!!(QO(0lu8?")
 
 
 if __name__ == "__main__":

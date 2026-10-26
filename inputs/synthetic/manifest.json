@@ -1,0 +1,98 @@
+{
+  "schema_version": "1.0",
+  "created_date": "2026-10-26",
+  "timezone": "Asia/Almaty",
+  "generator": "OpenAI built-in image_gen tool",
+  "physical_measurement": false,
+  "physical_repair_executed": false,
+  "held_out_benchmark": false,
+  "regions": {
+    "left": [
+      0.075,
+      0.08,
+      0.48,
+      0.92
+    ],
+    "right": [
+      0.52,
+      0.08,
+      0.925,
+      0.92
+    ]
+  },
+  "regions_are": "manually specified normalized rectangles for this generated view, not automatically calibrated",
+  "images": [
+    {
+      "file": "correct.png",
+      "sha256": "043dd7e157b6c0d1f767538d65c5b1826b2cded184569cd9b8d9ef9192a76dbf",
+      "bytes": 2489852,
+      "width": 1254,
+      "height": 1254,
+      "evidence_origin": "imagegen_synthetic",
+      "generation_mode": "generate",
+      "reference_image": null,
+      "prompt": "Use case: product-mockup. Asset type: synthetic computer-vision feasibility input for ProofLoop, explicitly NOT a real camera measurement. Create one clean photorealistic overhead image, square composition, of an unbranded shallow rectangular cardboard tool tray on a light neutral tabletop. The tray is viewed perfectly top down, fills the central 85% of frame, with a thin straight cardboard divider running vertically at x=50%, creating two broad open compartments. Exactly ONE red-handled flathead screwdriver lies vertically entirely within the LEFT compartment, its whole outline visible. Exactly ONE pair of blue-handled pliers lies vertically entirely within the RIGHT compartment, whole outline visible. No other objects, no hands, no packing slip, no screws. Object centroids roughly x=27%,y=52% and x=73%,y=52%. Soft even diffuse lighting, sharp realistic object boundaries, no glare or dramatic shadows. No text, branding, logos, watermark, borders or collage. Do not add extra objects or duplicate tools. This is the correct-state synthetic fixture; show both compartments fully open and all objects unobstructed.",
+      "visual_review": "reviewed by assistant; intended visible condition matches",
+      "expected_visible_condition": {
+        "visible_screwdriver_region": "left",
+        "visible_pliers_region": "right",
+        "occluded_regions": []
+      }
+    },
+    {
+      "file": "wrong-region.png",
+      "sha256": "6ed10b85e05e13e92e15b3967dd95b0ba372cd75646d1c72d637219aae0f0022",
+      "bytes": 2280746,
+      "width": 1254,
+      "height": 1254,
+      "evidence_origin": "imagegen_synthetic",
+      "generation_mode": "edit",
+      "reference_image": "correct.png",
+      "prompt": "Use case: precise-object-edit. Edit target: supplied correct-state synthetic ProofLoop tray scene. Change only the screwdriver placement: move the entire red-handled screwdriver out of the left compartment into the RIGHT compartment, lying vertically immediately to the left of the blue-handled pliers, with a clear gap, entirely within the right compartment. Left compartment must be completely empty. Preserve the existing single pair of blue pliers, tray, central divider, overhead camera, crop, lighting and surface. Exactly one screwdriver and one pair of pliers total. No text/logos/watermarks. This is a generated wrong-region test fixture, not a real recorded action.",
+      "visual_review": "reviewed by assistant; intended visible condition matches",
+      "expected_visible_condition": {
+        "visible_screwdriver_region": "right",
+        "visible_pliers_region": "right",
+        "occluded_regions": []
+      }
+    },
+    {
+      "file": "occluded.png",
+      "sha256": "9609211d2bd3ff193989277edeae7e232dcbc22ef65356c05cf84352c9a753db",
+      "bytes": 2478235,
+      "width": 1254,
+      "height": 1254,
+      "evidence_origin": "imagegen_synthetic",
+      "generation_mode": "edit",
+      "reference_image": "correct.png",
+      "prompt": "Use case: precise-object-edit. Edit target: supplied correct-state synthetic ProofLoop tray scene. Cover the ENTIRE LEFT compartment, including its screwdriver, with an opaque flat tan cardboard rectangle fitted inside that compartment. The rectangle must hide every part of the screwdriver so its presence or absence cannot be inferred visually. Preserve the right compartment and blue pliers, tray, vertical center divider, overhead camera, crop, lighting and surface. Do not show hands. Do not add labels, text/logos or watermarks. This is a generated occlusion test fixture, not a real recorded action.",
+      "visual_review": "reviewed by assistant; intended visible condition matches",
+      "expected_visible_condition": {
+        "visible_screwdriver_region": null,
+        "visible_pliers_region": "right",
+        "occluded_regions": [
+          "left"
+        ],
+        "hidden_contents": "unknown"
+      }
+    },
+    {
+      "file": "correct-variant.png",
+      "sha256": "786f9b1cd6e688f29d98a47b6889aff89e9bc3c83fffb5700fb85e60293db95c",
+      "bytes": 2307749,
+      "width": 1254,
+      "height": 1254,
+      "evidence_origin": "imagegen_synthetic",
+      "generation_mode": "edit",
+      "reference_image": "correct.png",
+      "prompt": "Use case: precise-object-edit. Edit target: supplied correct-state synthetic ProofLoop tray scene. Produce a second correct-state synthetic observation: shift the red-handled screwdriver slightly left within the LEFT compartment and rotate it clockwise by about 5 degrees; shift the single pair of blue-handled pliers slightly right within the RIGHT compartment and rotate counterclockwise by about 4 degrees. Both tools fully visible, completely within their original separate compartments. Preserve all tray geometry, central divider, overhead viewpoint, surface, crop and lighting. Exactly one of each tool; no other objects, text/logos or watermarks. This is an independently generated correct-condition fixture, not evidence that a physical repair was executed.",
+      "visual_review": "reviewed by assistant; intended visible condition matches",
+      "expected_visible_condition": {
+        "visible_screwdriver_region": "left",
+        "visible_pliers_region": "right",
+        "occluded_regions": []
+      }
+    }
+  ],
+  "claim_limit": "Generated inputs for transport, parsing and model/checker integration experiments. Shared-reference edits are not independent physical trials. Cannot establish industrial or phone-camera performance."
+}

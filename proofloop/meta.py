@@ -29,6 +29,14 @@ SAM_MODEL = "sam-3.1"
 MAX_IMAGE_BYTES = 5 * 1024 * 1024
 
 
+def _reported_usage(value: Any) -> dict[str, Any]:
+    return value if isinstance(value, dict) else {}
+
+
+def _reported_tokens(value: Any) -> int:
+    return value if type(value) is int and value >= 0 else 0
+
+
 class MetaAPIError(RuntimeError):
     """Safe, deliberately terse error which never embeds provider message bodies."""
 
@@ -252,7 +260,9 @@ def parse_sam_boxes(text: str) -> list[dict[str, Any]]:
                 "confidence": float(box_conf) if box_conf is not None else None,
                 "mask": {"height": int(mask_h), "width": int(mask_w),
                          "encoding": "one_bit" if encoding == "!" else "lossless",
-                         "encoded_payload": payload, "decoded": False},
+                         # Meta's public decoder expects the marker as the
+                         # first payload character as well as the encoding ID.
+                         "encoded_payload": encoding + payload, "decoded": False},
             })
             position = match.end()
             if position < len(block):
@@ -315,7 +325,7 @@ class MetaClient:
                     raise MetaAPIError("Meta response was not a JSON object")
                 if result.get("error") or (endpoint == "responses" and result.get("status") != "completed"):
                     raise MetaAPIError("Meta response did not complete successfully", code="incomplete_response")
-                entry.update(status="ok", usage=result.get("usage", {}))
+                entry.update(status="ok", usage=_reported_usage(result.get("usage")))
                 return result
             except HTTPError as error:
                 code = None
@@ -380,7 +390,7 @@ class MetaClient:
             raise MetaAPIError("Spark output failed local schema validation", code="schema_validation_failed",
                                response=result) from None
         return {"response": result, "text": text, "parsed": parsed, "source": source,
-                "usage": result.get("usage", {}), "latency_seconds": self.ledger[-1]["latency_seconds"]}
+                "usage": _reported_usage(result.get("usage")), "latency_seconds": self.ledger[-1]["latency_seconds"]}
 
     def segment_image(self, image_path: str | Path, prompt: str, *, decode_masks: bool = True) -> dict[str, Any]:
         if not prompt.strip() or len(prompt) > 2048:
@@ -410,24 +420,29 @@ class MetaClient:
                 raise
         return {"response": result, "text": text, "objects": objects, "source": source,
                 "mask_decoding": "official_meta_sam_parser_0.1.0" if decode_masks else "skipped_explicitly",
-                "usage": result.get("usage", {}), "latency_seconds": self.ledger[-1]["latency_seconds"]}
+                "usage": _reported_usage(result.get("usage")), "latency_seconds": self.ledger[-1]["latency_seconds"]}
 
     def usage_summary(self) -> dict[str, Any]:
         estimate = 0.0
         input_tokens = output_tokens = images = 0
+        usage_unreported = 0
         for entry in self.ledger:
             if entry.get("status") != "ok":
                 continue
             if entry.get("model") == SPARK_MODEL:
-                usage = entry.get("usage", {})
-                input_tokens += int(usage.get("input_tokens", 0) or 0)
-                output_tokens += int(usage.get("output_tokens", 0) or 0)
+                usage = _reported_usage(entry.get("usage"))
+                if any(type(usage.get(field)) is not int or usage[field] < 0
+                       for field in ("input_tokens", "output_tokens")):
+                    usage_unreported += 1
+                input_tokens += _reported_tokens(usage.get("input_tokens"))
+                output_tokens += _reported_tokens(usage.get("output_tokens"))
             elif entry.get("model") == SAM_MODEL:
                 images += 1
         estimate += input_tokens * 1.25 / 1_000_000 + output_tokens * 4.25 / 1_000_000
         estimate += images * 0.0025
         return {"request_attempts": len(self.ledger), "input_tokens": input_tokens,
                 "output_tokens": output_tokens, "sam_images": images,
+                "spark_requests_with_unreported_token_usage": usage_unreported,
                 "estimated_usd": round(estimate, 6),
                 "estimate_note": "Published Standard rates; excludes unreported usage and failed/ambiguous requests. Not a billing hard stop.",
                 "requests": self.ledger}

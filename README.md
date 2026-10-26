@@ -35,6 +35,24 @@ The smoke runner calls `https://api.meta.ai/v1` with `muse-spark-1.3` and `sam-3
 
 Each request has bounded output/size/time and a local attempt budget; estimated cost is not a provider billing stop. Unreviewed responses and source media remain under ignored local directories. Missing access produces an explicit error, never a substituted model result.
 
+## Draft a protocol with Spark
+
+```bash
+python3 -m proofloop.compiler \
+  --requirements 'Exactly one screwdriver in the left region and one pair of pliers in the right region.' \
+  --objects screwdriver pliers --regions left right
+```
+
+The compiler calls Spark and validates the resulting protocol against the allowed inventory and checker vocabulary. This initial lowering supports exact-count predicates. It rejects unsupported or ambiguous requirements and does not infer mandatory step order from a successful video. A draft is always unapproved and saved locally for human review; it is not immediately used to judge a run. Temporal checks and actions currently come from explicit authored specifications.
+
+No live compilation result is claimed until the account-access gate is complete. Mocked compiler tests only test contracts and rejection behavior.
+
+## Generated scene inputs
+
+The [synthetic fixture set](inputs/synthetic/README.md) includes correct, wrong-region and occluded conditions, plus a second correct variant. Exact prompts and source hashes are included. These generated images can exercise real API transport and parsing once account access is ready; they are not camera observations or a completed physical repair.
+
+`proofloop.grounding` connects parsed SAM image masks to approved checker predicates. It preserves provenance, requires distinct supporting image hashes, and returns unknown for missing/ambiguous perception. Positive detections supply visibility or count lower bounds, never automatic proof of absence or an exact count.
+
 ## Scope
 
 Start with a fixed camera, a visible tray and distinct macro objects. The current checker tests declared observable properties. It cannot certify hidden contents, attachment, torque, electrical continuity or physical safety. A minimum repair is minimum cost within the supplied finite action model.
