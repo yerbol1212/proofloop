@@ -9,9 +9,10 @@ Date: 26 October 2026, Asia/Almaty.
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | 104 tests in Python 3.12 cover the official decoder, compiler, grounding, request accounting and scene harness | Passed |
+| Local tests | 118 tests cover the official decoder, compiler modes, unique-target grounding, request accounting and scene harness | Passed |
 | Official SAM codec | `meta-sam-parser==0.1.0` decoded actual live image masks; box-local raster coordinates mapped into image coordinates | Passed on generated inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
+| Positive placement contract | New explicit unique-target location mode compiled correctly with live Spark; wrong-region checks tested on authored observations | Passed software and draft gates; camera pending |
 | Real SAM grounding and mask parsing | Eight scene calls; intended positive regions, wrong-region evidence and conservative occlusion behavior | Passed on generated inputs |
 | Physical correction and fresh verification | No owned camera recordings supplied yet | Pending media and live perception |
 | Synthetic scene inputs | Four generated scenes with exact prompts, hashes, annotations and provenance | Used in live Meta calls; not physical evidence |
@@ -26,6 +27,8 @@ The Spark compiler uses a strict schema and local semantic validation. Two real 
 The SAM-to-checker bridge accepts decoded masks with source hashes, approved region rectangles and explicit evidence origin. It permits positive visibility and count lower bounds, requires distinct sources for repeated evidence, and never automatically sets an absence-validation contract. Consequently exact-count passes remain unknown unless independently supported. This is a deliberate limitation of the current conservative observation path.
 
 The separate authored visibility protocol passed on two distinct generated source hashes. A screwdriver in the wrong region was grounded there, while unproven absence stayed unknown. The occluded screwdriver also stayed unknown. The compiler's exact-count drafts have not passed through this observation path; the completeness contract remains an implementation gate.
+
+The added `location` predicate checks positive placement under an explicit, operator-confirmed unique-target scene contract. Its compiler mode matched the supplied synthetic requirements in a [real Spark call](../artifacts/feasibility/live-location-20261026.json). Software tests exercise stable wrong placement → fail, missing or multiple targets → unknown, and fresh corrected placement → pass. These tests do not establish physical perception or infer scene uniqueness. The exact-count limitation remains unchanged.
 
 The [live report](../artifacts/feasibility/live-meta-20261026.md) records 12 real model calls plus one model listing, measured latency and an estimated Standard list-price cost of $0.03352225. It does not establish camera accuracy or a physical correction. The [capture checklist](CAPTURE.md) defines the next real-media gate.
 

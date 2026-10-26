@@ -179,6 +179,64 @@ class EvidenceTests(unittest.TestCase):
         self.assertEqual(aggregate_status([]), Status.UNKNOWN)
 
 
+class UniqueLocationTests(unittest.TestCase):
+    def task(self, **updates):
+        check = {"id": "driver-left", "kind": "location", "object_id": "driver",
+                 "region_id": "left", "unique_target": True}
+        check.update(updates)
+        return Protocol.from_dict({"id": "declared-single-tool", "version": "1",
+                                   "objects": ["driver"], "regions": ["left", "right"],
+                                   "checks": [check]})
+
+    def location(self, store, value, timestamp_ms=100, **updates):
+        options = {"kind": "location", "object_id": "driver", "region_id": "left",
+                   "value": value, "timestamp_ms": timestamp_ms, "stable_samples": 2,
+                   "evidence_id": f"fixture://positive-location/{timestamp_ms}"}
+        options.update(updates)
+        return store.observe(**options)
+
+    def test_location_requires_explicit_true_contract_and_round_trips(self):
+        for value in (False, 1, "true", None):
+            with self.subTest(value=value), self.assertRaises(ValidationError):
+                self.task(unique_target=value)
+        raw = self.task().to_dict()
+        del raw["checks"][0]["unique_target"]
+        with self.assertRaises(ValidationError):
+            Protocol.from_dict(raw)
+        task = self.task()
+        self.assertEqual(task.content_hash, Protocol.from_dict(task.to_dict()).content_hash)
+        self.assertNotIn("expected", task.checks[0].to_dict())
+
+    def test_positive_wrong_region_fails_then_invalidation_requires_fresh_correction(self):
+        task = self.task()
+        store = EvidenceStore(task, "repair")
+        old = self.location(store, "right")
+        self.assertEqual(Status.FAIL, evaluate(task, store)[0].status)
+        self.assertFalse(old.fully_visible)
+        self.assertFalse(old.absence_validated)
+        store.invalidate("human moves the declared target", 200)
+        self.assertEqual(Status.UNKNOWN, evaluate(task, store)[0].status)
+        with self.assertRaises(ValidationError):
+            store.add(old)
+        self.location(store, "left", 300)
+        self.assertEqual(Status.PASS, evaluate(task, store)[0].status)
+        self.assertEqual(Status.UNKNOWN, evaluate(task, store, now_ms=30301)[0].status)
+
+    def test_location_unknown_and_unstable_observations_never_fail_or_pass(self):
+        task = self.task()
+        for value, options in ((None, {}), ("left", {"stable_samples": 1}), ("right", {"confidence": 0.2})):
+            store = EvidenceStore(task, "incomplete")
+            self.location(store, value, **options)
+            self.assertEqual(Status.UNKNOWN, evaluate(task, store)[0].status)
+
+    def test_location_value_must_name_an_approved_region(self):
+        task = self.task()
+        for value in ("elsewhere", True, 1, ""):
+            store = EvidenceStore(task, "invalid")
+            with self.subTest(value=value), self.assertRaises(ValidationError):
+                self.location(store, value)
+
+
 class TemporalTests(unittest.TestCase):
     def setUp(self):
         self.protocol = Protocol.from_dict(protocol_data(True))

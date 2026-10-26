@@ -1,0 +1,63 @@
+{
+  "model": "muse-spark-1.3",
+  "approved": false,
+  "requires_human_approval": true,
+  "protocol": {
+    "id": "proofloop-task",
+    "version": "draft-1",
+    "objects": [
+      "screwdriver",
+      "pliers"
+    ],
+    "regions": [
+      "left",
+      "right"
+    ],
+    "checks": [
+      {
+        "id": "check-screwdriver-left",
+        "kind": "location",
+        "object_id": "screwdriver",
+        "region_id": "left",
+        "max_age_ms": 30000,
+        "min_confidence": 0.8,
+        "min_stable_samples": 2,
+        "unique_target": true
+      },
+      {
+        "id": "check-pliers-right",
+        "kind": "location",
+        "object_id": "pliers",
+        "region_id": "right",
+        "max_age_ms": 30000,
+        "min_confidence": 0.8,
+        "min_stable_samples": 2,
+        "unique_target": true
+      }
+    ],
+    "steps": [],
+    "checkpoints": []
+  },
+  "content_hash": "0fe126ff88b882e073d3532891abdbb0b075d5ea91b9abcf240b51925249c998",
+  "model_usage": {
+    "input_tokens": 461,
+    "input_tokens_details": {
+      "cached_tokens": 0
+    },
+    "output_tokens": 1104,
+    "output_tokens_details": {
+      "reasoning_tokens": 994
+    },
+    "total_tokens": 1565
+  },
+  "latency_seconds": 4.244,
+  "schema_version": "1.0",
+  "experiment": "live_location_draft_compilation",
+  "inference_origin": "live_meta_api",
+  "requirements_context": "Explicitly synthetic scene with caller-declared unique target classes",
+  "uniqueness_inferred_by_model": false,
+  "physical_validation": false,
+  "expected_semantics_checked": true,
+  "estimated_usd": 0.005268,
+  "estimate_note": "Standard list-price estimate from reported usage; not an invoice. Independent from physical validation."
+}

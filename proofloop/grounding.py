@@ -3,7 +3,8 @@
 Callers supply a human-approved protocol, fixed-camera normalized rectangles,
 and explicitly labeled evidence from ``MetaClient.segment_image``.  The bridge
 does not infer whether supplied records came from a live API or a test fixture.
-Decoded detections can support positive visibility or a count lower bound.
+Decoded detections can support positive visibility, a count lower bound, or
+location under a caller-approved single-target scene contract.
 They cannot establish a complete view, a validated absence, or an exact count.
 """
 
@@ -198,12 +199,18 @@ def _sample(sample: SamImageEvidence, protocol: Protocol, rectangles: Mapping[st
     return parsed
 
 
-def _check_value(check: Check, sample: Mapping[str, Any]) -> tuple[int | bool | None, float, str | None]:
+def _check_value(check: Check, sample: Mapping[str, Any]) -> tuple[int | bool | str | None, float, str | None]:
     if sample["unknown_reason"]:
         return None, 0.0, sample["unknown_reason"]
     detections = sample["detections"]
     if any(detection["confidence"] < check.min_confidence for detection in detections):
         return None, 0.0, "Reported detection confidence is below the approved threshold"
+    if check.kind == "location":
+        if check.unique_target is not True:
+            return None, 0.0, "Location requires an explicitly approved unique-target scene contract"
+        if len(detections) != 1:
+            return None, 0.0, "Multiple same-concept detections violate the unique-target scene contract"
+        return detections[0]["region_id"], detections[0]["confidence"], None
     relevant = [detection for detection in detections if detection["region_id"] == check.region_id]
     if not relevant:
         return None, 0.0, "No supported foreground in this region; absence is unvalidated"
@@ -245,7 +252,7 @@ def ground_sam_images(protocol: Protocol, regions: Mapping[str, Sequence[float]]
         if check.kind == "before":
             continue  # Image segmentation cannot establish an authored temporal event.
         relevant = [sample for sample in parsed if sample["object_id"] == check.object_id]
-        value: int | bool | None = None
+        value: int | bool | str | None = None
         confidence, stable_samples, timestamp = 0.0, 1, latest_time
         reason = "No source images were supplied for this object"
         supporting: list[dict[str, Any]] = []
@@ -272,7 +279,8 @@ def ground_sam_images(protocol: Protocol, regions: Mapping[str, Sequence[float]]
                     stable_samples = len(supporting)
                     timestamp = min(sample["original_source_timestamp_ms"] for sample in supporting)
                     confidence = min(_check_value(check, sample)[1] for sample in supporting)
-                    reason = ("Positive visibility supported by decoded detections" if check.kind == "visible"
+                    reason = ("Positive location under the approved unique-target scene contract" if check.kind == "location"
+                              else "Positive visibility supported by decoded detections" if check.kind == "visible"
                               else "Detected-instance lower bound; exact count and absence remain unvalidated")
                     if stable_samples < max(2, check.min_stable_samples):
                         reason = "Insufficient distinct source hashes for the approved stability requirement"
@@ -306,10 +314,11 @@ def ground_sam_images(protocol: Protocol, regions: Mapping[str, Sequence[float]]
         outcomes.append({"check_id": check.id, "reason": reason, "evidence_id": evidence_id})
     observations.sort(key=lambda item: (item.timestamp_ms, item.object_id, item.kind, item.region_id))
     return GroundingResult(tuple(observations), {
-        "bridge_version": "1.0", "sources": parsed, "observations": evidence_records,
+        "bridge_version": "1.1", "sources": parsed, "observations": evidence_records,
         "check_grounding": outcomes,
         "limits": ["Origins are caller supplied and preserved; no live-inference status is inferred.",
                    "Confidence is a reported model score, not a correctness probability.",
                    "No region is automatically fully visible and no absence is automatically validated.",
+                   "Location uses a caller-approved unique-target contract; detections do not prove scene uniqueness.",
                    "Camera calibration and concept-to-object identity are caller approved."],
     })

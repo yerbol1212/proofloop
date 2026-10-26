@@ -47,6 +47,17 @@ python3 -m proofloop.compiler \
 
 The compiler calls Spark and validates the resulting protocol against the allowed inventory and checker vocabulary. This initial lowering supports exact-count predicates. It rejects unsupported or ambiguous requirements and does not infer mandatory step order from a successful video. A draft is always unapproved and saved locally for human review; it is not immediately used to judge a run. Temporal checks and actions currently come from explicit authored specifications.
 
+For positive placement checks, explicitly select location mode and supply the unique target objects confirmed by the operator:
+
+```bash
+python -m proofloop.compiler \
+  --requirements 'The unique screwdriver must be located in left and the unique pliers in right.' \
+  --objects screwdriver pliers --regions left right \
+  --predicate-kind location --unique-objects screwdriver pliers
+```
+
+This contract says the scene contains one visually distinct target instance of each supplied class. The model cannot create that assumption. A stable positive detection in the wrong region can fail the placement check; zero or multiple detections stay unknown. The [live location draft](artifacts/feasibility/live-location-20261026.json) matched the synthetic test requirements and remains unapproved. Visibility mode is also available with `--predicate-kind visible`. Exact counts are never silently converted into placement.
+
 Two live compilation drafts matched the requested requirements, including an edit that swapped required regions. They remain unapproved. Mocked compiler tests additionally exercise contracts and rejection behavior.
 
 ## Generated scene inputs
@@ -61,7 +72,7 @@ This makes at most eight SAM calls with no retries. Reports and raw outputs stay
 
 `proofloop.grounding` connects parsed SAM image masks to approved checker predicates. It preserves provenance, requires distinct supporting image hashes, and returns unknown for missing/ambiguous perception. Positive detections supply visibility or count lower bounds, never automatic proof of absence or an exact count.
 
-The live scene harness uses a separate authored visibility protocol. The exact-count compiler and perception path still need a justified completeness contract before they can certify those counts together.
+The original live scene harness uses a separate authored visibility protocol. Location predicates connect explicit unique-target placement requirements to positive SAM evidence. Exact-count checks still need a justified completeness contract before this perception path can certify them.
 
 ## Scope
 

@@ -13,10 +13,11 @@ REGIONS = {"left": (0, 0, 0.5, 1), "right": (0.5, 0, 1, 1)}
 
 
 def protocol(kind="visible", expected=True, *, min_stable_samples=2):
+    contract = {"unique_target": True} if kind == "location" else {"expected": expected}
     return Protocol.from_dict({"id": "mock-kit", "version": "1", "objects": ["tool"],
                                "regions": ["left", "right"], "checks": [
                                    {"id": "check-tool", "kind": kind, "object_id": "tool", "region_id": "left",
-                                    "expected": expected, "min_stable_samples": min_stable_samples}]})
+                                    **contract, "min_stable_samples": min_stable_samples}]})
 
 
 def decoded_mask(width, height, raster=None):
@@ -209,6 +210,42 @@ class SamGroundingTests(unittest.TestCase):
         records = [detection(x1=6, x2=7)]
         task, result = grounded([sample(1, objects=records), sample(2, objects=records)])
         self.assertIsNone(result.observations[0].value)
+        self.assertEqual(Status.UNKNOWN, status(task, result))
+
+    def test_declared_unique_location_uses_positive_evidence_for_pass_and_fail(self):
+        for box, value, expected in ((detection(), "left", Status.PASS),
+                                     (detection(x1=6, x2=7), "right", Status.FAIL)):
+            task, result = grounded([sample(1, objects=[box]), sample(2, objects=[box])],
+                                    task=protocol("location"))
+            observation = result.observations[0]
+            self.assertEqual(value, observation.value)
+            self.assertEqual("left", observation.region_id)
+            self.assertFalse(observation.fully_visible)
+            self.assertFalse(observation.absence_validated)
+            self.assertEqual(expected, status(task, result))
+
+    def test_location_multiple_targets_or_missing_target_are_unknown(self):
+        two = [detection(), detection(x1=6, x2=7, object_id=1)]
+        for records in ([], two, [detection(x1=3, x2=6)], [detection(confidence=0.2)]):
+            task, result = grounded([sample(1, objects=records), sample(2, objects=records)],
+                                    task=protocol("location"))
+            self.assertIsNone(result.observations[0].value)
+            self.assertEqual(Status.UNKNOWN, status(task, result))
+
+    def test_location_stability_resets_when_target_region_changes(self):
+        right = [detection(x1=6, x2=7)]
+        task, result = grounded([sample(1, objects=right), sample(2, objects=right), sample(3)],
+                                task=protocol("location"))
+        self.assertEqual("left", result.observations[0].value)
+        self.assertEqual(1, result.observations[0].stable_samples)
+        self.assertEqual(Status.UNKNOWN, status(task, result))
+        task, result = grounded([sample(1, objects=right), sample(2, objects=right), sample(3), sample(4)],
+                                task=protocol("location"))
+        self.assertEqual(Status.PASS, status(task, result))
+
+    def test_location_duplicate_hash_cannot_prove_correction(self):
+        task, result = grounded([sample(1, image_id="same"), sample(2, image_id="same")],
+                                task=protocol("location"))
         self.assertEqual(Status.UNKNOWN, status(task, result))
 
     def test_overlapping_calibration_is_rejected(self):

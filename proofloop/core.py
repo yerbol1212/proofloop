@@ -79,6 +79,7 @@ class Check:
     max_age_ms: int = 30_000
     min_confidence: float = 0.8
     min_stable_samples: int = 2
+    unique_target: bool = False
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> Check:
@@ -86,14 +87,16 @@ class Check:
         if not isinstance(data, Mapping):
             raise ValidationError("check must be an object")
         kind = data.get("kind")
-        if kind in ("count", "visible"):
-            required = base | {"object_id", "region_id", "expected"}
+        if kind in ("count", "visible", "location"):
+            required = base | {"object_id", "region_id"} | ({"unique_target"} if kind == "location" else {"expected"})
             _fields(data, required | {"max_age_ms", "min_confidence", "min_stable_samples"}, required, "check")
-            expected = data["expected"]
+            expected = data.get("expected")
             if kind == "count":
                 _integer(expected, "count expected")
-            else:
+            elif kind == "visible":
                 _boolean(expected, "visible expected")
+            elif _boolean(data["unique_target"], "unique_target") is not True:
+                raise ValidationError("location requires an explicit approved unique_target=true contract")
             return cls(
                 id=_id(data["id"], "check.id"), kind=kind,
                 object_id=_id(data["object_id"], "object_id"),
@@ -101,6 +104,7 @@ class Check:
                 max_age_ms=_integer(data.get("max_age_ms", 30_000), "max_age_ms"),
                 min_confidence=_number(data.get("min_confidence", 0.8), "min_confidence", 0, 1),
                 min_stable_samples=_integer(data.get("min_stable_samples", 2), "min_stable_samples", 2),
+                unique_target=kind == "location",
             )
         if kind == "before":
             required = base | {"checkpoint_id", "event_id"}
@@ -114,10 +118,12 @@ class Check:
         if self.kind == "before":
             return {"id": self.id, "kind": self.kind, "checkpoint_id": self.checkpoint_id,
                     "event_id": self.event_id}
-        return {"id": self.id, "kind": self.kind, "object_id": self.object_id,
-                "region_id": self.region_id, "expected": self.expected,
+        result = {"id": self.id, "kind": self.kind, "object_id": self.object_id,
+                "region_id": self.region_id,
                 "max_age_ms": self.max_age_ms, "min_confidence": self.min_confidence,
                 "min_stable_samples": self.min_stable_samples}
+        result.update({"unique_target": self.unique_target} if self.kind == "location" else {"expected": self.expected})
+        return result
 
 
 @dataclass(frozen=True)
@@ -204,6 +210,13 @@ class Protocol:
 
 @dataclass(frozen=True)
 class Observation:
+    """One source-supported fact in a specification's current evidence epoch.
+
+    For location, ``region_id`` identifies the required region of the check,
+    while ``value`` names the positively observed region of its declared unique
+    target. A missing target is None, never an inferred location or absence.
+    """
+
     session_id: str
     spec_hash: str
     attempt_id: int
@@ -211,7 +224,7 @@ class Observation:
     kind: str
     object_id: str
     region_id: str
-    value: int | bool | None
+    value: int | bool | str | None
     evidence_id: str
     timestamp_ms: int
     confidence: float = 1.0
@@ -228,13 +241,15 @@ class Observation:
         _number(self.confidence, "confidence", 0, 1)
         _boolean(self.fully_visible, "fully_visible")
         _boolean(self.absence_validated, "absence_validated")
-        if self.kind not in ("count", "visible"):
+        if self.kind not in ("count", "visible", "location"):
             raise ValidationError("observation has an unsupported kind")
         if self.value is not None:
             if self.kind == "count":
                 _integer(self.value, "count value")
-            else:
+            elif self.kind == "visible":
                 _boolean(self.value, "visible value")
+            else:
+                _id(self.value, "location value")
 
     @classmethod
     def from_dict(cls, data: Mapping[str, Any]) -> Observation:
@@ -318,10 +333,12 @@ class EvidenceStore:
             raise ValidationError("observation belongs to a stale attempt or invalidated revision")
         if observation.object_id not in self.protocol.objects or observation.region_id not in self.protocol.regions:
             raise ValidationError("observation refers to an unknown object or region")
+        if observation.kind == "location" and observation.value is not None and observation.value not in self.protocol.regions:
+            raise ValidationError("location observation refers to an unknown observed region")
         self.advance_time(observation.timestamp_ms)
         self.observations.append(observation)
 
-    def observe(self, *, kind: str, object_id: str, region_id: str, value: int | bool | None,
+    def observe(self, *, kind: str, object_id: str, region_id: str, value: int | bool | str | None,
                 evidence_id: str, timestamp_ms: int, confidence: float = 1.0,
                 fully_visible: bool = False, stable_samples: int = 1,
                 absence_validated: bool = False) -> Observation:
@@ -393,6 +410,13 @@ def _spatial_result(check: Check, store: EvidenceStore, now_ms: int) -> CheckRes
         return CheckResult(check.id, Status.UNKNOWN, "Observation confidence is below the approved threshold", evidence)
     if observation.stable_samples < check.min_stable_samples:
         return CheckResult(check.id, Status.UNKNOWN, "Insufficient repeated stable observations", evidence)
+    if check.kind == "location":
+        if check.unique_target is not True:
+            return CheckResult(check.id, Status.UNKNOWN, "Location requires an approved unique-target scene contract", evidence)
+        status = Status.PASS if observation.value == check.region_id else Status.FAIL
+        reason = ("Declared unique target is positively located in its required region" if status == Status.PASS
+                  else "Declared unique target is positively located in another approved region")
+        return CheckResult(check.id, status, reason, evidence)
     complete = observation.fully_visible and observation.absence_validated
     if check.kind == "visible":
         if observation.value is False and not complete:

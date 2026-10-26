@@ -15,6 +15,7 @@ Project development began on 26 October 2026 after the hackathon kickoff. The re
 - Bounded live SAM scene harness with source-validated resume, private response caches and reviewed public results.
 - Live-model feasibility checks, correct mapping of box-local masks and accounting for reported usage on unsuccessful responses.
 - Local password form that saves an ignored credential file without putting the key in chat.
+- Positive placement predicates, explicit unique-target scene contracts and separate Spark compiler modes for counts, visibility and location.
 
 This list describes the implementation scope; live and physical validation status is recorded separately in `docs/FEASIBILITY.md`.
 
