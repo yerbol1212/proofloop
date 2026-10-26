@@ -10,6 +10,8 @@ This repository is the initial feasibility implementation for the Meta Global AI
 
 See [feasibility status](docs/FEASIBILITY.md), [capture checklist](docs/CAPTURE.md) and [contributions](CONTRIBUTIONS.md).
 
+The next build slice is ready: timestamped phone-video extraction and an approved recorded correction session. The [session guide](docs/SESSIONS.md) connects selected frames to location checks, evidence invalidation, a hypothetical repair plan and fresh verification. Decoder integration passed on generated videos; the actual phone run remains pending your footage.
+
 ## Run the offline checks
 
 Python 3.9 or newer is sufficient for the dependency-free checker and HTTP adapter:
@@ -45,7 +47,7 @@ python3 -m proofloop.compiler \
   --objects screwdriver pliers --regions left right
 ```
 
-The compiler calls Spark and validates the resulting protocol against the allowed inventory and checker vocabulary. This initial lowering supports exact-count predicates. It rejects unsupported or ambiguous requirements and does not infer mandatory step order from a successful video. A draft is always unapproved and saved locally for human review; it is not immediately used to judge a run. Temporal checks and actions currently come from explicit authored specifications.
+The compiler calls Spark and validates the resulting protocol against the allowed inventory and checker vocabulary. Exact count is the default predicate mode; visibility and location are explicit alternatives. It rejects unsupported or ambiguous requirements and does not infer mandatory step order from a successful video. A draft is always unapproved and saved locally for human review; it is not immediately used to judge a run. Temporal checks and actions currently come from explicit authored specifications.
 
 For positive placement checks, explicitly select location mode and supply the unique target objects confirmed by the operator:
 
@@ -58,7 +60,7 @@ python -m proofloop.compiler \
 
 This contract says the scene contains one visually distinct target instance of each supplied class. The model cannot create that assumption. A stable positive detection in the wrong region can fail the placement check; zero or multiple detections stay unknown. The [live location draft](artifacts/feasibility/live-location-20261026.json) matched the synthetic test requirements and remains unapproved. Visibility mode is also available with `--predicate-kind visible`. Exact counts are never silently converted into placement.
 
-Two live compilation drafts matched the requested requirements, including an edit that swapped required regions. They remain unapproved. Mocked compiler tests additionally exercise contracts and rejection behavior.
+Two initial count compilation drafts matched the requested requirements, including an edit that swapped required regions. They remain unapproved. Mocked compiler tests additionally exercise contracts and rejection behavior.
 
 ## Generated scene inputs
 

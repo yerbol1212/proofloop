@@ -1,0 +1,380 @@
+{
+  "schema_version": "1.0",
+  "experiment": "synthetic_video_decoder_integration",
+  "date": "2026-10-26",
+  "generator": "FFmpeg lavfi testsrc2 encoded with libx264, yuv420p, 30 fps",
+  "runtime": {
+    "ffmpeg": "9.0",
+    "ffprobe": "9.0"
+  },
+  "model_requests": 0,
+  "model_inference_performed": false,
+  "physical_recording": false,
+  "physical_repair_executed": false,
+  "human_tool_state_validation": false,
+  "ground_truth_origin": "human_declared_not_model_inferred",
+  "timestamp_basis": "Decoded video PTS normalized to first video frame; no wall-clock time claim.",
+  "total_extracted_frames_across_cases": 26,
+  "gates": {
+    "scheduled_eight_frames": true,
+    "actual_pts_preserved_for_off_grid_offsets": true,
+    "rotation_metadata_applied_to_pixels": true,
+    "hd_downscaled_to_1280_by_720": true,
+    "source_and_frame_hashes_verified": true,
+    "all_images_below_hosted_input_limit": true
+  },
+  "cases": [
+    {
+      "case": "scheduled_frames",
+      "evidence_origin": "synthetic_test_fixture",
+      "source_sha256": "cfc9e467192efa877a66288383fbef6db30ecd10718dd0e675b68c2351beb014",
+      "source_duration_seconds": 48.0,
+      "encoded_dimensions": [
+        320,
+        180
+      ],
+      "display_dimensions": [
+        320,
+        180
+      ],
+      "display_rotation_degrees": 0,
+      "frames": [
+        {
+          "stage": "initial_correct",
+          "sha256": "2b6e5eb270777c096dac8fbd9cd140d00857d79a5f16f621d35e99f08d6a79d3",
+          "width": 320,
+          "height": 180,
+          "bytes": 13147,
+          "requested_seconds": 3.0,
+          "source_timestamp_seconds": 3.0,
+          "source_timestamp_ms": 3000
+        },
+        {
+          "stage": "initial_correct",
+          "sha256": "b7fb41180f51de4597439958129950626a8ac274d45dbdffb27c8fdad33d6ca6",
+          "width": 320,
+          "height": 180,
+          "bytes": 13885,
+          "requested_seconds": 5.0,
+          "source_timestamp_seconds": 5.0,
+          "source_timestamp_ms": 5000
+        },
+        {
+          "stage": "wrong_region",
+          "sha256": "dab028f10923fdd34c104d8e8d8ec99e0843bd6f2cbebec8fda356e21fc28ee9",
+          "width": 320,
+          "height": 180,
+          "bytes": 12504,
+          "requested_seconds": 16.0,
+          "source_timestamp_seconds": 16.0,
+          "source_timestamp_ms": 16000
+        },
+        {
+          "stage": "wrong_region",
+          "sha256": "4ab92ed74948810c9adf0703f436ee6aede92d5d7520e860e4c937ecd9b74f12",
+          "width": 320,
+          "height": 180,
+          "bytes": 12976,
+          "requested_seconds": 18.0,
+          "source_timestamp_seconds": 18.0,
+          "source_timestamp_ms": 18000
+        },
+        {
+          "stage": "occluded",
+          "sha256": "f07dd9716f7c8798963ef0592928041db61756e95345af412f167b4253ed0499",
+          "width": 320,
+          "height": 180,
+          "bytes": 14190,
+          "requested_seconds": 29.0,
+          "source_timestamp_seconds": 29.0,
+          "source_timestamp_ms": 29000
+        },
+        {
+          "stage": "occluded",
+          "sha256": "284031f5b11a13df25d38f40e68ffce0f34c0afd7677b4f8054d329ea3e46dda",
+          "width": 320,
+          "height": 180,
+          "bytes": 13986,
+          "requested_seconds": 31.0,
+          "source_timestamp_seconds": 31.0,
+          "source_timestamp_ms": 31000
+        },
+        {
+          "stage": "corrected",
+          "sha256": "3a003fa7837d877bf5696c0fdc4a0a26b9759ad626ac54a0cb4e1e8b564d48cd",
+          "width": 320,
+          "height": 180,
+          "bytes": 12622,
+          "requested_seconds": 42.0,
+          "source_timestamp_seconds": 42.0,
+          "source_timestamp_ms": 42000
+        },
+        {
+          "stage": "corrected",
+          "sha256": "a4d262b3e6413eebad29a4bdf2f0349c722d14346c22052f5a1e9f5262ec3d1e",
+          "width": 320,
+          "height": 180,
+          "bytes": 12608,
+          "requested_seconds": 44.0,
+          "source_timestamp_seconds": 44.0,
+          "source_timestamp_ms": 44000
+        }
+      ],
+      "all_source_and_frame_hashes_verified": true,
+      "all_actual_timestamps_verified": true,
+      "all_jpeg_dimensions_verified": true,
+      "all_frames_under_5_mib": true
+    },
+    {
+      "case": "display_matrix_90",
+      "evidence_origin": "synthetic_test_fixture",
+      "source_sha256": "333eb3356b3114c3368ef2b8e494c7f27232a3c2cf5a28b7caafcdf2e74d6467",
+      "source_duration_seconds": 48.0,
+      "encoded_dimensions": [
+        320,
+        180
+      ],
+      "display_dimensions": [
+        180,
+        320
+      ],
+      "display_rotation_degrees": 90,
+      "frames": [
+        {
+          "stage": "initial_correct",
+          "sha256": "77323020e79b68a8cdc0d7c706c6af29ff6e4bac1552257dc39ed251cb09c3f1",
+          "width": 180,
+          "height": 320,
+          "bytes": 13092,
+          "requested_seconds": 3.0,
+          "source_timestamp_seconds": 3.0,
+          "source_timestamp_ms": 3000
+        },
+        {
+          "stage": "initial_correct",
+          "sha256": "ea6603af9381f973d38b734e0671022894061f20d9c631476b00e12f6f0f7c83",
+          "width": 180,
+          "height": 320,
+          "bytes": 13812,
+          "requested_seconds": 5.0,
+          "source_timestamp_seconds": 5.0,
+          "source_timestamp_ms": 5000
+        },
+        {
+          "stage": "wrong_region",
+          "sha256": "6db29eacb975c68ffc22cff49866391370e19679482476b95901b23fb3dd3365",
+          "width": 180,
+          "height": 320,
+          "bytes": 12418,
+          "requested_seconds": 16.0,
+          "source_timestamp_seconds": 16.0,
+          "source_timestamp_ms": 16000
+        },
+        {
+          "stage": "wrong_region",
+          "sha256": "1dc9f4961e2d58339b478e5779aab1694efefd569699ce57a1f0a0c66bc029f4",
+          "width": 180,
+          "height": 320,
+          "bytes": 12909,
+          "requested_seconds": 18.0,
+          "source_timestamp_seconds": 18.0,
+          "source_timestamp_ms": 18000
+        },
+        {
+          "stage": "occluded",
+          "sha256": "46cc7aec02aaf8d275ba9d929dd3c961784be730e089304c419031d17857aa85",
+          "width": 180,
+          "height": 320,
+          "bytes": 14085,
+          "requested_seconds": 29.0,
+          "source_timestamp_seconds": 29.0,
+          "source_timestamp_ms": 29000
+        },
+        {
+          "stage": "occluded",
+          "sha256": "914aae3dccbac6444b20181e849e368759d747b3e3488cf67cce790ba60e2565",
+          "width": 180,
+          "height": 320,
+          "bytes": 13924,
+          "requested_seconds": 31.0,
+          "source_timestamp_seconds": 31.0,
+          "source_timestamp_ms": 31000
+        },
+        {
+          "stage": "corrected",
+          "sha256": "d9120f4d47313fab926f248f16028eac9422f3eb9be57bfaecaae0b6c38ea57d",
+          "width": 180,
+          "height": 320,
+          "bytes": 12539,
+          "requested_seconds": 42.0,
+          "source_timestamp_seconds": 42.0,
+          "source_timestamp_ms": 42000
+        },
+        {
+          "stage": "corrected",
+          "sha256": "415e9145e3b9352db3118e3b42bec620f73eb26628e6281878cdcbc3724b5074",
+          "width": 180,
+          "height": 320,
+          "bytes": 12520,
+          "requested_seconds": 44.0,
+          "source_timestamp_seconds": 44.0,
+          "source_timestamp_ms": 44000
+        }
+      ],
+      "all_source_and_frame_hashes_verified": true,
+      "all_actual_timestamps_verified": true,
+      "all_jpeg_dimensions_verified": true,
+      "all_frames_under_5_mib": true
+    },
+    {
+      "case": "off_grid_timestamp_requests",
+      "evidence_origin": "synthetic_test_fixture",
+      "source_sha256": "cfc9e467192efa877a66288383fbef6db30ecd10718dd0e675b68c2351beb014",
+      "source_duration_seconds": 48.0,
+      "encoded_dimensions": [
+        320,
+        180
+      ],
+      "display_dimensions": [
+        320,
+        180
+      ],
+      "display_rotation_degrees": 0,
+      "frames": [
+        {
+          "stage": "initial_correct",
+          "sha256": "64f239cbe33ce2d3f7951421062bec6ba32ba0953451a75ac3652f0bf1d10092",
+          "width": 320,
+          "height": 180,
+          "bytes": 13337,
+          "requested_seconds": 3.017,
+          "source_timestamp_seconds": 3.033333,
+          "source_timestamp_ms": 3033
+        },
+        {
+          "stage": "initial_correct",
+          "sha256": "a9a203354b8ac11d5e661e88d144002025dddecf060d4993699c7a45f39958f9",
+          "width": 320,
+          "height": 180,
+          "bytes": 14369,
+          "requested_seconds": 5.017,
+          "source_timestamp_seconds": 5.033333,
+          "source_timestamp_ms": 5033
+        },
+        {
+          "stage": "wrong_region",
+          "sha256": "6ee73feddbf22686663c397a7e3000f85801c51cd689766a68cc0ef8c3c23e76",
+          "width": 320,
+          "height": 180,
+          "bytes": 12406,
+          "requested_seconds": 16.017,
+          "source_timestamp_seconds": 16.033333,
+          "source_timestamp_ms": 16033
+        },
+        {
+          "stage": "wrong_region",
+          "sha256": "859818bed96e95ee6313f421bb38c0a500c8e3d028fba6be682f234e5ed2c7c4",
+          "width": 320,
+          "height": 180,
+          "bytes": 13012,
+          "requested_seconds": 18.017,
+          "source_timestamp_seconds": 18.033333,
+          "source_timestamp_ms": 18033
+        },
+        {
+          "stage": "occluded",
+          "sha256": "b31c8bebc650d2819cd445a4a6458fc68128d77e8c8a5eb9cab9299541a7ed82",
+          "width": 320,
+          "height": 180,
+          "bytes": 14667,
+          "requested_seconds": 29.017,
+          "source_timestamp_seconds": 29.033333,
+          "source_timestamp_ms": 29033
+        },
+        {
+          "stage": "occluded",
+          "sha256": "014634d6e3335488791415b55b04acba9d2e3f2bcfe71b7f25da0868e913c1f9",
+          "width": 320,
+          "height": 180,
+          "bytes": 14274,
+          "requested_seconds": 31.017,
+          "source_timestamp_seconds": 31.033333,
+          "source_timestamp_ms": 31033
+        },
+        {
+          "stage": "corrected",
+          "sha256": "abb164d5c3488598714e449956c987d24c6b5573c1a1d61a247bc5087fe6337d",
+          "width": 320,
+          "height": 180,
+          "bytes": 12709,
+          "requested_seconds": 42.017,
+          "source_timestamp_seconds": 42.033333,
+          "source_timestamp_ms": 42033
+        },
+        {
+          "stage": "corrected",
+          "sha256": "841f23fb8dc0853209daf43e0899d5e100b9a0ea6dda6c2a0fc9011eae31b464",
+          "width": 320,
+          "height": 180,
+          "bytes": 12652,
+          "requested_seconds": 44.017,
+          "source_timestamp_seconds": 44.033333,
+          "source_timestamp_ms": 44033
+        }
+      ],
+      "all_source_and_frame_hashes_verified": true,
+      "all_actual_timestamps_verified": true,
+      "all_jpeg_dimensions_verified": true,
+      "all_frames_under_5_mib": true
+    },
+    {
+      "case": "hd_resize",
+      "evidence_origin": "synthetic_test_fixture",
+      "source_sha256": "fbdb963a4da36452f137a8c8900a4282a0035384a2c0f8af23b3f4e089d11c47",
+      "source_duration_seconds": 4.0,
+      "encoded_dimensions": [
+        1920,
+        1080
+      ],
+      "display_dimensions": [
+        1920,
+        1080
+      ],
+      "display_rotation_degrees": 0,
+      "frames": [
+        {
+          "stage": "resize_only",
+          "sha256": "6042becbdeac722bf31c7dd87f81205d03fd5fa8a48d1e191f4ce3b462f81073",
+          "width": 1280,
+          "height": 720,
+          "bytes": 63997,
+          "requested_seconds": 1.0,
+          "source_timestamp_seconds": 1.0,
+          "source_timestamp_ms": 1000
+        },
+        {
+          "stage": "resize_only",
+          "sha256": "8c0d138976e80549a98b253e8cde865a2496528bf4835dde95cf5c5cc6181d42",
+          "width": 1280,
+          "height": 720,
+          "bytes": 65008,
+          "requested_seconds": 2.0,
+          "source_timestamp_seconds": 2.0,
+          "source_timestamp_ms": 2000
+        }
+      ],
+      "all_source_and_frame_hashes_verified": true,
+      "all_actual_timestamps_verified": true,
+      "all_jpeg_dimensions_verified": true,
+      "all_frames_under_5_mib": true
+    }
+  ],
+  "overall": "local_decoder_integration_passed",
+  "limits": [
+    "These are synthetic color-pattern videos, not phone recordings or tool scenes.",
+    "Cases reuse generated source content and are not independent physical trials.",
+    "Default stage IDs are timing placeholders here, not verified object-state labels.",
+    "No SAM, Spark, physical correction, camera reliability, or exact-count accuracy is established.",
+    "Raw video, frames and full manifests remain in ignored local inputs."
+  ]
+}

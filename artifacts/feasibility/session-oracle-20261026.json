@@ -1,0 +1,385 @@
+{
+  "schema_version": "1.0",
+  "experiment": "recorded_placement_correction_session",
+  "contract_hash": "8bbe8127821d37e7f253e4f64faa58a993c0e60a765d489e8754cee47c4854de",
+  "protocol_hash": "17a07fe13fb67195efa36248a98dff4704dfb58de3443c2d2828133383d9dc46",
+  "inference_origin": "authored_sam_shaped_test_fixture",
+  "evidence_origin": "synthetic_test_fixture",
+  "stage_statuses": {
+    "initial_correct": "pass",
+    "wrong_region": "fail",
+    "occluded": "unknown",
+    "corrected": "pass"
+  },
+  "gates": {
+    "initial_correct_pass": true,
+    "wrong_region_fail": true,
+    "occluded_unknown": true,
+    "corrected_pass": true,
+    "invalidation_snapshots_unknown": true
+  },
+  "trace": [
+    {
+      "event": "stage",
+      "stage_id": "initial_correct",
+      "source_timestamp_ms": 8000,
+      "attempt_id": 0,
+      "revision": 0,
+      "status": "pass",
+      "checks": [
+        {
+          "check_id": "screwdriver-left",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region",
+          "evidence_ids": [
+            "sam-grounding://402fe7d07a009792286e3ddcc1309b497f53b24b1ba49778ee85f483a90f3bf4"
+          ]
+        },
+        {
+          "check_id": "pliers-right",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region",
+          "evidence_ids": [
+            "sam-grounding://c3208d91f1339276694e8b34b394c7384cc856af9975ec3ff71efd974fdc27b6"
+          ]
+        }
+      ],
+      "observations": [
+        {
+          "session_id": "recorded-8bbe8127821d37e7",
+          "spec_hash": "17a07fe13fb67195efa36248a98dff4704dfb58de3443c2d2828133383d9dc46",
+          "attempt_id": 0,
+          "revision": 0,
+          "kind": "location",
+          "object_id": "pliers",
+          "region_id": "right",
+          "value": "right",
+          "evidence_id": "sam-grounding://c3208d91f1339276694e8b34b394c7384cc856af9975ec3ff71efd974fdc27b6",
+          "timestamp_ms": 3000,
+          "confidence": 0.97,
+          "fully_visible": false,
+          "stable_samples": 2,
+          "absence_validated": false
+        },
+        {
+          "session_id": "recorded-8bbe8127821d37e7",
+          "spec_hash": "17a07fe13fb67195efa36248a98dff4704dfb58de3443c2d2828133383d9dc46",
+          "attempt_id": 0,
+          "revision": 0,
+          "kind": "location",
+          "object_id": "screwdriver",
+          "region_id": "left",
+          "value": "left",
+          "evidence_id": "sam-grounding://402fe7d07a009792286e3ddcc1309b497f53b24b1ba49778ee85f483a90f3bf4",
+          "timestamp_ms": 3000,
+          "confidence": 0.97,
+          "fully_visible": false,
+          "stable_samples": 2,
+          "absence_validated": false
+        }
+      ],
+      "frame_hashes": [
+        "7e936c4edf464d0d4e8b9d3b42337f6ffd24da0bde57c7ad282b26bd37f451f3",
+        "4dedc325ae05484b66355e72536cf08e91f51e76bb30f4ab9385556cc8011574"
+      ]
+    },
+    {
+      "event": "invalidation",
+      "stage_id": "wrong_region",
+      "source_timestamp_ms": 8000,
+      "attempt_id": 0,
+      "revision": 1,
+      "status": "unknown",
+      "checks": [
+        {
+          "check_id": "screwdriver-left",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision",
+          "evidence_ids": []
+        },
+        {
+          "check_id": "pliers-right",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision",
+          "evidence_ids": []
+        }
+      ]
+    },
+    {
+      "event": "stage",
+      "stage_id": "wrong_region",
+      "source_timestamp_ms": 21000,
+      "attempt_id": 0,
+      "revision": 1,
+      "status": "fail",
+      "checks": [
+        {
+          "check_id": "screwdriver-left",
+          "status": "fail",
+          "reason": "Declared unique target is positively located in another approved region",
+          "evidence_ids": [
+            "sam-grounding://24129aa4ab0c5df4062715250c3f9f6de2776edb5623387c521badeca725712f"
+          ]
+        },
+        {
+          "check_id": "pliers-right",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region",
+          "evidence_ids": [
+            "sam-grounding://90a84c15be5a4245e2829ef305286d0e5fc4c5a334b5ebfc895a0b4b55470d18"
+          ]
+        }
+      ],
+      "observations": [
+        {
+          "session_id": "recorded-8bbe8127821d37e7",
+          "spec_hash": "17a07fe13fb67195efa36248a98dff4704dfb58de3443c2d2828133383d9dc46",
+          "attempt_id": 0,
+          "revision": 1,
+          "kind": "location",
+          "object_id": "pliers",
+          "region_id": "right",
+          "value": "right",
+          "evidence_id": "sam-grounding://90a84c15be5a4245e2829ef305286d0e5fc4c5a334b5ebfc895a0b4b55470d18",
+          "timestamp_ms": 16000,
+          "confidence": 0.97,
+          "fully_visible": false,
+          "stable_samples": 2,
+          "absence_validated": false
+        },
+        {
+          "session_id": "recorded-8bbe8127821d37e7",
+          "spec_hash": "17a07fe13fb67195efa36248a98dff4704dfb58de3443c2d2828133383d9dc46",
+          "attempt_id": 0,
+          "revision": 1,
+          "kind": "location",
+          "object_id": "screwdriver",
+          "region_id": "left",
+          "value": "right",
+          "evidence_id": "sam-grounding://24129aa4ab0c5df4062715250c3f9f6de2776edb5623387c521badeca725712f",
+          "timestamp_ms": 16000,
+          "confidence": 0.97,
+          "fully_visible": false,
+          "stable_samples": 2,
+          "absence_validated": false
+        }
+      ],
+      "frame_hashes": [
+        "9f9d93b3f1b77f4e96a34dc3b49279a03cb50eb12d1e711abcb5958a25c279e6",
+        "ce2bfd8f63f2dea5487f89c4199dccec36a0c5be218c71c5bf52cf0d0c1f39be"
+      ]
+    },
+    {
+      "event": "repair_proposal",
+      "stage_id": "wrong_region",
+      "hypothetical": true,
+      "request_inspection": false,
+      "plan": {
+        "action_ids": [
+          "move-screwdriver-right-to-left",
+          "inspect-screwdriver"
+        ],
+        "total_cost": 1.25,
+        "states_expanded": 4,
+        "predicted_final_world": {
+          "screwdriver": "left",
+          "pliers": "right"
+        },
+        "predicted_final_known": {
+          "pliers": "right",
+          "screwdriver": "left"
+        },
+        "hypothetical": true,
+        "execution_requires_fresh_observation": true,
+        "optimality_scope": "minimum cost within the supplied finite deterministic action model"
+      },
+      "action_model": "Declared move cost=1, subsequent inspection cost=0.25; physical obstacles not modeled",
+      "execution_verified": false
+    },
+    {
+      "event": "invalidation",
+      "stage_id": "occluded",
+      "source_timestamp_ms": 21000,
+      "attempt_id": 0,
+      "revision": 2,
+      "status": "unknown",
+      "checks": [
+        {
+          "check_id": "screwdriver-left",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision",
+          "evidence_ids": []
+        },
+        {
+          "check_id": "pliers-right",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision",
+          "evidence_ids": []
+        }
+      ]
+    },
+    {
+      "event": "stage",
+      "stage_id": "occluded",
+      "source_timestamp_ms": 34000,
+      "attempt_id": 0,
+      "revision": 2,
+      "status": "unknown",
+      "checks": [
+        {
+          "check_id": "screwdriver-left",
+          "status": "unknown",
+          "reason": "Observation is unavailable or ambiguous",
+          "evidence_ids": [
+            "sam-grounding://c6c67af99d2c582383f1ceb277045fcd3f545af200ab9f7571a0037670cd4226"
+          ]
+        },
+        {
+          "check_id": "pliers-right",
+          "status": "unknown",
+          "reason": "Observation is unavailable or ambiguous",
+          "evidence_ids": [
+            "sam-grounding://cf39094ae22de9ff57320d3521d9be94a5e0982bac7a0604a184b9e833dfa279"
+          ]
+        }
+      ],
+      "observations": [
+        {
+          "session_id": "recorded-8bbe8127821d37e7",
+          "spec_hash": "17a07fe13fb67195efa36248a98dff4704dfb58de3443c2d2828133383d9dc46",
+          "attempt_id": 0,
+          "revision": 2,
+          "kind": "location",
+          "object_id": "pliers",
+          "region_id": "right",
+          "value": null,
+          "evidence_id": "sam-grounding://cf39094ae22de9ff57320d3521d9be94a5e0982bac7a0604a184b9e833dfa279",
+          "timestamp_ms": 31000,
+          "confidence": 0.0,
+          "fully_visible": false,
+          "stable_samples": 1,
+          "absence_validated": false
+        },
+        {
+          "session_id": "recorded-8bbe8127821d37e7",
+          "spec_hash": "17a07fe13fb67195efa36248a98dff4704dfb58de3443c2d2828133383d9dc46",
+          "attempt_id": 0,
+          "revision": 2,
+          "kind": "location",
+          "object_id": "screwdriver",
+          "region_id": "left",
+          "value": null,
+          "evidence_id": "sam-grounding://c6c67af99d2c582383f1ceb277045fcd3f545af200ab9f7571a0037670cd4226",
+          "timestamp_ms": 31000,
+          "confidence": 0.0,
+          "fully_visible": false,
+          "stable_samples": 1,
+          "absence_validated": false
+        }
+      ],
+      "frame_hashes": [
+        "a07c2a5aca399980cf5fe7cdd1604717b8d3e28a7921653eff88934b644b5dce",
+        "5e056e00731fc52354fe06b95482f2a6ad5ec16453472cd341c06cfa1a49bd30"
+      ]
+    },
+    {
+      "event": "invalidation",
+      "stage_id": "corrected",
+      "source_timestamp_ms": 34000,
+      "attempt_id": 1,
+      "revision": 1,
+      "status": "unknown",
+      "checks": [
+        {
+          "check_id": "screwdriver-left",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision",
+          "evidence_ids": []
+        },
+        {
+          "check_id": "pliers-right",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision",
+          "evidence_ids": []
+        }
+      ]
+    },
+    {
+      "event": "stage",
+      "stage_id": "corrected",
+      "source_timestamp_ms": 47000,
+      "attempt_id": 1,
+      "revision": 1,
+      "status": "pass",
+      "checks": [
+        {
+          "check_id": "screwdriver-left",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region",
+          "evidence_ids": [
+            "sam-grounding://4dce31341e2114643d23bf7b3cb0e453d4974abf97dc167de566d6d90d4736a7"
+          ]
+        },
+        {
+          "check_id": "pliers-right",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region",
+          "evidence_ids": [
+            "sam-grounding://8dcc06489736f45cd5a0686a425978a245dcc76c742e4beecd614d15cd697476"
+          ]
+        }
+      ],
+      "observations": [
+        {
+          "session_id": "recorded-8bbe8127821d37e7",
+          "spec_hash": "17a07fe13fb67195efa36248a98dff4704dfb58de3443c2d2828133383d9dc46",
+          "attempt_id": 1,
+          "revision": 1,
+          "kind": "location",
+          "object_id": "pliers",
+          "region_id": "right",
+          "value": "right",
+          "evidence_id": "sam-grounding://8dcc06489736f45cd5a0686a425978a245dcc76c742e4beecd614d15cd697476",
+          "timestamp_ms": 42000,
+          "confidence": 0.97,
+          "fully_visible": false,
+          "stable_samples": 2,
+          "absence_validated": false
+        },
+        {
+          "session_id": "recorded-8bbe8127821d37e7",
+          "spec_hash": "17a07fe13fb67195efa36248a98dff4704dfb58de3443c2d2828133383d9dc46",
+          "attempt_id": 1,
+          "revision": 1,
+          "kind": "location",
+          "object_id": "screwdriver",
+          "region_id": "left",
+          "value": "left",
+          "evidence_id": "sam-grounding://4dce31341e2114643d23bf7b3cb0e453d4974abf97dc167de566d6d90d4736a7",
+          "timestamp_ms": 42000,
+          "confidence": 0.97,
+          "fully_visible": false,
+          "stable_samples": 2,
+          "absence_validated": false
+        }
+      ],
+      "frame_hashes": [
+        "ac738dae2576cde3ab0b833b70ed6dd005c62b163f8f29daf465c748bb92ea03",
+        "188afc063459db6fa75887d989b77039cb0dc794671e0003c69fb588a56236be"
+      ]
+    }
+  ],
+  "recorded_observation_loop_supported": true,
+  "physical_action_execution_verified": false,
+  "limits": [
+    "Source ownership, unique targets, calibration and action boundaries are human declarations.",
+    "Location results depend on the approved unique-target scene contract; no exact count or absence is proved.",
+    "This evaluates selected frames of a recorded clip, not continuous tracking or an interactive repair experiment.",
+    "A plan is hypothetical; its predicted effects never create real observations.",
+    "The recorded person did not necessarily see or follow the planner's later proposal.",
+    "Passing this small scripted case is not a held-out accuracy or industrial reliability result."
+  ],
+  "model_requests": 0,
+  "physical_validation": false,
+  "approval_context": "Local operator approval API exercised by an authored test fixture; not a human-approved physical run."
+}
