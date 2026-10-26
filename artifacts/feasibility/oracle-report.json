@@ -1,0 +1,2653 @@
+{
+  "api_cost_usd": 0,
+  "api_requests": 0,
+  "baseline_protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+  "cases": [
+    {
+      "actual": "pass",
+      "assertion_passed": true,
+      "case_id": "correct",
+      "description": "A supported complete state has current, stable observations.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/correct/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/correct/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/correct/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "pass",
+      "family": "valid",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/correct/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/correct/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/correct/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "pass",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/correct/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/correct/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/correct/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "pass",
+          "label": "final",
+          "now_ms": 1120
+        }
+      ]
+    },
+    {
+      "actual": "pass",
+      "assertion_passed": true,
+      "case_id": "alternate-order",
+      "description": "The two independent contents facts arrive in the alternate order.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/alternate-order/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/alternate-order/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1010
+        },
+        "fixture://proofloop/alternate-order/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1020
+        }
+      },
+      "expected": "pass",
+      "family": "valid",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/alternate-order/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/alternate-order/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/alternate-order/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "pass",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/alternate-order/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/alternate-order/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/alternate-order/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "pass",
+          "label": "final",
+          "now_ms": 1120
+        }
+      ]
+    },
+    {
+      "actual": "fail",
+      "assertion_passed": true,
+      "case_id": "wrong-region",
+      "description": "A supported empty left region and a screwdriver in the right region contradict the specification.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/wrong-region/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/wrong-region/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/wrong-region/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        },
+        "fixture://proofloop/wrong-region/screwdriver-right-1030": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1030
+        }
+      },
+      "expected": "fail",
+      "family": "observable_deviation",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/wrong-region/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/wrong-region/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 0
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/wrong-region/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/wrong-region/screwdriver-right-1030",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1030,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "fail",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/wrong-region/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/wrong-region/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation contradicts the predicate",
+              "status": "fail"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/wrong-region/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "fail",
+          "label": "final",
+          "now_ms": 1130
+        }
+      ]
+    },
+    {
+      "actual": "fail",
+      "assertion_passed": true,
+      "case_id": "missing-visible-item",
+      "description": "Validated stable absence in a supported region is a contradiction.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/missing-visible-item/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/missing-visible-item/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/missing-visible-item/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "fail",
+      "family": "observable_deviation",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/missing-visible-item/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/missing-visible-item/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 0
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/missing-visible-item/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "fail",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/missing-visible-item/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/missing-visible-item/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation contradicts the predicate",
+              "status": "fail"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/missing-visible-item/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "fail",
+          "label": "final",
+          "now_ms": 1120
+        }
+      ]
+    },
+    {
+      "actual": "unknown",
+      "assertion_passed": true,
+      "case_id": "missing-observation",
+      "description": "No screwdriver observation is supplied; absence cannot be inferred.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/missing-observation/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/missing-observation/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        }
+      },
+      "expected": "unknown",
+      "family": "insufficient_evidence",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/missing-observation/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/missing-observation/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/missing-observation/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/missing-observation/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "unknown",
+          "label": "final",
+          "now_ms": 1120
+        }
+      ]
+    },
+    {
+      "actual": "unknown",
+      "assertion_passed": true,
+      "case_id": "occluded-after-pass",
+      "description": "A hand-like occlusion invalidates previously supported contents facts.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/occluded-after-pass/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/occluded-after-pass/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/occluded-after-pass/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "unknown",
+      "family": "insufficient_evidence",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/occluded-after-pass/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/occluded-after-pass/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/occluded-after-pass/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "reason": "occluded",
+            "timestamp_ms": 1200
+          },
+          "kind": "invalidate"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "pass",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/occluded-after-pass/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/occluded-after-pass/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/occluded-after-pass/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "pass",
+          "label": "before-occlusion",
+          "now_ms": 1100
+        },
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            }
+          ],
+          "expected": "unknown",
+          "label": "final",
+          "now_ms": 1300
+        }
+      ]
+    },
+    {
+      "actual": "unknown",
+      "assertion_passed": true,
+      "case_id": "low-confidence",
+      "description": "A low confidence screwdriver count cannot establish completion.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/low-confidence/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/low-confidence/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/low-confidence/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        },
+        "fixture://proofloop/low-confidence/screwdriver-left-1050": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1050
+        }
+      },
+      "expected": "unknown",
+      "family": "insufficient_evidence",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/low-confidence/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/low-confidence/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/low-confidence/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 0.4,
+            "evidence_id": "fixture://proofloop/low-confidence/screwdriver-left-1050",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1050,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/low-confidence/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/low-confidence/screwdriver-left-1050"
+              ],
+              "reason": "Observation confidence is below the approved threshold",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/low-confidence/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "unknown",
+          "label": "final",
+          "now_ms": 1150
+        }
+      ]
+    },
+    {
+      "actual": "unknown",
+      "assertion_passed": true,
+      "case_id": "unsupported-negative",
+      "description": "Zero matches with an incomplete view are insufficient evidence of absence.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/unsupported-negative/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/unsupported-negative/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/unsupported-negative/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        },
+        "fixture://proofloop/unsupported-negative/screwdriver-left-1050": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1050
+        }
+      },
+      "expected": "unknown",
+      "family": "insufficient_evidence",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/unsupported-negative/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/unsupported-negative/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/unsupported-negative/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": false,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/unsupported-negative/screwdriver-left-1050",
+            "fully_visible": false,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1050,
+            "value": 0
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/unsupported-negative/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/unsupported-negative/screwdriver-left-1050"
+              ],
+              "reason": "Exact counts require a fully supported visible region",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/unsupported-negative/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "unknown",
+          "label": "final",
+          "now_ms": 1150
+        }
+      ]
+    },
+    {
+      "actual": "unknown",
+      "assertion_passed": true,
+      "case_id": "unstable-negative",
+      "description": "An unsupported single empty detection must not become a deviation claim.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/unstable-negative/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/unstable-negative/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/unstable-negative/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        },
+        "fixture://proofloop/unstable-negative/screwdriver-left-1050": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1050
+        }
+      },
+      "expected": "unknown",
+      "family": "insufficient_evidence",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/unstable-negative/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/unstable-negative/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/unstable-negative/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/unstable-negative/screwdriver-left-1050",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 1,
+            "timestamp_ms": 1050,
+            "value": 0
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/unstable-negative/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/unstable-negative/screwdriver-left-1050"
+              ],
+              "reason": "Insufficient repeated stable observations",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/unstable-negative/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "unknown",
+          "label": "final",
+          "now_ms": 1150
+        }
+      ]
+    },
+    {
+      "actual": "unknown",
+      "assertion_passed": true,
+      "case_id": "expired-observations",
+      "description": "Facts exceeding the specification's age limit cannot certify the current state.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/expired-observations/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/expired-observations/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/expired-observations/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "unknown",
+      "family": "insufficient_evidence",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/expired-observations/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/expired-observations/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/expired-observations/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/expired-observations/divider-tray-1000"
+              ],
+              "reason": "Evidence is stale",
+              "status": "unknown"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/expired-observations/screwdriver-left-1010"
+              ],
+              "reason": "Evidence is stale",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/expired-observations/pliers-right-1020"
+              ],
+              "reason": "Evidence is stale",
+              "status": "unknown"
+            }
+          ],
+          "expected": "unknown",
+          "label": "expired",
+          "now_ms": 40000
+        },
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/expired-observations/divider-tray-1000"
+              ],
+              "reason": "Evidence is stale",
+              "status": "unknown"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/expired-observations/screwdriver-left-1010"
+              ],
+              "reason": "Evidence is stale",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/expired-observations/pliers-right-1020"
+              ],
+              "reason": "Evidence is stale",
+              "status": "unknown"
+            }
+          ],
+          "expected": "unknown",
+          "label": "final",
+          "now_ms": 40100
+        }
+      ]
+    },
+    {
+      "actual": "unknown",
+      "assertion_passed": true,
+      "case_id": "new-attempt-stale-facts",
+      "description": "Starting a new attempt cannot reuse the previous attempt's contents facts.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/new-attempt-stale-facts/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/new-attempt-stale-facts/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/new-attempt-stale-facts/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "unknown",
+      "family": "freshness",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/new-attempt-stale-facts/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/new-attempt-stale-facts/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/new-attempt-stale-facts/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "timestamp_ms": 1200
+          },
+          "kind": "start_attempt"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "pass",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/new-attempt-stale-facts/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/new-attempt-stale-facts/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/new-attempt-stale-facts/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "pass",
+          "label": "prior-attempt",
+          "now_ms": 1100
+        },
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            }
+          ],
+          "expected": "unknown",
+          "label": "final",
+          "now_ms": 1300
+        }
+      ]
+    },
+    {
+      "actual": "pass",
+      "assertion_passed": true,
+      "case_id": "repair-fresh-evidence",
+      "description": "A repair needs a new attempt and current observations before it can pass.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/repair-fresh-evidence/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/repair-fresh-evidence/divider-tray-1300": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1300
+        },
+        "fixture://proofloop/repair-fresh-evidence/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/repair-fresh-evidence/pliers-right-1320": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1320
+        },
+        "fixture://proofloop/repair-fresh-evidence/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        },
+        "fixture://proofloop/repair-fresh-evidence/screwdriver-left-1310": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1310
+        }
+      },
+      "expected": "pass",
+      "family": "recovery",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-fresh-evidence/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-fresh-evidence/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 0
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-fresh-evidence/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "timestamp_ms": 1200
+          },
+          "kind": "start_attempt"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-fresh-evidence/divider-tray-1300",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1300,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-fresh-evidence/screwdriver-left-1310",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1310,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-fresh-evidence/pliers-right-1320",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1320,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "fail",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/repair-fresh-evidence/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/repair-fresh-evidence/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation contradicts the predicate",
+              "status": "fail"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/repair-fresh-evidence/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "fail",
+          "label": "original-deviation",
+          "now_ms": 1100
+        },
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            }
+          ],
+          "expected": "unknown",
+          "label": "after-action-before-reobservation",
+          "now_ms": 1250
+        },
+        {
+          "actual": "pass",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/repair-fresh-evidence/divider-tray-1300"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/repair-fresh-evidence/screwdriver-left-1310"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/repair-fresh-evidence/pliers-right-1320"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "pass",
+          "label": "fresh-repair-observation",
+          "now_ms": 1400
+        },
+        {
+          "actual": "pass",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/repair-fresh-evidence/divider-tray-1300"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/repair-fresh-evidence/screwdriver-left-1310"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/repair-fresh-evidence/pliers-right-1320"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "pass",
+          "label": "final",
+          "now_ms": 1500
+        }
+      ]
+    },
+    {
+      "actual": "unknown",
+      "assertion_passed": true,
+      "case_id": "repair-partial-refresh",
+      "description": "Refreshing other objects cannot refresh a stale screwdriver fact.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/repair-partial-refresh/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/repair-partial-refresh/divider-tray-1300": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1300
+        },
+        "fixture://proofloop/repair-partial-refresh/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/repair-partial-refresh/pliers-right-1320": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1320
+        },
+        "fixture://proofloop/repair-partial-refresh/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "unknown",
+      "family": "freshness",
+      "protocol_hash": "a3bd2ca4516af4d5e9b6f932b3145e09d95d172c4ba5fdb7b519f691f6a1edfc",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-partial-refresh/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-partial-refresh/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-partial-refresh/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "timestamp_ms": 1200
+          },
+          "kind": "start_attempt"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-partial-refresh/divider-tray-1300",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1300,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/repair-partial-refresh/pliers-right-1320",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1320,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "pass",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/repair-partial-refresh/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/repair-partial-refresh/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/repair-partial-refresh/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "pass",
+          "label": "original-state",
+          "now_ms": 1100
+        },
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/repair-partial-refresh/divider-tray-1300"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [],
+              "reason": "No current evidence for this attempt and revision",
+              "status": "unknown"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/repair-partial-refresh/pliers-right-1320"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "unknown",
+          "label": "final",
+          "now_ms": 1420
+        }
+      ]
+    },
+    {
+      "actual": "pass",
+      "assertion_passed": true,
+      "case_id": "temporal-correct",
+      "description": "A confirmed checkpoint is observed before a non-mutating completion declaration.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/temporal-correct/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/temporal-correct/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/temporal-correct/record_checkpoint-3": {
+          "media_type": "symbolic_event",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "timestamp_ms": 1100
+        },
+        "fixture://proofloop/temporal-correct/record_event-4": {
+          "media_type": "symbolic_event",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "timestamp_ms": 1200
+        },
+        "fixture://proofloop/temporal-correct/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "pass",
+      "family": "temporal",
+      "protocol_hash": "35d996fbb98dfabbb9f77e77dfc45d484a2263e6ae1baa6c50244aaf3296724b",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/temporal-correct/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/temporal-correct/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/temporal-correct/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "checkpoint_id": "open-check",
+            "evidence_id": "fixture://proofloop/temporal-correct/record_checkpoint-3",
+            "timestamp_ms": 1100
+          },
+          "kind": "record_checkpoint"
+        },
+        {
+          "arguments": {
+            "event_id": "completion-declared",
+            "evidence_id": "fixture://proofloop/temporal-correct/record_event-4",
+            "timestamp_ms": 1200
+          },
+          "kind": "record_event"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "pass",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-correct/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-correct/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-correct/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "inspect-before-completion",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-correct/divider-tray-1000",
+                "fixture://proofloop/temporal-correct/screwdriver-left-1010",
+                "fixture://proofloop/temporal-correct/pliers-right-1020",
+                "fixture://proofloop/temporal-correct/record_checkpoint-3",
+                "fixture://proofloop/temporal-correct/record_event-4"
+              ],
+              "reason": "Latest earlier checkpoint was pass",
+              "status": "pass"
+            }
+          ],
+          "expected": "pass",
+          "label": "final",
+          "now_ms": 1300
+        }
+      ]
+    },
+    {
+      "actual": "unknown",
+      "assertion_passed": true,
+      "case_id": "temporal-missing-checkpoint",
+      "description": "A completion declaration without the required earlier view is insufficient evidence.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/temporal-missing-checkpoint/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/temporal-missing-checkpoint/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/temporal-missing-checkpoint/record_event-3": {
+          "media_type": "symbolic_event",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "timestamp_ms": 1200
+        },
+        "fixture://proofloop/temporal-missing-checkpoint/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "unknown",
+      "family": "temporal",
+      "protocol_hash": "35d996fbb98dfabbb9f77e77dfc45d484a2263e6ae1baa6c50244aaf3296724b",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/temporal-missing-checkpoint/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/temporal-missing-checkpoint/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/temporal-missing-checkpoint/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "event_id": "completion-declared",
+            "evidence_id": "fixture://proofloop/temporal-missing-checkpoint/record_event-3",
+            "timestamp_ms": 1200
+          },
+          "kind": "record_event"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "unknown",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-missing-checkpoint/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-missing-checkpoint/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-missing-checkpoint/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "inspect-before-completion",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-missing-checkpoint/record_event-3"
+              ],
+              "reason": "Missing earlier checkpoint evidence cannot prove an ordering violation",
+              "status": "unknown"
+            }
+          ],
+          "expected": "unknown",
+          "label": "final",
+          "now_ms": 1300
+        }
+      ]
+    },
+    {
+      "actual": "fail",
+      "assertion_passed": true,
+      "case_id": "temporal-wrong-order",
+      "description": "An explicitly observed completion declaration followed by inspection violates the authored order.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/temporal-wrong-order/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/temporal-wrong-order/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/temporal-wrong-order/record_checkpoint-4": {
+          "media_type": "symbolic_event",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "timestamp_ms": 1200
+        },
+        "fixture://proofloop/temporal-wrong-order/record_event-3": {
+          "media_type": "symbolic_event",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "timestamp_ms": 1100
+        },
+        "fixture://proofloop/temporal-wrong-order/screwdriver-left-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "left",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "fail",
+      "family": "temporal",
+      "protocol_hash": "35d996fbb98dfabbb9f77e77dfc45d484a2263e6ae1baa6c50244aaf3296724b",
+      "protocol_version": "1.0",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/temporal-wrong-order/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/temporal-wrong-order/screwdriver-left-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "left",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/temporal-wrong-order/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "event_id": "completion-declared",
+            "evidence_id": "fixture://proofloop/temporal-wrong-order/record_event-3",
+            "history_complete": true,
+            "timestamp_ms": 1100
+          },
+          "kind": "record_event"
+        },
+        {
+          "arguments": {
+            "checkpoint_id": "open-check",
+            "evidence_id": "fixture://proofloop/temporal-wrong-order/record_checkpoint-4",
+            "timestamp_ms": 1200
+          },
+          "kind": "record_checkpoint"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "fail",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-wrong-order/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-wrong-order/screwdriver-left-1010"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-wrong-order/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "inspect-before-completion",
+              "evidence_ids": [
+                "fixture://proofloop/temporal-wrong-order/record_event-3"
+              ],
+              "reason": "Complete observed history proves the required earlier checkpoint did not occur",
+              "status": "fail"
+            }
+          ],
+          "expected": "fail",
+          "label": "final",
+          "now_ms": 1300
+        }
+      ]
+    },
+    {
+      "actual": "pass",
+      "assertion_passed": true,
+      "case_id": "edited-requirement",
+      "description": "A data-only confirmed specification edit moves the required compartment to the right.",
+      "evidence_origin": "synthetic_oracle",
+      "evidence_sources": {
+        "fixture://proofloop/edited-requirement/divider-tray-1000": {
+          "media_type": "symbolic_fact",
+          "object_id": "divider",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "tray",
+          "timestamp_ms": 1000
+        },
+        "fixture://proofloop/edited-requirement/pliers-right-1020": {
+          "media_type": "symbolic_fact",
+          "object_id": "pliers",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1020
+        },
+        "fixture://proofloop/edited-requirement/screwdriver-right-1010": {
+          "media_type": "symbolic_fact",
+          "object_id": "screwdriver",
+          "origin": "synthetic_oracle",
+          "physical_recording": false,
+          "region_id": "right",
+          "timestamp_ms": 1010
+        }
+      },
+      "expected": "pass",
+      "family": "editable_specification",
+      "protocol_hash": "ebdd757f9e4b5b4e04e060a7118d95e83924db3a77f38fe624ac7282f3009b04",
+      "protocol_version": "1.1",
+      "runtime_input_events": [
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/edited-requirement/divider-tray-1000",
+            "fully_visible": true,
+            "kind": "visible",
+            "object_id": "divider",
+            "region_id": "tray",
+            "stable_samples": 2,
+            "timestamp_ms": 1000,
+            "value": true
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/edited-requirement/screwdriver-right-1010",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "screwdriver",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1010,
+            "value": 1
+          },
+          "kind": "observe"
+        },
+        {
+          "arguments": {
+            "absence_validated": true,
+            "confidence": 1.0,
+            "evidence_id": "fixture://proofloop/edited-requirement/pliers-right-1020",
+            "fully_visible": true,
+            "kind": "count",
+            "object_id": "pliers",
+            "region_id": "right",
+            "stable_samples": 2,
+            "timestamp_ms": 1020,
+            "value": 1
+          },
+          "kind": "observe"
+        }
+      ],
+      "stages": [
+        {
+          "actual": "pass",
+          "assertion_passed": true,
+          "checks": [
+            {
+              "check_id": "divider-visible",
+              "evidence_ids": [
+                "fixture://proofloop/edited-requirement/divider-tray-1000"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "screwdriver-location",
+              "evidence_ids": [
+                "fixture://proofloop/edited-requirement/screwdriver-right-1010"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            },
+            {
+              "check_id": "pliers-location",
+              "evidence_ids": [
+                "fixture://proofloop/edited-requirement/pliers-right-1020"
+              ],
+              "reason": "Supported observation satisfies the predicate",
+              "status": "pass"
+            }
+          ],
+          "expected": "pass",
+          "label": "final",
+          "now_ms": 1120
+        }
+      ]
+    }
+  ],
+  "evidence_origin": "synthetic_oracle",
+  "generated_at_utc": "2026-10-26T17:37:55.024681+00:00",
+  "is_model_benchmark": false,
+  "is_physical_benchmark": false,
+  "limitations": [
+    "All observed facts and expected answers are authored synthetic fixtures.",
+    "No image, video, phone recording, segmentation result or Meta model inference is evaluated here.",
+    "Fixture assertion success establishes software behavior under supplied facts, not perception accuracy.",
+    "The alternative-order fixture tests independent fact arrival; it does not infer real physical dependencies.",
+    "Real Meta access and the camera-to-observation-to-correction loop require separate feasibility checks."
+  ],
+  "planner": {
+    "actual_action_ids": [
+      "move-screwdriver-left",
+      "inspect-screwdriver-region"
+    ],
+    "actual_cost": 2.0,
+    "assertion_passed": true,
+    "authored_actions": [
+      {
+        "cost": 1,
+        "effects": {
+          "screwdriver_region": "left"
+        },
+        "id": "move-screwdriver-left",
+        "kind": "physical",
+        "preconditions": {
+          "screwdriver_region": "right"
+        }
+      },
+      {
+        "cost": 1,
+        "effects": {},
+        "id": "inspect-screwdriver-region",
+        "kind": "inspect",
+        "preconditions": {},
+        "reveals": [
+          "screwdriver_region"
+        ]
+      }
+    ],
+    "claim_limit": "A shortest path in this authored finite model; physical repair still needs fresh observations.",
+    "diagnostic_id": "repair-requires-reobservation",
+    "evidence_origin": "synthetic_action_model",
+    "expected_action_ids": [
+      "move-screwdriver-left",
+      "inspect-screwdriver-region"
+    ],
+    "expected_cost": 2,
+    "goal": {
+      "screwdriver_region": "left"
+    },
+    "initial_known": {
+      "screwdriver_region": "right"
+    },
+    "initial_world": {
+      "screwdriver_region": "right"
+    },
+    "minimality_basis": "The sole world-changing move and a later inspection are both required; each costs one.",
+    "plan": {
+      "action_ids": [
+        "move-screwdriver-left",
+        "inspect-screwdriver-region"
+      ],
+      "execution_requires_fresh_observation": true,
+      "hypothetical": true,
+      "optimality_scope": "minimum cost within the supplied finite deterministic action model",
+      "predicted_final_known": {
+        "screwdriver_region": "left"
+      },
+      "predicted_final_world": {
+        "screwdriver_region": "left"
+      },
+      "states_expanded": 3,
+      "total_cost": 2.0
+    }
+  },
+  "report_schema_version": "1.0",
+  "scope": "Deterministic checker, freshness, editable specification and bounded repair-planner integration.",
+  "summary": {
+    "actual_final_outcomes": {
+      "fail": 3,
+      "pass": 5,
+      "unknown": 9
+    },
+    "all_assertions_passed": true,
+    "check_snapshots": 75,
+    "check_status_counts": {
+      "fail": 4,
+      "pass": 50,
+      "unknown": 21
+    },
+    "episodes": 17,
+    "episodes_matching_all_expectations": 17,
+    "episodes_with_mismatch_or_error": 0,
+    "expected_final_outcomes": {
+      "fail": 3,
+      "pass": 5,
+      "unknown": 9
+    },
+    "planner_assertions": 1,
+    "planner_assertions_passed": 1,
+    "stage_assertions": 24,
+    "stage_assertions_passed": 24
+  },
+  "title": "ProofLoop synthetic oracle diagnostic"
+}

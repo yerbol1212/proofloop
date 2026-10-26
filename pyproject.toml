@@ -1,0 +1,20 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "proofloop"
+version = "0.1.0"
+description = "Evidence-linked executable checks and bounded repair for physical workflows"
+requires-python = ">=3.9"
+dependencies = []
+
+[project.optional-dependencies]
+sam = ["meta-sam-parser==0.1.0"]
+
+[project.scripts]
+proofloop-feasibility = "proofloop.feasibility:main"
+proofloop-smoke = "proofloop.smoke:main"
+
+[tool.setuptools.packages.find]
+include = ["proofloop*"]

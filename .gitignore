@@ -1,0 +1,26 @@
+# Credentials and all local environments
+.env
+.env.*
+!.env.example
+.venv/
+venv/
+
+# Owned media and unreviewed model responses remain local
+inputs/local/
+artifacts/local/
+
+# Python and editor outputs
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+build/
+dist/
+.DS_Store
+.idea/
+.vscode/
+
+# No private account/browser dumps in a public repository
+*.har
+*.log
