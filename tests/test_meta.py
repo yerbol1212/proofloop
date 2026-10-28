@@ -44,11 +44,99 @@ class AdapterTests(unittest.TestCase):
         self.assertTrue(captured[0]["text"]["format"]["strict"])
         self.assertEqual(captured[0]["max_output_tokens"], 128)
         self.assertFalse(captured[0]["store"])
+        self.assertNotIn("reasoning", captured[0])
+
+    def test_opt_in_reasoning_uses_responses_nested_payload(self):
+        value = {"project": "ProofLoop", "requires_fresh_evidence": True, "result_when_occluded": "unknown"}
+        for effort in ("low", "medium", "high"):
+            with self.subTest(effort=effort):
+                captured = []
+                def opener(request, **kwargs):
+                    captured.append(json.loads(request.data))
+                    return response(lane(json.dumps(value)))
+                result = MetaClient("key", opener=opener).spark_json(
+                    "test", SMOKE_SCHEMA, max_output_tokens=128, reasoning_effort=effort,
+                )
+                self.assertEqual(value, result["parsed"])
+                self.assertEqual({"effort": effort}, captured[0]["reasoning"])
+                self.assertNotIn("reasoning_effort", captured[0])
+                self.assertEqual(128, captured[0]["max_output_tokens"])
+                self.assertFalse(captured[0]["store"])
+
+    def test_default_and_explicit_none_preserve_exact_existing_payload(self):
+        captured = []
+        value = {"project": "ProofLoop", "requires_fresh_evidence": True, "result_when_occluded": "unknown"}
+        def opener(request, **kwargs):
+            captured.append(json.loads(request.data))
+            return response(lane(json.dumps(value)))
+        client = MetaClient("key", opener=opener)
+        client.spark_json("test", SMOKE_SCHEMA, name="stable", max_output_tokens=128)
+        client.spark_json("test", SMOKE_SCHEMA, name="stable", max_output_tokens=128, reasoning_effort=None)
+        expected = {
+            "model": SPARK_MODEL,
+            "input": [{"type": "message", "role": "user", "content": [
+                {"type": "input_text", "text": "test"},
+            ]}],
+            "text": {"format": {"type": "json_schema", "name": "stable", "schema": SMOKE_SCHEMA,
+                                "strict": True}},
+            "max_output_tokens": 128, "stream": False, "store": False,
+        }
+        self.assertEqual([expected, expected], captured)
+
+    def test_invalid_reasoning_effort_stops_before_image_read_network_or_budget(self):
+        client = MetaClient("key", opener=lambda *a, **k: self.fail("Invalid request reached network"))
+        for effort in ("", "LOW", "none", "minimal", "xhigh", "max", True, False, 0, 1.5, [], {}):
+            with self.subTest(effort=effort):
+                with patch("proofloop.meta._image_data", side_effect=AssertionError("Image read attempted")):
+                    with self.assertRaisesRegex(ValueError, "reasoning effort"):
+                        client.spark_json("test", SMOKE_SCHEMA, image_path="not-read.png",
+                                          reasoning_effort=effort)
+        self.assertEqual([], client.ledger)
+
+    def test_opt_in_reasoning_keeps_incomplete_trace_and_reported_usage(self):
+        provider_response = {
+            "status": "incomplete", "incomplete_details": {"reason": "max_output_tokens"},
+            "usage": {"input_tokens": 1000, "output_tokens": 300,
+                      "output_tokens_details": {"reasoning_tokens": 300}},
+        }
+        captured = []
+        def opener(request, **kwargs):
+            captured.append(json.loads(request.data))
+            return response(provider_response)
+        client = MetaClient("key", retries=2, opener=opener)
+        with self.assertRaises(MetaAPIError) as caught:
+            client.spark_json("test", SMOKE_SCHEMA, reasoning_effort="low")
+        self.assertEqual("incomplete_response", caught.exception.code)
+        self.assertEqual(provider_response, caught.exception.response)
+        self.assertEqual({"effort": "low"}, captured[0]["reasoning"])
+        self.assertEqual(1, len(captured))
+        self.assertEqual("invalid_response", client.ledger[0]["status"])
+        self.assertEqual(provider_response["usage"], client.ledger[0]["usage"])
+        summary = client.usage_summary()
+        self.assertEqual(1000, summary["input_tokens"])
+        self.assertEqual(300, summary["output_tokens"])
+        self.assertAlmostEqual(.002525, summary["estimated_usd"])
+        self.assertEqual(1, summary["unsuccessful_spark_requests_with_reported_token_usage"])
 
     def test_schema_invalid_output_is_never_accepted(self):
         client = MetaClient("key", opener=lambda *a, **k: response(lane('{"project":"ProofLoop"}')))
         with self.assertRaisesRegex(MetaAPIError, "schema validation"):
             client.spark_json("test", SMOKE_SCHEMA)
+
+    def test_spark_text_lane_failure_retains_local_response_and_usage(self):
+        invalid_outputs = [None, [{"type": "message", "content": [
+            {"type": "refusal", "refusal": "private provider explanation"},
+        ]}]]
+        for output in invalid_outputs:
+            with self.subTest(output=output):
+                provider_response = {"status": "completed", "output": output,
+                                     "usage": {"input_tokens": 10, "output_tokens": 20}}
+                client = MetaClient("key", opener=lambda *a, **k: response(provider_response))
+                with self.assertRaises(MetaAPIError) as caught:
+                    client.spark_json("test", SMOKE_SCHEMA, reasoning_effort="low")
+                self.assertEqual(provider_response, caught.exception.response)
+                self.assertNotIn("private provider explanation", str(caught.exception))
+                self.assertEqual(20, client.usage_summary()["output_tokens"])
 
     def test_multi_image_spark_preserves_order_and_source_hashes(self):
         captured = []

@@ -4,6 +4,9 @@ Wire contracts checked against Meta's official docs on 2026-10-26:
 https://dev.meta.ai/docs/structured-output
 https://dev.meta.ai/docs/sam/segmenting
 https://dev.meta.ai/docs/sam/reading-segmentation
+Reasoning controls checked on 2026-10-28:
+https://dev.meta.ai/docs/reasoning
+https://dev.meta.ai/docs/protocols/responses
 
 No offline/model-shaped result is substituted for a failed live request.
 The USD ledger is an estimate, not a provider-enforced billing limit.
@@ -377,7 +380,18 @@ class MetaClient:
 
     def spark_json(self, prompt: str, schema: dict[str, Any], *, name: str = "proofloop",
                    image_path: str | Path | None = None, image_paths: Sequence[str | Path] | None = None,
-                   max_output_tokens: int = 1200) -> dict[str, Any]:
+                   max_output_tokens: int = 1200,
+                   reasoning_effort: str | None = None) -> dict[str, Any]:
+        """Request a locally validated structured answer with optional reasoning control.
+
+        This project's supported opt-in efforts are low, medium, and high. None
+        leaves the wire field absent, preserving existing experiment requests.
+        Reasoning and visible output share the output-token cap and billing.
+        """
+        if reasoning_effort is not None and (
+            type(reasoning_effort) is not str or reasoning_effort not in {"low", "medium", "high"}
+        ):
+            raise ValueError("Spark reasoning effort must be low, medium, high, or None")
         if not 16 <= max_output_tokens <= 4096 or len(prompt.encode()) > 32 * 1024:
             raise ValueError("Spark prompt/token cap exceeded")
         if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", name):
@@ -396,12 +410,20 @@ class MetaClient:
             if sum(item["bytes"] for item in sources) > 20 * 1024 * 1024:
                 raise ValueError("Spark images exceed the combined 20 MiB cap")
             content.append({"type": "input_image", "image_url": image_url})
-        result = self._request("POST", "responses", {
+        payload = {
             "model": SPARK_MODEL, "input": [{"type": "message", "role": "user", "content": content}],
             "text": {"format": {"type": "json_schema", "name": name, "schema": schema, "strict": True}},
             "max_output_tokens": max_output_tokens, "stream": False, "store": False,
-        })
-        text = output_text(result)
+        }
+        if reasoning_effort is not None:
+            payload["reasoning"] = {"effort": reasoning_effort}
+        result = self._request("POST", "responses", payload)
+        try:
+            text = output_text(result)
+        except MetaAPIError as error:
+            if error.response is None:
+                error.response = result
+            raise
         try:
             parsed = json.loads(text)
             validate_json(parsed, schema)
