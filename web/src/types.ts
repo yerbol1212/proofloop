@@ -1,4 +1,5 @@
 import type { WorkflowDTO } from './WorkflowPanel'
+import type { DiagnosticDTO } from './DiagnosticPanel'
 export type Status = 'pass' | 'fail' | 'unknown'
 export type Rect = [number, number, number, number]
 export type Regions = Record<string, Rect>
@@ -18,6 +19,7 @@ export interface PlacementCheck {
   observed_region: string | null
   reason: string
   confidence: number | null
+  evidence_ids?: string[]
 }
 export interface Snapshot {
   session_id: string
@@ -73,6 +75,7 @@ export interface Snapshot {
   acquisition?: AcquisitionPlan | null
   workflow?: WorkflowDTO | null
   recovery?: RecoveryReceipt | null
+  diagnostic?: DiagnosticDTO | null
 }
 export interface RecoveryReceipt {
   receipt_id: string

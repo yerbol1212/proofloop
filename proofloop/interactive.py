@@ -26,6 +26,7 @@ from .acquisition import build_acquisition_plan, check_source_pair
 from .compiler import COFFEE_PLACEMENT_PRESET, CompilerError, authored_coffee_protocol, compile_protocol
 from .concepts import validate_concept_mapping
 from .core import EvidenceStore, Protocol, ValidationError, aggregate_status, evaluate
+from .diagnostics import explain_checks
 from .grounding import SamImageEvidence, ground_sam_images
 from .guided import GUIDED_VERSION, guided_segment_pair
 from .meta import MAX_IMAGE_BYTES, MetaAPIError, MetaClient, load_env_file
@@ -599,6 +600,7 @@ class InteractiveEngine:
                  "observed_region": observations[check.object_id].value,
                  "reason": results[check.id]["reason"],
                  "grounding_reason": reasons.get(check.id),
+                 "evidence_ids": list(results[check.id].get("evidence_ids", [])),
                  "confidence": observations[check.object_id].confidence} for check in self._protocol.checks]
 
     def _reset_acquisition(self) -> None:
@@ -796,6 +798,10 @@ class InteractiveEngine:
                 for check in state["checks"]:
                     check.update(status="unknown", reason="The earlier captured evidence is older than 30 seconds")
             state["acquisition"] = self._current_acquisition(state)
+            state["diagnostic"] = explain_checks(self._protocol, state["checks"],
+                acquisition=state["acquisition"], evidence_origin=state["source_kind"],
+                current=state["source_kind"] in ("camera", "upload") and not state["stale"]
+                        and state["phase"] in ("verified", "mistake", "unknown"))
             state["inspection_request"] = self._inspection_request(state)
             state["workflow"] = workflow_status(state, self._workflow_replay)
             state.pop("workflow_continuation", None)

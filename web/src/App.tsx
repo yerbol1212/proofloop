@@ -6,6 +6,7 @@ import { VideoLab } from './VideoLab'
 import { RecoveryPanel } from './RecoveryPanel'
 import { AcquisitionPanel } from './AcquisitionPanel'
 import { WorkflowPanel } from './WorkflowPanel'
+import { DiagnosticPanel } from './DiagnosticPanel'
 import type {
   EvidenceImage,
   InspectPayload,
@@ -393,6 +394,12 @@ function Inspector({
               <CheckRow key={check.check_id} check={check} />
             ))}
           </div>
+          {state.diagnostic ? (
+            <details className="diagnostic-details">
+              <summary>Why this decision?</summary>
+              <DiagnosticPanel diagnostic={state.diagnostic} />
+            </details>
+          ) : null}
           <div className="inspector-divider" />
         </>
       ) : null}
@@ -1149,18 +1156,24 @@ function EvidenceLog({ state }: { state: Snapshot }) {
             : state.inference_origin.replaceAll('_', ' ')}
         </p>
       ) : null}
-      <h3>Placement reasons</h3>
-      <ul className="reason-list">
-        {state.checks.map((check) => (
-          <li key={check.check_id}>
-            <StatusLabel status={check.status} />
-            <div>
-              <strong>{objectLabel(check.object_id)}</strong>
-              <p>{check.reason}</p>
-            </div>
-          </li>
-        ))}
-      </ul>
+      {state.diagnostic ? (
+        <DiagnosticPanel diagnostic={state.diagnostic} />
+      ) : (
+        <>
+          <h3>Placement reasons</h3>
+          <ul className="reason-list">
+            {state.checks.map((check) => (
+              <li key={check.check_id}>
+                <StatusLabel status={check.status} />
+                <div>
+                  <strong>{objectLabel(check.object_id)}</strong>
+                  <p>{check.reason}</p>
+                </div>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
       <RecoveryPanel
         receipt={state.recovery || null}
         activeProtocolHash={state.active_task?.protocol_hash}

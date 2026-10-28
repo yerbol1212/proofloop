@@ -18,6 +18,7 @@ from .benchmark import AVAILABLE_CONDITIONS, GUIDED_NOTE, ROOT, STATUSES, _appro
 from .capture import _jpeg_dimensions
 from .core import ValidationError
 from .followup import replay_fixed_followup, response_paths
+from .evaluation import evaluation_summary
 
 MAX_REPORT_BYTES = 32 * 1024 * 1024
 MAX_SUMMARY_BYTES = 2 * 1024 * 1024
@@ -166,6 +167,7 @@ class VideoLab:
             if candidate.exists() and condition.get("status") == "completed":
                 sidecars[name] = _read(_inside(candidate, self.root / "artifacts/local"), MAX_REPORT_BYTES)
         integrity = validate_report(envelope, report, raw_results=sidecars)
+        evaluation = evaluation_summary(envelope, report, raw_results=sidecars)
         conditions = report.get("conditions")
         if not isinstance(conditions, Mapping) or set(conditions) - set(AVAILABLE_CONDITIONS):
             raise ValidationError("Lab conditions are invalid")
@@ -261,6 +263,7 @@ class VideoLab:
                     if contract["dataset_id"] == "proofloop-candy-new-task-transfer-development-20261028" else {}),
                  "source_kind": "external_recorded_video", "inference_origin": report.get("inference_origin"),
                  "report_integrity": integrity,
+                 "evaluation": evaluation,
                  **({"followup_policy_replay": followup} if followup is not None else {}),
                  "requirements": contract["requirements"], "task_summary": task_summary, "objects": list(protocol.objects),
                  "concepts": deepcopy(contract["concepts"]), "case_count": len(cases), "source_count": len(sources),

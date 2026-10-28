@@ -3,6 +3,8 @@ import type { CSSProperties } from 'react'
 import type { AcquisitionPlan, Status } from './types'
 import { Icon } from './icons'
 import { AcquisitionPanel } from './AcquisitionPanel'
+import { EvaluationPanel } from './EvaluationPanel'
+import type { EvaluationDTO } from './EvaluationPanel'
 
 interface FollowupStep {
   case_id: string
@@ -77,6 +79,7 @@ interface LabRun {
     case_decisions_checked: number
   }
   followup_policy_replay?: FollowupReplay
+  evaluation?: EvaluationDTO
   metrics: Record<string, Metric>
   conditions: Record<
     string,
@@ -394,6 +397,13 @@ export function VideoLab() {
                 The table includes all scored pairs. Policy totals below exclude
                 unused future pairs.
               </p>
+            ) : null}
+            {run.evaluation ? (
+              <EvaluationPanel
+                evaluation={run.evaluation}
+                selectedCase={current?.id || ''}
+                onSelect={setSelectedCase}
+              />
             ) : null}
           </section>
           {run.followup_policy_replay && current ? (

@@ -2496,3 +2496,15 @@ select:focus-visible,
     padding: 1.25rem;
   }
 }
+.evaluation-panel { margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+.evaluation-panel summary, .followup-details summary { cursor: pointer; font-weight: 600; }
+.evaluation-panel p { color: var(--muted); line-height: 1.6; font-size: .9rem; }
+.evaluation-panel h3 { margin: 1.5rem 0 .75rem; }
+.evaluation-pair h4 { margin: 1rem 0 .4rem; }
+.disagreement-list { list-style: none; margin: .75rem 0; padding: 0; display: grid; gap: .5rem; }
+.disagreement-list .button { width: 100%; align-items: flex-start; flex-direction: column; text-align: left; white-space: normal; }
+.disagreement-list .button span { font-size: .8rem; font-weight: 400; color: var(--muted); }
+.disagreement-list .button[aria-pressed="true"] { border-color: var(--accent); background: #f0f2ff; }
+.diagnostic-details { margin-top: 1.25rem; }
+.diagnostic-details > summary { cursor: pointer; font-weight: 600; }
+.diagnostic-details > .panel, .log-panel > .panel { margin-top: 1rem; padding: 1rem; box-shadow: none; }

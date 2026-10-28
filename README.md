@@ -12,6 +12,7 @@ This is the event-built feasibility implementation for the Meta Global AI Develo
 - **Bounded UNKNOWN follow-up:** typed object/view gaps request full visibility, distinguishing features, supported boundaries, confidence or a stable pair. The server permits at most two follow-up submissions in an unresolved chain, rejects reused images and stops when the budget or recorded timeline is exhausted.
 - **Placement preparation checkpoint:** reviewed requirements, current PASS and replayed evidence gate a separately recorded operator continuation declaration. That declaration reports intent; it does not verify dispensing or a complete procedure.
 - **Inspectable evidence:** the read-only Video lab preserves source attribution, actual model comparisons and fixed future-evidence trajectories. Linked recovery receipts replay task, plan, parent, media and mask consistency without asserting executed motion.
+- **Grounded explanations and failure review:** each explanation binds the reviewed requirement, supported observation and permitted next step without inventing a physical cause. Video lab shows coverage, accuracy among decided cases, unsupported acceptance and selectable model disagreements with explicit denominators.
 
 Muse Spark drafts custom checks and supplies task-independent object anchors in guided mode; actual SAM 3.1 calls refine those anchors. Spark assigns semantic identity. A prompted mask does not independently prove that identity, and unsupported results remain UNKNOWN. The runtime uses Meta models; Codex assists development.
 
@@ -28,9 +29,11 @@ In the fixed follow-up replay, guided resolved one of two trajectories with late
 
 These are scoped image-zone checks on normal prerecorded demonstrations. A later PASS does not prove that a robot followed ProofLoop's request. The [owned phone recording](artifacts/feasibility/phone-session-20261028.md) produced PASS → FAIL → UNKNOWN → PASS, but was recorded before its planner proposal. Fresh physical operation following the displayed request, broader procedure verification and practical user demand remain unvalidated.
 
-**450/450 Python 3.12 tests passed, and the strict production frontend build passed.** Publication CI is checked separately after pushing the milestone. These software checks do not establish perception accuracy.
+**493/493 Python 3.12 tests passed, and the strict production frontend build passed.** Publication CI is checked separately after pushing the milestone. These software checks do not establish perception accuracy.
 
 See the [review and remaining work](docs/AI-SYSTEMS-REVIEW-20261028.md), [feasibility evidence](docs/FEASIBILITY.md), [three-minute demo script](docs/DEMO-SCRIPT.md), [source credits](docs/ONLINE-VIDEO-SOURCES.md) and [event contributions](CONTRIBUTIONS.md). Software tests exercise control behavior separately from model-quality measurements.
+
+The [comparison and implementation plan](docs/COMPETITIVE-PLAN-20261028.md) identifies practices adapted from REFLECT, Tulip, Retrocausal, SayCan, KnowNo and Rerun. This is an inspectable prototype verification layer; it has not been compared experimentally with those systems or validated in production.
 
 ## Open the interactive workbench
 

@@ -137,6 +137,11 @@ class InteractiveTests(unittest.TestCase):
         self.assertNotIn("private-provider-id", json.dumps(state))
         self.assertNotIn("raster_base64", json.dumps(state))
         self.assertNotIn(str(self.root), json.dumps(state))
+        diagnostic = state["diagnostic"]
+        self.assertTrue(diagnostic["current"])
+        self.assertEqual("pass", diagnostic["overall_decision"])
+        self.assertTrue(all(row["evidence_ids"] for row in diagnostic["checks"]))
+        self.assertFalse(diagnostic["physical_action_allowed"])
 
     def test_begin_repair_invalidates_pass_before_new_perception(self):
         before = self.engine.inspect_pair(self.payload())
@@ -156,6 +161,9 @@ class InteractiveTests(unittest.TestCase):
         self.assertTrue(state["proposal"]["hypothetical"])
         self.assertFalse(state["proposal"]["execution_verified"])
         self.assertIsNone(state["verified_at_ms"])
+        self.assertTrue(state["diagnostic"]["repair_proposal_eligible"])
+        self.assertEqual("wrong_region", state["diagnostic"]["checks"][0]["diagnostic_code"])
+        self.assertFalse(state["diagnostic"]["physical_action_allowed"])
 
     def test_occlusion_returns_unknown_and_no_move_or_pass(self):
         self.client.covered = True
@@ -258,6 +266,9 @@ class InteractiveTests(unittest.TestCase):
         self.assertTrue(state["stale"])
         self.assertEqual(10000, state["verified_at_ms"])
         self.assertTrue(all(item["status"] == "unknown" for item in state["checks"]))
+        self.assertFalse(state["diagnostic"]["current"])
+        self.assertFalse(state["diagnostic"]["repair_proposal_eligible"])
+        self.assertTrue(all(row["decision"] == "unknown" for row in state["diagnostic"]["checks"]))
 
     def test_failed_api_erases_pass_and_keeps_raw_error_private(self):
         self.engine.inspect_pair(self.payload())
@@ -434,6 +445,9 @@ class InteractiveTests(unittest.TestCase):
         self.assertEqual(("mistake", "fail", "recorded"), (state["phase"], state["status"], state["source_kind"]))
         self.assertTrue(state["stale"])
         self.assertIn("Historical", state["source_note"])
+        self.assertFalse(state["diagnostic"]["current"])
+        self.assertFalse(state["diagnostic"]["repair_proposal_eligible"])
+        self.assertTrue(all(row["evidence_scope"] == "historical" for row in state["diagnostic"]["checks"]))
         self.assertIn("move-fork-right-to-left", state["proposal"]["action_ids"])
         for stage in manifest["stages"]:
             payload = self.payload()

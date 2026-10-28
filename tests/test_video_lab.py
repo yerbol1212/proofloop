@@ -76,6 +76,10 @@ class VideoLabTests(unittest.TestCase):
         self.assertNotIn("inputs/local", json.dumps(state))
         self.assertNotIn("authored-sam-shape", json.dumps(state))
         self.assertNotIn("sam-grounding://", json.dumps(state))
+        evaluation = run["evaluation"]
+        self.assertEqual(len(self.envelope["contract"]["cases"]), evaluation["benchmark_case_count"])
+        self.assertTrue(evaluation["pairwise"])
+        self.assertFalse(evaluation["physical_action_execution_verified"])
 
     def test_private_only_or_changed_public_summary_is_not_shown(self):
         self.summary.unlink()
