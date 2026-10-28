@@ -1,0 +1,228 @@
+{
+  "conditions": {
+    "guided": {
+      "cases": [
+        {
+          "case_id": "coffee-e04-staging",
+          "status": "fail"
+        },
+        {
+          "case_id": "coffee-e04-dispense",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e05-staging",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e05-dispense",
+          "status": "pass"
+        }
+      ],
+      "estimated_usd": 0.040694,
+      "method_note": "Task-independent Spark assigns object identity and boxes; SAM refines the prompted mask. A prompted mask does not independently prove semantic identity. Missing/ambiguous localization stays unknown.",
+      "metrics": {
+        "accuracy": 0.5,
+        "balanced_accuracy_present_classes": 0.5,
+        "confusion": {
+          "fail": {
+            "fail": 1,
+            "pass": 0,
+            "unknown": 1
+          },
+          "pass": {
+            "fail": 0,
+            "pass": 1,
+            "unknown": 1
+          },
+          "unknown": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 0
+          }
+        },
+        "correct": 2,
+        "correct_acceptance_rate": 0.5,
+        "correct_acceptances": 1,
+        "decision_coverage": 0.5,
+        "eligible_cases": 4,
+        "ground_truth_counts": {
+          "fail": 2,
+          "pass": 2,
+          "unknown": 0
+        },
+        "illustrative_cases_excluded": 0,
+        "incorrect_pass_rate": 0.0,
+        "incorrect_passes": 0,
+        "missing_predictions": 0,
+        "unknown_rate": 0.5,
+        "unknown_results": 2
+      },
+      "status": "completed",
+      "wall_seconds": 34.307
+    },
+    "sam": {
+      "cases": [
+        {
+          "case_id": "coffee-e04-staging",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e04-dispense",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e05-staging",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e05-dispense",
+          "status": "unknown"
+        }
+      ],
+      "estimated_usd": 0.02,
+      "metrics": {
+        "accuracy": 0.0,
+        "balanced_accuracy_present_classes": 0.0,
+        "confusion": {
+          "fail": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 2
+          },
+          "pass": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 2
+          },
+          "unknown": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 0
+          }
+        },
+        "correct": 0,
+        "correct_acceptance_rate": 0.0,
+        "correct_acceptances": 0,
+        "decision_coverage": 0.0,
+        "eligible_cases": 4,
+        "ground_truth_counts": {
+          "fail": 2,
+          "pass": 2,
+          "unknown": 0
+        },
+        "illustrative_cases_excluded": 0,
+        "incorrect_pass_rate": 0.0,
+        "incorrect_passes": 0,
+        "missing_predictions": 0,
+        "unknown_rate": 1.0,
+        "unknown_results": 4
+      },
+      "status": "completed",
+      "wall_seconds": 8.425
+    },
+    "spark": {
+      "cases": [
+        {
+          "case_id": "coffee-e04-staging",
+          "status": "fail"
+        },
+        {
+          "case_id": "coffee-e04-dispense",
+          "status": "pass"
+        },
+        {
+          "case_id": "coffee-e05-staging",
+          "status": "fail"
+        },
+        {
+          "case_id": "coffee-e05-dispense",
+          "status": "pass"
+        }
+      ],
+      "estimated_usd": 0.041702,
+      "metrics": {
+        "accuracy": 1.0,
+        "balanced_accuracy_present_classes": 1.0,
+        "confusion": {
+          "fail": {
+            "fail": 2,
+            "pass": 0,
+            "unknown": 0
+          },
+          "pass": {
+            "fail": 0,
+            "pass": 2,
+            "unknown": 0
+          },
+          "unknown": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 0
+          }
+        },
+        "correct": 4,
+        "correct_acceptance_rate": 1.0,
+        "correct_acceptances": 2,
+        "decision_coverage": 1.0,
+        "eligible_cases": 4,
+        "ground_truth_counts": {
+          "fail": 2,
+          "pass": 2,
+          "unknown": 0
+        },
+        "illustrative_cases_excluded": 0,
+        "incorrect_pass_rate": 0.0,
+        "incorrect_passes": 0,
+        "missing_predictions": 0,
+        "unknown_rate": 0.0,
+        "unknown_results": 0
+      },
+      "status": "completed",
+      "wall_seconds": 39.941
+    }
+  },
+  "contract_hash": "e78ef11c8a8086c4d1f49784e2ea186dca020a060e33cd637de875b0506991cf",
+  "dataset_id": "proofloop-authored-aloha-coffee-new-episodes-20261028",
+  "evidence_origin": "external_recorded_video",
+  "experiment": "licensed_recorded_video_comparison",
+  "inference_origin": "live_meta_api",
+  "limits": [
+    "Selected recorded frames; no interactive physical repair or continuous tracking claim.",
+    "Source rights, calibration, unique-target assumptions and labels require caller review.",
+    "Illustrative cases are excluded from accuracy metrics; small curated cases do not establish general reliability.",
+    "Estimated costs can exclude ambiguous charges. No raw media or provider responses are included."
+  ],
+  "physical_action_execution_verified": false,
+  "protocol_hash": "947df0779f5eacbc57cdc2206ef41db3f91c3e34aca75fc92738540090cde78e",
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "duration_ms": 22000,
+      "id": "coffee-episode-000004",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000004.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "df615acc2f5b6955e9f5d94dbac3946a8d5e752b9d409981ebf5562ccd2ed5dd"
+    },
+    {
+      "duration_ms": 22000,
+      "id": "coffee-episode-000005",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000005.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "db802ba1036c19d81a3c631ca5eeea67c37b01196e568ba935d1d4b26423e19a"
+    }
+  ],
+  "status": "completed"
+}

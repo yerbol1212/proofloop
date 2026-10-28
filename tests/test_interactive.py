@@ -8,6 +8,7 @@ from copy import deepcopy
 import hashlib
 import json
 from pathlib import Path
+import re
 import struct
 import tempfile
 import threading
@@ -20,6 +21,7 @@ from proofloop.interactive import InteractiveEngine, FRESHNESS_MS, TOKEN_LIFETIM
 from proofloop.meta import MetaAPIError, SAM_MODEL
 from proofloop.session import approve_contract, contract_hash, evaluate_session, session_contract
 from tests.test_session import capture_manifest, detection
+from tests.test_guided import FakeClient as GuidedFakeClient, jpeg_header
 
 REGIONS = {"left": [0.05, 0.05, 0.45, 0.95], "right": [0.55, 0.05, 0.95, 0.95]}
 
@@ -69,6 +71,31 @@ class FakeClient:
 
     def usage_summary(self):
         return {"request_attempts": len(self.ledger), "estimated_usd": 0, "estimate_origin": "authored_mock_no_api_calls"}
+
+
+class FakeCompileClient:
+    """Authored Spark schema response, not a model-quality assertion."""
+    def __init__(self, placements=None, failure=False, callback=None, unsupported=False):
+        self.max_requests, self.retries, self.ledger = 1, 0, []
+        self.placements = placements or {"fork": "right", "spoon": "left"}
+        self.failure, self.callback, self.unsupported = failure, callback, unsupported
+
+    def spark_json(self, prompt, schema, **kwargs):
+        self.ledger.append({"prompt": prompt, "kwargs": kwargs})
+        if self.callback:
+            self.callback()
+        if self.failure:
+            raise MetaAPIError("Secret Spark response", response={"secret": "never-public"})
+        objects = list(self.placements)
+        return {"parsed": {"protocol": {"id": "proofloop-task", "version": "draft-1", "objects": objects,
+            "regions": ["left", "right"], "steps": [], "checkpoints": [],
+            "checks": [{"id": value + "-placement", "kind": "location", "object_id": value,
+                        "region_id": region, "unique_target": True} for value, region in self.placements.items()]},
+            "unsupported_requirements": ["Authored unsupported requirement"] if self.unsupported else [],
+            "clarifications_needed": []}, "usage": {"input_tokens": 1, "output_tokens": 1}}
+
+    def usage_summary(self):
+        return {"request_attempts": len(self.ledger), "estimate_origin": "authored_mock_no_api_calls"}
 
 
 class InteractiveTests(unittest.TestCase):
@@ -271,6 +298,7 @@ class InteractiveTests(unittest.TestCase):
         try:
             self.assertTrue(self.engine.snapshot()["busy"])
             self.assertEqual("unknown", self.engine.snapshot()["status"])
+            self.assertIsNone(self.engine.snapshot()["inspection_request"])
             for mutation in (self.engine.begin_repair, self.engine.new_inspection, lambda: self.engine.inspect_pair(payload)):
                 with self.assertRaises(ValidationError):
                     mutation()
@@ -422,6 +450,461 @@ class InteractiveTests(unittest.TestCase):
         self.assertEqual(("needs_evidence", "unknown", "none"), (state["phase"], state["status"], state["source_kind"]))
         self.assertEqual([], state["images"])
         self.assertIn("could not be verified", state["error"])
+
+    def task_payload(self, objects=None):
+        return {"title": "Reversed arrangement", "requirements": "Place fork in RIGHT and spoon in LEFT.",
+                "objects": objects or ["fork", "spoon"], "confirm_unique_targets": True}
+
+    def install_compiler(self, **kwargs):
+        self.compiler = FakeCompileClient(**kwargs)
+        self.engine._compile_client_factory = lambda: self.compiler
+
+    def activate_payload(self, draft):
+        return {"draft_id": draft["draft_id"], "draft_hash": draft["draft_hash"],
+                "confirm_requirements": True, "confirm_unique_targets": True}
+
+    def test_spark_draft_preserves_active_pass_until_exact_review(self):
+        before = self.engine.inspect_pair(self.payload())
+        self.install_compiler()
+        state = self.engine.draft_task(self.task_payload())
+        self.assertEqual("pass", state["status"])
+        self.assertEqual(before["active_task"], state["active_task"])
+        self.assertEqual(before["images"], state["images"])
+        self.assertEqual(before["revision"], state["revision"])
+        draft = state["task_draft"]
+        self.assertFalse(draft["approved"])
+        self.assertTrue(draft["requires_human_approval"])
+        self.assertEqual("injected_compiler_not_verified_live", draft["origin"])
+        self.assertEqual(1, len(self.compiler.ledger))
+        self.assertIn('"predicate_kind": "location"', self.compiler.ledger[0]["prompt"])
+        self.assertIsNone(state["draft_error"])
+        self.assertNotIn("observations", draft)
+
+    def test_activation_changes_spec_and_immediately_invalidates_old_evidence(self):
+        self.engine.inspect_pair(self.payload())
+        old_token = self.engine.begin_repair()["capture_token"]
+        old_hash = self.engine.snapshot()["active_task"]["protocol_hash"]
+        self.install_compiler()
+        draft = self.engine.draft_task(self.task_payload())["task_draft"]
+        state = self.engine.activate_task(self.activate_payload(draft))
+        self.assertNotEqual(old_hash, state["active_task"]["protocol_hash"])
+        self.assertEqual(draft["protocol_hash"], state["active_task"]["protocol_hash"])
+        self.assertEqual(("awaiting_capture", "unknown", "none"), (state["phase"], state["status"], state["source_kind"]))
+        self.assertEqual([], state["images"])
+        self.assertIsNone(state["task_draft"])
+        self.assertIsNone(state["proposal"])
+        self.assertNotEqual(old_token, state["capture_token"])
+        self.assertTrue(all(value["status"] == "unknown" for value in state["checks"]))
+        self.assertEqual({"fork": "right", "spoon": "left"}, {value["object_id"]: value["expected_region"] for value in state["checks"]})
+        self.assertTrue(state["active_task"]["human_reviewed"])
+        self.assertEqual("local_operator", state["active_task"]["review_origin"])
+        self.assertEqual(4, len(self.client.ledger))
+
+    def test_activation_requires_current_id_hash_and_both_confirmations(self):
+        self.install_compiler()
+        draft = self.engine.draft_task(self.task_payload())["task_draft"]
+        for field, value in (("draft_id", "wrong"), ("draft_hash", "0" * 64),
+                             ("confirm_requirements", False), ("confirm_unique_targets", False)):
+            payload = self.activate_payload(draft)
+            payload[field] = value
+            with self.subTest(field=field), self.assertRaises(ValidationError):
+                self.engine.activate_task(payload)
+        self.assertEqual("authored_default", self.engine.snapshot()["active_task"]["origin"])
+
+    def test_assistant_activation_requires_private_authority_and_is_not_human_review(self):
+        self.install_compiler()
+        draft = self.engine.draft_task(self.task_payload())["task_draft"]
+        payload = dict(self.activate_payload(draft), review_origin="assistant_under_user_authorization")
+        with self.assertRaises(ValidationError):
+            self.engine.activate_task(payload)
+        payload["authorization_reference"] = "Explicit user instruction retained only in private approval"
+        state = self.engine.activate_task(payload)
+        self.assertTrue(state["active_task"]["reviewed"])
+        self.assertFalse(state["active_task"]["human_reviewed"])
+        self.assertEqual("assistant_under_user_authorization", state["active_task"]["review_origin"])
+        self.assertNotIn(payload["authorization_reference"], json.dumps(state))
+        approvals = list(self.engine._directory.glob("task-approval-*.json"))
+        self.assertEqual(payload["authorization_reference"], json.loads(approvals[0].read_text())["authorization_reference"])
+
+    def test_repeated_semantic_drafts_have_distinct_hashes_and_old_review_is_rejected(self):
+        self.install_compiler()
+        first = self.engine.draft_task(self.task_payload())["task_draft"]
+        self.install_compiler()
+        second = self.engine.draft_task(self.task_payload())["task_draft"]
+        self.assertNotEqual(first["protocol_hash"], second["protocol_hash"])
+        self.assertNotEqual(first["draft_hash"], second["draft_hash"])
+        with self.assertRaises(ValidationError):
+            self.engine.activate_task(self.activate_payload(first))
+
+    def test_bad_draft_input_and_missing_unique_declaration_never_spend(self):
+        self.install_compiler()
+        for field, value in (("requirements", ""), ("requirements", "x" * 8193),
+                             ("objects", ["fork"]), ("objects", ["fork", "fork"]),
+                             ("objects", ["../key", "spoon"]), ("objects", [str(n) for n in range(7)]),
+                             ("title", ""), ("confirm_unique_targets", False)):
+            payload = self.task_payload()
+            payload[field] = value
+            with self.subTest(field=field, value=str(value)[:30]), self.assertRaises(ValidationError):
+                self.engine.draft_task(payload)
+        self.assertEqual([], self.compiler.ledger)
+        self.assertFalse(self.engine.snapshot()["busy"])
+
+    def test_failed_or_unsupported_draft_does_not_replace_task_or_erase_pass(self):
+        before = self.engine.inspect_pair(self.payload())
+        for kwargs in ({"failure": True}, {"unsupported": True}):
+            self.install_compiler(**kwargs)
+            state = self.engine.draft_task(self.task_payload())
+            self.assertEqual("pass", state["status"])
+            self.assertEqual(before["active_task"], state["active_task"])
+            self.assertEqual(before["images"], state["images"])
+            self.assertIsNone(state["task_draft"])
+            self.assertTrue(state["draft_error"])
+            self.assertFalse(state["busy"])
+            self.assertNotIn("never-public", json.dumps(state))
+            self.assertNotIn("Secret Spark", json.dumps(state))
+
+    def test_task_busy_prevents_inspection_activation_and_second_draft(self):
+        entered, release = threading.Event(), threading.Event()
+        self.install_compiler(callback=lambda: (entered.set(), release.wait(3)))
+        worker = threading.Thread(target=lambda: self.engine.draft_task(self.task_payload()))
+        worker.start()
+        self.assertTrue(entered.wait(2))
+        try:
+            state = self.engine.snapshot()
+            self.assertEqual("task_draft", state["busy_operation"])
+            self.assertEqual("unknown", state["status"])
+            for mutation in (self.engine.new_inspection, lambda: self.engine.draft_task(self.task_payload()),
+                             lambda: self.engine.activate_task({})):
+                with self.assertRaises(ValidationError):
+                    mutation()
+        finally:
+            release.set()
+            worker.join(3)
+        self.assertFalse(self.engine.snapshot()["busy"])
+
+    def test_custom_three_object_task_uses_six_bound_sam_calls_and_generic_repair(self):
+        objects = {"coffee-spoon": "right", "cup": "left", "fork": "left"}
+        self.install_compiler(placements=objects)
+        draft = self.engine.draft_task(self.task_payload(list(objects)))["task_draft"]
+        self.engine.activate_task(self.activate_payload(draft))
+        self.client = FakeClient()
+        self.client.max_requests = 6
+        state = self.engine.inspect_pair(self.payload())
+        self.assertEqual(6, len(self.client.ledger))
+        self.assertEqual("fail", state["status"])
+        self.assertIn("move-coffee-spoon-left-to-right", state["proposal"]["action_ids"])
+        self.assertIn("Move the coffee-spoon from LEFT to RIGHT.", state["proposal"]["steps"])
+        self.assertEqual(set(objects), {value["object_id"] for value in state["checks"]})
+        capture = next(self.engine._directory.glob("inspection-*/capture.json"))
+        self.assertEqual(state["active_task"]["protocol_hash"], json.loads(capture.read_text())["protocol_hash"])
+
+    def test_six_object_inventory_has_exact_twelve_request_budget(self):
+        objects = {"cup": "left", "fork": "left", "spoon": "right", "plate": "left", "glass": "left", "napkin": "left"}
+        self.install_compiler(placements=objects)
+        draft = self.engine.draft_task(self.task_payload(list(objects)))["task_draft"]
+        self.engine.activate_task(self.activate_payload(draft))
+        self.client = FakeClient()
+        self.client.max_requests = 12
+        state = self.engine.inspect_pair(self.payload())
+        self.assertEqual(12, len(self.client.ledger))
+        self.assertEqual("pass", state["status"])
+        self.assertIn("at most 12 SAM calls", state["trace"][-2]["label"])
+
+    def test_compiler_client_must_have_one_request_no_retries_and_empty_ledger(self):
+        for field, value in (("max_requests", 2), ("retries", 1), ("ledger", [{"used": True}])):
+            self.install_compiler()
+            setattr(self.compiler, field, value)
+            state = self.engine.draft_task(self.task_payload())
+            self.assertIsNone(state["task_draft"])
+            self.assertTrue(state["draft_error"])
+            self.assertFalse(state["busy"])
+
+    def test_draft_storage_failure_releases_busy_and_never_changes_active_task(self):
+        self.install_compiler()
+        before = self.engine.snapshot()
+        with patch.object(self.engine, "_persist", side_effect=OSError("Private disk failure")):
+            state = self.engine.draft_task(self.task_payload())
+        self.assertFalse(state["busy"])
+        self.assertIsNone(state["busy_operation"])
+        self.assertEqual(before["active_task"], state["active_task"])
+        self.assertIsNone(state["task_draft"])
+        self.assertEqual([], self.compiler.ledger)
+
+    def test_failed_approval_storage_leaves_old_task_intact_and_no_new_token(self):
+        self.install_compiler()
+        state = self.engine.draft_task(self.task_payload())
+        before = state["active_task"]
+        with patch.object(self.engine, "_write", side_effect=OSError("Private approval failure")):
+            with self.assertRaises(OSError):
+                self.engine.activate_task(self.activate_payload(state["task_draft"]))
+        self.assertEqual(before, self.engine.snapshot()["active_task"])
+        self.assertIsNone(self.engine.snapshot()["capture_token"])
+
+    def test_missing_fork_requests_only_fork_evidence_without_guessing_absence_or_repair(self):
+        def missing_fork(value):
+            if self.client.ledger[-1]["concept"] == "fork":
+                value["objects"] = []
+            return value
+        self.client = FakeClient(transform=missing_fork)
+        state = self.engine.inspect_pair(self.payload())
+        self.assertEqual("unknown", state["status"])
+        request = state["inspection_request"]
+        self.assertEqual(["fork"], request["object_ids"])
+        self.assertIn("entire fork", " ".join(request["instructions"]))
+        self.assertIsNone(state["proposal"])
+        text = json.dumps(request).lower()
+        for unsupported_claim in ("fork is absent", "fork is hidden", "move the fork"):
+            self.assertNotIn(unsupported_claim, text)
+        fork = next(check for check in state["checks"] if check["object_id"] == "fork")
+        self.assertIn("do not prove absence", fork["grounding_reason"])
+        self.assertEqual("pass", next(check for check in state["checks"] if check["object_id"] == "spoon")["status"])
+
+    def test_region_boundary_uncertainty_requests_calibration_review_not_a_physical_move(self):
+        def straddling(value):
+            if self.client.ledger[-1]["concept"] == "fork":
+                value["objects"][0]["box"].update(x1=40, x2=60)
+            return value
+        self.client = FakeClient(transform=straddling)
+        state = self.engine.inspect_pair(self.payload())
+        request = state["inspection_request"]
+        self.assertEqual("region_support_unconfirmed", request["reason"])
+        self.assertEqual(["fork"], request["object_ids"])
+        self.assertIn("rectangles", " ".join(request["instructions"]))
+        self.assertIsNone(state["proposal"])
+
+    def test_multiple_instances_request_identity_contract_review_instead_of_choosing_one(self):
+        def multiple(value):
+            if self.client.ledger[-1]["concept"] == "fork":
+                extra = detection("right")
+                extra["object_id"] = 1
+                value["objects"].append(extra)
+            return value
+        self.client = FakeClient(transform=multiple)
+        state = self.engine.inspect_pair(self.payload())
+        self.assertEqual("target_identity_ambiguous", state["inspection_request"]["reason"])
+        self.assertEqual(["fork"], state["inspection_request"]["object_ids"])
+        self.assertIn("exactly one", " ".join(state["inspection_request"]["instructions"]))
+        self.assertIsNone(state["proposal"])
+
+    def test_unstable_pair_requests_consistent_fresh_views_not_repair(self):
+        def changed_fork(value):
+            if len(self.client.ledger) == 3:
+                value["objects"] = [detection("right")]
+            return value
+        self.client = FakeClient(transform=changed_fork)
+        state = self.engine.inspect_pair(self.payload())
+        self.assertEqual("stable_pair_required", state["inspection_request"]["reason"])
+        self.assertEqual(["fork"], state["inspection_request"]["object_ids"])
+        self.assertIn("unchanged between views", " ".join(state["inspection_request"]["instructions"]))
+        self.assertIsNone(state["proposal"])
+
+    def test_low_confidence_asks_for_clearer_evidence_and_success_clears_request(self):
+        def low_confidence(value):
+            if self.client.ledger[-1]["concept"] == "fork":
+                value["objects"][0]["confidence"] = 0.5
+            return value
+        self.client = FakeClient(transform=low_confidence)
+        state = self.engine.inspect_pair(self.payload())
+        self.assertEqual("confidence_below_threshold", state["inspection_request"]["reason"])
+        self.assertIsNone(state["proposal"])
+        self.client = FakeClient()
+        state = self.engine.inspect_pair(self.payload(index=3))
+        self.assertEqual("pass", state["status"])
+        self.assertIsNone(state["inspection_request"])
+
+    def test_expiration_and_task_activation_request_new_evidence_for_all_required_objects(self):
+        with patch("proofloop.interactive._now_ms", return_value=10000):
+            self.engine.inspect_pair(self.payload())
+        with patch("proofloop.interactive._now_ms", return_value=10001 + FRESHNESS_MS):
+            state = self.engine.snapshot()
+        self.assertEqual("evidence_expired", state["inspection_request"]["reason"])
+        self.assertEqual({"fork", "spoon"}, set(state["inspection_request"]["object_ids"]))
+        self.install_compiler(placements={"cup": "left", "plate": "right"})
+        draft = self.engine.draft_task(self.task_payload(["cup", "plate"]))["task_draft"]
+        state = self.engine.activate_task(self.activate_payload(draft))
+        self.assertEqual("fresh_capture_required", state["inspection_request"]["reason"])
+        self.assertEqual(["cup", "plate"], state["inspection_request"]["object_ids"])
+
+    def test_a_known_mistake_with_another_unknown_target_requests_inspection_before_any_move(self):
+        def missing_spoon(value):
+            if self.client.ledger[-1]["concept"] == "spoon":
+                value["objects"] = []
+            return value
+        self.client = FakeClient(wrong=True, transform=missing_spoon)
+        state = self.engine.inspect_pair(self.payload())
+        self.assertEqual("fail", state["status"])
+        self.assertEqual(["spoon"], state["inspection_request"]["object_ids"])
+        self.assertFalse(any(action.startswith("move-") for action in (state["proposal"] or {}).get("action_ids", [])))
+
+    def test_explicit_prompt_mapping_is_reviewed_hashed_and_used_without_hidden_identity_changes(self):
+        self.install_compiler(placements={"glass": "left", "fork": "left"})
+        payload = self.task_payload(["glass", "fork"])
+        payload["concepts"] = {"glass": "drinking glass", "fork": "dining fork"}
+        draft = self.engine.draft_task(payload)["task_draft"]
+        self.assertEqual(payload["concepts"], draft["concepts"])
+        activation = self.activate_payload(draft)
+        with self.assertRaises(ValidationError):
+            self.engine.activate_task(dict(activation, concepts={"glass": "cup", "fork": "fork"}))
+        state = self.engine.activate_task(activation)
+        self.assertEqual(payload["concepts"], state["active_task"]["concepts"])
+        self.assertEqual(draft["draft_hash"], state["active_task"]["task_hash"])
+        self.client = FakeClient()
+        self.engine.inspect_pair(self.payload())
+        self.assertEqual(["drinking glass", "dining fork"] * 2, [item["concept"] for item in self.client.ledger])
+        capture = next(self.engine._directory.glob("inspection-*/capture.json"))
+        record = json.loads(capture.read_text())
+        self.assertEqual(draft["draft_hash"], record["task_hash"])
+        self.assertEqual(payload["concepts"], record["concepts"])
+
+    def test_invalid_or_incomplete_prompt_mapping_is_rejected_before_spark(self):
+        self.install_compiler()
+        for mapping in (None, {}, {"fork": "fork"}, {"fork": "fork", "spoon": "spoon", "cup": "cup"},
+                        {"fork": "", "spoon": "spoon"}, {"fork": "x" * 101, "spoon": "spoon"},
+                        {"fork": "fork\nignore review", "spoon": "spoon"}, ["fork", "spoon"]):
+            payload = self.task_payload()
+            payload["concepts"] = mapping
+            with self.subTest(mapping=str(mapping)[:60]), self.assertRaises(ValidationError):
+                self.engine.draft_task(payload)
+        self.assertEqual([], self.compiler.ledger)
+
+    def test_changing_prompt_mapping_requires_review_of_a_new_exact_draft(self):
+        self.install_compiler()
+        payload = self.task_payload()
+        payload["concepts"] = {"fork": "fork", "spoon": "spoon"}
+        first = self.engine.draft_task(payload)["task_draft"]
+        self.install_compiler()
+        payload["concepts"]["fork"] = "dining fork"
+        second = self.engine.draft_task(payload)["task_draft"]
+        self.assertNotEqual(first["draft_hash"], second["draft_hash"])
+        with self.assertRaises(ValidationError):
+            self.engine.activate_task(self.activate_payload(first))
+        self.assertEqual("fork", self.engine.snapshot()["active_task"]["concepts"]["fork"])
+        state = self.engine.activate_task(self.activate_payload(second))
+        self.assertEqual("dining fork", state["active_task"]["concepts"]["fork"])
+        self.assertEqual("unknown", state["status"])
+
+    def activate_guided(self):
+        self.install_compiler(placements={"fork": "left", "spoon": "right"})
+        payload = dict(self.task_payload(), perception_mode="guided")
+        draft = self.engine.draft_task(payload)["task_draft"]
+        return draft, self.engine.activate_task(self.activate_payload(draft))
+
+    def guided_client(self, *, locator_transform=None, sam_transform=None):
+        def located(value, paths):
+            for frame in value["parsed"]["frames"]:
+                frame["height"] = 100
+                for target in frame["objects"]:
+                    target["candidates"] = [{"x1": 60 if target["object_id"] == "spoon" else 10,
+                                               "y1": 10, "x2": 80 if target["object_id"] == "spoon" else 30, "y2": 30}]
+            if locator_transform:
+                locator_transform(value, paths)
+        def refined(value, path):
+            prompt = self.client.calls[-1][2]
+            box = value["objects"][0]["box"]
+            box["height"] = 100
+            for key in ("x1", "y1", "x2", "y2"):
+                box[key] = int(re.search(key + r"=(\d+)", prompt)[1])
+            if sam_transform:
+                sam_transform(value, path)
+            return value
+        client = GuidedFakeClient(concepts={"fork": "fork", "spoon": "spoon"}, transform=located, sam_transform=refined)
+        client.max_requests = 5
+        client.usage_summary = lambda: {"request_attempts": len(client.ledger), "estimate_origin": "authored_mock_no_api_calls"}
+        self.client = client
+        return client
+
+    def guided_payload(self, *, offset=0):
+        payload = self.payload()
+        # Header-only transport fixtures, not real pictures or model evidence.
+        for index, item in enumerate(payload["images"]):
+            encoded = jpeg_header(width=100, height=100, suffix=b"")
+            encoded = encoded[:2] + b"\xff\xfe\x00\x04" + bytes([index + offset, index + offset]) + encoded[2:]
+            item["data_url"] = "data:image/jpeg;base64," + base64.b64encode(encoded).decode()
+        return payload
+
+    def test_guided_mode_requires_an_exact_new_review_and_invalidates_previous_evidence(self):
+        self.engine.inspect_pair(self.payload())
+        old = self.engine.snapshot()["active_task"]
+        draft, state = self.activate_guided()
+        self.assertEqual("concept", old["perception_mode"])
+        self.assertEqual("guided", draft["perception_mode"])
+        self.assertIn("does not independently verify identity", draft["perception_note"])
+        self.assertEqual("guided", state["active_task"]["perception_mode"])
+        self.assertEqual(draft["draft_hash"], state["active_task"]["task_hash"])
+        self.assertNotEqual(old["protocol_hash"], state["active_task"]["protocol_hash"])
+        self.assertEqual(("unknown", []), (state["status"], state["images"]))
+        self.assertTrue(state["capture_token"])
+        self.assertIsNone(state["perception_provenance"])
+
+    def test_guided_runs_one_task_independent_locator_plus_four_actual_sam_calls(self):
+        self.activate_guided()
+        client = self.guided_client()
+        state = self.engine.inspect_pair(self.guided_payload())
+        self.assertEqual("pass", state["status"])
+        self.assertEqual(["spark", "sam", "sam", "sam", "sam"], [value[0] for value in client.calls])
+        self.assertEqual("injected_client_not_verified_live", state["inference_origin"])
+        self.assertIn("Spark assigns object identity", state["source_note"])
+        self.assertIn("without independently verifying identity", state["perception_provenance"]["identity_basis"])
+        self.assertTrue(state["perception_provenance"]["task_independent_locator"])
+        self.assertNotIn("Place fork", client.calls[0][1])
+        self.assertNotIn('"regions"', client.calls[0][1])
+        self.assertTrue(all(len(image["boxes"]) == 2 for image in state["images"]))
+        capture = next(self.engine._directory.glob("inspection-*/capture.json"))
+        self.assertEqual("guided", json.loads(capture.read_text())["perception_mode"])
+        self.assertTrue(next(self.engine._directory.glob("inspection-*/guided.json")).is_file())
+
+    def test_missing_guided_anchors_remain_unknown_without_fabricated_sam_completion(self):
+        self.activate_guided()
+        def missing(value, paths):
+            for frame in value["parsed"]["frames"]:
+                for target in frame["objects"]:
+                    if target["object_id"] == "fork":
+                        target["candidates"] = []
+        client = self.guided_client(locator_transform=missing)
+        state = self.engine.inspect_pair(self.guided_payload())
+        self.assertEqual("unknown", state["status"])
+        self.assertEqual(["spark", "sam", "sam"], [value[0] for value in client.calls])
+        self.assertEqual(["fork"], state["inspection_request"]["object_ids"])
+        self.assertEqual(2, state["perception_provenance"]["missing_or_ambiguous_anchors"])
+        self.assertIsNone(state["proposal"])
+        self.assertFalse(list(self.engine._directory.glob("inspection-*/result-*-fork.json")))
+
+    def test_guided_wrong_locator_source_or_sam_source_stops_without_pass(self):
+        for index, which in enumerate(("locator", "sam")):
+            self.engine = InteractiveEngine(self.root, client_factory=lambda: self.client)
+            self.activate_guided()
+            def wrong_source(value, paths):
+                value["sources"][0]["sha256"] = "0" * 64
+            def wrong_sam(value, path):
+                value["source"]["sha256"] = "0" * 64
+            client = self.guided_client(locator_transform=wrong_source if which == "locator" else None,
+                                        sam_transform=wrong_sam if which == "sam" else None)
+            state = self.engine.inspect_pair(self.guided_payload(offset=10 * index))
+            self.assertEqual(("error", "unknown"), (state["phase"], state["status"]))
+            self.assertEqual(1 if which == "locator" else 2, len(client.calls))
+            self.assertIsNone(state["verified_at_ms"])
+
+    def test_guided_requires_five_request_budget_and_supported_images_before_paid_calls(self):
+        self.activate_guided()
+        client = self.guided_client()
+        with self.assertRaisesRegex(ValidationError, "upright JPEG"):
+            self.engine.inspect_pair(self.payload())
+        self.assertEqual([], client.calls)
+        client.max_requests = 4
+        state = self.engine.inspect_pair(self.guided_payload())
+        self.assertEqual("error", state["phase"])
+        self.assertEqual([], client.calls)
+
+    def test_invalid_or_unreviewed_perception_modes_cannot_silently_change_active_policy(self):
+        self.install_compiler()
+        for mode in (None, "automatic", "guided_fallback", True):
+            with self.subTest(mode=mode), self.assertRaises(ValidationError):
+                self.engine.draft_task(dict(self.task_payload(), perception_mode=mode))
+        self.assertEqual([], self.compiler.ledger)
+        self.assertEqual("concept", self.engine.snapshot()["active_task"]["perception_mode"])
+        draft = self.engine.draft_task(self.task_payload())["task_draft"]
+        with self.assertRaises(ValidationError):
+            self.engine.activate_task(dict(self.activate_payload(draft), perception_mode="guided"))
 
 
 if __name__ == "__main__":

@@ -50,6 +50,34 @@ class AdapterTests(unittest.TestCase):
         with self.assertRaisesRegex(MetaAPIError, "schema validation"):
             client.spark_json("test", SMOKE_SCHEMA)
 
+    def test_multi_image_spark_preserves_order_and_source_hashes(self):
+        captured = []
+        value = {"project": "ProofLoop", "requires_fresh_evidence": True, "result_when_occluded": "unknown"}
+        def opener(request, **kwargs):
+            captured.append(json.loads(request.data))
+            return response(lane(json.dumps(value)))
+        with tempfile.TemporaryDirectory() as temp:
+            paths = [Path(temp) / f"frame-{index}.png" for index in range(2)]
+            for index, path in enumerate(paths):
+                path.write_bytes(b"\x89PNG\r\n\x1a\nfixture-" + bytes([index]))
+            result = MetaClient("key", opener=opener).spark_json("Compare the ordered views", SMOKE_SCHEMA,
+                                                                      image_paths=paths)
+            self.assertEqual([item["sha256"] for item in result["sources"]],
+                             [__import__('hashlib').sha256(path.read_bytes()).hexdigest() for path in paths])
+        content = captured[0]["input"][0]["content"]
+        self.assertEqual([part["type"] for part in content], ["input_text", "input_image", "input_image"])
+        self.assertIsNone(result["source"])
+        self.assertNotIn("image_url", result["sources"][0])
+
+    def test_multi_image_invalid_arguments_stop_before_network(self):
+        client = MetaClient("key", opener=lambda *a, **k: self.fail("Invalid request reached network"))
+        for paths in ([], ["a.png"] * 9, "a.png"):
+            with self.assertRaises(ValueError):
+                client.spark_json("test", SMOKE_SCHEMA, image_paths=paths)
+        with self.assertRaises(ValueError):
+            client.spark_json("test", SMOKE_SCHEMA, image_path="a.png", image_paths=["b.png"])
+        self.assertEqual([], client.ledger)
+
     def test_http_error_redacts_key_and_echoed_request(self):
         def opener(*args, **kwargs):
             raise HTTPError("https://api.meta.ai/v1/responses", 401, "secret-key", {},

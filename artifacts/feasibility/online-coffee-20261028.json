@@ -1,0 +1,225 @@
+{
+  "conditions": {
+    "sam": {
+      "cases": [
+        {
+          "case_id": "coffee-e00-staging",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e00-dispense",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e01-staging",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e01-dispense",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e02-staging",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e02-dispense",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e03-staging",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e03-dispense",
+          "status": "unknown"
+        }
+      ],
+      "estimated_usd": 0.04,
+      "metrics": {
+        "accuracy": 0.0,
+        "balanced_accuracy_present_classes": 0.0,
+        "confusion": {
+          "fail": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 4
+          },
+          "pass": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 4
+          },
+          "unknown": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 0
+          }
+        },
+        "correct": 0,
+        "correct_acceptance_rate": 0.0,
+        "correct_acceptances": 0,
+        "decision_coverage": 0.0,
+        "eligible_cases": 8,
+        "ground_truth_counts": {
+          "fail": 4,
+          "pass": 4,
+          "unknown": 0
+        },
+        "illustrative_cases_excluded": 0,
+        "incorrect_pass_rate": 0.0,
+        "incorrect_passes": 0,
+        "missing_predictions": 0,
+        "unknown_rate": 1.0,
+        "unknown_results": 8
+      },
+      "status": "completed",
+      "wall_seconds": 17.354
+    },
+    "spark": {
+      "cases": [
+        {
+          "case_id": "coffee-e00-staging",
+          "status": "fail"
+        },
+        {
+          "case_id": "coffee-e00-dispense",
+          "status": "pass"
+        },
+        {
+          "case_id": "coffee-e01-staging",
+          "status": "fail"
+        },
+        {
+          "case_id": "coffee-e01-dispense",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e02-staging",
+          "status": "fail"
+        },
+        {
+          "case_id": "coffee-e02-dispense",
+          "status": "pass"
+        },
+        {
+          "case_id": "coffee-e03-staging",
+          "status": "fail"
+        },
+        {
+          "case_id": "coffee-e03-dispense",
+          "status": "pass"
+        }
+      ],
+      "estimated_usd": 0.077802,
+      "metrics": {
+        "accuracy": 0.875,
+        "balanced_accuracy_present_classes": 0.875,
+        "confusion": {
+          "fail": {
+            "fail": 4,
+            "pass": 0,
+            "unknown": 0
+          },
+          "pass": {
+            "fail": 0,
+            "pass": 3,
+            "unknown": 1
+          },
+          "unknown": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 0
+          }
+        },
+        "correct": 7,
+        "correct_acceptance_rate": 0.75,
+        "correct_acceptances": 3,
+        "decision_coverage": 0.875,
+        "eligible_cases": 8,
+        "ground_truth_counts": {
+          "fail": 4,
+          "pass": 4,
+          "unknown": 0
+        },
+        "illustrative_cases_excluded": 0,
+        "incorrect_pass_rate": 0.0,
+        "incorrect_passes": 0,
+        "missing_predictions": 0,
+        "unknown_rate": 0.125,
+        "unknown_results": 1
+      },
+      "status": "completed",
+      "wall_seconds": 76.395
+    }
+  },
+  "contract_hash": "a80ecfc424e5ae7de2204a653192389a430a7e83f920bff3773d2a064d3d62f2",
+  "dataset_id": "proofloop-authored-aloha-coffee-pilot-20261028",
+  "evidence_origin": "external_recorded_video",
+  "experiment": "licensed_recorded_video_comparison",
+  "inference_origin": "live_meta_api",
+  "limits": [
+    "Selected recorded frames; no interactive physical repair or continuous tracking claim.",
+    "Source rights, calibration, unique-target assumptions and labels require caller review.",
+    "Illustrative cases are excluded from accuracy metrics; small curated cases do not establish general reliability.",
+    "Estimated costs can exclude ambiguous charges. No raw media or provider responses are included."
+  ],
+  "physical_action_execution_verified": false,
+  "protocol_hash": "947df0779f5eacbc57cdc2206ef41db3f91c3e34aca75fc92738540090cde78e",
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "duration_ms": 22000,
+      "id": "coffee-episode-000000",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "02bc95dcc0922f5d7d759861e6e5151f4aa068631d5491e82badfc043f68cfd2"
+    },
+    {
+      "duration_ms": 22000,
+      "id": "coffee-episode-000001",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000001.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "20c258c99f463bd2451ab02b782f5f79bad3cba1bab7be7d45de6b43bb4f105e"
+    },
+    {
+      "duration_ms": 22000,
+      "id": "coffee-episode-000002",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000002.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "37d4930f315ac3a19288aa33b7446697be3e8a83cd31879674b40dbb8343d32f"
+    },
+    {
+      "duration_ms": 22000,
+      "id": "coffee-episode-000003",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000003.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "b10ceabf7c90ab2bea281965a2a9699b287e2f84e57dfb734dec07c8bd33ebd0"
+    }
+  ],
+  "status": "completed"
+}

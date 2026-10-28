@@ -7,7 +7,7 @@ import tempfile
 import threading
 import unittest
 
-from proofloop.server import create_server, MAX_JSON_BYTES
+from proofloop.server import create_server, MAX_JSON_BYTES, MAX_TASK_BYTES
 from proofloop.core import ValidationError
 
 
@@ -29,6 +29,12 @@ class FakeEngine:
 
     def inspect_pair(self, payload):
         return self._call("inspect", payload)
+
+    def draft_task(self, payload):
+        return self._call("task_draft", payload)
+
+    def activate_task(self, payload):
+        return self._call("task_activate", payload)
 
     def _call(self, name, payload=None):
         if self.fail is not None:
@@ -121,6 +127,29 @@ class ServerTests(unittest.TestCase):
             self.assertEqual(200, status)
             self.assertEqual(self.token, body["csrf_token"])
         self.assertEqual([("repair", None), ("new", None), ("inspect", {"images": ["test", "test2"]})], self.engine.calls)
+
+    def test_task_routes_preserve_csrf_and_delegate_exact_payloads_once(self):
+        draft = {"requirements": "Fork LEFT, spoon RIGHT", "objects": ["fork", "spoon"], "confirm_unique_targets": True}
+        activation = {"draft_id": "fixture", "draft_hash": "0" * 64,
+                      "confirm_requirements": True, "confirm_unique_targets": True}
+        for path, payload in (("/api/task/draft", draft), ("/api/task/activate", activation)):
+            self.assertEqual(403, self.request("POST", path, payload, {"Content-Type": "application/json"})[0])
+            status, _, state = self.request("POST", path, payload, self.mutation_headers())
+            self.assertEqual(200, status)
+            self.assertEqual(self.token, state["csrf_token"])
+        self.assertEqual([("task_draft", draft), ("task_activate", activation)], self.engine.calls)
+
+    def test_task_routes_have_small_bounded_body_limit(self):
+        for path in ("/api/task/draft", "/api/task/activate"):
+            self.assertEqual(413, self.request("POST", path, b"", self.mutation_headers(
+                **{"Content-Length": str(MAX_TASK_BYTES + 1)}))[0])
+        self.assertEqual([], self.engine.calls)
+
+    def test_task_validation_messages_are_safe_and_specific(self):
+        self.engine.fail = ValidationError("Review the current task draft before activating it")
+        status, _, body = self.request("POST", "/api/task/activate", {}, self.mutation_headers())
+        self.assertEqual(400, status)
+        self.assertEqual(str(self.engine.fail), body["error"]["message"])
 
     def test_control_actions_reject_extra_fields(self):
         self.assertEqual(400, self.request("POST", "/api/repair", {"ignored": True}, self.mutation_headers())[0])

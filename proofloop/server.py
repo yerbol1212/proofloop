@@ -24,6 +24,7 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_WEB_ROOT = ROOT / "web" / "dist"
 MAX_JSON_BYTES = 16 * 1024 * 1024
 MAX_CONTROL_BYTES = 1024
+MAX_TASK_BYTES = 24 * 1024
 MAX_MEDIA_BYTES = 10 * 1024 * 1024
 SOCKET_TIMEOUT_SECONDS = 20
 MIME_TYPES = {
@@ -76,6 +77,21 @@ TRUSTED_VALIDATION_MESSAGES = frozenset({
     "region coordinate must be a finite number",
     "region rectangle must have positive area inside [0,1]",
     "approved grounding rectangles must not overlap",
+    "Supply task requirements and an explicit object inventory",
+    "Task draft contains unsupported fields",
+    "Task requirements must contain 1 to 8192 UTF-8 bytes",
+    "Supply 2 to 6 distinct object IDs using letters, digits, underscores, dots or hyphens",
+    "Task title must contain 1 to 120 characters",
+    "Confirm one visually distinct instance of every target before drafting",
+    "Supply the exact draft ID, hash and review confirmations",
+    "Review the current task draft before activating it",
+    "Confirm the exact requirements and every unique target before activation",
+    "Assistant review requires a direct user authorization reference",
+    "SAM prompts must contain 1 to 100 printable characters",
+    "SAM prompt mapping must identify every task object exactly once",
+    "Select concept or guided perception mode before drafting",
+    "Guided perception requires object IDs without dots",
+    "Guided perception requires upright JPEG images without EXIF, up to 1280 pixels per side",
 })
 
 
@@ -101,7 +117,7 @@ class ProofLoopServer(ThreadingHTTPServer):
 
 
 def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
-                  web_root: Path = DEFAULT_WEB_ROOT) -> ThreadingHTTPServer:
+                  web_root: Path = DEFAULT_WEB_ROOT, *, video_lab: Any = None) -> ThreadingHTTPServer:
     """Create, without starting, a server that binds only the IPv4 loopback.
 
     ``engine`` is intentionally injectable so transport tests require no model
@@ -113,6 +129,9 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
         raise ValueError("Port must be between 0 and 65535")
     resolved_web_root = Path(web_root).resolve()
     csrf_token = secrets.token_urlsafe(32)
+    if video_lab is None:
+        from .video_lab import VideoLab
+        video_lab = VideoLab(root=ROOT)
 
     class Handler(BaseHTTPRequestHandler):
         server_version = "ProofLoop"
@@ -211,11 +230,11 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 raise RuntimeError("Invalid engine snapshot")
             return {**value, "csrf_token": csrf_token}
 
-        def _media(self, media_id: str, *, head: bool) -> None:
+        def _media(self, media_id: str, *, head: bool, provider: Any = engine) -> None:
             if not re.fullmatch(r"[A-Za-z0-9_-]{1,128}", media_id):
                 raise _RequestError(404, "not_found", "This image is unavailable.")
             try:
-                candidate = engine.media_path(media_id)
+                candidate = provider.media_path(media_id)
                 path = Path(candidate) if candidate is not None else None
                 if path is None or path.suffix.lower() not in MEDIA_MIME_TYPES or not path.is_file():
                     raise FileNotFoundError()
@@ -253,6 +272,10 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 self._json(200, {"ok": True}, head=head)
             elif path in ("/api/state", "/api/config"):
                 self._json(200, self._snapshot(engine.snapshot()), head=head)
+            elif path == "/api/lab":
+                self._json(200, video_lab.snapshot(), head=head)
+            elif path.startswith("/api/lab/media/"):
+                self._media(path[len("/api/lab/media/"):], head=head, provider=video_lab)
             elif path.startswith("/api/media/"):
                 self._media(path[len("/api/media/"):], head=head)
             elif path == "/api" or path.startswith("/api/"):
@@ -263,14 +286,16 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
         def _post(self) -> None:
             self._boundary(mutation=True)
             path = self._path()
-            methods = {"/api/repair": engine.begin_repair, "/api/new": engine.new_inspection,
-                       "/api/inspect": engine.inspect_pair}
+            methods = {"/api/repair": "begin_repair", "/api/new": "new_inspection", "/api/inspect": "inspect_pair",
+                       "/api/task/draft": "draft_task", "/api/task/activate": "activate_task"}
             if path not in methods:
                 raise _RequestError(404, "not_found", "This API endpoint is unavailable.")
-            payload = self._read_json(MAX_JSON_BYTES if path == "/api/inspect" else MAX_CONTROL_BYTES)
-            if path != "/api/inspect" and payload:
+            limit = MAX_JSON_BYTES if path == "/api/inspect" else MAX_TASK_BYTES if path.startswith("/api/task/") else MAX_CONTROL_BYTES
+            payload = self._read_json(limit)
+            if path in ("/api/repair", "/api/new") and payload:
                 raise _RequestError(400, "invalid_request", "This action does not accept extra fields.")
-            result = methods[path](payload) if path == "/api/inspect" else methods[path]()
+            method = getattr(engine, methods[path])
+            result = method(payload) if path not in ("/api/repair", "/api/new") else method()
             self._json(200, self._snapshot(result))
 
         def _dispatch(self, action) -> None:

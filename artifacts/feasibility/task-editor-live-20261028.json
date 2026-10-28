@@ -1,0 +1,21 @@
+{
+  "experiment": "live_task_contract_mutation",
+  "inference_origin": "live_meta_api",
+  "model": "muse-spark-1.3",
+  "requirements": "The unique fork must be located in RIGHT. The unique spoon must be located in LEFT.",
+  "proposed_check_regions": {
+    "fork": "right",
+    "spoon": "left"
+  },
+  "draft_changed_active_task": false,
+  "draft_changed_active_verdict": false,
+  "activated_contract_hash": "8ef6a16d805d97ec443739adfb2133282fe3c342f7d471e4c9c68b8dc8a2ff4e",
+  "activation_invalidated_old_evidence": true,
+  "review_origin": "assistant_under_user_authorization",
+  "human_reviewed": false,
+  "physical_correction_verified": false,
+  "limits": [
+    "One real Spark compile with an explicit region swap, exact assistant-authorized activation and software integration checks. No physical execution or human review of the exact draft is claimed.",
+    "Public record excludes private authority text, session IDs, mutation tokens and source media."
+  ]
+}

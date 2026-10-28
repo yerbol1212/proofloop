@@ -19,7 +19,7 @@ import os
 from pathlib import Path
 import re
 import time
-from typing import Any, Callable
+from typing import Any, Callable, Sequence
 from urllib.error import HTTPError, URLError
 from urllib.request import HTTPRedirectHandler, Request, build_opener
 
@@ -376,15 +376,25 @@ class MetaClient:
         return [entry["id"] for entry in models if isinstance(entry, dict) and isinstance(entry.get("id"), str)]
 
     def spark_json(self, prompt: str, schema: dict[str, Any], *, name: str = "proofloop",
-                   image_path: str | Path | None = None, max_output_tokens: int = 1200) -> dict[str, Any]:
+                   image_path: str | Path | None = None, image_paths: Sequence[str | Path] | None = None,
+                   max_output_tokens: int = 1200) -> dict[str, Any]:
         if not 16 <= max_output_tokens <= 4096 or len(prompt.encode()) > 32 * 1024:
             raise ValueError("Spark prompt/token cap exceeded")
         if not re.fullmatch(r"[A-Za-z0-9_-]{1,64}", name):
             raise ValueError("Invalid JSON schema name")
         content: list[dict[str, Any]] = [{"type": "input_text", "text": prompt}]
-        source = None
-        if image_path is not None:
-            image_url, source = _image_data(image_path)
+        if image_path is not None and image_paths is not None:
+            raise ValueError("Choose image_path or image_paths, not both")
+        if image_paths is not None and (isinstance(image_paths, (str, bytes, Path))
+                                       or not isinstance(image_paths, (list, tuple))
+                                       or not 1 <= len(image_paths) <= 8):
+            raise ValueError("Supply one to eight image paths")
+        sources = []
+        for path in ([image_path] if image_path is not None else image_paths or []):
+            image_url, image_source = _image_data(path)
+            sources.append(image_source)
+            if sum(item["bytes"] for item in sources) > 20 * 1024 * 1024:
+                raise ValueError("Spark images exceed the combined 20 MiB cap")
             content.append({"type": "input_image", "image_url": image_url})
         result = self._request("POST", "responses", {
             "model": SPARK_MODEL, "input": [{"type": "message", "role": "user", "content": content}],
@@ -398,7 +408,8 @@ class MetaClient:
         except (ValueError, TypeError, KeyError):
             raise MetaAPIError("Spark output failed local schema validation", code="schema_validation_failed",
                                response=result) from None
-        return {"response": result, "text": text, "parsed": parsed, "source": source,
+        return {"response": result, "text": text, "parsed": parsed,
+                "source": sources[0] if image_path is not None else None, "sources": sources,
                 "usage": _reported_usage(result.get("usage")), "latency_seconds": self.ledger[-1]["latency_seconds"]}
 
     def segment_image(self, image_path: str | Path, prompt: str, *, decode_masks: bool = True) -> dict[str, Any]:
