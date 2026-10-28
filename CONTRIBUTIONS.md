@@ -21,6 +21,9 @@ Project development began on 26 October 2026 after the hackathon kickoff. The re
 - Authored fork/spoon capture preset with unapproved placement requirements and separate camera calibration.
 - Stage-isolated correction traces with movement/occlusion invalidation, a bounded hypothetical repair and fresh post-correction evidence.
 - First owned phone experiment with actual Spark/SAM calls, explicit assistant-review provenance and a separately reviewed public results summary.
+- Local React workbench with recorded-evidence overlays, per-object placement results, repair proposals, explicit camera activation, paired photo upload, region calibration and a fresh-verification workflow.
+- Revision-bound one-use capture tokens, explicit operator scene/timing confirmations, prior-image rejection, bounded four-request inspection and stale-result handling.
+- Loopback HTTP adapter with private media registration, same-origin mutation checks and offline transport/interactive-engine tests.
 
 This list describes the implementation scope; live and physical validation status is recorded separately in `docs/FEASIBILITY.md`.
 
@@ -31,3 +34,5 @@ Python and its standard library are external infrastructure. Muse Spark and SAM 
 Codex assisted with code, tests and research. AI assistance does not establish original model capability or replace verification. All human contributors must be added to the hackathon submission under the event rules.
 
 FFmpeg and FFprobe are external command-line media tools, not project-authored decoders. Local decoder integration used version 9.0 binaries from [OSXExperts](https://www.osxexperts.net/), verified against the publisher's binary SHA-256 values. The binaries and generated test videos remain in ignored local storage and are not redistributed here. The extractor also supports tools already available on PATH.
+
+React, Vite, TypeScript and the self-hosted Inter font package are external frontend components installed through npm. Image-generated UI concepts guided the interface before implementation; those private design references are not runtime evidence or app backgrounds. Dependency versions are pinned in the lockfile.

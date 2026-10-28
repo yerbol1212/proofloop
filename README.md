@@ -6,9 +6,13 @@ ProofLoop turns a confirmed procedure into inspectable checks, evaluates observa
 
 ## Current status
 
-This repository is the feasibility implementation for the Meta Global AI Developer Hackathon. On 28 October 2026, one owned phone recording produced **correct PASS → misplaced fork FAIL → covered UNKNOWN → fresh corrected PASS**, using a real Spark-compiled placement protocol and 16 SAM image calls. The [phone report](artifacts/feasibility/phone-session-20261028.md) records evidence and limits. This is selected-frame evaluation of one recorded clip; the person did not follow a planner proposal generated afterward. Interactive correction and broader camera reliability remain unvalidated.
+This repository is the feasibility implementation for the Meta Global AI Developer Hackathon. On 28 October 2026, one owned phone recording produced **correct PASS → misplaced fork FAIL → covered UNKNOWN → fresh corrected PASS**, using a real Spark-compiled placement protocol and 16 SAM image calls. The [phone report](artifacts/feasibility/phone-session-20261028.md) records evidence and limits. This is selected-frame evaluation of one recorded clip; the person did not follow a planner proposal generated afterward. The local interactive workbench now connects repair proposals to fresh camera/photo inspection. Physical interactive closure and broader camera reliability remain unvalidated.
 
 See [feasibility status](docs/FEASIBILITY.md), [capture checklist](docs/CAPTURE.md) and [contributions](CONTRIBUTIONS.md).
+
+## Open the interactive workbench
+
+Build the frontend with `cd web && npm ci && npm run build`, then from the repository run `.venv/bin/python -m proofloop.server --port 8790` and open <http://127.0.0.1:8790>. Python 3.10+ with `.[sam]`, Node 24, and a locally configured Meta key are needed for live inspection. The [interactive guide](docs/INTERACTIVE.md) includes setup and exact phone capture instructions. The interface labels historical evidence, clears it on repair, and requires two new views before checking the correction.
 
 The [session guide](docs/SESSIONS.md) connects timestamped original frames to placement checks, evidence invalidation, a hypothetical repair plan and fresh verification. The first recorded phone run passed this bounded observation loop. The current [recording preset](examples/cutlery/README.md) uses one fork in LEFT and one spoon in RIGHT, with the fork moved and corrected during the clip. Earlier [generated-image tests](artifacts/feasibility/live-meta-20261026.md) and synthetic oracle diagnostics retain their separate provenance.
 

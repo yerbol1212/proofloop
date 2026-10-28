@@ -9,7 +9,7 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | 176 tests cover the core, compiler modes, grounding, accounting, capture, recorded sessions and explicit reviewer provenance | Passed |
+| Local tests | 228 tests cover the core, compiler, grounding, capture, recorded sessions, interactive engine and loopback HTTP boundary | Passed; system Python skips the optional parser test |
 | Official SAM codec | Official parser independently re-decoded all 16 phone responses; 12 nonempty masks matched saved rasters and four covered responses were empty | Passed on phone inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
 | Positive placement contract | Live Spark fork-left/spoon-right protocol; stable positive location evidence supports wrong-region fail and corrected pass | Passed on one recorded clip |
@@ -18,6 +18,7 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Available fork/spoon objects | 16 genuine SAM calls on actual cutlery frames; all four stage outcomes matched the scripted check | Passed initial phone case |
 | Real SAM grounding and mask parsing | Correct and wrong-region placement plus covered-scene abstention on actual phone frames | Passed initial phone case |
 | Physical correction and fresh verification | New post-correction frames pass; recorded before the planner proposal | Recorded observation supported; interactive loop pending |
+| Interactive workbench | Real recorded seed, repair invalidation, paired uploads, numeric calibration, offline fixture fail/pass/unknown/request-error/disconnect states | Browser flow passed with authored fixtures; new physical correction pending |
 | Synthetic scene inputs | Four generated scenes with exact prompts, hashes, annotations and provenance | Used in live Meta calls; not physical evidence |
 | Public repository | [yerbol1212/proofloop](https://github.com/yerbol1212/proofloop), verified public; tested build milestones published | Created |
 
@@ -30,6 +31,8 @@ Technical timestamp selection, calibration and exact-contract review were perfor
 The estimated cost for this round is $0.045654 at the published Standard rates. SAM median latency was 1.2425 seconds and Spark took 4.987 seconds. The report preserves the one-clip, declared-unique-target and selected-frame limits. It proves neither complete visibility nor exact counts; it is not an interactive repair or held-out accuracy result. Original media, extracted images, raw responses and private authorization text remain local.
 
 ## Earlier measured results
+
+The [interactive guide](INTERACTIVE.md) now describes a local React workbench connected to the real SAM adapter, grounding and checker. Browser tests covered upload and confirmation gating, calibration, immediate evidence invalidation and fresh result rendering. Separate injected-client fixtures exercised fail, pass, unknown, request errors and disconnection; these made zero Meta calls and establish UI/software behavior only. See the [interface validation record](INTERFACE-VALIDATION.md). The real current-scene gate requires two new operator photos after starting a repair.
 
 The synthetic oracle diagnostic contains 17 authored episodes and 24 stage assertions. All match expected checker outputs. The bounded planner assertion passes. These are authored software diagnostics, not model accuracy or physical benchmark scores. The raw [oracle report](../artifacts/feasibility/oracle-report.md) preserves provenance and per-case outcomes.
 
