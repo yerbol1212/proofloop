@@ -9,7 +9,7 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | 334 tests passed on Python 3.12; earlier GitHub CI passed Python 3.9/3.12 at [b6a5ebe](https://github.com/yerbol1212/proofloop/commit/b6a5ebe) | Passed software checks; optional parser availability differs by Python version |
+| Local tests | 362 tests and the production frontend build passed on Python 3.12/Node tooling; earlier GitHub CI passed Python 3.9/3.12 at [b6a5ebe](https://github.com/yerbol1212/proofloop/commit/b6a5ebe) | Passed software checks; optional parser availability differs by Python version |
 | Official SAM codec | Official parser independently re-decoded all 16 phone responses; 12 nonempty masks matched saved rasters and four covered responses were empty | Passed on phone inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
 | Positive placement contract | Live Spark fork-left/spoon-right protocol; stable positive location evidence supports wrong-region fail and corrected pass | Passed on one recorded clip |
@@ -24,6 +24,9 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Historical guided v1 comparison | Episodes 000004/000005 / four cases: guided 2/4, concept-only SAM 0/4, Spark 4/4 | Original results preserved |
 | Normalized guided v2 development replay | Same previously tested episodes 000004/000005 / four cases: guided 4/4 | Debugging replay; not fresh-source evaluation |
 | Normalized guided v2 fresh sources | Episodes 000006/000007 / four cases: guided 3/4 with one unknown; text SAM 0/4; Spark 4/4 | Partial fresh-source validation; no full-fix or superiority claim |
+| Report integrity | 49 benchmark/lab tests cover contradictory metrics/checks, source binding, grounded replay and guided versions; four historical summaries regenerate identically | Recorded consistency checked; no independent perception guarantee |
+| Linked recovery receipts | Parent receipt, planner proposal, media hashes, saved masks and historical decisions replay offline; Evidence log and read-only recovery API expose the chain | Implemented; physical execution remains unproved |
+| Temporal development stress | Eight selected cases from four old sources: guided 7/8, Spark 8/8; four UNKNOWN labels remain unverified by both | Zero incorrect passes here; one unnecessary guided abstention on a FAIL control |
 | Recorded Video lab | Reviewed summaries bound to local source hashes; paired frames, calibrated zones, method results and explanations | Read-only; no model calls or robot control |
 | Synthetic scene inputs | Four generated scenes with exact prompts, hashes, annotations and provenance | Used in live Meta calls; not physical evidence |
 | Public repository | [yerbol1212/proofloop](https://github.com/yerbol1212/proofloop), verified public; tested build milestones published | Created |
@@ -48,9 +51,19 @@ The [guided-fix report](../artifacts/feasibility/guided-fix-20261028.md) records
 
 V2 matched **4/4 on a development replay** of the already tested episodes 000004/000005. It then matched **3/4 on four fresh source pairs** from episodes 000006/000007, with one UNKNOWN, versus text SAM **0/4** and Spark **4/4**. The unresolved dispense case has partial first-view occlusion and no first-view SAM result; the second-view SAM score is **0.746**, below the approved **0.8** threshold. It correctly remains unverified rather than receiving a weaker threshold.
 
-The corpus now contains **eight original coffee recordings and 16 unique placement pairs**. V2 was evaluated on four development replay pairs plus four fresh pairs; replay does not add unique source cases. These small, distinct cohorts do not show a complete fix or better acceptance accuracy than Spark. Original failures and development exposure remain disclosed.
+The earlier placement cohorts contain **eight original coffee recordings and 16 unique placement pairs**. That v2 placement comparison evaluated four development replay pairs plus four fresh pairs; replay does not add independent source cases. These small, distinct cohorts do not show a complete fix or better acceptance accuracy than Spark. Original failures and development exposure remain disclosed.
 
 The Video lab exposes these results, source/license attribution, selected images, zones and explanations without new model calls. Source media remains local. Early staging frames are normal intermediate demonstration states that fail an authored placement gate; they are not publisher-labeled robot mistakes. Cases share a task/camera and are correlated. These results establish neither natural-error recognition, continuous action recognition, physical closed-loop recovery, held-out reliability nor validated market demand. See [sources](ONLINE-VIDEO-SOURCES.md) and the [benchmark procedure](BENCHMARK.md).
+
+## Review-driven integrity, recovery and stress checks
+
+The [AI systems review](AI-SYSTEMS-REVIEW-20261028.md) produced strict report validation before export or display. Completed conditions require exact case/check coverage, approved source hashes, consistent aggregate verdicts and recomputed metrics. Saved grounded observations and available inference sidecars are replayed, and guided versions cannot be mixed or silently relabeled. All **49 benchmark/lab tests** pass; the four historical public summaries remain byte-for-byte unchanged. The UI audit label refers to recorded totals and decisions, not verified physical perception.
+
+Linked [recovery receipts](RECOVERY.md) bind the original evidence and hypothetical planner proposal to invalidation and later inspection results. Offline verification checks the immutable request parent, contract, proposed plan, media and saved mask/observation replay. Evidence log and read-only `GET /api/recovery` show the result. A consistent receipt does not prove a person or robot executed the proposed movement; capture timing and physical execution retain their declared limits.
+
+The [temporal stress report](../artifacts/feasibility/temporal-stress-20261028.md) adds eight selected development cases from four **previously tested** recordings: four inconsistent/UNKNOWN pairs, two FAIL controls and two PASS controls. Guided matched **7/8**, Spark **8/8**. Both left all four reviewed UNKNOWN cases unverified. Guided additionally abstained on one FAIL control; neither produced an incorrect pass. The [public JSON](../artifacts/feasibility/online-temporal-stress-20261028.json) preserves the outcomes.
+
+This stress test adds no original source recordings and cannot be pooled with the separate fresh-source placement cohort to claim improved accuracy. The fresh guided result remains **3/4 versus Spark 4/4**. Zero incorrect passes in a tiny selected development cohort establishes neither general reliability nor recovery effectiveness.
 
 ## Earlier measured results
 

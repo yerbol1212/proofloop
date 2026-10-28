@@ -40,6 +40,12 @@ interface LabRun {
   case_count: number
   source_count: number
   evaluation_role?: 'development_reprocessing' | 'new_source_holdback'
+  report_integrity?: {
+    verdict_consistency_checked: boolean
+    metrics_recomputed: boolean
+    grounded_decisions_replayed: number
+    case_decisions_checked: number
+  }
   metrics: Record<string, Metric>
   conditions: Record<
     string,
@@ -173,6 +179,15 @@ export function VideoLab() {
             <p className="lab-requirements">
               {run.task_summary || run.requirements}
             </p>
+            {run.report_integrity?.metrics_recomputed &&
+            run.report_integrity.verdict_consistency_checked ? (
+              <p className="lab-audit-note">
+                <Icon name="check" size={16} />
+                Report totals checked against recorded decisions.{' '}
+                {run.report_integrity.grounded_decisions_replayed} grounded
+                decisions replayed.
+              </p>
+            ) : null}
             {run.evaluation_role ? (
               <p className="lab-limit">
                 {run.evaluation_role === 'development_reprocessing'

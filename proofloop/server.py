@@ -92,6 +92,8 @@ TRUSTED_VALIDATION_MESSAGES = frozenset({
     "Select concept or guided perception mode before drafting",
     "Guided perception requires object IDs without dots",
     "Guided perception requires upright JPEG images without EXIF, up to 1280 pixels per side",
+    "Guided perception changed. Request and review a new task draft before activation",
+    "Guided perception changed. Request and review a new task draft before inspection",
 })
 
 
@@ -274,6 +276,9 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 self._json(200, self._snapshot(engine.snapshot()), head=head)
             elif path == "/api/lab":
                 self._json(200, video_lab.snapshot(), head=head)
+            elif path == "/api/recovery":
+                self._json(200, {"recovery": engine.recovery_receipt(),
+                                 "verification": engine.verify_recovery()}, head=head)
             elif path.startswith("/api/lab/media/"):
                 self._media(path[len("/api/lab/media/"):], head=head, provider=video_lab)
             elif path.startswith("/api/media/"):

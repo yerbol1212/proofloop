@@ -28,6 +28,7 @@ from .core import EvidenceStore, Protocol, ValidationError, aggregate_status, ev
 from .grounding import SamImageEvidence, ground_sam_images
 from .guided import GUIDED_VERSION, guided_segment_pair
 from .meta import MAX_IMAGE_BYTES, MetaAPIError, MetaClient, load_env_file
+from .recovery import digest, evidence_bundle, save_receipt, task_contract, verify_recovery_receipt
 from .session import _approved, _bound_result, _repair_proposal, evaluate_session, verify_capture_files
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -187,6 +188,10 @@ class InteractiveEngine:
         self._client_factory = client_factory
         self._compile_client_factory = compile_client_factory
         self._draft_record: dict[str, Any] | None = None
+        self._evidence_record: dict[str, Any] | None = None
+        self._recovery_record: dict[str, Any] | None = None
+        self._recovery_path: Path | None = None
+        self._recovery_sequence = 0
         self._media: dict[str, Path] = {}
         self._media_hashes: dict[str, str] = {}
         self._seen_hashes: set[str] = set()
@@ -216,6 +221,7 @@ class InteractiveEngine:
             "active_task": self._task_metadata("Fork and spoon placement", "Place the fork in LEFT and the spoon in RIGHT.",
                                                "authored_default", reviewed=False),
             "task_draft": None, "draft_error": None,
+            "recovery": None,
         }
         # Exact old bytes remain blocked after a local server restart. This is
         # an accidental-reuse guard, not a claim of replay-proof capture.
@@ -382,6 +388,7 @@ class InteractiveEngine:
                 approval["perception_version"] = draft["perception_version"]
             # Persist approval before changing the in-memory executable task.
             self._write(self._directory / ("task-approval-" + draft["draft_id"] + ".json"), approval)
+            self._cancel_recovery()
             self._protocol, self._concepts = protocol, dict(draft["concepts"])
             metadata = self._task_metadata(draft["title"], draft["requirements"], draft["origin"],
                                            reviewed=True, review_origin=origin, model=draft["model"],
@@ -391,6 +398,7 @@ class InteractiveEngine:
             self._state.update(active_task=metadata, task_draft=None, draft_error=None, images=[], source_kind="none",
                                inference_origin=None, evidence_received_at_ms=None, evidence_observed_at_ms=None,
                                evidence_age_basis=None, perception_provenance=None)
+            self._evidence_record = None
             self._draft_record = None
             self._invalidate("task_activated")
             self._state["source_note"] = "Reviewed task activated. Prior evidence belongs to a different task; capture two new views."
@@ -406,6 +414,127 @@ class InteractiveEngine:
 
     def _persist(self) -> None:
         self._write(self._directory / "state.json", self._state)
+
+    def _recovery_summary(self, verification=None) -> dict[str, Any] | None:
+        record = self._recovery_record
+        if record is None:
+            return None
+        keys = ("receipt_id", "kind", "outcome", "before_revision", "requested_revision", "after_revision",
+                "before_status", "after_status", "plan_steps", "receipt_hash")
+        summary = {key: deepcopy(record.get(key)) for key in keys}
+        summary.update(task_hash=record["contract"].get("task_hash"), protocol_hash=record["contract"]["protocol_hash"],
+                       physical_action_execution_verified=False,
+                       verification_note="Fresh goal evidence can verify the requested state; physical execution and capture timing are not proved.")
+        for stage in ("before", "after"):
+            summary[stage + "_checks"] = [{key: str(check[key])[:256] for key in
+                ("check_id", "object_id", "status", "reason") if key in check} for check in record.get(stage + "_checks", [])][:64]
+        if verification is not None:
+            summary["verification"] = verification
+            if not verification["valid"]:
+                summary["outcome"] = "error"
+                summary["verification_note"] = verification["reason"]
+        return summary
+
+    def _save_recovery(self, record: dict[str, Any]) -> None:
+        previous = self._recovery_record
+        record = deepcopy(record)
+        record.pop("receipt_hash", None)
+        parent = previous if previous and previous["receipt_id"] == record["receipt_id"] else None
+        record["previous_receipt_hash"] = parent["receipt_hash"] if parent else None
+        record["previous_receipt"] = ({"file": self._recovery_path.relative_to(self.root).as_posix(),
+                                       "sha256": hashlib.sha256(self._recovery_path.read_bytes()).hexdigest()}
+                                      if parent else None)
+        path = self._directory / f"recovery-{record['receipt_id']}-{self._recovery_sequence:04d}.json"
+        self._recovery_sequence += 1
+        saved = save_receipt(path, record)
+        self._recovery_record, self._recovery_path = saved, path
+        self._state["recovery"] = self._recovery_summary(verify_recovery_receipt(path, root=self.root))
+
+    def _before_recovery_evidence(self) -> dict[str, Any] | None:
+        if self._evidence_record is None:
+            return None
+        bundle = deepcopy(self._evidence_record)
+        if self._state["source_kind"] == "camera":
+            bundle["evaluation_now_ms"] = _now_ms()
+        elif self._state["source_kind"] == "upload":
+            bundle["evaluation_now_ms"] = 1000 + max(0, _now_ms() - self._state["evidence_received_at_ms"])
+        return bundle
+
+    def _start_recovery(self, before: dict[str, Any]) -> None:
+        proposal = before.get("proposal") or {}
+        physical = before["status"] == "fail" and any(value.startswith("move-") for value in proposal.get("action_ids", []))
+        existing = self._recovery_record
+        if (not physical and existing and existing["kind"] == "repair"
+                and existing["outcome"] in ("awaiting_fresh_evidence", "needs_evidence", "error")):
+            record = deepcopy(existing)
+            record.update(outcome="awaiting_fresh_evidence", requested_revision=self._state["revision"],
+                          after=None, after_status=None, after_checks=[], after_revision=None)
+        else:
+            contract = task_contract(before["active_task"])
+            record = {"schema_version": "1.0", "receipt_id": secrets.token_hex(12),
+                "kind": "repair" if physical else "inspection", "outcome": "awaiting_fresh_evidence",
+                "contract": contract, "contract_hash": digest(contract),
+                "before": self._before_recovery_evidence(), "before_status": before["status"],
+                "before_checks": deepcopy(before["checks"]), "before_revision": before["revision"],
+                "requested_revision": self._state["revision"], "after_revision": None,
+                "after": None, "after_status": None, "after_checks": [],
+                "plan_action_ids": list(proposal.get("action_ids", [])) if physical else [],
+                "planner_version": "declared_location_dijkstra_v1" if physical else None,
+                "plan_steps": list(proposal.get("steps", []))[:32] if physical else
+                    list((before.get("inspection_request") or {}).get("instructions", []))[:32],
+                "physical_action_execution_verified": False,
+                "limits": ["Source timing, uniqueness, calibration and reviewer identity are declared assumptions.",
+                           "Hashes detect changes relative to this receipt; they are not signatures, trusted timestamps or proof of API origin.",
+                           "Recorded references describe historical scenes; two pictures do not prove the requested motion was executed.",
+                           "A passing outcome establishes the captured goal state after a request, not physical action recognition."]}
+        self._save_recovery(record)
+
+    def _finish_recovery(self, outcome: str) -> None:
+        if (self._recovery_record is None or self._recovery_record["outcome"] == "cancelled_task_change"
+                or self._recovery_record["outcome"].startswith("fresh_goal_verified")):
+            return
+        record = deepcopy(self._recovery_record)
+        if digest(task_contract(self._state["active_task"])) != record["contract_hash"]:
+            self._cancel_recovery()
+            return
+        record.update(after=deepcopy(self._evidence_record), after_status=self._state["status"],
+                      after_checks=deepcopy(self._state["checks"]), after_revision=self._state["revision"])
+        record["outcome"] = ("fresh_goal_verified_after_requested_repair" if record["kind"] == "repair" else
+                             "fresh_goal_verified_after_inspection") if outcome == "pass" else {
+                                 "fail": "still_failed", "unknown": "needs_evidence", "error": "error"}[outcome]
+        self._save_recovery(record)
+
+    def _complete_recovery_safely(self, outcome: str) -> None:
+        try:
+            self._finish_recovery(outcome)
+        except (OSError, ValueError, TypeError, KeyError, AttributeError):
+            # A receipt error must not rewrite a separately supported image
+            # verdict; it only removes the recovery claim.
+            summary = self._recovery_summary()
+            if summary is not None:
+                summary.update(outcome="error", verification_note="Recovery receipt could not be saved or replayed; no verified recovery claim is available.")
+                self._state["recovery"] = summary
+
+    def _cancel_recovery(self) -> None:
+        if self._recovery_record is not None and self._recovery_record["outcome"] in (
+                "awaiting_fresh_evidence", "needs_evidence", "still_failed", "error"):
+            record = deepcopy(self._recovery_record)
+            record["outcome"] = "cancelled_task_change"
+            self._save_recovery(record)
+
+    def recovery_receipt(self) -> dict[str, Any] | None:
+        with self._lock:
+            verification = self.verify_recovery()
+            return deepcopy(self._recovery_summary(verification))
+
+    def verify_recovery(self) -> dict[str, Any]:
+        with self._lock:
+            if self._recovery_path is None:
+                return {"valid": False, "scope": "requested", "receipt_hash": None, "outcome": None,
+                        "reason": "No recovery receipt has been recorded.", "physical_action_execution_verified": False}
+            result = verify_recovery_receipt(self._recovery_path, root=self.root)
+            self._state["recovery"] = self._recovery_summary(result)
+            return result
 
     def _trace(self, event: str, label: str, status: str) -> None:
         self._state["trace"].append({"id": secrets.token_hex(6), "event": event, "label": label,
@@ -563,6 +692,13 @@ class InteractiveEngine:
             proposal=self._proposal(observations, wrong),
             source_note="Historical recorded evidence: the fork was on RIGHT. Start repair before capturing the current scene.",
             inference_origin="replayed_hash_bound_live_meta_api_on_recorded_frames")
+        self._evidence_record = evidence_bundle(self.root, self._state["active_task"], contract["regions"],
+            source_kind="recorded", inference_origin=self._state["inference_origin"], revision=self._state["revision"],
+            timestamps=[frame["source_timestamp_ms"] for frame in stage["frames"]],
+            evaluation_now_ms=round(stage["end_seconds"] * 1000), timestamp_basis="recorded_source_pts",
+            image_paths=[files[frame["sha256"]] for frame in stage["frames"]],
+            result_paths=[{obj: report_path.parent / f"wrong_region-{index}-{object_index}.json"
+                           for object_index, obj in enumerate(protocol.objects)} for index in range(2)])
         self._trace("recorded_mistake", "Recorded fork on RIGHT; required LEFT", "fail")
 
     def _api_ready(self) -> bool:
@@ -585,9 +721,10 @@ class InteractiveEngine:
             state.update(api_ready=self._api_ready(), evidence_age_ms=age,
                          stale=state["source_kind"] == "recorded" or age is not None and age > FRESHNESS_MS,
                          pending_token_issued_at_ms=self._token_issued_ms)
-            if state["stale"] and state["phase"] == "verified":
+            if state["stale"] and state["source_kind"] != "recorded" and state["phase"] in ("verified", "mistake", "unknown"):
                 state["phase"], state["status"] = "unknown", "unknown"
-                state["source_note"] = "The earlier capture passed, but is now older than 30 seconds. Inspect again after any movement."
+                state["proposal"] = None
+                state["source_note"] = "The earlier captured evidence is now older than 30 seconds. Inspect the current scene again."
                 for check in state["checks"]:
                     check.update(status="unknown", reason="The earlier captured evidence is older than 30 seconds")
             state["inspection_request"] = self._inspection_request(state)
@@ -610,7 +747,12 @@ class InteractiveEngine:
             return self.snapshot()
 
     def begin_repair(self) -> dict[str, Any]:
-        return self._invalidate("repair_started")
+        with self._lock:
+            before = self.snapshot()
+            self._invalidate("repair_started")
+            self._start_recovery(before)
+            self._persist()
+            return self.snapshot()
 
     def new_inspection(self) -> dict[str, Any]:
         return self._invalidate("new_inspection")
@@ -684,6 +826,7 @@ class InteractiveEngine:
             self._token = None
             self._state["capture_token"] = None
             self._seen_hashes.update(hashes)
+            self._evidence_record = None
             self._state.update(phase="checking", status="unknown", busy=True, busy_operation="inspection", error=None, source_kind=source,
                                proposal=None, verified_at_ms=None, regions=regions, images=[], usage=None, perception_provenance=None,
                                source_note=("Inspecting two new views with task-independent Spark localization and Meta SAM. "
@@ -722,6 +865,7 @@ class InteractiveEngine:
                                    error="Local evidence could not be saved. Start a new inspection.")
                 return self.snapshot()
         client, results, grounded = None, [], None
+        result_paths = [{}, {}]
         try:
             if self._client_factory is None:
                 load_env_file(self.root / ".env.local")
@@ -749,7 +893,9 @@ class InteractiveEngine:
                     if any((item.get("box", {}).get("width"), item.get("box", {}).get("height")) != decoded[index][2:]
                            for item in result.get("objects", [])):
                         raise ValidationError("SAM geometry does not match the exact supplied image")
-                    self._write(run_directory / f"result-{index}-{object_id}.json", result)
+                    result_path = run_directory / f"result-{index}-{object_id}.json"
+                    self._write(result_path, result)
+                    result_paths[index][object_id] = result_path
                     samples.append(SamImageEvidence(object_id, times[index], result,
                                    "operator_declared_owned_" + source, self._concepts[object_id]))
                     frame_results.append((object_id, result))
@@ -789,9 +935,15 @@ class InteractiveEngine:
                     }
                 self._state["images"] = [self._register_media(path, decoded[index][2], decoded[index][3], results[index])
                                          for index, path in enumerate(paths)]
+                self._evidence_record = evidence_bundle(self.root, self._state["active_task"], regions,
+                    source_kind=source, inference_origin=self._state["inference_origin"], revision=revision,
+                    timestamps=times, evaluation_now_ms=now, timestamp_basis=basis,
+                    image_paths=paths, result_paths=result_paths,
+                    guided_path=run_directory / "guided.json" if mode == "guided" else None)
                 self._trace("inspection_complete", {"pass": "Fresh captured placement verified", "fail": "Mistake observed in fresh captures",
                                                    "unknown": "Insufficient visual evidence; no pass issued"}[status], status)
                 self._state["usage"] = client.usage_summary()
+                self._complete_recovery_safely(status)
         except (MetaAPIError, OSError, ValueError, TypeError, KeyError, AttributeError) as error:
             with self._lock:
                 self._state.update(phase="error", status="unknown", verified_at_ms=None, proposal=None,
@@ -799,6 +951,7 @@ class InteractiveEngine:
                     source_note="Inspection failed; no correction was verified. Start a new inspection with two new views.",
                     usage=client.usage_summary() if client is not None else None)
                 self._unknown_checks("Inspection failed; no supported current result")
+                self._complete_recovery_safely("error")
                 self._trace("inspection_failed", "Inspection stopped without a verified result", "unknown")
                 try:
                     self._write(run_directory / "failure.json", {"error_type": type(error).__name__,

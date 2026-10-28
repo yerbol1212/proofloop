@@ -1,5 +1,17 @@
 # Interactive interface validation — 28 October 2026
 
+## Evidence audit and linked recovery
+
+The flow under test was Evidence log → Check local evidence → replayed result, including rejection after an authored source image changed. No Browser plugin was available; the built-in browser provided DOM controls, screenshots and console inspection. No external Playwright process was used.
+
+- Strict TypeScript/Vite build passed. The backend suite has 362 passing tests, including the new HTTP read route and recovery invariants.
+- An isolated local server used explicitly authored PNG/mask fixtures and an injected client, with zero Meta calls. The browser showed the earlier FAIL checks, exact proposed move, invalidation revisions and recorded PASS. The replay button verified saved files and checks. Modifying an authored source image made replay fail and removed the verified recovery claim; the original image was restored afterward.
+- A saved receipt remained historical after the current captured result expired. The log displayed current UNKNOWN/expired separately from the older goal result. Neither source was labeled physical motion evidence.
+- Desktop 1536 × 1024 and mobile 390 × 844 were checked. Document/body widths were 390 px on mobile. No framework overlay or relevant console warnings/errors appeared.
+- Private screenshots `recovery-record-pass-desktop.jpg`, `recovery-record-rejected.jpg` and `recovery-record-mobile.jpg` remain in the parent workspace's `qa/proofloop-ui/`. They validate interface/software behavior only. Real model results remain in their separate recorded-video reports.
+- Video Lab now reports whether saved verdicts and totals passed consistency/replay validation. It preserves the original comparisons and shows the separately labeled development temporal-stress experiment. The stress result is guided 7/8 versus Spark 8/8, with four reviewed UNKNOWN cases; it is not a general accuracy or superiority claim.
+- In the normal app, Start repair → Evidence log → Check local evidence also replayed the genuine historical misplaced-fork reference successfully. Its request-only receipt remained **Awaiting new evidence**, with no after-verdict. This exercised real saved Meta evidence without another paid call or an invented physical correction. Safe results are in [recovery-request-20261028.json](../artifacts/feasibility/recovery-request-20261028.json). Final `recovery-real-request-desktop.jpg` and `recovery-real-request-mobile.jpg` screenshots remain private; both were inspected, with mobile document/body width 390 px and no relevant console warnings/errors.
+
 ## Normalized grounding revision
 
 - The updated production frontend passed strict TypeScript/Vite checks. The backend suite has 334 tests, including normalized geometry, separate uncertainty gates, unchanged low-confidence abstention, method-version review and evaluation-role behavior.

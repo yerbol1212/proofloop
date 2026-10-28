@@ -1813,6 +1813,116 @@ select:focus-visible,
   font-size: 12px;
   font-weight: 400;
 }
+.lab-audit-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 16px;
+}
+.lab-audit-note svg {
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+.recovery-panel {
+  margin: 30px 0;
+  padding: 26px 0;
+  border-block: 1px solid var(--border);
+}
+.recovery-heading {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+.recovery-heading h3 {
+  margin-top: 0;
+}
+.recovery-heading p,
+.recovery-empty,
+.recovery-note,
+.recovery-receipt-id,
+.recovery-limit,
+.recovery-stage p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.6;
+}
+.recovery-heading .button {
+  flex-shrink: 0;
+}
+.recovery-outcome {
+  font-weight: 600;
+  margin: 18px 0;
+}
+.recovery-stages {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr 1fr;
+  gap: 14px;
+}
+.recovery-stage {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px;
+  min-width: 0;
+}
+.recovery-stage h4 {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 8px;
+  font-size: 14px;
+}
+.recovery-stage ol {
+  padding-left: 18px;
+  font-size: 13px;
+  line-height: 1.6;
+}
+.recovery-stage li + li {
+  margin-top: 9px;
+}
+.recovery-checks {
+  margin: 14px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.recovery-checks li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+.recovery-pending {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--muted);
+}
+.recovery-receipt-id {
+  overflow-wrap: anywhere;
+  font-size: 12px;
+}
+.recovery-limit {
+  max-width: 900px;
+  margin-bottom: 0;
+}
+@media (max-width: 800px) {
+  .recovery-heading {
+    flex-direction: column;
+    gap: 10px;
+  }
+  .recovery-stages {
+    grid-template-columns: 1fr;
+  }
+  .recovery-stage {
+    padding: 16px;
+  }
+}
 .lab-limit {
   font-size: 13px;
   color: var(--muted);

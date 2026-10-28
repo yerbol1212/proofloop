@@ -47,6 +47,13 @@ class FakeEngine:
             raise KeyError(media_id)
         return self.media
 
+    def recovery_receipt(self):
+        return None
+
+    def verify_recovery(self):
+        return {"valid": False, "scope": "requested", "receipt_hash": None, "outcome": None,
+                "reason": "No linked recovery is available.", "physical_action_execution_verified": False}
+
 
 class ServerTests(unittest.TestCase):
     def setUp(self):
@@ -100,6 +107,18 @@ class ServerTests(unittest.TestCase):
         self.assertIn("frame-ancestors 'none'", headers["Content-Security-Policy"])
         self.assertNotIn("Access-Control-Allow-Origin", headers)
         self.assertNotIn("Set-Cookie", headers)
+
+    def test_recovery_replay_route_is_read_only_same_origin_and_contains_no_capture_token(self):
+        status, headers, body = self.request("GET", "/api/recovery")
+        self.assertEqual(200, status)
+        self.assertEqual("no-store", headers["Cache-Control"])
+        self.assertIsNone(body["recovery"])
+        self.assertFalse(body["verification"]["physical_action_execution_verified"])
+        self.assertNotIn("capture_token", json.dumps(body))
+        self.assertEqual(403, self.request("GET", "/api/recovery", headers={"Origin": "https://other.example"})[0])
+        self.assertEqual(404, self.request("POST", "/api/recovery", {}, self.mutation_headers())[0])
+        self.assertEqual(b"", self.request("HEAD", "/api/recovery")[2])
+        self.assertEqual([], self.engine.calls)
 
     def test_host_header_prevents_rebinding(self):
         for host in ("localhost:" + str(self.server.server_address[1]), "evil.example", "127.0.0.1"):

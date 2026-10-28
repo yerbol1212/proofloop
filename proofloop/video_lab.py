@@ -237,6 +237,8 @@ class VideoLab:
             title = "Normalized grounding — development replay"
         elif normalized and evaluation_role == "new_source_holdback":
             title = "Normalized grounding — new sources"
+        if evaluation_role == "development_reprocessing" and contract["dataset_id"] == "proofloop-temporal-stress-development-20261028":
+            title = "Temporal uncertainty — development stress test"
         task_summary = " ".join(
             f"{check.object_id.replace('_', ' ')} must be in {check.region_id.upper()}."
             if check.kind == "location" else

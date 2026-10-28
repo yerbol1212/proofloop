@@ -97,6 +97,12 @@ The source and assistant review records are in `guided-v2-holdback-provenance.js
 
 The two new videos add **19,931,293 bytes**. Total acquired MP4 media across all batches is **100,826,554 bytes**, below the initial 150 MB cap. Raw media remains ignored and unpublished.
 
+## Temporal-stability stress reuse of existing sources
+
+The [temporal stress evaluation](../artifacts/feasibility/temporal-stress-20261028.md) reuses episodes **000000–000003** without acquiring additional videos or changing image content. Four inconsistent pairs use 0.500 / 20.000 second frames; two stable staging controls use 2.500 / 3.500 seconds from episodes 000000 / 000001; two stable dispense controls use 19.500 / 21.500 seconds from episodes 000002 / 000003. All 16 selected frame hashes are distinct within this suite and were visually reviewed and frozen before its inference run.
+
+UNKNOWN labels refer to failure to establish the required two consistent location samples, rather than ignorance of the latest physical state. These are constructed **development** cases on already exposed sources; new pairings or newly extracted controls do not make them an independent holdback. The source license, attribution and calibrated regions remain unchanged. The approved contract hash is `bbfd2b963d398dd34b1b11072a1791860b9a2bb60427daff30132375c359472a`; private frame extraction, label review and approval records remain in the ignored online-review folder. See the linked report for actual results and limits.
+
 ## Other sources checked
 
 - **IndustReal:** [the TU Eindhoven data record](https://research.tue.nl/en/datasets/industreal-dataset-of-egocentric-videos-for-procedure-understandi/) explicitly lists Apache-2.0 for the dataset. Its linked 4TU publisher page timed out during this acquisition; no IndustReal video was downloaded. The [authors’ project](https://timschoonbeek.github.io/industreal.html) remains a useful source for the need to recognize correct completion rather than merely recognize an action.

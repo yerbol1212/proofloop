@@ -3,6 +3,7 @@ import type { CSSProperties, PointerEvent } from 'react'
 import { Icon } from './icons'
 import { TaskEditor } from './TaskEditor'
 import { VideoLab } from './VideoLab'
+import { RecoveryPanel } from './RecoveryPanel'
 import type {
   EvidenceImage,
   InspectPayload,
@@ -394,7 +395,7 @@ function Inspector({
             <span className="verified-mark">
               <Icon name="check" size={32} />
             </span>
-            <h2>Correction verified.</h2>
+            <h2>Placement verified.</h2>
             <p>All required target placements were observed.</p>
           </div>
           <button
@@ -1019,8 +1020,8 @@ function CapturePanel({
               onChange={(event) => setFreshConfirmed(event.target.checked)}
             />
             <span>
-              I took both photos after starting this repair, at least one second
-              apart.
+              I took both photos after starting this inspection, at least one
+              second apart.
             </span>
           </label>
         ) : (
@@ -1143,6 +1144,11 @@ function EvidenceLog({ state }: { state: Snapshot }) {
           </li>
         ))}
       </ul>
+      <RecoveryPanel
+        receipt={state.recovery || null}
+        activeProtocolHash={state.active_task?.protocol_hash}
+        activeTaskHash={state.active_task?.task_hash}
+      />
       <h3>Session trace</h3>
       <ol className="trace-list">
         {state.trace.map((entry) => (
@@ -1155,11 +1161,13 @@ function EvidenceLog({ state }: { state: Snapshot }) {
           </li>
         ))}
       </ol>
-      <p className="log-footnote">
-        A repair proposal is hypothetical. Only new model observations can
-        support a passing correction. Upload timing is declared by the operator;
-        this app cannot prove when a photo was taken.
-      </p>
+      {!state.recovery ? (
+        <p className="log-footnote">
+          A repair proposal is hypothetical. Only new model observations can
+          support a passing correction. Upload timing is declared by the
+          operator; this app cannot prove when a photo was taken.
+        </p>
+      ) : null}
     </section>
   )
 }
@@ -1216,7 +1224,7 @@ function heading(state: Snapshot): [string, string] {
     return ['Capture the correction.', placementSummary(state)]
   if (state.phase === 'verified')
     return [
-      'Correction verified.',
+      'Placement verified.',
       'All required target placements were observed.',
     ]
   if (state.phase === 'mistake') {

@@ -1,0 +1,59 @@
+{
+  "before_reference_is_historical": true,
+  "evidence_origin": "owned_recorded_phone_video",
+  "experiment": "historical_meta_reference_recovery_request",
+  "fresh_physical_correction_verified": false,
+  "inference_origin": "replayed_saved_live_meta_responses_no_new_inference",
+  "physical_action_execution_verified": false,
+  "recovery": {
+    "after_checks": [],
+    "after_revision": null,
+    "after_status": null,
+    "before_checks": [
+      {
+        "check_id": "check-fork-left",
+        "object_id": "fork",
+        "reason": "Declared unique target is positively located in another approved region",
+        "status": "fail"
+      },
+      {
+        "check_id": "check-spoon-right",
+        "object_id": "spoon",
+        "reason": "Declared unique target is positively located in its required region",
+        "status": "pass"
+      }
+    ],
+    "before_revision": 0,
+    "before_status": "fail",
+    "kind": "repair",
+    "outcome": "awaiting_fresh_evidence",
+    "physical_action_execution_verified": false,
+    "plan_steps": [
+      "Move the fork from RIGHT to LEFT.",
+      "Keep every target visible and hands clear, then capture two fresh views at least one second apart."
+    ],
+    "protocol_hash": "bec50a01b7bc713c80894e786c32f8cc24176a54f9b591b4b55361cb918287aa",
+    "receipt_hash": "2e830b44fdc0678b0a23fceb4366a56ed7a8a8c6af752a169bcd26c3e786d385",
+    "receipt_id": "770bc5b4a0a8f6d51107e2d9",
+    "requested_revision": 1,
+    "task_hash": "5df0f1df659490c205e8e42ffc55b7a3d1bbec009b011973c5b17e5723dc3762",
+    "verification": {
+      "outcome": "awaiting_fresh_evidence",
+      "physical_action_execution_verified": false,
+      "reason": "The request record is consistent. No fresh passing recovery outcome is established by this request alone.",
+      "receipt_hash": "2e830b44fdc0678b0a23fceb4366a56ed7a8a8c6af752a169bcd26c3e786d385",
+      "scope": "requested",
+      "valid": true
+    },
+    "verification_note": "Fresh goal evidence can verify the requested state; physical execution and capture timing are not proved."
+  },
+  "request_origin": "assistant_under_user_authorization",
+  "verification": {
+    "outcome": "awaiting_fresh_evidence",
+    "physical_action_execution_verified": false,
+    "reason": "The request record is consistent. No fresh passing recovery outcome is established by this request alone.",
+    "receipt_hash": "2e830b44fdc0678b0a23fceb4366a56ed7a8a8c6af752a169bcd26c3e786d385",
+    "scope": "requested",
+    "valid": true
+  }
+}

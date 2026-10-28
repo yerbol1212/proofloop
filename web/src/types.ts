@@ -63,6 +63,41 @@ export interface Snapshot {
     object_ids: string[]
     reason: string
   } | null
+  recovery?: RecoveryReceipt | null
+}
+export interface RecoveryReceipt {
+  receipt_id: string
+  receipt_hash: string
+  kind: 'repair' | 'inspection'
+  outcome:
+    | 'awaiting_fresh_evidence'
+    | 'fresh_goal_verified_after_requested_repair'
+    | 'fresh_goal_verified_after_inspection'
+    | 'still_failed'
+    | 'needs_evidence'
+    | 'error'
+    | 'cancelled_task_change'
+  before_revision: number
+  after_revision: number | null
+  before_status: Status
+  after_status: Status | null
+  before_checks: {
+    check_id: string
+    object_id?: string
+    status: Status
+    reason?: string
+  }[]
+  after_checks: {
+    check_id: string
+    object_id?: string
+    status: Status
+    reason?: string
+  }[]
+  plan_steps: string[]
+  task_hash: string | null
+  protocol_hash: string
+  verification_note: string
+  physical_action_execution_verified: false
 }
 export interface TaskCheck {
   id: string
@@ -83,6 +118,7 @@ export interface ActiveTask {
   objects: string[]
   requirements: string
   protocol_hash: string
+  task_hash?: string | null
   protocol: TaskProtocol
   concepts: Record<string, string>
   origin: string
