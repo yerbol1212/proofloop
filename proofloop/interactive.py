@@ -22,14 +22,16 @@ import time
 import zlib
 from typing import Any
 
-from .compiler import CompilerError, compile_protocol
+from .acquisition import build_acquisition_plan, check_source_pair
+from .compiler import COFFEE_PLACEMENT_PRESET, CompilerError, authored_coffee_protocol, compile_protocol
 from .concepts import validate_concept_mapping
 from .core import EvidenceStore, Protocol, ValidationError, aggregate_status, evaluate
 from .grounding import SamImageEvidence, ground_sam_images
 from .guided import GUIDED_VERSION, guided_segment_pair
 from .meta import MAX_IMAGE_BYTES, MetaAPIError, MetaClient, load_env_file
-from .recovery import digest, evidence_bundle, save_receipt, task_contract, verify_recovery_receipt
+from .recovery import digest, evidence_bundle, replay_evidence, save_receipt, task_contract, verify_recovery_receipt
 from .session import _approved, _bound_result, _repair_proposal, evaluate_session, verify_capture_files
+from .workflow import validate_continuation, workflow_status
 
 ROOT = Path(__file__).resolve().parents[1]
 TOKEN_LIFETIME_MS = 20 * 60 * 1000
@@ -189,6 +191,8 @@ class InteractiveEngine:
         self._compile_client_factory = compile_client_factory
         self._draft_record: dict[str, Any] | None = None
         self._evidence_record: dict[str, Any] | None = None
+        self._workflow_replay = None
+        self._reset_acquisition()
         self._recovery_record: dict[str, Any] | None = None
         self._recovery_path: Path | None = None
         self._recovery_sequence = 0
@@ -246,26 +250,31 @@ class InteractiveEngine:
     def _task_metadata(self, title: str, requirements: str, origin: str, *, reviewed: bool,
                        review_origin: str | None = None, model: str | None = None,
                        perception_mode: str = "concept") -> dict[str, Any]:
-        return {"title": title, "objects": list(self._protocol.objects), "requirements": requirements,
+        return {"title": title, "objects": list(self._protocol.objects), "regions": list(self._protocol.regions), "requirements": requirements,
                 "protocol_hash": self._protocol.content_hash, "protocol": self._protocol.to_dict(),
                 "concepts": dict(self._concepts), "origin": origin, "reviewed": reviewed,
                 "human_reviewed": reviewed and review_origin == "local_operator", "review_origin": review_origin,
                 "model": model, "task_hash": None, **_perception_details(perception_mode)}
 
     @staticmethod
-    def _validate_task_input(payload: Any) -> tuple[str, str, list[str], dict[str, str], str]:
+    def _validate_task_input(payload: Any) -> tuple[str, str, list[str], dict[str, str], str, list[str], str]:
         if not isinstance(payload, dict):
             raise ValidationError("Supply task requirements and an explicit object inventory")
-        allowed = {"requirements", "objects", "title", "confirm_unique_targets", "concepts", "perception_mode"}
+        allowed = {"requirements", "objects", "title", "confirm_unique_targets", "concepts", "perception_mode", "regions", "draft_source"}
         if set(payload) - allowed:
             raise ValidationError("Task draft contains unsupported fields")
         text, objects = payload.get("requirements"), payload.get("objects")
         if not isinstance(text, str) or not text.strip() or len(text.encode("utf-8")) > 8192:
             raise ValidationError("Task requirements must contain 1 to 8192 UTF-8 bytes")
-        if (not isinstance(objects, list) or not 2 <= len(objects) <= MAX_TASK_OBJECTS
+        if (not isinstance(objects, list) or not 1 <= len(objects) <= MAX_TASK_OBJECTS
                 or any(not isinstance(value, str) or not re.fullmatch(r"[A-Za-z0-9][A-Za-z0-9_.-]{0,63}", value) for value in objects)
                 or len(set(objects)) != len(objects)):
-            raise ValidationError("Supply 2 to 6 distinct object IDs using letters, digits, underscores, dots or hyphens")
+            raise ValidationError("Supply 1 to 6 distinct object IDs using letters, digits, underscores, dots or hyphens")
+        regions = payload.get("regions", ["left", "right"])
+        if (not isinstance(regions, list) or len(regions) != 2
+                or any(not isinstance(value, str) or not re.fullmatch(r"[a-z0-9][a-z0-9_.-]{0,63}", value) for value in regions)
+                or len(set(regions)) != 2):
+            raise ValidationError("Supply exactly two distinct lowercase region IDs using letters, digits, underscores, dots or hyphens")
         title = payload.get("title", "Custom placement task")
         if not isinstance(title, str) or not title.strip() or len(title) > 120:
             raise ValidationError("Task title must contain 1 to 120 characters")
@@ -279,7 +288,15 @@ class InteractiveEngine:
             raise ValidationError("Select concept or guided perception mode before drafting")
         if mode == "guided" and any("." in value for value in objects):
             raise ValidationError("Guided perception requires object IDs without dots")
-        return title.strip(), text.strip(), list(objects), concepts, mode
+        source = payload.get("draft_source", "spark")
+        if source not in ("spark", "authored_coffee_preset"):
+            raise ValidationError("Select Spark compilation or the authored coffee placement preset")
+        if source == "authored_coffee_preset":
+            supplied = {"title": title.strip(), "requirements": text.strip(), "objects": objects,
+                        "regions": regions, "concepts": concepts, "perception_mode": mode}
+            if supplied != COFFEE_PLACEMENT_PRESET:
+                raise ValidationError("The authored coffee preset is fixed. Use Spark to draft changed requirements")
+        return title.strip(), text.strip(), list(objects), concepts, mode, list(regions), source
 
     def draft_task(self, payload: dict[str, Any]) -> dict[str, Any]:
         """Compile a proposal without changing the active task or its evidence.
@@ -290,49 +307,59 @@ class InteractiveEngine:
         with self._lock:
             if self._state["busy"]:
                 raise ValidationError("An inspection is already running")
-            title, requirements, objects, concepts, mode = self._validate_task_input(payload)
+            title, requirements, objects, concepts, mode, regions, source = self._validate_task_input(payload)
             self._state.update(busy=True, busy_operation="task_draft", draft_error=None, task_draft=None)
             self._draft_record = None
             draft_id = secrets.token_hex(16)
         client = None
         try:
             self._persist()
-            if self._compile_client_factory is None:
-                load_env_file(self.root / ".env.local")
-                client = MetaClient.from_env(max_requests=1, retries=0, timeout=45)
+            if source == "authored_coffee_preset":
+                envelope = authored_coffee_protocol()
             else:
-                client = self._compile_client_factory()
-            if client.max_requests != 1 or client.retries != 0 or client.ledger:
-                raise ValidationError("Use a fresh one-request compiler client with no retries")
-            envelope = compile_protocol(client, requirements, objects=objects, regions=["left", "right"],
-                                        predicate_kind="location", unique_objects=objects)
+                if self._compile_client_factory is None:
+                    load_env_file(self.root / ".env.local")
+                    client = MetaClient.from_env(max_requests=1, retries=0, timeout=45)
+                else:
+                    client = self._compile_client_factory()
+                if client.max_requests != 1 or client.retries != 0 or client.ledger:
+                    raise ValidationError("Use a fresh one-request compiler client with no retries")
+                envelope = compile_protocol(client, requirements, objects=objects, regions=regions,
+                                            predicate_kind="location", unique_objects=objects)
             raw = deepcopy(envelope["protocol"])
             # A repeated semantic task is still a new reviewed specification;
             # evidence cannot silently migrate between edit/review versions.
             raw["version"] = "draft-" + draft_id[:16]
             protocol = Protocol.from_dict(raw)
-            if (set(protocol.objects) != set(objects) or set(protocol.regions) != {"left", "right"}
+            if (set(protocol.objects) != set(objects) or list(protocol.regions) != regions
                     or not protocol.checks or any(check.kind != "location" or not check.unique_target for check in protocol.checks)):
-                raise CompilerError("The task must contain only declared-unique LEFT or RIGHT placement checks")
-            origin = "live_meta_api" if self._compile_client_factory is None else "injected_compiler_not_verified_live"
-            draft = {"draft_id": draft_id, "title": title, "requirements": requirements, "objects": objects,
+                raise CompilerError("The task must contain only declared-unique placement checks in the two named regions")
+            origin = ("authored_frozen_coffee_preset" if source == "authored_coffee_preset" else
+                      "live_meta_api" if self._compile_client_factory is None else "injected_compiler_not_verified_live")
+            draft = {"draft_id": draft_id, "title": title, "requirements": requirements, "objects": objects, "regions": regions,
                      "protocol": protocol.to_dict(), "protocol_hash": protocol.content_hash,
                      "concepts": concepts,
                      "origin": origin, "model": envelope["model"], "requires_human_approval": True,
                      "approved": False, "claim_limit": envelope["claim_limit"],
                      **_perception_details(mode)}
+            if source == "authored_coffee_preset":
+                draft.update(preset_id="coffee-placement-v1", preset_protocol_hash=envelope["content_hash"],
+                             suggested_regions=envelope["suggested_regions"],
+                             calibration_note="Starting rectangles match the fixed coffee development videos. Review and adjust both named regions against your actual view before inspection.")
             draft["draft_hash"] = hashlib.sha256(json.dumps(draft, sort_keys=True, separators=(",", ":"),
                                                               allow_nan=False).encode()).hexdigest()
-            record = {"draft": draft, "compiler_envelope": envelope, "usage": client.usage_summary(),
+            record = {"draft": draft, "compiler_envelope": envelope, "usage": client.usage_summary() if client is not None else
+                      {"request_attempts": 0, "estimated_usd": 0, "estimate_origin": "authored_preset_no_inference"},
                       "created_at_ms": _now_ms(), "unique_target_contract_origin": "caller_declared_before_compilation"}
             self._write(self._directory / ("task-draft-" + draft_id + ".json"), record)
             with self._lock:
                 self._draft_record = record
                 self._state["task_draft"] = draft
-                self._trace("task_drafted", "Spark task draft awaits review; active task unchanged", self._state["status"])
+                self._trace("task_drafted", "Authored coffee preset awaits review; active task unchanged" if source == "authored_coffee_preset" else
+                            "Spark task draft awaits review; active task unchanged", self._state["status"])
         except (MetaAPIError, OSError, ValueError, TypeError, KeyError, AttributeError) as error:
             with self._lock:
-                message = ("Spark could not produce a supported placement draft. Use explicit LEFT or RIGHT requirements; "
+                message = ("Spark could not produce a supported placement draft. Use explicit named-region requirements; "
                            "count, absence, temporal and quality requirements are not supported here.") if isinstance(error, CompilerError) else (
                            "The Spark task draft could not complete. The active task and evidence are unchanged. Try again.")
                 self._state["draft_error"] = message
@@ -367,6 +394,8 @@ class InteractiveEngine:
                 raise ValidationError("Review the current task draft before activating it")
             if draft["perception_mode"] == "guided" and draft.get("perception_version") != GUIDED_VERSION:
                 raise ValidationError("Guided perception changed. Request and review a new task draft before activation")
+            if digest({key: value for key, value in draft.items() if key != "draft_hash"}) != draft["draft_hash"]:
+                raise ValidationError("The task draft changed. Request and review a new exact draft before activation")
             if payload.get("confirm_requirements") is not True or payload.get("confirm_unique_targets") is not True:
                 raise ValidationError("Confirm the exact requirements and every unique target before activation")
             origin = payload.get("review_origin", "local_operator")
@@ -376,9 +405,12 @@ class InteractiveEngine:
                     (not isinstance(reference, str) or not reference.strip() or len(reference) > 4096)):
                 raise ValidationError("Assistant review requires a direct user authorization reference")
             protocol = Protocol.from_dict(draft["protocol"])
+            if list(protocol.regions) != draft["regions"] or protocol.content_hash != draft["protocol_hash"]:
+                raise ValidationError("The reviewed region inventory does not match its executable protocol")
             approval = {"draft_id": draft["draft_id"], "draft_hash": draft["draft_hash"],
                         "protocol_hash": protocol.content_hash, "review_origin": origin,
                         "concepts": dict(draft["concepts"]),
+                        "regions": list(draft["regions"]),
                         "perception_mode": draft["perception_mode"],
                         "human_reviewed_exact_contract": origin == "local_operator", "reviewed_at_ms": _now_ms(),
                         "confirm_requirements": True, "confirm_unique_targets": True}
@@ -389,16 +421,27 @@ class InteractiveEngine:
             # Persist approval before changing the in-memory executable task.
             self._write(self._directory / ("task-approval-" + draft["draft_id"] + ".json"), approval)
             self._cancel_recovery()
+            changed_regions = set(self._protocol.regions) != set(protocol.regions)
             self._protocol, self._concepts = protocol, dict(draft["concepts"])
             metadata = self._task_metadata(draft["title"], draft["requirements"], draft["origin"],
                                            reviewed=True, review_origin=origin, model=draft["model"],
                                            perception_mode=draft["perception_mode"])
             metadata["activated_from_draft_id"] = draft["draft_id"]
             metadata["task_hash"] = draft["draft_hash"]
+            if draft.get("preset_id"):
+                metadata.update(preset_id=draft["preset_id"], preset_protocol_hash=draft["preset_protocol_hash"],
+                                calibration_note=draft["calibration_note"])
+                self._state["regions"] = deepcopy(draft["suggested_regions"])
+            elif changed_regions:
+                # New names start with a new layout; old label-to-rectangle
+                # associations never silently carry across named contracts.
+                self._state["regions"] = {region: deepcopy(rectangle) for region, rectangle in
+                                          zip(protocol.regions, DEFAULT_REGIONS.values())}
             self._state.update(active_task=metadata, task_draft=None, draft_error=None, images=[], source_kind="none",
                                inference_origin=None, evidence_received_at_ms=None, evidence_observed_at_ms=None,
                                evidence_age_basis=None, perception_provenance=None)
             self._evidence_record = None
+            self._reset_acquisition()
             self._draft_record = None
             self._invalidate("task_activated")
             self._state["source_note"] = "Reviewed task activated. Prior evidence belongs to a different task; capture two new views."
@@ -558,60 +601,85 @@ class InteractiveEngine:
                  "grounding_reason": reasons.get(check.id),
                  "confidence": observations[check.object_id].confidence} for check in self._protocol.checks]
 
-    def _inspection_request(self, state: dict[str, Any]) -> dict[str, Any] | None:
-        """Choose an evidence-gathering action from validated local reasons.
+    def _reset_acquisition(self) -> None:
+        self._acquisition_context = None
+        self._acquisition_plan = None
+        self._acquisition_attempts = 0
+        self._acquisition_pending = False
 
-        This is a bounded policy, not a model-generated explanation. No missing
-        detection is translated into a claim that an object is absent/hidden,
-        and uncertainty never authorizes a physical repair.
-        """
+    def _current_acquisition(self, state: dict[str, Any]) -> dict[str, Any] | None:
         if state["busy"] and state.get("busy_operation") == "inspection":
             return None
-        all_objects = list(dict.fromkeys(check.object_id for check in self._protocol.checks))
-        unknown = [check for check in state["checks"] if check["status"] == "unknown"]
-        requested = list(dict.fromkeys(check["object_id"] for check in unknown)) or all_objects
-        names = ", ".join(self._concepts[value] for value in requested)
-        common = "Capture two new views at least one second apart, with the arrangement unchanged between views."
-        request = {"title": "Show the unconfirmed targets", "instructions": [], "object_ids": requested,
-                   "reason": "insufficient_visual_evidence"}
-        if state["phase"] in ("needs_evidence", "awaiting_capture"):
-            request.update(title="Capture the current arrangement", object_ids=all_objects, reason="fresh_capture_required",
-                instructions=["Show every required target and both marked paper areas in the current camera view.",
-                              "Review LEFT and RIGHT rectangles against this view and confirm one distinct instance of each target.", common])
-        elif state["phase"] == "error":
-            request.update(title="Retry with a new inspection", object_ids=all_objects, reason="inspection_incomplete",
-                instructions=["The model inspection did not complete; no physical correction was verified.",
-                              "Start a new inspection after the API is available.", common])
-        elif state["stale"] and state["source_kind"] != "recorded":
-            request.update(title="Refresh the expired evidence", object_ids=all_objects, reason="evidence_expired",
-                instructions=["The previous views are older than the accepted evidence window. Start a new inspection.", common])
-        elif state["source_kind"] == "recorded":
-            request.update(title="Inspect the current scene", object_ids=all_objects, reason="historical_reference",
-                instructions=["The displayed result comes from a historical recording and cannot certify the current scene.",
-                              "Start repair or a new inspection before capturing the current arrangement.", common])
-        elif not unknown:
+        if self._acquisition_context is None:
+            return deepcopy(self._acquisition_plan)
+        context = self._acquisition_context
+        elapsed = max(0, _now_ms() - context["received_at_ms"])
+        # Uploaded spacing remains operator-declared. Advancing logical time
+        # by server elapsed time makes expiration explicit without inventing a
+        # measured capture timestamp.
+        now = context["now_ms"] + elapsed
+        plan = build_acquisition_plan(self._protocol, context["store"],
+            grounding=context["grounding"], locator=context["locator"],
+            samples=context["samples"], regions=context["regions"],
+            attempts_used=self._acquisition_attempts, max_attempts=2,
+            used_source_hashes=tuple(self._seen_hashes), now_ms=now,
+            object_labels=self._concepts)
+        if plan["status"] == "not_needed":
             return None
+        return plan
+
+    def _inspection_request(self, state: dict[str, Any]) -> dict[str, Any] | None:
+        """Present structured acquisition gaps; no explanation-string matching."""
+        if state["busy"] and state.get("busy_operation") == "inspection":
+            return None
+        plan = state.get("acquisition")
+        if plan:
+            requests = plan["requests"]
+            instructions = list(plan["instructions"])
+            common = "Capture two entirely new views at least one second apart, with the arrangement unchanged between views."
+            instructions.append(common)
+            if plan.get("stop_reason"):
+                instructions = [plan["stop_reason"], "Keep the result unverified. Review the task or capture setup before beginning a different reviewed task."]
+            codes = {code for request in requests for code in request["gap_codes"]}
+            # Compatibility reason IDs are chosen from typed diagnostic codes,
+            # never by searching generated explanation text.
+            reason = "insufficient_visual_evidence"
+            if codes & {"multiple_candidates", "identity_ambiguous", "target_identity_ambiguous"}:
+                reason = "target_identity_ambiguous"
+                instructions.insert(0, "Confirm exactly one visually distinct instance of each requested target. If this is untrue, revise the task contract.")
+            elif codes & {"low_confidence", "confidence_below_threshold"}:
+                reason = "confidence_below_threshold"
+            elif codes & {"temporal_inconsistency", "insufficient_stable_samples", "stable_pair_required", "repeated_source", "insufficient_distinct_views"}:
+                reason = "stable_pair_required"
+            elif codes & {"boundary_unsupported", "region_boundary", "calibration_unconfirmed", "boundary_unconfirmed", "calibration_required"}:
+                reason = "region_support_unconfirmed"
+            elif codes & {"stale_evidence", "evidence_expired"}:
+                reason = "evidence_expired"
+            terminal = plan["status"] != "ready"
+            return {"title": "Evidence acquisition stopped" if terminal else "Capture the specific missing evidence",
+                "instructions": instructions, "object_ids": list(dict.fromkeys(item["object_id"] for item in requests)),
+                "reason": reason, "status": plan["status"], "attempts_used": plan["attempts_used"],
+                "attempts_remaining": plan["attempts_remaining"], "max_attempts": plan["max_attempts"],
+                "requests": requests, "stop_reason": plan.get("stop_reason")}
+        objects = list(dict.fromkeys(check.object_id for check in self._protocol.checks))
+        common = "Capture two new views at least one second apart, with the arrangement unchanged between views."
+        regions = " and ".join(region.upper() for region in self._protocol.regions)
+        if state["phase"] in ("needs_evidence", "awaiting_capture"):
+            title, reason = "Capture the current arrangement", "fresh_capture_required"
+            instructions = ["Show every required target and both named areas in the current camera view.",
+                            f"Review {regions} rectangles against this view and confirm one distinct instance of each target.", common]
+        elif state["phase"] == "error":
+            title, reason = "Inspection did not complete", "inspection_incomplete"
+            instructions = ["No physical correction was verified. Check the capture setup and API availability before requesting new evidence.", common]
+        elif state["stale"] and state["source_kind"] != "recorded":
+            title, reason = "Refresh the expired evidence", "evidence_expired"
+            instructions = ["The earlier views have expired. Show every target and review both named regions again.", common]
+        elif state["source_kind"] == "recorded":
+            title, reason = "Inspect the current scene", "historical_reference"
+            instructions = ["The displayed result is historical and cannot certify the current scene.", common]
         else:
-            reasons = " ".join(check.get("grounding_reason") or "" for check in unknown)
-            if "region" in reasons and any(word in reasons for word in ("rectangle", "wholly inside", "calibration")):
-                request.update(title="Review the view and region boundaries", reason="region_support_unconfirmed",
-                    instructions=["Check that LEFT and RIGHT rectangles match the marked paper in this camera view.",
-                                  f"Frame the entire {names} and the region boundaries clearly; do not infer a move from this uncertain result.", common])
-            elif any(word in reasons for word in ("Multiple same-concept", "ambiguous", "duplicate SAM", "overlapping same-concept")):
-                request.update(title="Review target identity", reason="target_identity_ambiguous",
-                    instructions=[f"Confirm exactly one visually distinct instance of each requested target: {names}.",
-                                  "If that scene contract is not true, revise the target inventory before inspecting again.", common])
-            elif "confidence" in reasons:
-                request.update(title="Capture a clearer view", reason="confidence_below_threshold",
-                    instructions=[f"Show the entire {names} in focus with sufficient light and clear region boundaries.",
-                                  "The detector score did not meet the approved threshold; no location is confirmed.", common])
-            elif any(word in reasons for word in ("stability", "distinct source", "Repeated or stale")):
-                request.update(title="Capture a consistent pair", reason="stable_pair_required",
-                    instructions=[f"Keep {names} and the camera still between the two views, with each entire target visible.", common])
-            else:
-                request["instructions"] = [f"Show the entire {names} and both approved paper regions in each view, with hands clear.",
-                                           "An unsupported detection does not prove absence or explain why the target is unconfirmed.", common]
-        return request
+            return None
+        return {"title": title, "instructions": instructions, "object_ids": objects, "reason": reason}
 
     def _register_media(self, path: Path, width: int, height: int, objects=()) -> dict[str, Any]:
         media_id = secrets.token_hex(16)
@@ -727,13 +795,78 @@ class InteractiveEngine:
                 state["source_note"] = "The earlier captured evidence is now older than 30 seconds. Inspect the current scene again."
                 for check in state["checks"]:
                     check.update(status="unknown", reason="The earlier captured evidence is older than 30 seconds")
+            state["acquisition"] = self._current_acquisition(state)
             state["inspection_request"] = self._inspection_request(state)
+            state["workflow"] = workflow_status(state, self._workflow_replay)
+            state.pop("workflow_continuation", None)
             return state
+
+    def _check_workflow_binding(self, payload: Any, state: dict[str, Any]) -> None:
+        if (not isinstance(payload, dict) or set(payload) != {"task_hash", "revision"}
+                or payload.get("task_hash") != state["active_task"].get("task_hash")
+                or type(payload.get("revision")) is not int or payload["revision"] != state["revision"]):
+            raise ValidationError("The task or inspection changed. Review the current preparation again")
+
+    def _replay_workflow_evidence(self, state: dict[str, Any]) -> dict[str, Any]:
+        binding = {"task_hash": state["active_task"].get("task_hash"),
+                   "protocol_hash": state["active_task"]["protocol_hash"], "revision": state["revision"]}
+        proof = {**binding, "valid": False}
+        try:
+            bundle = deepcopy(self._evidence_record)
+            if (not bundle or bundle["contract"].get("task_hash") != binding["task_hash"]
+                    or bundle["contract"]["protocol_hash"] != binding["protocol_hash"]
+                    or bundle["revision"] != binding["revision"]):
+                return proof
+            bundle["evaluation_now_ms"] = (_now_ms() if state["source_kind"] == "camera" else
+                bundle["evaluation_now_ms"] + max(0, _now_ms() - state["evidence_received_at_ms"]))
+            replayed = replay_evidence(bundle, self.root)
+            recorded = {item["check_id"]: item["status"] for item in state["checks"]}
+            replay_statuses = {item["check_id"]: item["status"] for item in replayed["checks"]}
+            proof["valid"] = (replayed["status"] == "pass" and state["status"] == "pass"
+                              and recorded == replay_statuses)
+        except (OSError, ValueError, KeyError, TypeError, AttributeError):
+            pass
+        return proof
+
+    def check_workflow(self, payload: dict[str, Any]) -> dict[str, Any]:
+        with self._lock:
+            state = self.snapshot()
+            self._check_workflow_binding(payload, state)
+            if not workflow_status(state)["can_check"]:
+                raise ValidationError("Preparation is blocked. Obtain current passing evidence for the reviewed task")
+            self._workflow_replay = self._replay_workflow_evidence(state)
+            return self.snapshot()
+
+    def continue_workflow(self, payload: dict[str, Any]) -> dict[str, Any]:
+        with self._lock:
+            state = self.snapshot()
+            # Every declaration rehashes and replays the saved sources, even
+            # after a successful UI check. A cached button state grants nothing.
+            self._workflow_replay = self._replay_workflow_evidence(state)
+            state = self.snapshot()
+            record = validate_continuation({**state, "workflow_continuation": self._state.get("workflow_continuation")},
+                                           payload, self._workflow_replay)
+            record.update(record_id=secrets.token_hex(12), declared_at_ms=_now_ms(),
+                          placement_evidence=deepcopy(self._evidence_record))
+            record = save_receipt(self._directory / ("workflow-" + record["record_id"] + ".json"), record)
+            self._state["workflow_continuation"] = record
+            self._trace("continuation_declared", "Continuation declared; physical action remains unobserved", "pass")
+            self._persist()
+            return self.snapshot()
 
     def _invalidate(self, event: str) -> dict[str, Any]:
         with self._lock:
             if self._state["busy"]:
                 raise ValidationError("An inspection is already running")
+            plan = self._current_acquisition(self._state)
+            if plan and plan["status"] not in ("ready", "not_needed"):
+                raise ValidationError("Evidence acquisition stopped. Review the task or capture setup before continuing")
+            if plan and plan["status"] == "ready":
+                self._acquisition_plan = plan
+                self._acquisition_pending = True
+            self._workflow_replay = None
+            self._state.pop("workflow_continuation", None)
+            self._acquisition_context = None
             self._state["revision"] += 1
             self._state.update(phase="awaiting_capture", status="unknown", error=None, proposal=None,
                                verified_at_ms=None, usage=None,
@@ -787,8 +920,8 @@ class InteractiveEngine:
         if source not in ("camera", "upload"):
             raise ValidationError("Select camera capture or fresh photo upload")
         regions = payload.get("regions")
-        if not isinstance(regions, dict) or set(regions) != {"left", "right"}:
-            raise ValidationError("Approve both nonoverlapping region rectangles")
+        if not isinstance(regions, dict) or set(regions) != set(self._protocol.regions):
+            raise ValidationError("Approve both nonoverlapping rectangles using the active task's exact region IDs")
         ground_sam_images(self._protocol, regions, [], session_id=self._state["session_id"])
         items = payload.get("images")
         if not isinstance(items, list) or len(items) != 2:
@@ -819,7 +952,20 @@ class InteractiveEngine:
         with self._lock:
             if self._state["busy"]:
                 raise ValidationError("An inspection is already running")
+            plan = self._current_acquisition(self._state)
+            if plan and plan["status"] not in ("ready", "not_needed"):
+                raise ValidationError("Evidence acquisition stopped. Review the task or capture setup before continuing")
             source, regions, decoded, hashes, times, basis = self._validate_pair(payload)
+            if plan and plan["status"] == "ready":
+                check_source_pair(plan, hashes, timestamps_ms=times)
+            if self._acquisition_pending:
+                self._acquisition_attempts += 1
+                self._acquisition_pending = False
+                self._acquisition_plan["attempts_used"] = self._acquisition_attempts
+                self._acquisition_plan["attempts_remaining"] = max(0, 2 - self._acquisition_attempts)
+                if self._acquisition_attempts >= 2:
+                    self._acquisition_plan.update(status="budget_exhausted", stop_reason="The two-follow-up limit is reached. Keep the result unverified and review the task or capture setup.")
+            self._acquisition_context = None
             revision = self._state["revision"]
             mode = self._state["active_task"].get("perception_mode", "concept")
             issued_at = self._token_issued_ms
@@ -922,7 +1068,7 @@ class InteractiveEngine:
                     verified_at_ms=_now_ms() if status == "pass" else None,
                     source_note=("Captured placement passed. Inspect again after any movement. " if status == "pass" else
                                  "Fresh evidence supports a misplaced target. " if status == "fail" else
-                                 "The views do not support every target location. Reveal every target and inspect again. ") +
+                                 "The views do not support every target location. Review the specific evidence requests and follow-up limit. ") +
                                 ("Camera capture time is client-reported." if source == "camera" else
                                  "Photo freshness and one-second spacing were declared by the operator; capture time was not measured."))
                 if mode == "guided":
@@ -933,6 +1079,16 @@ class InteractiveEngine:
                         "identity_basis": "Spark-assigned; SAM refines boundaries without independently verifying identity",
                         "missing_or_ambiguous_anchors": len(guided["unavailable"]),
                     }
+                if any(check["status"] == "unknown" for check in outcome["checks"]):
+                    self._acquisition_context = {"store": store, "grounding": grounded.to_dict(),
+                        "samples": samples, "regions": regions, "locator": guided.get("locator") if guided else None,
+                        "now_ms": now, "received_at_ms": _now_ms()}
+                    self._acquisition_plan = None
+                    # A known misplaced item cannot authorize motion while
+                    # another required target remains unconfirmed.
+                    self._state["proposal"] = None
+                else:
+                    self._reset_acquisition()
                 self._state["images"] = [self._register_media(path, decoded[index][2], decoded[index][3], results[index])
                                          for index, path in enumerate(paths)]
                 self._evidence_record = evidence_bundle(self.root, self._state["active_task"], regions,
@@ -946,6 +1102,10 @@ class InteractiveEngine:
                 self._complete_recovery_safely(status)
         except (MetaAPIError, OSError, ValueError, TypeError, KeyError, AttributeError) as error:
             with self._lock:
+                if self._acquisition_plan is None:
+                    self._acquisition_context = {"store": EvidenceStore(self._protocol, self._state["session_id"]),
+                        "grounding": None, "samples": [], "regions": regions, "locator": None,
+                        "now_ms": 1000, "received_at_ms": _now_ms()}
                 self._state.update(phase="error", status="unknown", verified_at_ms=None, proposal=None,
                     error="The Meta inspection could not complete. No correction was verified. Start a new inspection and capture new views.",
                     source_note="Inspection failed; no correction was verified. Start a new inspection with two new views.",

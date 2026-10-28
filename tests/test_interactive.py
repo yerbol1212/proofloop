@@ -540,7 +540,7 @@ class InteractiveTests(unittest.TestCase):
     def test_bad_draft_input_and_missing_unique_declaration_never_spend(self):
         self.install_compiler()
         for field, value in (("requirements", ""), ("requirements", "x" * 8193),
-                             ("objects", ["fork"]), ("objects", ["fork", "fork"]),
+                             ("objects", []), ("objects", ["fork", "fork"]),
                              ("objects", ["../key", "spoon"]), ("objects", [str(n) for n in range(7)]),
                              ("title", ""), ("confirm_unique_targets", False)):
             payload = self.task_payload()

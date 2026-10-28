@@ -14,6 +14,7 @@ Example (makes a real paid Meta request)::
 from __future__ import annotations
 
 import argparse
+from copy import deepcopy
 from datetime import datetime, timezone
 import hashlib
 import json
@@ -28,6 +29,35 @@ from .meta import MetaAPIError, MetaClient, SPARK_MODEL, load_env_file, validate
 MAX_INVENTORY = 16
 MAX_CHECKS = 64
 MAX_EXPECTED_COUNT = 16
+
+# This explicit placement gate is the contract used by the licensed coffee
+# development corpus. It is authored data, not a Spark proposal or an observed
+# precondition for dispensing. Rectangles apply only to that fixed source view.
+COFFEE_PLACEMENT_PRESET = {
+    "title": "Coffee glass placement",
+    "requirements": "The unique transparent drinking glass must be in DISPENSE.",
+    "objects": ["glass"], "regions": ["dispense", "staging"],
+    "concepts": {"glass": "transparent drinking glass"}, "perception_mode": "guided",
+}
+COFFEE_PRESET_REGIONS = {"dispense": [0.38, 0.18, 0.64, 0.46], "staging": [0.66, 0.18, 0.87, 0.46]}
+
+
+def authored_coffee_protocol() -> dict[str, Any]:
+    """Return a fresh unapproved copy of the frozen coffee placement gate.
+
+    This path performs no inference. It must not be used to relabel an
+    arbitrary client-authored protocol as a compiled or reviewed requirement.
+    """
+    protocol = Protocol.from_dict({"id": "coffee-dispense-gate", "version": "authored-reviewed-1",
+        "objects": ["glass"], "regions": ["dispense", "staging"],
+        "checks": [{"id": "glass-under-spout", "kind": "location", "object_id": "glass",
+                    "region_id": "dispense", "max_age_ms": 30000, "min_confidence": 0.8,
+                    "min_stable_samples": 2, "unique_target": True}], "steps": [], "checkpoints": []})
+    return {"draft_schema_version": "1.0", "source_origin": "authored_frozen_coffee_preset", "model": None,
+            "requires_human_approval": True, "approved": False, "review_status": "awaiting_human_review",
+            "protocol": protocol.to_dict(), "content_hash": protocol.content_hash,
+            "preset": deepcopy(COFFEE_PLACEMENT_PRESET), "suggested_regions": deepcopy(COFFEE_PRESET_REGIONS),
+            "claim_limit": "Authored visible placement gate only. It does not establish dispensing permission, physical safety, hidden contents, or full procedure success."}
 
 
 class CompilerError(ValueError):

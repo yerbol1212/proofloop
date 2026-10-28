@@ -7,7 +7,7 @@ import tempfile
 import threading
 import unittest
 
-from proofloop.server import create_server, MAX_JSON_BYTES, MAX_TASK_BYTES
+from proofloop.server import create_server, MAX_CONTROL_BYTES, MAX_JSON_BYTES, MAX_TASK_BYTES
 from proofloop.core import ValidationError
 
 
@@ -35,6 +35,12 @@ class FakeEngine:
 
     def activate_task(self, payload):
         return self._call("task_activate", payload)
+
+    def check_workflow(self, payload):
+        return self._call("workflow_check", payload)
+
+    def continue_workflow(self, payload):
+        return self._call("workflow_continue", payload)
 
     def _call(self, name, payload=None):
         if self.fail is not None:
@@ -157,6 +163,49 @@ class ServerTests(unittest.TestCase):
             self.assertEqual(200, status)
             self.assertEqual(self.token, state["csrf_token"])
         self.assertEqual([("task_draft", draft), ("task_activate", activation)], self.engine.calls)
+
+    def test_workflow_routes_require_origin_and_csrf_then_delegate_exact_payload_once(self):
+        check = {"task_hash": "a" * 64, "revision": 3}
+        continuation = {**check, "confirm_operator_continuation": True, "review_origin": "local_operator"}
+        for path, payload in (("/api/workflow/check", check), ("/api/workflow/continue", continuation)):
+            for headers in ({"Content-Type": "application/json"},
+                            self.mutation_headers(Origin="https://other.example"),
+                            self.mutation_headers(**{"X-ProofLoop-Token": "wrong"})):
+                with self.subTest(path=path, headers=headers):
+                    before = list(self.engine.calls)
+                    self.assertEqual(403, self.request("POST", path, payload, headers)[0])
+                    self.assertEqual(before, self.engine.calls)
+            status, headers, state = self.request("POST", path, payload, self.mutation_headers())
+            self.assertEqual(200, status)
+            self.assertEqual("no-store", headers["Cache-Control"])
+            self.assertEqual(self.token, state["csrf_token"])
+        self.assertEqual([("workflow_check", check), ("workflow_continue", continuation)], self.engine.calls)
+
+    def test_workflow_routes_are_post_only_and_bound_before_reading_large_payloads(self):
+        for path in ("/api/workflow/check", "/api/workflow/continue"):
+            with self.subTest(path=path):
+                self.assertEqual(404, self.request("GET", path)[0])
+                self.assertEqual(404, self.request("HEAD", path)[0])
+                status, _, body = self.request("POST", path, b"", self.mutation_headers(
+                    **{"Content-Length": str(MAX_CONTROL_BYTES + 1)}))
+                self.assertEqual(413, status)
+                self.assertEqual("body_too_large", body["error"]["code"])
+        self.assertEqual([], self.engine.calls)
+
+    def test_workflow_binding_errors_are_helpful_without_reflecting_untrusted_details(self):
+        message = "The task or inspection changed. Review the current preparation again"
+        for path in ("/api/workflow/check", "/api/workflow/continue"):
+            with self.subTest(path=path):
+                self.engine.fail = ValidationError(message)
+                status, _, body = self.request("POST", path, {}, self.mutation_headers())
+                self.assertEqual(400, status)
+                self.assertEqual(message, body["error"]["message"])
+                self.engine.fail = ValidationError("/private/evidence API_SECRET provider-body")
+                status, _, body = self.request("POST", path, {}, self.mutation_headers())
+                self.assertEqual(400, status)
+                self.assertNotIn("API_SECRET", json.dumps(body))
+                self.assertNotIn("/private/evidence", json.dumps(body))
+        self.assertEqual([], self.engine.calls)
 
     def test_task_routes_have_small_bounded_body_limit(self):
         for path in ("/api/task/draft", "/api/task/activate"):

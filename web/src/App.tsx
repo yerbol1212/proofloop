@@ -4,6 +4,8 @@ import { Icon } from './icons'
 import { TaskEditor } from './TaskEditor'
 import { VideoLab } from './VideoLab'
 import { RecoveryPanel } from './RecoveryPanel'
+import { AcquisitionPanel } from './AcquisitionPanel'
+import { WorkflowPanel } from './WorkflowPanel'
 import type {
   EvidenceImage,
   InspectPayload,
@@ -21,7 +23,6 @@ const statusNames: Record<Status, string> = {
   fail: 'Fail',
   unknown: 'Unknown',
 }
-const regionNames = ['left', 'right'] as const
 const objectLabel = (value: string) =>
   value
     .replaceAll('_', ' ')
@@ -77,7 +78,7 @@ function rectStyle(rect: Rect): CSSProperties {
 }
 
 function regionError(regions: Regions): string | null {
-  for (const name of regionNames) {
+  for (const name of Object.keys(regions)) {
     const rect = regions[name]
     if (
       rect.some((value) => !Number.isFinite(value) || value < 0 || value > 1) ||
@@ -86,12 +87,14 @@ function regionError(regions: Regions): string | null {
     )
       return 'Give both areas a width and height of at least 2%.'
   }
-  const [a, b] = [regions.left, regions.right]
+  const [a, b] = Object.values(regions)
+  if (!a || !b || Object.keys(regions).length !== 2)
+    return 'Review both named areas.'
   if (
     Math.min(a[2], b[2]) > Math.max(a[0], b[0]) &&
     Math.min(a[3], b[3]) > Math.max(a[1], b[1])
   )
-    return 'LEFT and RIGHT must not overlap. Leave a gap around the divider.'
+    return 'The named areas must not overlap. Leave a gap between their boundaries.'
   return null
 }
 
@@ -110,8 +113,8 @@ function PhotoView({
   index: number
   recorded?: boolean
   editing?: boolean
-  onRegion?: (name: 'left' | 'right', rect: Rect) => void
-  activeRegion?: 'left' | 'right' | null
+  onRegion?: (name: string, rect: Rect) => void
+  activeRegion?: string | null
   boxes?: boolean
 }) {
   const [drag, setDrag] = useState<{
@@ -174,10 +177,10 @@ function PhotoView({
             alt={`View ${index + 1} of the task arrangement`}
             draggable={false}
           />
-          {regionNames.map((name) => (
+          {Object.keys(regions).map((name, regionIndex) => (
             <div
               key={name}
-              className={`region-outline ${name}`}
+              className={`region-outline ${regionIndex === 0 ? 'left' : 'right'}`}
               style={rectStyle(regions[name])}
             >
               <span>{name.toUpperCase()}</span>
@@ -195,7 +198,7 @@ function PhotoView({
             : null}
           {drag && activeRegion ? (
             <div
-              className={`region-outline drawing ${activeRegion}`}
+              className={`region-outline drawing ${Object.keys(regions).indexOf(activeRegion) === 0 ? 'left' : 'right'}`}
               style={rectStyle([
                 Math.min(drag.start[0], drag.current[0]),
                 Math.min(drag.start[1], drag.current[1]),
@@ -321,14 +324,18 @@ function RepairSteps({
         <p className="inspection-request-title">
           {state.inspection_request.title}
         </p>
-        <ol className="repair-steps">
-          {state.inspection_request.instructions.map((step, index) => (
-            <li key={step}>
-              <span>{index + 1}</span>
-              <p>{step}</p>
-            </li>
-          ))}
-        </ol>
+        {state.acquisition ? (
+          <AcquisitionPanel plan={state.acquisition} />
+        ) : (
+          <ol className="repair-steps">
+            {state.inspection_request.instructions.map((step, index) => (
+              <li key={step}>
+                <span>{index + 1}</span>
+                <p>{step}</p>
+              </li>
+            ))}
+          </ol>
+        )}
       </div>
     )
   const steps = state.proposal?.steps?.length
@@ -421,7 +428,12 @@ function Inspector({
               <button
                 className="button primary full-width"
                 onClick={onRepair}
-                disabled={pending}
+                disabled={
+                  pending ||
+                  Boolean(
+                    state.acquisition && state.acquisition.status !== 'ready',
+                  )
+                }
               >
                 {pending ? (
                   <span className="spinner" />
@@ -434,11 +446,13 @@ function Inspector({
                     }
                   />
                 )}
-                {needsInspection(state)
-                  ? 'Capture requested views'
-                  : state.status === 'fail'
-                    ? 'Start repair'
-                    : 'Capture new evidence'}
+                {state.acquisition && state.acquisition.status !== 'ready'
+                  ? 'Evidence follow-up stopped'
+                  : needsInspection(state)
+                    ? 'Capture requested views'
+                    : state.status === 'fail'
+                      ? 'Start repair'
+                      : 'Capture new evidence'}
               </button>
               <Notice>
                 <strong>Hint</strong>
@@ -558,9 +572,7 @@ function CapturePanel({
   const [regions, setRegions] = useState<Regions>(() =>
     structuredClone(state.regions),
   )
-  const [activeRegion, setActiveRegion] = useState<'left' | 'right' | null>(
-    null,
-  )
+  const [activeRegion, setActiveRegion] = useState<string | null>(null)
   const [sceneConfirmed, setSceneConfirmed] = useState(false)
   const [freshConfirmed, setFreshConfirmed] = useState(false)
   const [cameraOn, setCameraOn] = useState(false)
@@ -773,7 +785,7 @@ function CapturePanel({
         setLoadingFiles(false)
     }
   }
-  function updateRegion(name: 'left' | 'right', value: Rect) {
+  function updateRegion(name: string, value: Rect) {
     setRegions((previous) => ({ ...previous, [name]: value }))
     setSceneConfirmed(false)
   }
@@ -934,13 +946,18 @@ function CapturePanel({
         </Notice>
       ) : null}
       <section className="calibration" aria-labelledby="calibration-title">
-        <h3 id="calibration-title">Set LEFT and RIGHT</h3>
+        <h3 id="calibration-title">
+          Set{' '}
+          {Object.keys(regions)
+            .map((name) => name.toUpperCase())
+            .join(' and ')}
+        </h3>
         <p>Mark the two areas on your first photo.</p>
         <div className="region-actions">
-          {regionNames.map((name) => (
+          {Object.keys(regions).map((name, regionIndex) => (
             <button
               key={name}
-              className={`region-button ${name} ${activeRegion === name ? 'selected' : ''}`}
+              className={`region-button ${regionIndex === 0 ? 'left' : 'right'} ${activeRegion === name ? 'selected' : ''}`}
               disabled={!photos[0] || disabled}
               aria-pressed={activeRegion === name}
               onClick={() =>
@@ -962,7 +979,7 @@ function CapturePanel({
         <details className="numeric-regions">
           <summary>Adjust areas with numbers</summary>
           <p>Percentages of the first photo. Keep a gap between the areas.</p>
-          {regionNames.map((name) => (
+          {Object.keys(regions).map((name) => (
             <fieldset key={name}>
               <legend>{name.toUpperCase()}</legend>
               <div className="coordinate-fields">
@@ -1050,7 +1067,7 @@ function CapturePanel({
         onClick={() => void submit()}
       >
         {pending ? <span className="spinner" /> : <Icon name="play" />}
-        {pending ? 'Checking new evidence…' : 'Verify correction'}
+        {pending ? 'Checking new evidence…' : 'Check new evidence'}
       </button>
       <p className="capture-footnote">
         <Icon name="info" size={19} />
@@ -1149,6 +1166,7 @@ function EvidenceLog({ state }: { state: Snapshot }) {
         activeProtocolHash={state.active_task?.protocol_hash}
         activeTaskHash={state.active_task?.task_hash}
       />
+      {state.acquisition ? <AcquisitionPanel plan={state.acquisition} /> : null}
       <h3>Session trace</h3>
       <ol className="trace-list">
         {state.trace.map((entry) => (
@@ -1181,9 +1199,9 @@ function ProgressRail({ state }: { state: Snapshot }) {
         'inspection_complete',
       ].includes(entry.event),
     ) || state.source_kind === 'recorded'
-  const proposed =
-    Boolean(state.proposal) ||
-    state.trace.some((entry) => entry.event === 'repair_started')
+  const proposed = Boolean(state.proposal) || state.recovery?.kind === 'repair'
+  const inspectionOnly =
+    needsInspection(state) || state.recovery?.kind === 'inspection'
   const fresh = state.source_kind === 'camera' || state.source_kind === 'upload'
   const verified = state.phase === 'verified'
   return (
@@ -1191,7 +1209,12 @@ function ProgressRail({ state }: { state: Snapshot }) {
       <ol>
         {[
           { name: 'Observed', done: hasObserved },
-          { name: 'Repair proposed', done: proposed },
+          {
+            name: inspectionOnly ? 'Evidence requested' : 'Repair proposed',
+            done: inspectionOnly
+              ? state.trace.some((entry) => entry.event === 'repair_started')
+              : proposed,
+          },
           { name: 'New capture', done: fresh },
           { name: 'Verification', done: verified },
         ].map((step, index) => (
@@ -1215,7 +1238,7 @@ function heading(state: Snapshot): [string, string] {
     ]
   if (state.busy)
     return [
-      'Checking the correction.',
+      'Checking the new evidence.',
       'Keep the arrangement still while the new evidence is inspected.',
     ]
   if (needsInspection(state))
@@ -1259,9 +1282,9 @@ function heading(state: Snapshot): [string, string] {
 
 export function App() {
   const [state, setState] = useState<Snapshot | null>(null)
-  const [tab, setTab] = useState<'inspection' | 'log' | 'task' | 'lab'>(
-    'inspection',
-  )
+  const [tab, setTab] = useState<
+    'inspection' | 'log' | 'task' | 'lab' | 'workflow'
+  >('inspection')
   const [connectionError, setConnectionError] = useState<string | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
@@ -1310,7 +1333,7 @@ export function App() {
   async function action(
     path: string,
     payload?: InspectPayload | Record<string, unknown>,
-    destination: 'inspection' | 'task' = 'inspection',
+    destination: 'inspection' | 'task' | 'workflow' = 'inspection',
   ): Promise<boolean> {
     if (pending || currentRef.current?.busy || connectionError) return false
     setPending(true)
@@ -1413,6 +1436,13 @@ export function App() {
             Video lab
           </button>
           <button
+            className={tab === 'workflow' ? 'active' : ''}
+            onClick={() => setTab('workflow')}
+            aria-current={tab === 'workflow' ? 'page' : undefined}
+          >
+            Workflow
+          </button>
+          <button
             className={tab === 'log' ? 'active' : ''}
             onClick={() => setTab('log')}
             aria-current={tab === 'log' ? 'page' : undefined}
@@ -1422,7 +1452,12 @@ export function App() {
         </nav>
         <button
           className="button new-inspection"
-          disabled={!state || blocked || state.busy}
+          disabled={
+            !state ||
+            blocked ||
+            state.busy ||
+            Boolean(state.acquisition && state.acquisition.status !== 'ready')
+          }
           onClick={() => void action('/api/new')}
         >
           <Icon name="plus" size={22} />
@@ -1434,20 +1469,24 @@ export function App() {
           <h1>
             {tab === 'lab'
               ? 'Test against the real world.'
-              : tab === 'task'
-                ? 'Define what complete means.'
-                : tab === 'log'
-                  ? 'Every result has a trail.'
-                  : titles[0]}
+              : tab === 'workflow'
+                ? 'Check before continuing.'
+                : tab === 'task'
+                  ? 'Define what complete means.'
+                  : tab === 'log'
+                    ? 'Every result has a trail.'
+                    : titles[0]}
           </h1>
           <p>
             {tab === 'lab'
               ? 'Compare model results with frozen labels on licensed robot videos.'
-              : tab === 'task'
-                ? 'Describe requirements, review Spark’s checks, then inspect against the approved task.'
-                : tab === 'log'
-                  ? 'Inspect the observations, declared capture conditions, and decisions.'
-                  : titles[1]}
+              : tab === 'workflow'
+                ? 'A visible preparation checkpoint and a separate decision to continue.'
+                : tab === 'task'
+                  ? 'Describe requirements, review Spark’s checks, then inspect against the approved task.'
+                  : tab === 'log'
+                    ? 'Inspect the observations, declared capture conditions, and decisions.'
+                    : titles[1]}
           </p>
         </div>
         {connectionError ? (
@@ -1464,9 +1503,19 @@ export function App() {
         {viewState ? (
           tab === 'lab' ? (
             <VideoLab />
+          ) : tab === 'workflow' ? (
+            <WorkflowPanel
+              workflow={viewState.workflow || null}
+              pending={blocked}
+              onAction={action}
+            />
           ) : tab === 'task' ? (
             <TaskEditor
-              key={viewState.active_task?.protocol_hash || 'default'}
+              key={
+                viewState.active_task?.task_hash ||
+                viewState.active_task?.protocol_hash ||
+                'default'
+              }
               state={viewState}
               pending={blocked}
               onAction={action}

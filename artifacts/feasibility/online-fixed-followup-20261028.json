@@ -1,0 +1,827 @@
+{
+  "conditions": {
+    "guided": {
+      "cases": [
+        {
+          "case_id": "coffee-e00-initial",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e00-attempt-1",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e00-attempt-2",
+          "status": "pass"
+        },
+        {
+          "case_id": "coffee-e01-initial",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e01-attempt-1",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e02-terminal",
+          "status": "unknown"
+        }
+      ],
+      "estimated_usd": 0.058507,
+      "method_note": "Task-independent Spark assigns object identity and boxes; SAM refines the prompted mask. A prompted mask does not independently prove semantic identity. Missing/ambiguous localization stays unknown.",
+      "metrics": {
+        "accuracy": 0.666667,
+        "balanced_accuracy_present_classes": 0.666667,
+        "confusion": {
+          "fail": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 0
+          },
+          "pass": {
+            "fail": 0,
+            "pass": 1,
+            "unknown": 2
+          },
+          "unknown": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 3
+          }
+        },
+        "correct": 4,
+        "correct_acceptance_rate": 0.333333,
+        "correct_acceptances": 1,
+        "decision_coverage": 0.166667,
+        "eligible_cases": 6,
+        "ground_truth_counts": {
+          "fail": 0,
+          "pass": 3,
+          "unknown": 3
+        },
+        "illustrative_cases_excluded": 0,
+        "incorrect_pass_rate": 0.0,
+        "incorrect_passes": 0,
+        "missing_predictions": 0,
+        "unknown_rate": 0.833333,
+        "unknown_results": 5
+      },
+      "observation_version": "normalized_boxes_v2",
+      "status": "completed",
+      "wall_seconds": 58.955
+    },
+    "spark": {
+      "cases": [
+        {
+          "case_id": "coffee-e00-initial",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e00-attempt-1",
+          "status": "pass"
+        },
+        {
+          "case_id": "coffee-e00-attempt-2",
+          "status": "pass"
+        },
+        {
+          "case_id": "coffee-e01-initial",
+          "status": "unknown"
+        },
+        {
+          "case_id": "coffee-e01-attempt-1",
+          "status": "pass"
+        },
+        {
+          "case_id": "coffee-e02-terminal",
+          "status": "unknown"
+        }
+      ],
+      "estimated_usd": 0.061083,
+      "metrics": {
+        "accuracy": 1.0,
+        "balanced_accuracy_present_classes": 1.0,
+        "confusion": {
+          "fail": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 0
+          },
+          "pass": {
+            "fail": 0,
+            "pass": 3,
+            "unknown": 0
+          },
+          "unknown": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 3
+          }
+        },
+        "correct": 6,
+        "correct_acceptance_rate": 1.0,
+        "correct_acceptances": 3,
+        "decision_coverage": 0.5,
+        "eligible_cases": 6,
+        "ground_truth_counts": {
+          "fail": 0,
+          "pass": 3,
+          "unknown": 3
+        },
+        "illustrative_cases_excluded": 0,
+        "incorrect_pass_rate": 0.0,
+        "incorrect_passes": 0,
+        "missing_predictions": 0,
+        "unknown_rate": 0.5,
+        "unknown_results": 3
+      },
+      "status": "completed",
+      "wall_seconds": 52.071
+    }
+  },
+  "contract_hash": "e0b0db5b98adc7b9e7b2f15e85ad3d330e8dd393fff3f2030509a550cc8486ca",
+  "dataset_id": "proofloop-fixed-future-evidence-development-20261028",
+  "evaluation_role": "development_reprocessing",
+  "evidence_origin": "external_recorded_video",
+  "experiment": "licensed_recorded_video_comparison",
+  "followup_limits": [
+    "Three previously exposed recordings; cases do not add independent sources.",
+    "Camera framing and evidence availability are prerecorded and cannot respond to requested viewpoint changes.",
+    "No FAIL ground-truth cases in this targeted suite, so it cannot estimate erroneous acceptance of wrong placements.",
+    "A later known verdict verifies new observations, not an action caused by ProofLoop."
+  ],
+  "followup_policy_replay": {
+    "camera_response_to_request_verified": false,
+    "conditions": {
+      "guided": {
+        "policy_consumed_estimated_usd": 0.058507,
+        "policy_consumed_request_count": 11,
+        "resolved_trajectories": 1,
+        "terminal_unknown_trajectories": 2,
+        "trajectories": [
+          {
+            "final_status": "pass",
+            "followup_attempts_used": 2,
+            "id": "coffee-e00",
+            "steps": [
+              {
+                "actual_request_count": 1,
+                "case_id": "coffee-e00-initial",
+                "estimated_usd": 0.006513,
+                "policy_status": "ready",
+                "requests": [
+                  {
+                    "check_id": "glass-under-spout",
+                    "gap_codes": [
+                      "partial_visibility"
+                    ],
+                    "instructions": [
+                      "Frame the entire glass, including its edges, with hands clear and the region boundaries visible."
+                    ],
+                    "object_id": "glass",
+                    "object_label": "glass",
+                    "reason": "The locator could not support the entire target's visibility.",
+                    "region_id": "dispense",
+                    "region_label": "dispense",
+                    "view_indices": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "source_hashes": [
+                  "90cacd0b452df9f2d69b3a4ee43c0a15db7fe0d264a1c3acd9491112ea143915",
+                  "1e704bb96c391272b40d3baaa1b57c4ff8544c437ca801bdf6d4ca94ccb0f185"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 18500,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "1e704bb96c391272b40d3baaa1b57c4ff8544c437ca801bdf6d4ca94ccb0f185",
+                    "90cacd0b452df9f2d69b3a4ee43c0a15db7fe0d264a1c3acd9491112ea143915"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": [
+                    19100,
+                    20100
+                  ],
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  16500,
+                  18500
+                ],
+                "status": "unknown"
+              },
+              {
+                "actual_request_count": 1,
+                "case_id": "coffee-e00-attempt-1",
+                "estimated_usd": 0.010019,
+                "policy_status": "ready",
+                "requests": [
+                  {
+                    "check_id": "glass-under-spout",
+                    "gap_codes": [
+                      "identity_ambiguous"
+                    ],
+                    "instructions": [
+                      "Capture distinguishing glass features in both views. Review the target concept if its identity remains ambiguous."
+                    ],
+                    "object_id": "glass",
+                    "object_label": "glass",
+                    "reason": "The locator could not support the target's identity.",
+                    "region_id": "dispense",
+                    "region_label": "dispense",
+                    "view_indices": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "source_hashes": [
+                  "e762ec8999ca8e39e929ed8d4c0ab7c958118a60d9171588b7126530b53e0b1d",
+                  "454a1e11ec91d2a6536ba221ffa984ba058d06f3efa4c667ad573d502ebd594c"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 20100,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "1e704bb96c391272b40d3baaa1b57c4ff8544c437ca801bdf6d4ca94ccb0f185",
+                    "454a1e11ec91d2a6536ba221ffa984ba058d06f3efa4c667ad573d502ebd594c",
+                    "90cacd0b452df9f2d69b3a4ee43c0a15db7fe0d264a1c3acd9491112ea143915",
+                    "e762ec8999ca8e39e929ed8d4c0ab7c958118a60d9171588b7126530b53e0b1d"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": [
+                    20700,
+                    21700
+                  ],
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  19100,
+                  20100
+                ],
+                "status": "unknown"
+              },
+              {
+                "actual_request_count": 3,
+                "case_id": "coffee-e00-attempt-2",
+                "estimated_usd": 0.012834,
+                "policy_status": "not_needed",
+                "requests": [],
+                "source_hashes": [
+                  "58dcb39e2c174f52967ab204dcd988614b7134b4c8f647c837c97e2f730fd268",
+                  "745e61348e5335fb57f706d778b740a995f211f27d47ae37fb8f468cb8d0dd3f"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 21700,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "1e704bb96c391272b40d3baaa1b57c4ff8544c437ca801bdf6d4ca94ccb0f185",
+                    "454a1e11ec91d2a6536ba221ffa984ba058d06f3efa4c667ad573d502ebd594c",
+                    "58dcb39e2c174f52967ab204dcd988614b7134b4c8f647c837c97e2f730fd268",
+                    "745e61348e5335fb57f706d778b740a995f211f27d47ae37fb8f468cb8d0dd3f",
+                    "90cacd0b452df9f2d69b3a4ee43c0a15db7fe0d264a1c3acd9491112ea143915",
+                    "e762ec8999ca8e39e929ed8d4c0ab7c958118a60d9171588b7126530b53e0b1d"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": null,
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  20700,
+                  21700
+                ],
+                "status": "pass"
+              }
+            ],
+            "stop_reason": "not_needed"
+          },
+          {
+            "final_status": "unknown",
+            "followup_attempts_used": 1,
+            "id": "coffee-e01",
+            "steps": [
+              {
+                "actual_request_count": 2,
+                "case_id": "coffee-e01-initial",
+                "estimated_usd": 0.011159,
+                "policy_status": "ready",
+                "requests": [
+                  {
+                    "check_id": "glass-under-spout",
+                    "gap_codes": [
+                      "partial_visibility",
+                      "insufficient_distinct_views"
+                    ],
+                    "instructions": [
+                      "Frame the entire glass, including its edges, with hands clear and the region boundaries visible.",
+                      "Capture two entirely new views at least one second apart with the arrangement unchanged."
+                    ],
+                    "object_id": "glass",
+                    "object_label": "glass",
+                    "reason": "The locator could not support the entire target's visibility. There are too few distinct, consistent source images for the approved stability requirement.",
+                    "region_id": "dispense",
+                    "region_label": "dispense",
+                    "view_indices": [
+                      1
+                    ]
+                  }
+                ],
+                "source_hashes": [
+                  "95bca0d86eb6182cf07bc39cb9dafaeff02bbf5596a081b881ee60d00a7cfb04",
+                  "87fca3a09ef269a3af361880c06d77104e9ceac7ef201ba1c734789193bd49c4"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 20000,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "87fca3a09ef269a3af361880c06d77104e9ceac7ef201ba1c734789193bd49c4",
+                    "95bca0d86eb6182cf07bc39cb9dafaeff02bbf5596a081b881ee60d00a7cfb04"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": [
+                    20500,
+                    21500
+                  ],
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  18500,
+                  20000
+                ],
+                "status": "unknown"
+              },
+              {
+                "actual_request_count": 1,
+                "case_id": "coffee-e01-attempt-1",
+                "estimated_usd": 0.006963,
+                "policy_status": "timeline_exhausted",
+                "requests": [
+                  {
+                    "check_id": "glass-under-spout",
+                    "gap_codes": [
+                      "partial_visibility"
+                    ],
+                    "instructions": [
+                      "Frame the entire glass, including its edges, with hands clear and the region boundaries visible."
+                    ],
+                    "object_id": "glass",
+                    "object_label": "glass",
+                    "reason": "The locator could not support the entire target's visibility.",
+                    "region_id": "dispense",
+                    "region_label": "dispense",
+                    "view_indices": [
+                      0,
+                      1
+                    ]
+                  }
+                ],
+                "source_hashes": [
+                  "f9b7424df7ad06cbc5f323d0eb98cf218f31516a64e54f777223e49260082340",
+                  "6d969790f3ed8beb471c26c8dfbaf638e33173548409d5f2de220aaba1c05a1d"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 21500,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "6d969790f3ed8beb471c26c8dfbaf638e33173548409d5f2de220aaba1c05a1d",
+                    "87fca3a09ef269a3af361880c06d77104e9ceac7ef201ba1c734789193bd49c4",
+                    "95bca0d86eb6182cf07bc39cb9dafaeff02bbf5596a081b881ee60d00a7cfb04",
+                    "f9b7424df7ad06cbc5f323d0eb98cf218f31516a64e54f777223e49260082340"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": null,
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  20500,
+                  21500
+                ],
+                "status": "unknown"
+              }
+            ],
+            "stop_reason": "timeline_exhausted"
+          },
+          {
+            "final_status": "unknown",
+            "followup_attempts_used": 0,
+            "id": "coffee-e02-terminal",
+            "steps": [
+              {
+                "actual_request_count": 3,
+                "case_id": "coffee-e02-terminal",
+                "estimated_usd": 0.011019,
+                "policy_status": "timeline_exhausted",
+                "requests": [
+                  {
+                    "check_id": "glass-under-spout",
+                    "gap_codes": [
+                      "low_confidence"
+                    ],
+                    "instructions": [
+                      "Use a focused, well-lit view of the entire glass and region boundaries. The approved threshold stays fixed."
+                    ],
+                    "object_id": "glass",
+                    "object_label": "glass",
+                    "reason": "A reported detection score is below the approved threshold.",
+                    "region_id": "dispense",
+                    "region_label": "dispense",
+                    "view_indices": [
+                      1
+                    ]
+                  }
+                ],
+                "source_hashes": [
+                  "1908289f122255f0eeffec4fa0647226605ee7582b698bd36201441b784524e3",
+                  "81da5cd5cf54e4356c4305a60fc5ac39f6ae2b5fba2041562993c1827d5119e6"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 21500,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "1908289f122255f0eeffec4fa0647226605ee7582b698bd36201441b784524e3",
+                    "81da5cd5cf54e4356c4305a60fc5ac39f6ae2b5fba2041562993c1827d5119e6"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": null,
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  500,
+                  21500
+                ],
+                "status": "unknown"
+              }
+            ],
+            "stop_reason": "timeline_exhausted"
+          }
+        ],
+        "unused_counterfactual_case_ids": [],
+        "unused_counterfactual_estimated_usd": 0.0,
+        "unused_counterfactual_request_count": 0
+      },
+      "spark": {
+        "policy_consumed_estimated_usd": 0.051561,
+        "policy_consumed_request_count": 5,
+        "resolved_trajectories": 2,
+        "terminal_unknown_trajectories": 1,
+        "trajectories": [
+          {
+            "final_status": "pass",
+            "followup_attempts_used": 1,
+            "id": "coffee-e00",
+            "steps": [
+              {
+                "actual_request_count": 1,
+                "case_id": "coffee-e00-initial",
+                "estimated_usd": 0.008715,
+                "policy_status": "ready",
+                "requests": [],
+                "source_hashes": [
+                  "90cacd0b452df9f2d69b3a4ee43c0a15db7fe0d264a1c3acd9491112ea143915",
+                  "1e704bb96c391272b40d3baaa1b57c4ff8544c437ca801bdf6d4ca94ccb0f185"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 18500,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "1e704bb96c391272b40d3baaa1b57c4ff8544c437ca801bdf6d4ca94ccb0f185",
+                    "90cacd0b452df9f2d69b3a4ee43c0a15db7fe0d264a1c3acd9491112ea143915"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": [
+                    19100,
+                    20100
+                  ],
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  16500,
+                  18500
+                ],
+                "status": "unknown"
+              },
+              {
+                "actual_request_count": 1,
+                "case_id": "coffee-e00-attempt-1",
+                "estimated_usd": 0.015766,
+                "policy_status": "not_needed",
+                "requests": [],
+                "source_hashes": [
+                  "e762ec8999ca8e39e929ed8d4c0ab7c958118a60d9171588b7126530b53e0b1d",
+                  "454a1e11ec91d2a6536ba221ffa984ba058d06f3efa4c667ad573d502ebd594c"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 20100,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "1e704bb96c391272b40d3baaa1b57c4ff8544c437ca801bdf6d4ca94ccb0f185",
+                    "454a1e11ec91d2a6536ba221ffa984ba058d06f3efa4c667ad573d502ebd594c",
+                    "90cacd0b452df9f2d69b3a4ee43c0a15db7fe0d264a1c3acd9491112ea143915",
+                    "e762ec8999ca8e39e929ed8d4c0ab7c958118a60d9171588b7126530b53e0b1d"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": [
+                    20700,
+                    21700
+                  ],
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  19100,
+                  20100
+                ],
+                "status": "pass"
+              }
+            ],
+            "stop_reason": "not_needed"
+          },
+          {
+            "final_status": "pass",
+            "followup_attempts_used": 1,
+            "id": "coffee-e01",
+            "steps": [
+              {
+                "actual_request_count": 1,
+                "case_id": "coffee-e01-initial",
+                "estimated_usd": 0.008562,
+                "policy_status": "ready",
+                "requests": [],
+                "source_hashes": [
+                  "95bca0d86eb6182cf07bc39cb9dafaeff02bbf5596a081b881ee60d00a7cfb04",
+                  "87fca3a09ef269a3af361880c06d77104e9ceac7ef201ba1c734789193bd49c4"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 20000,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "87fca3a09ef269a3af361880c06d77104e9ceac7ef201ba1c734789193bd49c4",
+                    "95bca0d86eb6182cf07bc39cb9dafaeff02bbf5596a081b881ee60d00a7cfb04"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": [
+                    20500,
+                    21500
+                  ],
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  18500,
+                  20000
+                ],
+                "status": "unknown"
+              },
+              {
+                "actual_request_count": 1,
+                "case_id": "coffee-e01-attempt-1",
+                "estimated_usd": 0.011223,
+                "policy_status": "not_needed",
+                "requests": [],
+                "source_hashes": [
+                  "f9b7424df7ad06cbc5f323d0eb98cf218f31516a64e54f777223e49260082340",
+                  "6d969790f3ed8beb471c26c8dfbaf638e33173548409d5f2de220aaba1c05a1d"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 21500,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "6d969790f3ed8beb471c26c8dfbaf638e33173548409d5f2de220aaba1c05a1d",
+                    "87fca3a09ef269a3af361880c06d77104e9ceac7ef201ba1c734789193bd49c4",
+                    "95bca0d86eb6182cf07bc39cb9dafaeff02bbf5596a081b881ee60d00a7cfb04",
+                    "f9b7424df7ad06cbc5f323d0eb98cf218f31516a64e54f777223e49260082340"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": null,
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  20500,
+                  21500
+                ],
+                "status": "pass"
+              }
+            ],
+            "stop_reason": "not_needed"
+          },
+          {
+            "final_status": "unknown",
+            "followup_attempts_used": 0,
+            "id": "coffee-e02-terminal",
+            "steps": [
+              {
+                "actual_request_count": 1,
+                "case_id": "coffee-e02-terminal",
+                "estimated_usd": 0.007294,
+                "policy_status": "timeline_exhausted",
+                "requests": [],
+                "source_hashes": [
+                  "1908289f122255f0eeffec4fa0647226605ee7582b698bd36201441b784524e3",
+                  "81da5cd5cf54e4356c4305a60fc5ac39f6ae2b5fba2041562993c1827d5119e6"
+                ],
+                "source_policy": {
+                  "after_timestamp_ms": 21500,
+                  "all_sources_must_be_new": true,
+                  "excluded_source_hashes": [
+                    "1908289f122255f0eeffec4fa0647226605ee7582b698bd36201441b784524e3",
+                    "81da5cd5cf54e4356c4305a60fc5ac39f6ae2b5fba2041562993c1827d5119e6"
+                  ],
+                  "min_spacing_ms": 1000,
+                  "next_timestamps_ms": null,
+                  "required_views": 2
+                },
+                "source_timestamps_ms": [
+                  500,
+                  21500
+                ],
+                "status": "unknown"
+              }
+            ],
+            "stop_reason": "timeline_exhausted"
+          }
+        ],
+        "unused_counterfactual_case_ids": [
+          "coffee-e00-attempt-2"
+        ],
+        "unused_counterfactual_estimated_usd": 0.009523,
+        "unused_counterfactual_request_count": 1
+      }
+    },
+    "maximum_followup_attempts": 2,
+    "method": "offline_policy_replay_of_fixed_saved_live_responses",
+    "physical_action_execution_verified": false
+  },
+  "frozen_schedule": {
+    "cases": [
+      {
+        "case_id": "coffee-e00-initial",
+        "reviewed_status": "unknown",
+        "source_hashes": [
+          "90cacd0b452df9f2d69b3a4ee43c0a15db7fe0d264a1c3acd9491112ea143915",
+          "1e704bb96c391272b40d3baaa1b57c4ff8544c437ca801bdf6d4ca94ccb0f185"
+        ],
+        "source_id": "coffee-episode-000000",
+        "source_timestamps_ms": [
+          16500,
+          18500
+        ]
+      },
+      {
+        "case_id": "coffee-e00-attempt-1",
+        "reviewed_status": "pass",
+        "source_hashes": [
+          "e762ec8999ca8e39e929ed8d4c0ab7c958118a60d9171588b7126530b53e0b1d",
+          "454a1e11ec91d2a6536ba221ffa984ba058d06f3efa4c667ad573d502ebd594c"
+        ],
+        "source_id": "coffee-episode-000000",
+        "source_timestamps_ms": [
+          19100,
+          20100
+        ]
+      },
+      {
+        "case_id": "coffee-e00-attempt-2",
+        "reviewed_status": "pass",
+        "source_hashes": [
+          "58dcb39e2c174f52967ab204dcd988614b7134b4c8f647c837c97e2f730fd268",
+          "745e61348e5335fb57f706d778b740a995f211f27d47ae37fb8f468cb8d0dd3f"
+        ],
+        "source_id": "coffee-episode-000000",
+        "source_timestamps_ms": [
+          20700,
+          21700
+        ]
+      },
+      {
+        "case_id": "coffee-e01-initial",
+        "reviewed_status": "unknown",
+        "source_hashes": [
+          "95bca0d86eb6182cf07bc39cb9dafaeff02bbf5596a081b881ee60d00a7cfb04",
+          "87fca3a09ef269a3af361880c06d77104e9ceac7ef201ba1c734789193bd49c4"
+        ],
+        "source_id": "coffee-episode-000001",
+        "source_timestamps_ms": [
+          18500,
+          20000
+        ]
+      },
+      {
+        "case_id": "coffee-e01-attempt-1",
+        "reviewed_status": "pass",
+        "source_hashes": [
+          "f9b7424df7ad06cbc5f323d0eb98cf218f31516a64e54f777223e49260082340",
+          "6d969790f3ed8beb471c26c8dfbaf638e33173548409d5f2de220aaba1c05a1d"
+        ],
+        "source_id": "coffee-episode-000001",
+        "source_timestamps_ms": [
+          20500,
+          21500
+        ]
+      },
+      {
+        "case_id": "coffee-e02-terminal",
+        "reviewed_status": "unknown",
+        "source_hashes": [
+          "1908289f122255f0eeffec4fa0647226605ee7582b698bd36201441b784524e3",
+          "81da5cd5cf54e4356c4305a60fc5ac39f6ae2b5fba2041562993c1827d5119e6"
+        ],
+        "source_id": "coffee-episode-000002",
+        "source_timestamps_ms": [
+          500,
+          21500
+        ]
+      }
+    ],
+    "contract_hash": "e0b0db5b98adc7b9e7b2f15e85ad3d330e8dd393fff3f2030509a550cc8486ca",
+    "guided_module_sha256": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+    "maximum_followup_attempts": 2,
+    "stop_rule": "known verdict, two attempts, source exhaustion, or inference error; never search for favorable frames",
+    "trajectories": [
+      {
+        "followup_cases": [
+          "coffee-e00-attempt-1",
+          "coffee-e00-attempt-2"
+        ],
+        "id": "coffee-e00",
+        "initial_case": "coffee-e00-initial",
+        "source_id": "coffee-episode-000000"
+      },
+      {
+        "followup_cases": [
+          "coffee-e01-attempt-1"
+        ],
+        "id": "coffee-e01",
+        "initial_case": "coffee-e01-initial",
+        "source_id": "coffee-episode-000001",
+        "terminal_if_unknown": "insufficient_remaining_source_time"
+      },
+      {
+        "followup_cases": [],
+        "id": "coffee-e02-terminal",
+        "initial_case": "coffee-e02-terminal",
+        "source_id": "coffee-episode-000002",
+        "terminal_if_unknown": "insufficient_remaining_source_time"
+      }
+    ]
+  },
+  "inference_origin": "live_meta_api",
+  "limits": [
+    "Selected recorded frames; no interactive physical repair or continuous tracking claim.",
+    "Source rights, calibration, unique-target assumptions and labels require caller review.",
+    "Illustrative cases are excluded from accuracy metrics; small curated cases do not establish general reliability.",
+    "Estimated costs can exclude ambiguous charges. No raw media or provider responses are included."
+  ],
+  "physical_action_execution_verified": false,
+  "protocol_hash": "947df0779f5eacbc57cdc2206ef41db3f91c3e34aca75fc92738540090cde78e",
+  "report_integrity": {
+    "case_decisions_checked": 12,
+    "grounded_decisions_replayed": 6,
+    "inference_sidecars_replayed": 2,
+    "metrics_recomputed": true,
+    "verdict_consistency_checked": true
+  },
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "duration_ms": 22000,
+      "id": "coffee-episode-000000",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "02bc95dcc0922f5d7d759861e6e5151f4aa068631d5491e82badfc043f68cfd2"
+    },
+    {
+      "duration_ms": 22000,
+      "id": "coffee-episode-000001",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000001.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "20c258c99f463bd2451ab02b782f5f79bad3cba1bab7be7d45de6b43bb4f105e"
+    },
+    {
+      "duration_ms": 22000,
+      "id": "coffee-episode-000002",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000002.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "37d4930f315ac3a19288aa33b7446697be3e8a83cd31879674b40dbb8343d32f"
+    }
+  ],
+  "status": "completed"
+}

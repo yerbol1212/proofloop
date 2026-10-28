@@ -1,7 +1,36 @@
 import { useEffect, useState } from 'react'
 import type { CSSProperties } from 'react'
-import type { Status } from './types'
+import type { AcquisitionPlan, Status } from './types'
 import { Icon } from './icons'
+import { AcquisitionPanel } from './AcquisitionPanel'
+
+interface FollowupStep {
+  case_id: string
+  status: Status
+  policy_status: AcquisitionPlan['status']
+  requests: AcquisitionPlan['requests']
+  source_timestamps_ms: number[]
+  actual_request_count: number
+}
+interface FollowupTrajectory {
+  id: string
+  final_status: Status
+  followup_attempts_used: number
+  stop_reason: string
+  steps: FollowupStep[]
+}
+interface FollowupReplay {
+  maximum_followup_attempts: number
+  conditions: Record<
+    string,
+    {
+      policy_consumed_estimated_usd: number
+      policy_consumed_request_count: number
+      unused_counterfactual_case_ids: string[]
+      trajectories: FollowupTrajectory[]
+    }
+  >
+}
 
 interface Metric {
   correct: number
@@ -40,12 +69,14 @@ interface LabRun {
   case_count: number
   source_count: number
   evaluation_role?: 'development_reprocessing' | 'new_source_holdback'
+  evaluation_note?: string
   report_integrity?: {
     verdict_consistency_checked: boolean
     metrics_recomputed: boolean
     grounded_decisions_replayed: number
     case_decisions_checked: number
   }
+  followup_policy_replay?: FollowupReplay
   metrics: Record<string, Metric>
   conditions: Record<
     string,
@@ -68,6 +99,114 @@ function Result({ value }: { value: Status | null }) {
     <span className={`lab-result ${value || ''}`}>
       {value ? value[0].toUpperCase() + value.slice(1) : 'Unavailable'}
     </span>
+  )
+}
+
+function RecordedFollowups({
+  replay,
+  selectedCase,
+  onSelect,
+}: {
+  replay: FollowupReplay
+  selectedCase: string
+  onSelect: (caseId: string) => void
+}) {
+  const guided = replay.conditions.guided
+  const selected = guided?.trajectories
+    .flatMap((trajectory) =>
+      trajectory.steps.map((step, index) => ({ step, index, trajectory })),
+    )
+    .find(({ step }) => step.case_id === selectedCase)
+  return (
+    <section
+      className="panel followup-replay"
+      aria-label="Bounded recorded follow-ups"
+    >
+      <h2>Ask for evidence, then stop</h2>
+      <p>
+        These future pairs were fixed before inference. Every follow-up is later
+        than the preceding pair and uses new image bytes. This is recorded
+        timeline analysis; no camera or robot followed these requests.
+      </p>
+      <details className="followup-details">
+        <summary>Compare the frozen follow-up trajectories</summary>
+        <div className="followup-conditions">
+          {Object.entries(replay.conditions).map(([name, condition]) => (
+            <div key={name}>
+              <h3>{names[name] || name}</h3>
+              {condition.trajectories.map((trajectory) => (
+                <article className="followup-trajectory" key={trajectory.id}>
+                  <strong>{trajectory.id.replaceAll('-', ' ')}</strong>
+                  <div className="followup-steps">
+                    {trajectory.steps.map((step, index) => (
+                      <button
+                        className={`button secondary ${step.case_id === selectedCase ? 'selected' : ''}`}
+                        key={step.case_id}
+                        onClick={() => onSelect(step.case_id)}
+                        aria-pressed={step.case_id === selectedCase}
+                      >
+                        {index === 0 ? 'Initial pair' : `Follow-up ${index}`} ·{' '}
+                        {step.source_timestamps_ms
+                          .map((time) => `${(time / 1000).toFixed(1)}s`)
+                          .join(' / ')}
+                        <Result value={step.status} />
+                      </button>
+                    ))}
+                  </div>
+                  <p>
+                    {trajectory.followup_attempts_used} /{' '}
+                    {replay.maximum_followup_attempts} follow-ups ·{' '}
+                    {trajectory.stop_reason === 'not_needed'
+                      ? trajectory.final_status === 'pass'
+                        ? 'goal verified; no further pair requested'
+                        : 'known failure; no further pair requested'
+                      : trajectory.stop_reason.replaceAll('_', ' ')}
+                  </p>
+                </article>
+              ))}
+              <p className="lab-limit">
+                Policy consumed {condition.policy_consumed_request_count}{' '}
+                requests · estimated $
+                {condition.policy_consumed_estimated_usd.toFixed(4)}.
+                {condition.unused_counterfactual_case_ids.length
+                  ? ` ${condition.unused_counterfactual_case_ids.length} separately scored future pair was unused by this policy.`
+                  : ''}
+              </p>
+            </div>
+          ))}
+        </div>
+      </details>
+      {selected && selected.step.status === 'unknown' ? (
+        <>
+          <h3>Guided pipeline: missing evidence at the selected pair</h3>
+          <AcquisitionPanel
+            plan={{
+              schema_version: 1,
+              status: selected.step.policy_status,
+              inspection_only: true,
+              physical_action_allowed: false,
+              attempts_used: selected.index,
+              max_attempts: replay.maximum_followup_attempts,
+              attempts_remaining: Math.max(
+                0,
+                replay.maximum_followup_attempts - selected.index,
+              ),
+              unknown_check_ids: selected.step.requests.map(
+                (request) => request.check_id,
+              ),
+              observed_fail_check_ids: [],
+              requests: selected.step.requests,
+              stop_reason:
+                selected.step.policy_status === 'timeline_exhausted'
+                  ? 'No further qualifying pair remains in the approved source schedule. This result stays unverified.'
+                  : selected.step.policy_status === 'budget_exhausted'
+                    ? 'The two-follow-up limit is reached. This result stays unverified.'
+                    : null,
+            }}
+          />
+        </>
+      ) : null}
+    </section>
   )
 }
 
@@ -190,9 +329,10 @@ export function VideoLab() {
             ) : null}
             {run.evaluation_role ? (
               <p className="lab-limit">
-                {run.evaluation_role === 'development_reprocessing'
-                  ? 'Development replay: these examples were already exposed during debugging. This is not new-source evidence.'
-                  : 'New-source check: these recordings were reserved until the revised method was frozen. The camera and task setup are still shared.'}
+                {run.evaluation_note ||
+                  (run.evaluation_role === 'development_reprocessing'
+                    ? 'Development replay: these examples were already exposed during debugging. This is not new-source evidence.'
+                    : 'New-source check: these recordings were reserved until the revised method was frozen. The camera and task setup are still shared.')}
               </p>
             ) : null}
             <div
@@ -249,7 +389,20 @@ export function VideoLab() {
               demonstrations. They do not establish general accuracy or a robot
               following ProofLoop’s repair.
             </p>
+            {run.followup_policy_replay ? (
+              <p className="lab-limit">
+                The table includes all scored pairs. Policy totals below exclude
+                unused future pairs.
+              </p>
+            ) : null}
           </section>
+          {run.followup_policy_replay && current ? (
+            <RecordedFollowups
+              replay={run.followup_policy_replay}
+              selectedCase={current.id}
+              onSelect={setSelectedCase}
+            />
+          ) : null}
           {current ? (
             <div className="lab-case-workbench">
               <aside className="panel lab-case-list">

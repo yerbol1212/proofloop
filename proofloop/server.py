@@ -44,6 +44,20 @@ CSP = (
 # Exact trusted validation messages only. Never reflect arbitrary ValueError
 # text, provider responses, supplied filenames, or filesystem paths to HTTP.
 TRUSTED_VALIDATION_MESSAGES = frozenset({
+    "Evidence acquisition stopped. Review the task or capture setup before continuing",
+    "Supply 1 to 6 distinct object IDs using letters, digits, underscores, dots or hyphens",
+    "Supply exactly two distinct lowercase region IDs using letters, digits, underscores, dots or hyphens",
+    "The authored coffee preset is fixed. Use Spark to draft changed requirements",
+    "The task draft changed. Request and review a new exact draft before activation",
+    "The reviewed region inventory does not match its executable protocol",
+    "Approve both nonoverlapping rectangles using the active task's exact region IDs",
+    "Select Spark compilation or the authored coffee placement preset",
+    "The task or inspection changed. Review the current preparation again",
+    "Preparation is blocked. Obtain current passing evidence for the reviewed task",
+    "Supply the exact task, revision and explicit continuation confirmation",
+    "Explicitly confirm the continuation declaration",
+    "Assistant continuation requires a direct user authorization reference",
+    "Continuation is already declared for this task and revision",
     "An inspection is already running",
     "An inspection payload is required",
     "Start a new inspection to obtain a current capture token",
@@ -292,7 +306,8 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
             self._boundary(mutation=True)
             path = self._path()
             methods = {"/api/repair": "begin_repair", "/api/new": "new_inspection", "/api/inspect": "inspect_pair",
-                       "/api/task/draft": "draft_task", "/api/task/activate": "activate_task"}
+                       "/api/task/draft": "draft_task", "/api/task/activate": "activate_task",
+                       "/api/workflow/check": "check_workflow", "/api/workflow/continue": "continue_workflow"}
             if path not in methods:
                 raise _RequestError(404, "not_found", "This API endpoint is unavailable.")
             limit = MAX_JSON_BYTES if path == "/api/inspect" else MAX_TASK_BYTES if path.startswith("/api/task/") else MAX_CONTROL_BYTES

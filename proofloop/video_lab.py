@@ -17,6 +17,7 @@ from typing import Any, Mapping, Sequence
 from .benchmark import AVAILABLE_CONDITIONS, GUIDED_NOTE, ROOT, STATUSES, _approved, _file_hash, public_summary, validate_report, verify_media
 from .capture import _jpeg_dimensions
 from .core import ValidationError
+from .followup import replay_fixed_followup, response_paths
 
 MAX_REPORT_BYTES = 32 * 1024 * 1024
 MAX_SUMMARY_BYTES = 2 * 1024 * 1024
@@ -113,6 +114,7 @@ class VideoLab:
             reports, summaries = self._paths()
             records = reports + summaries + [path.parent / "approved-manifest.json" for path in reports]
             records += [path.parent / name / "results.json" for path in reports for name in AVAILABLE_CONDITIONS]
+            records += [dependency for path in reports for dependency in response_paths(path.parent)]
             key = self._stats(records + list(self._tracked_paths))
             if key == self._fingerprint:
                 return deepcopy(self._snapshot)
@@ -179,6 +181,11 @@ class VideoLab:
                 case_map[identifier] = result
             by_condition[name] = case_map
         contract = envelope["contract"]
+        followup = None
+        if contract["dataset_id"] == "proofloop-fixed-future-evidence-development-20261028":
+            followup = replay_fixed_followup(envelope, report, report_path.parent, root=self.root)
+            if summary.get("followup_policy_replay") != followup:
+                raise ValidationError("Public follow-up replay differs from its saved source-bound responses")
         declared_ids = {case["id"] for case in contract["cases"]}
         if any(set(case_map) != declared_ids for case_map in by_condition.values()):
             raise ValidationError("Lab results do not cover exactly the reviewed cases")
@@ -239,6 +246,10 @@ class VideoLab:
             title = "Normalized grounding — new sources"
         if evaluation_role == "development_reprocessing" and contract["dataset_id"] == "proofloop-temporal-stress-development-20261028":
             title = "Temporal uncertainty — development stress test"
+        if evaluation_role == "development_reprocessing" and contract["dataset_id"] == "proofloop-candy-new-task-transfer-development-20261028":
+            title = "New task transfer — candy collection"
+        if followup is not None:
+            title = "Specific evidence requests — fixed future pairs"
         task_summary = " ".join(
             f"{check.object_id.replace('_', ' ')} must be in {check.region_id.upper()}."
             if check.kind == "location" else
@@ -246,8 +257,11 @@ class VideoLab:
             for check in protocol.checks)
         return ({"id": run_id, "title": title, "contract_hash": envelope["contract_hash"],
                  **({"evaluation_role": evaluation_role} if evaluation_role is not None else {}),
+                 **({"evaluation_note": "New-task development pilot: one newly tested candy recording and scene. This is not an independent benchmark or evidence of general task transfer."}
+                    if contract["dataset_id"] == "proofloop-candy-new-task-transfer-development-20261028" else {}),
                  "source_kind": "external_recorded_video", "inference_origin": report.get("inference_origin"),
                  "report_integrity": integrity,
+                 **({"followup_policy_replay": followup} if followup is not None else {}),
                  "requirements": contract["requirements"], "task_summary": task_summary, "objects": list(protocol.objects),
                  "concepts": deepcopy(contract["concepts"]), "case_count": len(cases), "source_count": len(sources),
                  "metrics": {name: deepcopy(summary["conditions"][name].get("metrics")) for name in by_condition},
@@ -259,7 +273,7 @@ class VideoLab:
                                 for name in by_condition},
                  "limits": ["Prerecorded demonstration states with authored placement labels; no interactive recovery is verified.",
                             "Cases from the same source are correlated. This curated pilot is not held-out benchmark accuracy.",
-                            "The acceptance gate covers image-zone placement, not robot control, beverage quality or safety.",
+                            "The acceptance gate covers image-zone placement, not robot control, product quality or safety.",
                             "UNKNOWN means the system lacks supported evidence. It is not successful task verification."]
                            + ([GUIDED_NOTE] if "guided" in by_condition else []),
                  "cases": cases}, media, tuple(paths.values()))

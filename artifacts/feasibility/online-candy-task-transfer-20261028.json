@@ -1,0 +1,141 @@
+{
+  "conditions": {
+    "guided": {
+      "cases": [
+        {
+          "case_id": "candy-e00-early-unsupported",
+          "status": "unknown"
+        },
+        {
+          "case_id": "candy-e00-visible-collection",
+          "status": "pass"
+        }
+      ],
+      "estimated_usd": 0.031686,
+      "method_note": "Task-independent Spark assigns object identity and boxes; SAM refines the prompted mask. A prompted mask does not independently prove semantic identity. Missing/ambiguous localization stays unknown.",
+      "metrics": {
+        "accuracy": 1.0,
+        "balanced_accuracy_present_classes": 1.0,
+        "confusion": {
+          "fail": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 0
+          },
+          "pass": {
+            "fail": 0,
+            "pass": 1,
+            "unknown": 0
+          },
+          "unknown": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 1
+          }
+        },
+        "correct": 2,
+        "correct_acceptance_rate": 1.0,
+        "correct_acceptances": 1,
+        "decision_coverage": 0.5,
+        "eligible_cases": 2,
+        "ground_truth_counts": {
+          "fail": 0,
+          "pass": 1,
+          "unknown": 1
+        },
+        "illustrative_cases_excluded": 0,
+        "incorrect_pass_rate": 0.0,
+        "incorrect_passes": 0,
+        "missing_predictions": 0,
+        "unknown_rate": 0.5,
+        "unknown_results": 1
+      },
+      "observation_version": "normalized_boxes_v2",
+      "status": "completed",
+      "wall_seconds": 30.062
+    },
+    "spark": {
+      "cases": [
+        {
+          "case_id": "candy-e00-early-unsupported",
+          "status": "unknown"
+        },
+        {
+          "case_id": "candy-e00-visible-collection",
+          "status": "pass"
+        }
+      ],
+      "estimated_usd": 0.016726,
+      "metrics": {
+        "accuracy": 1.0,
+        "balanced_accuracy_present_classes": 1.0,
+        "confusion": {
+          "fail": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 0
+          },
+          "pass": {
+            "fail": 0,
+            "pass": 1,
+            "unknown": 0
+          },
+          "unknown": {
+            "fail": 0,
+            "pass": 0,
+            "unknown": 1
+          }
+        },
+        "correct": 2,
+        "correct_acceptance_rate": 1.0,
+        "correct_acceptances": 1,
+        "decision_coverage": 0.5,
+        "eligible_cases": 2,
+        "ground_truth_counts": {
+          "fail": 0,
+          "pass": 1,
+          "unknown": 1
+        },
+        "illustrative_cases_excluded": 0,
+        "incorrect_pass_rate": 0.0,
+        "incorrect_passes": 0,
+        "missing_predictions": 0,
+        "unknown_rate": 0.5,
+        "unknown_results": 1
+      },
+      "status": "completed",
+      "wall_seconds": 15.365
+    }
+  },
+  "contract_hash": "14e0ad0b9854fa39ebdef7905e01347d21f87ab9c10fcffc04f2a07ec4ddfc88",
+  "dataset_id": "proofloop-candy-new-task-transfer-development-20261028",
+  "evaluation_role": "development_reprocessing",
+  "evidence_origin": "external_recorded_video",
+  "experiment": "licensed_recorded_video_comparison",
+  "inference_origin": "live_meta_api",
+  "limits": [
+    "Selected recorded frames; no interactive physical repair or continuous tracking claim.",
+    "Source rights, calibration, unique-target assumptions and labels require caller review.",
+    "Illustrative cases are excluded from accuracy metrics; small curated cases do not establish general reliability.",
+    "Estimated costs can exclude ambiguous charges. No raw media or provider responses are included."
+  ],
+  "physical_action_execution_verified": false,
+  "protocol_hash": "ae0daa748024a840b936e1c84179d367e74d7bbf8aaa8cd9db8b14c36db82c06",
+  "schema_version": "1.0",
+  "sources": [
+    {
+      "duration_ms": 14000,
+      "id": "candy-episode-000000",
+      "license": {
+        "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot conversion by Hugging Face. Pinned dataset card explicitly declares MIT. Original paper: https://arxiv.org/abs/2304.13705.",
+        "name": "MIT",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_candy/blob/7a19ab84a6b7f376d699c7f12c28535725fd0593/README.md"
+      },
+      "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_candy/resolve/7a19ab84a6b7f376d699c7f12c28535725fd0593/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+      "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_candy/blob/7a19ab84a6b7f376d699c7f12c28535725fd0593/README.md",
+      "publisher": "LeRobot / ALOHA authors",
+      "sha256": "8c17c51737f82d63ed9a605da08173c2db40678e193a07efb08f3c9055fcebe1"
+    }
+  ],
+  "status": "completed"
+}

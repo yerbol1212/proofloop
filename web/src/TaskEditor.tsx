@@ -8,6 +8,13 @@ export type TaskAction = (
   destination?: 'task' | 'inspection',
 ) => Promise<boolean>
 const label = (value: string) => value.replaceAll('_', ' ').replaceAll('-', ' ')
+const coffeePreset = {
+  title: 'Coffee glass placement',
+  requirements: 'The unique transparent drinking glass must be in DISPENSE.',
+  objects: ['glass'],
+  regions: ['dispense', 'staging'],
+  concepts: { glass: 'transparent drinking glass' },
+} as const
 
 export function TaskEditor({
   state,
@@ -23,6 +30,10 @@ export function TaskEditor({
   const [objects, setObjects] = useState(
     (task?.objects || ['fork', 'spoon']).join(', '),
   )
+  const [regionNames, setRegionNames] = useState(
+    task?.protocol.regions || ['left', 'right'],
+  )
+  const [presetSelected, setPresetSelected] = useState(false)
   const [requirements, setRequirements] = useState(
     task?.requirements ||
       'The unique fork must be in LEFT. The unique spoon must be in RIGHT.',
@@ -51,11 +62,21 @@ export function TaskEditor({
   const prompts = Object.fromEntries(
     inventory.map((id) => [id, concepts[id] ?? label(id)]),
   )
+  const regions = regionNames.map((value) => value.trim())
+  const authoredPreset =
+    presetSelected &&
+    title.trim() === coffeePreset.title &&
+    requirements.trim() === coffeePreset.requirements &&
+    inventory.join(',') === coffeePreset.objects.join(',') &&
+    regions.join(',') === coffeePreset.regions.join(',') &&
+    prompts.glass === coffeePreset.concepts.glass &&
+    mode === 'guided'
   const changed = Boolean(
     draft &&
       (requirements.trim() !== draft.requirements ||
         title.trim() !== draft.title ||
         inventory.join(',') !== draft.objects.join(',') ||
+        regions.join(',') !== draft.protocol.regions.join(',') ||
         inventory.some((id) => prompts[id] !== draft.concepts[id]) ||
         mode !== (draft.perception_mode || 'concept')),
   )
@@ -64,13 +85,23 @@ export function TaskEditor({
     setLocalError(null)
     setReviewed(false)
     if (
-      inventory.length < 2 ||
+      inventory.length < 1 ||
       inventory.length > 6 ||
       new Set(inventory).size !== inventory.length ||
       inventory.some((id) => !/^[A-Za-z0-9][A-Za-z0-9_.-]{0,63}$/.test(id))
     ) {
       setLocalError(
-        'Enter two to six distinct object names, separated by commas. Use letters, numbers, spaces, underscores or hyphens.',
+        'Enter one to six distinct object names, separated by commas. Use letters, numbers, spaces, underscores or hyphens.',
+      )
+      return
+    }
+    if (
+      regions.length !== 2 ||
+      new Set(regions).size !== 2 ||
+      regions.some((id) => !/^[a-z0-9][a-z0-9_.-]{0,63}$/.test(id))
+    ) {
+      setLocalError(
+        'Give both regions distinct lowercase IDs, such as dispense and staging.',
       )
       return
     }
@@ -90,8 +121,10 @@ export function TaskEditor({
         title: title.trim(),
         requirements: requirements.trim(),
         objects: inventory,
+        regions,
         concepts: prompts,
         perception_mode: mode,
+        draft_source: authoredPreset ? 'authored_coffee_preset' : 'spark',
         confirm_unique_targets: true,
       },
       'task',
@@ -115,8 +148,30 @@ export function TaskEditor({
       <section className="panel task-form" aria-labelledby="task-form-title">
         <h2 id="task-form-title">Describe the task</h2>
         <p className="task-intro">
-          Spark drafts placement checks for LEFT and RIGHT. Review the exact
-          checks before they become active.
+          Describe one to six targets in two named regions. Review the exact
+          placement checks before they become active.
+        </p>
+        <button
+          className="button secondary full-width"
+          disabled={disabled}
+          onClick={() => {
+            setTitle(coffeePreset.title)
+            setObjects(coffeePreset.objects.join(', '))
+            setRegionNames([...coffeePreset.regions])
+            setRequirements(coffeePreset.requirements)
+            setConcepts({ ...coffeePreset.concepts })
+            setMode('guided')
+            setPresetSelected(true)
+            setUnique(false)
+            setReviewed(false)
+            setLocalError(null)
+          }}
+        >
+          Use coffee video preset
+        </button>
+        <p className="field-hint">
+          One glass, DISPENSE and STAGING. This authored placement gate uses the
+          licensed coffee demonstration layout and needs your review.
         </p>
         <label className="task-field">
           Task name
@@ -130,7 +185,7 @@ export function TaskEditor({
         <label className="task-field">
           Object names
           <span className="field-hint">
-            Two to six visually distinct targets, separated by commas.
+            One to six visually distinct targets, separated by commas.
           </span>
           <input
             value={objects}
@@ -142,6 +197,29 @@ export function TaskEditor({
             placeholder="fork, spoon"
           />
         </label>
+        {regionNames.map((region, index) => (
+          <label className="task-field" key={index}>
+            {index === 0 ? 'First region ID' : 'Second region ID'}
+            <input
+              value={region}
+              maxLength={64}
+              disabled={disabled}
+              onChange={(event) => {
+                setRegionNames((previous) =>
+                  previous.map((value, item) =>
+                    item === index ? event.target.value : value,
+                  ),
+                )
+                setReviewed(false)
+              }}
+              placeholder={index === 0 ? 'dispense' : 'staging'}
+            />
+          </label>
+        ))}
+        <p className="field-hint">
+          Use two distinct lowercase IDs. New names reset the starting
+          rectangles; approve their placement against both fresh views.
+        </p>
         <label className="task-field">
           Required placement
           <textarea
@@ -241,7 +319,7 @@ export function TaskEditor({
             !unique ||
             !requirements.trim() ||
             !title.trim() ||
-            !state.api_ready
+            (!authoredPreset && !state.api_ready)
           }
           onClick={() => void createDraft()}
         >
@@ -251,12 +329,18 @@ export function TaskEditor({
             <Icon name="plus" />
           )}
           {state.busy_operation === 'task_draft'
-            ? 'Spark is drafting checks…'
-            : 'Draft checks with Spark'}
+            ? authoredPreset
+              ? 'Preparing authored checks…'
+              : 'Spark is drafting checks…'
+            : authoredPreset
+              ? 'Review authored coffee checks'
+              : 'Draft checks with Spark'}
         </button>
         <p className="capture-footnote">
-          One bounded Spark request. Creating a draft leaves the active task and
-          its evidence unchanged.
+          {authoredPreset
+            ? 'This fixed authored preset makes no model request. '
+            : 'One bounded Spark request. '}
+          Creating a draft leaves the active task and its evidence unchanged.
         </p>
       </section>
       <section
@@ -267,9 +351,11 @@ export function TaskEditor({
         {draft ? (
           <>
             <p className="draft-origin">
-              {draft.origin === 'live_meta_api'
-                ? draft.model
-                : 'Offline test draft'}{' '}
+              {draft.origin === 'authored_frozen_coffee_preset'
+                ? 'Authored coffee preset · no compilation inference'
+                : draft.origin === 'live_meta_api'
+                  ? draft.model
+                  : 'Offline test draft'}{' '}
               · Awaiting approval
             </p>
             <p className="task-scope">
@@ -280,6 +366,14 @@ export function TaskEditor({
             </p>
             <h3>{draft.title}</h3>
             <p className="task-requirements">{draft.requirements}</p>
+            <p className="task-scope">
+              Reviewed region IDs:{' '}
+              {draft.protocol.regions.map((id) => id.toUpperCase()).join(' / ')}
+              .
+              {draft.calibration_note
+                ? ` ${draft.calibration_note}`
+                : ' Approve both rectangles against your actual camera view.'}
+            </p>
             <ol className="task-checks">
               {draft.protocol.checks.map((check) => (
                 <li key={check.id}>

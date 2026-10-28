@@ -1,6 +1,7 @@
+import type { WorkflowDTO } from './WorkflowPanel'
 export type Status = 'pass' | 'fail' | 'unknown'
 export type Rect = [number, number, number, number]
-export type Regions = { left: Rect; right: Rect }
+export type Regions = Record<string, Rect>
 export type Source = 'camera' | 'upload'
 export interface EvidenceImage {
   id: string
@@ -62,7 +63,15 @@ export interface Snapshot {
     instructions: string[]
     object_ids: string[]
     reason: string
+    status?: AcquisitionPlan['status']
+    attempts_used?: number
+    attempts_remaining?: number
+    max_attempts?: number
+    requests?: AcquisitionPlan['requests']
+    stop_reason?: string | null
   } | null
+  acquisition?: AcquisitionPlan | null
+  workflow?: WorkflowDTO | null
   recovery?: RecoveryReceipt | null
 }
 export interface RecoveryReceipt {
@@ -116,6 +125,7 @@ export interface TaskProtocol {
 export interface ActiveTask {
   title: string
   objects: string[]
+  regions?: string[]
   requirements: string
   protocol_hash: string
   task_hash?: string | null
@@ -136,17 +146,48 @@ export interface TaskDraft {
   title: string
   requirements: string
   objects: string[]
+  regions: string[]
   protocol: TaskProtocol
   protocol_hash: string
   concepts: Record<string, string>
   origin: string
   requires_human_approval: boolean
   approved: boolean
-  model: string
+  model: string | null
+  suggested_regions?: Regions
+  calibration_note?: string
   claim_limit: string
   perception_mode?: 'concept' | 'guided'
   perception_note?: string
   perception_version?: string
+}
+export interface AcquisitionPlan {
+  schema_version: number
+  status:
+    | 'ready'
+    | 'not_needed'
+    | 'budget_exhausted'
+    | 'timeline_exhausted'
+    | 'unsupported_contract'
+  inspection_only: true
+  physical_action_allowed: false
+  attempts_used: number
+  max_attempts: number
+  attempts_remaining: number
+  unknown_check_ids: string[]
+  observed_fail_check_ids: string[]
+  requests: {
+    check_id: string
+    object_id: string
+    object_label: string
+    region_id: string
+    region_label: string
+    gap_codes: string[]
+    view_indices: number[]
+    reason: string
+    instructions: string[]
+  }[]
+  stop_reason: string | null
 }
 export interface LocalPhoto {
   data_url: string

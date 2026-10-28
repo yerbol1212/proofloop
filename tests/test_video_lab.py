@@ -8,6 +8,7 @@ import struct
 import tempfile
 import threading
 import unittest
+from unittest.mock import patch
 
 from proofloop.benchmark import approve_manifest, comparison_metrics, evaluate_sam, evaluate_spark, manifest_hash, public_summary
 from proofloop.server import create_server
@@ -199,6 +200,88 @@ class VideoLabTests(unittest.TestCase):
         self.assertTrue(state["available"])
         self.assertNotIn("/Users/private", json.dumps(state))
         self.assertIn("withheld", state["runs"][0]["cases"][0]["reasons"]["spark"])
+
+    def _fixed_followup_fixture(self):
+        # The controller uses real source-bound fixture observations, masks,
+        # sidecars and request ledgers. Only JPEG decoding/locator transport is
+        # replaced because these authored fixture bytes are not photographs.
+        from proofloop.followup import replay_fixed_followup
+        from tests.test_followup import fixture as followup_fixture
+        envelope, report, folder, saved_replay = followup_fixture(self.root)
+        report.update(schema_version="1.0", experiment="licensed_recorded_video_comparison",
+                      evidence_origin="external_recorded_video")
+        save(folder / "approved-manifest.json", envelope)
+        save(folder / "report.json", report)
+        with patch("proofloop.followup.guided_segment_pair", side_effect=saved_replay):
+            replay = replay_fixed_followup(envelope, report, folder, self.root)
+        summary = public_summary(envelope, report)
+        summary["followup_policy_replay"] = replay
+        public_path = self.root / "artifacts/feasibility/online-followup-fixture.json"
+        save(public_path, summary)
+        lab = VideoLab(self.root, report_paths=[folder / "report.json"], summary_paths=[public_path])
+        return lab, folder, public_path, replay, saved_replay
+
+    def test_followup_summary_extra_is_accepted_only_after_source_bound_policy_replay(self):
+        lab, _, public_path, replay, saved_replay = self._fixed_followup_fixture()
+        public = json.loads(public_path.read_text())
+        public["unreviewed_note"] = "/private/unapproved/provider-body"
+        save(public_path, public)
+        with patch("proofloop.video_lab._dimensions", return_value=(100, 100)), \
+                patch("proofloop.followup.guided_segment_pair", side_effect=saved_replay):
+            state = lab.snapshot()
+        self.assertTrue(state["available"])
+        run = state["runs"][0]
+        self.assertEqual("Specific evidence requests — fixed future pairs", run["title"])
+        self.assertEqual(replay, run["followup_policy_replay"])
+        self.assertEqual(1, replay["conditions"]["guided"]["resolved_trajectories"])
+        self.assertFalse(replay["physical_action_execution_verified"])
+        self.assertNotIn("unreviewed_note", json.dumps(state))
+        self.assertNotIn("/private/unapproved", json.dumps(state))
+
+    def test_tampered_followup_totals_hide_the_run_even_when_base_summary_matches(self):
+        lab, _, public_path, _, saved_replay = self._fixed_followup_fixture()
+        with patch("proofloop.video_lab._dimensions", return_value=(100, 100)), \
+                patch("proofloop.followup.guided_segment_pair", side_effect=saved_replay):
+            self.assertTrue(lab.snapshot()["available"])
+            public = json.loads(public_path.read_text())
+            public["followup_policy_replay"]["conditions"]["guided"]["resolved_trajectories"] = 999
+            save(public_path, public)
+            self.assertFalse(lab.snapshot()["available"])
+
+    def test_missing_followup_policy_is_not_shown_as_a_reviewed_controller_run(self):
+        lab, _, public_path, _, saved_replay = self._fixed_followup_fixture()
+        public = json.loads(public_path.read_text())
+        del public["followup_policy_replay"]
+        save(public_path, public)
+        with patch("proofloop.video_lab._dimensions", return_value=(100, 100)), \
+                patch("proofloop.followup.guided_segment_pair", side_effect=saved_replay):
+            self.assertFalse(lab.snapshot()["available"])
+
+    def test_changed_pair_sidecar_invalidates_cached_followup_projection(self):
+        lab, folder, _, _, saved_replay = self._fixed_followup_fixture()
+        with patch("proofloop.video_lab._dimensions", return_value=(100, 100)), \
+                patch("proofloop.followup.guided_segment_pair", side_effect=saved_replay):
+            self.assertTrue(lab.snapshot()["available"])
+            # Aggregate predictions and results.json still match. A changed
+            # saved request latency breaks the independent usage-ledger replay.
+            sidecar = folder / "guided/coffee-e00-initial.json"
+            pair = json.loads(sidecar.read_text())
+            pair["locator"]["latency_seconds"] += .1
+            save(sidecar, pair)
+            self.assertFalse(lab.snapshot()["available"])
+
+    def test_candy_transfer_title_preserves_development_scope(self):
+        contract = deepcopy(self.envelope["contract"])
+        contract["dataset_id"] = "proofloop-candy-new-task-transfer-development-20261028"
+        envelope = approve_manifest(contract, manifest_hash(contract), confirm_unique_targets=True)
+        report = deepcopy(self.report)
+        report.update(contract_hash=envelope["contract_hash"], evaluation_role="development_reprocessing")
+        save(self.run / "approved-manifest.json", envelope)
+        save(self.run / "report.json", report)
+        save(self.summary, public_summary(envelope, report))
+        run = self.lab.snapshot()["runs"][0]
+        self.assertEqual("New task transfer — candy collection", run["title"])
+        self.assertEqual("development_reprocessing", run["evaluation_role"])
 
     def test_loopback_routes_are_read_only_and_preserve_http_boundary(self):
         class Engine:

@@ -5,7 +5,7 @@ from pathlib import Path
 import unittest
 from unittest.mock import Mock
 
-from proofloop.compiler import CompilerError, compile_protocol, compiler_schema
+from proofloop.compiler import CompilerError, authored_coffee_protocol, compile_protocol, compiler_schema
 from proofloop.core import Protocol
 from proofloop.meta import validate_json
 
@@ -147,6 +147,38 @@ class CompilerTests(unittest.TestCase):
 
 
 class SpatialCompilerModeTests(unittest.TestCase):
+    def test_one_target_named_regions_preserve_exact_ids_and_review_boundary(self):
+        proposal = {"protocol": {"id": "proofloop-task", "version": "draft-1", "objects": ["glass"],
+            "regions": ["dispense", "staging"], "checks": [{"id": "glass-at-dispense", "kind": "location",
+            "object_id": "glass", "region_id": "dispense", "unique_target": True}], "steps": [], "checkpoints": []},
+            "unsupported_requirements": [], "clarifications_needed": []}
+        draft = compile_protocol(mocked_client(proposal), "The unique glass must be in dispense.", objects=["glass"],
+                                 regions=["dispense", "staging"], predicate_kind="location", unique_objects=["glass"])
+        self.assertEqual(["glass"], draft["protocol"]["objects"])
+        self.assertEqual(["dispense", "staging"], draft["protocol"]["regions"])
+        self.assertEqual("dispense", draft["protocol"]["checks"][0]["region_id"])
+        self.assertFalse(draft["approved"])
+        self.assertTrue(draft["requires_human_approval"])
+
+    def test_authored_coffee_preset_copies_frozen_gate_without_model_or_approval(self):
+        first = authored_coffee_protocol()
+        self.assertIsNone(first["model"])
+        self.assertEqual("authored_frozen_coffee_preset", first["source_origin"])
+        self.assertFalse(first["approved"])
+        self.assertTrue(first["requires_human_approval"])
+        self.assertEqual(["glass"], first["protocol"]["objects"])
+        self.assertEqual(["dispense", "staging"], first["protocol"]["regions"])
+        check = first["protocol"]["checks"][0]
+        self.assertEqual(("glass", "dispense", 2, 0.8, 30000),
+                         (check["object_id"], check["region_id"], check["min_stable_samples"], check["min_confidence"], check["max_age_ms"]))
+        original_hash = first["content_hash"]
+        first["protocol"]["checks"][0]["region_id"] = "staging"
+        first["suggested_regions"]["dispense"][0] = 0
+        second = authored_coffee_protocol()
+        self.assertEqual(original_hash, second["content_hash"])
+        self.assertEqual("dispense", second["protocol"]["checks"][0]["region_id"])
+        self.assertEqual(0.38, second["suggested_regions"]["dispense"][0])
+
     def proposal(self, kind="location"):
         proposal = mocked_proposal()
         for check in proposal["protocol"]["checks"]:
