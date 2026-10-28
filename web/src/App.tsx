@@ -1191,17 +1191,16 @@ function EvidenceLog({ state }: { state: Snapshot }) {
 }
 
 function ProgressRail({ state }: { state: Snapshot }) {
-  const hasObserved =
-    state.trace.some((entry) =>
-      [
-        'seed_loaded',
-        'recorded_reference_loaded',
-        'inspection_complete',
-      ].includes(entry.event),
-    ) || state.source_kind === 'recorded'
-  const proposed = Boolean(state.proposal) || state.recovery?.kind === 'repair'
+  const hasObserved = state.source_kind !== 'none' && state.images.length === 2
+  const currentRecovery =
+    state.recovery?.task_hash === state.active_task?.task_hash &&
+    state.recovery?.protocol_hash === state.active_task?.protocol_hash
+  const proposed =
+    Boolean(state.proposal) ||
+    (currentRecovery && state.recovery?.kind === 'repair')
   const inspectionOnly =
-    needsInspection(state) || state.recovery?.kind === 'inspection'
+    needsInspection(state) ||
+    (currentRecovery && state.recovery?.kind === 'inspection')
   const fresh = state.source_kind === 'camera' || state.source_kind === 'upload'
   const verified = state.phase === 'verified'
   return (

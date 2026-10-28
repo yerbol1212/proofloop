@@ -1,5 +1,20 @@
 # Interactive interface validation — 28 October 2026
 
+## Specific evidence, portable tasks and preparation gates
+
+The flow under test was UNKNOWN → object/view evidence request → fresh-capture controls → bounded stop, then exact task review → saved preparation replay → separately labeled continuation. The Browser plugin was unavailable; the built-in browser supplied DOM controls, screenshots and console checks. No external Playwright process or new camera permission was used.
+
+- All 450 backend tests passed on Python 3.12; the strict TypeScript/production build passed. The published feature milestone passed GitHub CI. A fresh anonymous public clone ran 450 tests on Python 3.9 with one expected optional-parser skip and prepared four licensed frames without an API key or model call.
+- An isolated authored fixture confirmed a fork PASS and spoon UNKNOWN. The interface requested the **entire spoon in views 1 and 2**, named RIGHT, distinguished unsupported detection from absence, and retained all-target framing. Capture requested views invalidated earlier evidence and preserved the spoon-specific gap.
+- Two submitted authored follow-ups left the spoon UNKNOWN. Both the capture action and New inspection became disabled at **2/2**; the server also rejected further submissions. No model calls were made by these fixtures. Their test clock and injected inference are not physical validation.
+- The same isolated fixture loaded the authored one-glass coffee preset without compilation inference. Exact draft approval remained required. An explicitly labeled assistant activation cleared old evidence, displayed DISPENSE/STAGING calibration and kept verification disabled before new images and confirmations.
+- The workflow panel blocked continuation while evidence was unknown. After an authored passing pair, Check preparation evidence replayed saved artifacts and enabled a separate declaration confirmation. An API declaration explicitly labeled assistant authority appeared as **intent, with no physical continuation observed**. Source tampering, wrong tasks, invalidated revisions and expiration during replay have semantic regression coverage.
+- Real Video Lab checks selected the fixed-future experiment, expanded its frozen trajectories and selected the 19.1/20.1-second follow-up. The displayed source images changed with the selection and the typed request changed from full visibility to identity support. Guided 4/6 and Spark 6/6 remained visible, with policy costs separated from the unused future pair. The candy pilot showed both original images and UNKNOWN/PASS cases, 2/2 for each condition, with a new-task development scope note.
+- Desktop 1536 × 1024 and mobile 390 × 844 were checked. Mobile document/body widths were 390 px on the real follow-up view and named-region capture view. No framework overlay or relevant console warnings/errors appeared. Temporary viewport overrides were reset afterward.
+- Private screenshots in the parent workspace's `qa/proofloop-ui/` include `fixed-followup-desktop.jpg`, `fixed-followup-mobile.jpg`, `coffee-calibration-fixture-mobile.jpg`, `unknown-specific-fixture-desktop.jpg`, `unknown-budget-exhausted-fixture.jpg`, `workflow-declared-fixture-desktop.jpg` and `candy-transfer-desktop.jpg`. Real model results and authored UI fixtures retain separate provenance. Selected final desktop/mobile images were inspected in the image viewer.
+
+Remaining gaps: real camera hardware, fresh physical correction after a displayed request, independent target identity, broader procedures and usability by another person. The authored preparation gate does not certify dispensing, product quality or safety.
+
 ## Evidence audit and linked recovery
 
 The flow under test was Evidence log → Check local evidence → replayed result, including rejection after an authored source image changed. No Browser plugin was available; the built-in browser provided DOM controls, screenshots and console inspection. No external Playwright process was used.

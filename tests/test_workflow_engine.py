@@ -119,4 +119,3 @@ class WorkflowEngineTests(unittest.TestCase):
                 with self.assertRaises(ValidationError):
                     self.engine.continue_workflow(payload)
             self.assertEqual([], list(self.engine._directory.glob('workflow-*.json')))
-

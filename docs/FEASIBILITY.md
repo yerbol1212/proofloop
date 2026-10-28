@@ -9,7 +9,7 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | Full Python 3.12 suite: **450/450 passed**, including loopback HTTP checks; strict production frontend build passed | Passed locally; publication CI pending; software tests are separate from perception accuracy |
+| Local tests | Full Python 3.12 suite: **450/450 passed**, including loopback HTTP checks; strict production frontend build passed | [Published milestone CI passed](https://github.com/yerbol1212/proofloop/actions/runs/40677389554); actual public clone also ran 450 tests on Python 3.9 with one expected optional-parser skip; software tests are separate from perception accuracy |
 | Official SAM codec | Official parser independently re-decoded all 16 phone responses; 12 nonempty masks matched saved rasters and four covered responses were empty | Passed on phone inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
 | Positive placement contract | Live Spark fork-left/spoon-right protocol; stable positive location evidence supports wrong-region fail and corrected pass | Passed on one recorded clip |
