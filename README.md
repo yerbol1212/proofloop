@@ -29,7 +29,7 @@ In the fixed follow-up replay, guided resolved one of two trajectories with late
 
 These are scoped image-zone checks on normal prerecorded demonstrations. A later PASS does not prove that a robot followed ProofLoop's request. The [owned phone recording](artifacts/feasibility/phone-session-20261028.md) produced PASS → FAIL → UNKNOWN → PASS, but was recorded before its planner proposal. Fresh physical operation following the displayed request, broader procedure verification and practical user demand remain unvalidated.
 
-**545/545 Python 3.12 tests passed, and the strict production frontend build passed.** Publication CI is checked separately after pushing the milestone. These software checks do not establish perception accuracy.
+**626/626 Python 3.12 tests passed, and the strict production frontend build passed.** Publication CI is checked separately after pushing the milestone. These software checks do not establish perception accuracy.
 
 See the [review and remaining work](docs/AI-SYSTEMS-REVIEW-20261028.md), [feasibility evidence](docs/FEASIBILITY.md), [three-minute demo script](docs/DEMO-SCRIPT.md), [source credits](docs/ONLINE-VIDEO-SOURCES.md) and [event contributions](CONTRIBUTIONS.md). Software tests exercise control behavior separately from model-quality measurements.
 
@@ -37,7 +37,7 @@ The [comparison and implementation plan](docs/COMPETITIVE-PLAN-20261028.md) iden
 
 Two [opposite-region contract controls](artifacts/feasibility/contract-stress-20261028.md) now reuse the exact candy and coffee images: both systems change PASS to FAIL under the changed requirement. Guided re-grounding uses saved perception with zero new calls; the two fresh Spark checks cost an estimated $0.018421. Original inference costs remain recorded. These authored task changes are development controls, not new physical failures or independent sources.
 
-The separate [candidate identity challenge](docs/SEMANTIC-CHALLENGE-RESULTS-20261028.md) is **not enabled for task acceptance**. Of four selected development cases, two returned classifications: one supported a clear glass and one withheld support for visible candy. The misleading packet/label case never produced a classification. Five total attempts included three incomplete requests, estimated at $0.076588. The experiment exposes a completion and positive-retention problem; it does not demonstrate successful semantic distractor rejection. Open **Video lab → Development experiments** to inspect both controls without model calls.
+The [historical candidate challenge](docs/SEMANTIC-CHALLENGE-RESULTS-20261028.md) completed only two of four cases and remains preserved. The [low-reasoning v2 check](docs/SEMANTIC-V2-RESULTS-20261028.md) now completed **4/4** on the same inputs, matching three authored identity annotations and withholding the misleading candy anchor. On six manually anchored real-video cases from two additional recordings, v2 completed **6/6**, retained both targets, and incorrectly supported one of four distractors. A separate crop-only development retest withheld that battery candidate while retaining both targets; the original **5/6** result remains unchanged. These diagnostics are **not enabled for task acceptance**. Open **Video lab → Development experiments** to inspect each cohort, source view, candidate crop and failure without model calls.
 
 ## Open the interactive workbench
 

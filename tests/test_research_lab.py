@@ -1,6 +1,7 @@
 """Read-only research projection on authored evidence, not accuracy claims."""
 from copy import deepcopy
 import json
+import hashlib
 from pathlib import Path
 import tempfile
 import unittest
@@ -38,6 +39,81 @@ class ResearchLabTests(unittest.TestCase):
         self.assertTrue(value["read_only"])
         self.assertEqual("unavailable", value["semantic"]["status"])
         self.assertEqual("unavailable", value["contract_stress"]["status"])
+        self.assertEqual("unavailable", value["completion_v2"]["status"])
+        self.assertEqual("unavailable", value["distractors_v2"]["status"])
+
+    def test_trial_source_images_are_allowlisted_rehashed_and_invalidated_on_refresh(self):
+        folder = self.root / "artifacts/local/semantic-v2-distractors-20261028-01"
+        prep = folder / "prepared.json"
+        frames = []
+        for index in range(2):
+            source = folder / f"source-{index}.jpg"
+            crop = folder / f"crop-{index}.jpg"
+            source.parent.mkdir(parents=True, exist_ok=True)
+            source.write_bytes(b"explicit authored source fixture " + bytes([index]))
+            crop.write_bytes(b"explicit authored crop fixture " + bytes([index]))
+            frames.append({"frame_index": index, "source_file": str(source), "crop_file": str(crop),
+                "sha256": hashlib.sha256(source.read_bytes()).hexdigest(),
+                "crop_sha256": hashlib.sha256(crop.read_bytes()).hexdigest(),
+                "width": 100, "height": 80, "candidate_box": {"x1": 10, "y1": 10, "x2": 30, "y2": 30}})
+        save(prep, {"frames": frames})
+        save(folder / "freeze.json", {"cases": [{"case_id": "fixture", "prepared_file": str(prep)}]})
+        public = {"cases": [{"case_id": "fixture"}], "metrics": {"completed": 1}}
+        public_file = self.root / "artifacts/feasibility/semantic-v2-distractors-20261028.json"
+        save(public_file, public)
+        with patch("proofloop.distractor_media.validate_prepared_entries", return_value={}), \
+                patch("proofloop.semantic_trial.public_trial_summary", return_value=public):
+            state = self.lab.snapshot()
+            result = state["distractors_v2"]
+            self.assertTrue(result["available"])
+            image = result["summary"]["cases"][0]["images"][0]
+            token = image["source_url"].rsplit("/", 1)[1]
+            path = self.lab.media_path(token)
+            self.assertEqual(Path(frames[0]["source_file"]).resolve(), path)
+            self.assertNotIn(str(self.root), json.dumps(state))
+            original = path.read_bytes()
+            path.write_bytes(original + b"changed")
+            with self.assertRaises(KeyError):
+                self.lab.media_path(token)
+            path.write_bytes(original)
+            changed = deepcopy(public)
+            changed["metrics"]["completed"] = 2
+            save(public_file, changed)
+            self.assertEqual("invalid", self.lab.snapshot()["distractors_v2"]["status"])
+            with self.assertRaises(KeyError):
+                self.lab.media_path(token)
+        for invalid in ("../.env.local", "0" * 40, "data:image/png,private"):
+            with self.assertRaises(KeyError):
+                self.lab.media_path(invalid)
+
+    def test_crop_confirmation_retains_all_supported_parent_cases_and_exact_public_totals(self):
+        directory = self.root / "artifacts/local/semantic-crop-confirmation-20261028-01"
+        parent_dir = self.root / "artifacts/local/semantic-v2-distractors-20261028-01"
+        public_file = self.root / "artifacts/feasibility/semantic-crop-confirmation-20261028.json"
+        parent_public = self.root / "artifacts/feasibility/semantic-v2-distractors-20261028.json"
+        parent = {"cases": [{"case_id": "positive", "attempt_status": "completed",
+                             "challenge": {"challenge": {"decision": "supported"}}},
+                            {"case_id": "withheld", "attempt_status": "completed",
+                             "challenge": {"challenge": {"decision": "unknown"}}}]}
+        public = {"metrics": {"completed": 1}, "cases": [{"case_id": "positive"}]}
+        plan = {"cases": [{"case_id": "positive", "global_report_file": str(parent_dir / "positive.json")}]}
+        save(parent_public, parent)
+        save(public_file, public)
+        save(directory / "freeze.json", plan)
+        with patch.object(self.lab, "_trial_controls", return_value=(parent, {})), \
+                patch("proofloop.semantic_local.public_confirmation_summary", return_value=public):
+            self.assertEqual("validated", self.lab.snapshot()["crop_confirmation"]["status"])
+            changed = deepcopy(public)
+            changed["metrics"]["completed"] = 2
+            save(public_file, changed)
+            self.assertEqual("invalid", self.lab.snapshot()["crop_confirmation"]["status"])
+            save(public_file, public)
+            plan["cases"] = []
+            save(directory / "freeze.json", plan)
+            self.assertEqual("invalid", self.lab.snapshot()["crop_confirmation"]["status"])
+            plan["cases"] = [{"case_id": "positive", "global_report_file": str(self.root / ".env.local")}]
+            save(directory / "freeze.json", plan)
+            self.assertEqual("invalid", self.lab.snapshot()["crop_confirmation"]["status"])
 
     def test_controls_replay_same_evidence_under_opposite_requirement(self):
         expected = self.control()

@@ -49,7 +49,11 @@ Project development began on 26 October 2026 after the hackathon kickoff. The re
 - A separate source-bound semantic-candidate feasibility adapter with reviewed positive attributes, explicit exclusions, deterministic crop provenance, strict completed responses and scored/unscored attempt accounting. It is disabled from placement acceptance after only two of four cases returned classifications; the negative case remained unscored.
 - A read-only development-experiment inspector that replays private sources and exactly matches public summaries before showing either experiment. It makes no inference requests on opening and exposes incomplete attempts rather than fabricating UNKNOWN results.
 
-This list describes implementation scope. The full Python 3.12 suite passed **545/545 tests**, and the strict production frontend build passed. Publication CI remains a separate check. Offline tests exercise contracts, acquisition budgets, source ordering, replay, task portability, preparation gates and private record handling. Live and physical validation status is recorded separately in [feasibility status](docs/FEASIBILITY.md). Passing software tests does not establish model accuracy or physical closed-loop recovery.
+- An opt-in low-reasoning semantic-v2 adapter with retained failed responses and a frozen once-per-case trial runner. The repeated four-case run completed 4/4; six reviewed candidate cases from two additional licensed videos completed 6/6 with one false support.
+- Truthfully authored candidate-box preparation, pinned video/card/frame replay, original-source/crop inspection and separate completion, positive-retention and unsupported-acceptance metrics. These tests do not establish automatic locator performance.
+- A separately frozen crop-only confirmation after the observed distractor error: both positive targets retained support and the false-support battery was withheld. It is an exposed development retest, outside live placement acceptance; original results remain unchanged.
+
+This list describes implementation scope. The full Python 3.12 suite passed **626/626 tests**, and the strict production frontend build passed. Publication CI remains a separate check. Offline tests exercise contracts, acquisition budgets, source ordering, replay, task portability, preparation gates and private record handling. Live and physical validation status is recorded separately in [feasibility status](docs/FEASIBILITY.md). Passing software tests does not establish model accuracy or physical closed-loop recovery.
 
 ## External components
 

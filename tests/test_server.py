@@ -137,6 +137,9 @@ class ServerTests(unittest.TestCase):
         self.assertEqual(403, self.request("GET", "/api/research-lab", headers={"Origin": "https://other.example"})[0])
         self.assertEqual(404, self.request("POST", "/api/research-lab", {}, self.mutation_headers())[0])
         self.assertEqual(404, self.request("GET", "/api/research-lab/../../.env.local")[0])
+        self.assertEqual(404, self.request("GET", "/api/research-lab/media/" + "0" * 40)[0])
+        self.assertEqual(403, self.request("GET", "/api/research-lab/media/" + "0" * 40,
+                                          headers={"Origin": "https://other.example"})[0])
         self.assertEqual([], self.engine.calls)
         self.assertEqual(b"", self.request("HEAD", "/api/recovery")[2])
         self.assertEqual([], self.engine.calls)

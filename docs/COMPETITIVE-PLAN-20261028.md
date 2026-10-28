@@ -31,6 +31,8 @@ These changes need semantic tests, browser interaction checks and public-safe ex
 
 ## Completed development slice
 
+Subsequent [semantic completion and distractor work](SEMANTIC-V2-RESULTS-20261028.md) preserves the original failures while adding an explicit low-reasoning request, real-video distractors and a crop-only guard against borrowing attributes from another object in the full frame. Completion improved to 4/4 on repeated inputs. The initial new-video cohort retained both targets but falsely supported one distractor (5/6 label matches); a separately frozen retest withheld that candidate while retaining both targets. These are development measurements and do not establish automatic localization or general reliability.
+
 All four implementation slices now have code and scoped evidence. Grounded explanations appear in Inspection and Evidence log. Video lab exposes case/check coverage and selectable disagreements. Its separate development inspector replays changed-contract controls and the candidate identity experiment without inference requests.
 
 The two [changed-contract controls](../artifacts/feasibility/contract-stress-20261028.md) passed: both models changed PASS to FAIL on unchanged images after the required region changed. Saved guided perception was re-grounded under new protocol hashes with no new calls; fresh Spark used two calls, estimated $0.018421. The [semantic experiment](SEMANTIC-CHALLENGE-RESULTS-20261028.md) failed its usefulness test: two of four cases completed, only one positive retained support, and the negative was unscored. All five attempts cost an estimated $0.076588. The challenger remains outside placement acceptance.

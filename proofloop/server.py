@@ -296,6 +296,8 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 self._json(200, video_lab.snapshot(), head=head)
             elif path == "/api/research-lab":
                 self._json(200, research_lab.snapshot(), head=head)
+            elif path.startswith("/api/research-lab/media/"):
+                self._media(path[len("/api/research-lab/media/"):], head=head, provider=research_lab)
             elif path == "/api/recovery":
                 self._json(200, {"recovery": engine.recovery_receipt(),
                                  "verification": engine.verify_recovery()}, head=head)

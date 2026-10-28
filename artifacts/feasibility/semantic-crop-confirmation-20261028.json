@@ -1,0 +1,398 @@
+{
+  "cases": [
+    {
+      "case_id": "screwdriver-target",
+      "confirmation": {
+        "anchor_origin": "authored_candidate",
+        "binding": {
+          "crop_sha256": [
+            "f883ea28749a00ac4061853a50e2f5524790d324efc0f52dd782b386ca2c2772",
+            "d4078f21e4a30c40b09e2938088dfce21ef0696043af31a0206fef52dc143832"
+          ],
+          "global_report_sha256": "09c0f849d0b2bfc5c91a651a71a5880e41faad9a2e1e08aa9027928f46d84e14",
+          "prepared_hash": "10e89f1257ae1e29be010cdc839595aeda20c35217660cfa292ff932407404c8",
+          "prompt_sha256": "2eeb8f57e5586cd0ce36462606255c643cc78610179cbbf1c449fd9d948df198",
+          "schema_sha256": "6a252daac2cff61125de9a98207533313d09b66328bdca0b20a8b47d4600e04a"
+        },
+        "changes_guided_v2_acceptance": false,
+        "config": {
+          "automatic_retries": 0,
+          "max_output_tokens": 4096,
+          "max_requests_per_pair": 1,
+          "reasoning_effort": "low"
+        },
+        "failure": null,
+        "final_support": "supported",
+        "global_decision": "supported",
+        "limitations": [
+          "Development retest selected after observing a semantic-v2 false-support error; not a fresh holdout.",
+          "The same Spark model performs global and local checks; their agreement is correlated.",
+          "Only deterministic candidate crops are attached. Local assessments do not establish full-scene uniqueness.",
+          "Final support requires the retained global-v2 support and completed local support; no withheld candidate can be upgraded.",
+          "Unscored failures are not UNKNOWN predictions. No placement PASS, action execution or guided-v2 acceptance changes result.",
+          "Source/code hashes check local consistency, not independent API origin, capture time or physical identity.",
+          "Cost estimates include reported tokens from unsuccessful responses; unreported charges remain unknown."
+        ],
+        "local_assessment": {
+          "decision": "supported",
+          "frames": [
+            {
+              "candidate_relation": "target",
+              "decision": "supported",
+              "excluded_matches": [
+                {
+                  "id": "table_tape",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "cup",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "robot_gripper",
+                  "support": "not_supported"
+                }
+              ],
+              "frame_index": 0,
+              "fully_visible": true,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "screwdriver",
+              "reasons": [],
+              "required_attributes": [
+                {
+                  "id": "joined_handle_shaft",
+                  "support": "supported"
+                },
+                {
+                  "id": "tool_shape",
+                  "support": "supported"
+                }
+              ]
+            },
+            {
+              "candidate_relation": "target",
+              "decision": "supported",
+              "excluded_matches": [
+                {
+                  "id": "table_tape",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "cup",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "robot_gripper",
+                  "support": "not_supported"
+                }
+              ],
+              "frame_index": 1,
+              "fully_visible": true,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "screwdriver",
+              "reasons": [],
+              "required_attributes": [
+                {
+                  "id": "joined_handle_shaft",
+                  "support": "supported"
+                },
+                {
+                  "id": "tool_shape",
+                  "support": "supported"
+                }
+              ]
+            }
+          ],
+          "reasons": []
+        },
+        "method_version": "semantic_crop_confirmation_v1",
+        "status": "completed",
+        "usage": {
+          "estimated_usd": 0.00421,
+          "input_tokens": 509,
+          "output_tokens": 841,
+          "request_attempts": 1
+        }
+      }
+    },
+    {
+      "case_id": "remote-target",
+      "confirmation": {
+        "anchor_origin": "authored_candidate",
+        "binding": {
+          "crop_sha256": [
+            "02898129457ae2a3a3ece567ffabdb848c6990579657d4a3797fe4efd4a91727",
+            "51a1813fedf947b4156691c65e6fe5851b8bf5205085ae5c654eff5f047c105c"
+          ],
+          "global_report_sha256": "77de095a13c32427130f6e20a6cdec64b90519e389910c61b34c3841da6261e5",
+          "prepared_hash": "ef25a96afd0261934ae833aa43a665b76e2957045e89200b57e38b039fc5d370",
+          "prompt_sha256": "a7a21906805c3b305713505fe162ce502c0cc428f116b28b5142ca979df9713d",
+          "schema_sha256": "7b9bd747f7e85a51b22283efbf9e66d517b5d11f5ac91dcc2531ad8191654957"
+        },
+        "changes_guided_v2_acceptance": false,
+        "config": {
+          "automatic_retries": 0,
+          "max_output_tokens": 4096,
+          "max_requests_per_pair": 1,
+          "reasoning_effort": "low"
+        },
+        "failure": null,
+        "final_support": "supported",
+        "global_decision": "supported",
+        "limitations": [
+          "Development retest selected after observing a semantic-v2 false-support error; not a fresh holdout.",
+          "The same Spark model performs global and local checks; their agreement is correlated.",
+          "Only deterministic candidate crops are attached. Local assessments do not establish full-scene uniqueness.",
+          "Final support requires the retained global-v2 support and completed local support; no withheld candidate can be upgraded.",
+          "Unscored failures are not UNKNOWN predictions. No placement PASS, action execution or guided-v2 acceptance changes result.",
+          "Source/code hashes check local consistency, not independent API origin, capture time or physical identity.",
+          "Cost estimates include reported tokens from unsuccessful responses; unreported charges remain unknown."
+        ],
+        "local_assessment": {
+          "decision": "supported",
+          "frames": [
+            {
+              "candidate_relation": "target",
+              "decision": "supported",
+              "excluded_matches": [
+                {
+                  "id": "table_tape",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "loose_battery",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "robot_gripper",
+                  "support": "not_supported"
+                }
+              ],
+              "frame_index": 0,
+              "fully_visible": true,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "remote_body",
+              "reasons": [],
+              "required_attributes": [
+                {
+                  "id": "rounded_body",
+                  "support": "supported"
+                },
+                {
+                  "id": "open_compartment",
+                  "support": "supported"
+                }
+              ]
+            },
+            {
+              "candidate_relation": "target",
+              "decision": "supported",
+              "excluded_matches": [
+                {
+                  "id": "table_tape",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "loose_battery",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "robot_gripper",
+                  "support": "not_supported"
+                }
+              ],
+              "frame_index": 1,
+              "fully_visible": true,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "remote_body",
+              "reasons": [],
+              "required_attributes": [
+                {
+                  "id": "rounded_body",
+                  "support": "supported"
+                },
+                {
+                  "id": "open_compartment",
+                  "support": "supported"
+                }
+              ]
+            }
+          ],
+          "reasons": []
+        },
+        "method_version": "semantic_crop_confirmation_v1",
+        "status": "completed",
+        "usage": {
+          "estimated_usd": 0.006763,
+          "input_tokens": 501,
+          "output_tokens": 1444,
+          "request_attempts": 1
+        }
+      }
+    },
+    {
+      "case_id": "remote-battery",
+      "confirmation": {
+        "anchor_origin": "authored_candidate",
+        "binding": {
+          "crop_sha256": [
+            "b32d87510b04a0417e8e64211a9a77fe304d052d7ee314436aa2e5fdf4db59b3",
+            "854d3c72f568d6a858d90bfc1cce8939f0e21902bd119dc67976d66ce31d746e"
+          ],
+          "global_report_sha256": "e88e7be11dc35a7f1f4961bc66053f3cb4683fe4b41d5f1b27491815d363571e",
+          "prepared_hash": "6361ead6845b1873d3947dd241b1f207e727baf8c75bc1cf2c912f8ff42beb1a",
+          "prompt_sha256": "9d4001fbd2dfbe1892cb6fa310f7c194d2f41f4484ea0f385c7bb39a264eb39d",
+          "schema_sha256": "7b9bd747f7e85a51b22283efbf9e66d517b5d11f5ac91dcc2531ad8191654957"
+        },
+        "changes_guided_v2_acceptance": false,
+        "config": {
+          "automatic_retries": 0,
+          "max_output_tokens": 4096,
+          "max_requests_per_pair": 1,
+          "reasoning_effort": "low"
+        },
+        "failure": null,
+        "final_support": "unknown",
+        "global_decision": "supported",
+        "limitations": [
+          "Development retest selected after observing a semantic-v2 false-support error; not a fresh holdout.",
+          "The same Spark model performs global and local checks; their agreement is correlated.",
+          "Only deterministic candidate crops are attached. Local assessments do not establish full-scene uniqueness.",
+          "Final support requires the retained global-v2 support and completed local support; no withheld candidate can be upgraded.",
+          "Unscored failures are not UNKNOWN predictions. No placement PASS, action execution or guided-v2 acceptance changes result.",
+          "Source/code hashes check local consistency, not independent API origin, capture time or physical identity.",
+          "Cost estimates include reported tokens from unsuccessful responses; unreported charges remain unknown."
+        ],
+        "local_assessment": {
+          "decision": "unknown",
+          "frames": [
+            {
+              "candidate_relation": "uncertain",
+              "decision": "unknown",
+              "excluded_matches": [
+                {
+                  "id": "table_tape",
+                  "support": "uncertain"
+                },
+                {
+                  "id": "loose_battery",
+                  "support": "uncertain"
+                },
+                {
+                  "id": "robot_gripper",
+                  "support": "uncertain"
+                }
+              ],
+              "frame_index": 0,
+              "fully_visible": false,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "remote_body",
+              "reasons": [
+                "candidate_uncertain",
+                "attribute_unsupported",
+                "exclusion_uncertain",
+                "incomplete_visibility"
+              ],
+              "required_attributes": [
+                {
+                  "id": "rounded_body",
+                  "support": "uncertain"
+                },
+                {
+                  "id": "open_compartment",
+                  "support": "uncertain"
+                }
+              ]
+            },
+            {
+              "candidate_relation": "uncertain",
+              "decision": "unknown",
+              "excluded_matches": [
+                {
+                  "id": "table_tape",
+                  "support": "uncertain"
+                },
+                {
+                  "id": "loose_battery",
+                  "support": "uncertain"
+                },
+                {
+                  "id": "robot_gripper",
+                  "support": "uncertain"
+                }
+              ],
+              "frame_index": 1,
+              "fully_visible": false,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "remote_body",
+              "reasons": [
+                "candidate_uncertain",
+                "attribute_unsupported",
+                "exclusion_uncertain",
+                "incomplete_visibility"
+              ],
+              "required_attributes": [
+                {
+                  "id": "rounded_body",
+                  "support": "uncertain"
+                },
+                {
+                  "id": "open_compartment",
+                  "support": "uncertain"
+                }
+              ]
+            }
+          ],
+          "reasons": [
+            "attribute_unsupported",
+            "candidate_uncertain",
+            "exclusion_uncertain",
+            "incomplete_visibility"
+          ]
+        },
+        "method_version": "semantic_crop_confirmation_v1",
+        "status": "completed",
+        "usage": {
+          "estimated_usd": 0.004113,
+          "input_tokens": 479,
+          "output_tokens": 827,
+          "request_attempts": 1
+        }
+      }
+    }
+  ],
+  "changes_guided_v2_acceptance": false,
+  "config": {
+    "automatic_retries": 0,
+    "max_output_tokens": 4096,
+    "max_requests_per_pair": 1,
+    "reasoning_effort": "low"
+  },
+  "cost_summary": {
+    "estimated_usd": 0.015086,
+    "input_tokens": 1489,
+    "output_tokens": 3112,
+    "request_attempts": 3
+  },
+  "evaluation_role": "development_retest_after_observed_error",
+  "freeze_hash": "4d29697b9d3b5a01c3ce95350d55f56ff824305b43436b552c66081a340e3c4c",
+  "limitations": [
+    "Development retest selected after observing a semantic-v2 false-support error; not a fresh holdout.",
+    "The same Spark model performs global and local checks; their agreement is correlated.",
+    "Only deterministic candidate crops are attached. Local assessments do not establish full-scene uniqueness.",
+    "Final support requires the retained global-v2 support and completed local support; no withheld candidate can be upgraded.",
+    "Unscored failures are not UNKNOWN predictions. No placement PASS, action execution or guided-v2 acceptance changes result.",
+    "Source/code hashes check local consistency, not independent API origin, capture time or physical identity.",
+    "Cost estimates include reported tokens from unsuccessful responses; unreported charges remain unknown."
+  ],
+  "method_version": "semantic_crop_confirmation_v1",
+  "metrics": {
+    "attempted": 3,
+    "completed": 3,
+    "eligible": 3,
+    "supported": 2,
+    "unscored": 0,
+    "withheld": 1
+  },
+  "schema_version": 1
+}

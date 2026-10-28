@@ -2509,5 +2509,17 @@ select:focus-visible,
 .research-details { padding: 1.25rem; background: white; border: 1px solid var(--border); border-radius: 12px; }
 .research-details > summary { cursor: pointer; font-weight: 600; line-height: 1.5; }
 .research-details > section { margin-top: 1.25rem; }
+.semantic-trial-metrics { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .75rem; margin: 1rem 0; }
+.semantic-trial-metrics p { display: grid; gap: .4rem; margin: 0; padding: .85rem; border: 1px solid var(--border); border-radius: 8px; }
+.semantic-trial-views { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1rem; }
+.semantic-trial-views figure { min-width: 0; margin: 0; }
+.semantic-trial-views figcaption { margin-bottom: .5rem; line-height: 1.5; color: var(--muted); font-size: .85rem; }
+.semantic-source-view img { display: block; width: 100%; height: auto; border-radius: 6px; }
+.semantic-candidate-crop { display: block; max-width: 100%; height: auto; max-height: 240px; object-fit: contain; margin-top: .5rem; }
+.semantic-case-detail h4 { font-size: 1.05rem; margin: 0 0 .75rem; }
+.semantic-case-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .5rem; }
+@media (max-width: 900px) { .semantic-case-list { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .semantic-case-list { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .semantic-trial-metrics, .semantic-trial-views { grid-template-columns: 1fr; } }
 .diagnostic-details > summary { cursor: pointer; font-weight: 600; }
 .diagnostic-details > .panel, .log-panel > .panel { margin-top: 1rem; padding: 1rem; box-shadow: none; }

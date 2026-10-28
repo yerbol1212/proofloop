@@ -1,6 +1,10 @@
 import { useEffect, useState } from 'react'
 import type { Status } from './types'
 import { Icon } from './icons'
+import { SemanticTrialPanel } from './SemanticTrialPanel'
+import type { SemanticTrialSection } from './SemanticTrialPanel'
+import { CropConfirmationPanel } from './CropConfirmationPanel'
+import type { CropConfirmationSection } from './CropConfirmationPanel'
 
 interface Cost {
   request_count: number
@@ -90,6 +94,9 @@ export interface ResearchLabDTO {
   note: string
   semantic: Section<SemanticSummary>
   contract_stress: Section<ContractSummary>
+  completion_v2?: SemanticTrialSection
+  distractors_v2?: SemanticTrialSection
+  crop_confirmation?: CropConfirmationSection
 }
 
 function Verdict({ value }: { value: Status }) {
@@ -151,6 +158,15 @@ export function ResearchLab() {
       {error ? <p role="status">{error}</p> : null}
       {data ? (
         <>
+          {data.completion_v2 ? (
+            <SemanticTrialPanel section={data.completion_v2} />
+          ) : null}
+          {data.distractors_v2 ? (
+            <SemanticTrialPanel section={data.distractors_v2} />
+          ) : null}
+          {data.crop_confirmation ? (
+            <CropConfirmationPanel section={data.crop_confirmation} />
+          ) : null}
           <section
             className="acquisition-plan"
             aria-label="Candidate identity challenge"

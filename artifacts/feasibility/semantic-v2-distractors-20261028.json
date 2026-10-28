@@ -1,0 +1,1395 @@
+{
+  "cases": [
+    {
+      "anchor_origin": "authored_candidate",
+      "attempt_status": "completed",
+      "case_id": "screwdriver-target",
+      "challenge": {
+        "challenge": {
+          "anchor_origin": "authored_candidate",
+          "author_review": {
+            "note": "A true screwdriver, with a wide white handle joined to a thinner metallic shaft.",
+            "origin": "assistant_under_user_authorization",
+            "source_views_and_crops_reviewed": true
+          },
+          "changes_guided_v2_acceptance": false,
+          "contract": {
+            "automatic_retries": 0,
+            "excluded_concepts": [
+              {
+                "description": "Flat white tape strip attached to the tabletop.",
+                "id": "table_tape"
+              },
+              {
+                "description": "A cup or other hollow drinking container.",
+                "id": "cup"
+              },
+              {
+                "description": "A robotic gripper with two opposing fingers.",
+                "id": "robot_gripper"
+              }
+            ],
+            "max_requests_per_pair": 1,
+            "object_id": "screwdriver",
+            "positive_concept": "screwdriver with a white handle and a narrow metallic shaft",
+            "required_visual_attributes": [
+              {
+                "description": "A thin straight shaft is joined to a wider solid white handle.",
+                "id": "joined_handle_shaft"
+              },
+              {
+                "description": "The handle and shaft form one elongated hand tool with a narrow working end.",
+                "id": "tool_shape"
+              }
+            ],
+            "requires_full_visibility": true,
+            "requires_unique_match": true,
+            "version": "semantic_candidate_v1"
+          },
+          "contract_hash": "8d039364e9ca519e8b7ac65bb20622454973bf3d9c238818e280c9257bfad7bf",
+          "decision": "supported",
+          "frames": [
+            {
+              "assessment": {
+                "candidate_relation": "target",
+                "decision": "supported",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "cup",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "screwdriver",
+                "reasons": [],
+                "required_attributes": [
+                  {
+                    "id": "joined_handle_shaft",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "tool_shape",
+                    "support": "supported"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 308,
+                "x2": 432,
+                "y1": 348,
+                "y2": 376
+              },
+              "crop_box": {
+                "x1": 276,
+                "x2": 464,
+                "y1": 340,
+                "y2": 384
+              },
+              "crop_sha256": "f883ea28749a00ac4061853a50e2f5524790d324efc0f52dd782b386ca2c2772",
+              "frame_index": 0,
+              "height": 480,
+              "sha256": "0e8608d8d454814fae1234ba4329ceef024a91c92e4483b0ce651b6aff524ffa",
+              "width": 640
+            },
+            {
+              "assessment": {
+                "candidate_relation": "target",
+                "decision": "supported",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "cup",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "screwdriver",
+                "reasons": [],
+                "required_attributes": [
+                  {
+                    "id": "joined_handle_shaft",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "tool_shape",
+                    "support": "supported"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 308,
+                "x2": 432,
+                "y1": 348,
+                "y2": 376
+              },
+              "crop_box": {
+                "x1": 276,
+                "x2": 464,
+                "y1": 340,
+                "y2": 384
+              },
+              "crop_sha256": "d4078f21e4a30c40b09e2938088dfce21ef0696043af31a0206fef52dc143832",
+              "frame_index": 1,
+              "height": 480,
+              "sha256": "70561b3f6997b4b38ae3b1fa686826fb68179274330d7d95772c4d04a568cc86",
+              "width": 640
+            }
+          ],
+          "limitations": "The proposed candidate rectangles were manually authored after source/crop review, not generated by a model locator. Spark challenges these proposals using the same semantic gate. Candidate support is not independent identity, placement or physical execution proof.",
+          "method_version": "semantic_candidate_v1",
+          "preparation_version": "authored_candidate_pair_v1",
+          "prepared_hash": "10e89f1257ae1e29be010cdc839595aeda20c35217660cfa292ff932407404c8",
+          "reasons": [],
+          "usage": {
+            "estimated_usd": 0.007978,
+            "input_tokens": 1395,
+            "output_tokens": 1467,
+            "request_attempts": 1
+          }
+        },
+        "changes_guided_v2_acceptance": false,
+        "failure": null,
+        "limitations": "Completion experiment using the unchanged semantic-v1 prompt, schema and diagnostic gate. Low reasoning is an explicit request setting, not a reliability guarantee. Unscored failures never become UNKNOWN predictions or placement decisions. Reported tokens from unsuccessful responses are included; unreported charges remain unknown.",
+        "method_config": {
+          "automatic_retries": 0,
+          "max_output_tokens": 4096,
+          "max_requests_per_pair": 1,
+          "reasoning_effort": "low",
+          "response_schema_name": "proofloop_semantic_candidate_v2"
+        },
+        "method_version": "semantic_candidate_v2",
+        "request_binding": {
+          "contract_hash": "8d039364e9ca519e8b7ac65bb20622454973bf3d9c238818e280c9257bfad7bf",
+          "prepared_hash": "10e89f1257ae1e29be010cdc839595aeda20c35217660cfa292ff932407404c8",
+          "prompt_sha256": "05027ac34899194fccba9488b6ea32314880363be76d259835c0112e18dfb5af",
+          "schema_sha256": "1b0fbdbae9f07976d675c122f37eb68a723fbc6b5dff704ab8090d505cf329c6",
+          "source_sha256": [
+            "0e8608d8d454814fae1234ba4329ceef024a91c92e4483b0ce651b6aff524ffa",
+            "70561b3f6997b4b38ae3b1fa686826fb68179274330d7d95772c4d04a568cc86",
+            "f883ea28749a00ac4061853a50e2f5524790d324efc0f52dd782b386ca2c2772",
+            "d4078f21e4a30c40b09e2938088dfce21ef0696043af31a0206fef52dc143832"
+          ]
+        },
+        "status": "completed",
+        "usage": {
+          "estimated_usd": 0.007978,
+          "input_tokens": 1395,
+          "output_tokens": 1467,
+          "request_attempts": 1
+        }
+      },
+      "expected_identity": "supported",
+      "matches_expected": true,
+      "source_attribution": {
+        "dataset_id": "lerobot/aloha_static_screw_driver",
+        "license": "mit",
+        "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md",
+        "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md",
+        "revision": "51448b4e7638c1773fd07c1e7febce8ebb104635",
+        "source_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/resolve/51448b4e7638c1773fd07c1e7febce8ebb104635/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+        "title": "ALOHA aloha_static_screw_driver episode 0"
+      },
+      "source_family": "aloha_static_screw_driver",
+      "source_id": "aloha_static_screw_driver-e00-high",
+      "source_timestamps_ms": [
+        0,
+        1000
+      ]
+    },
+    {
+      "anchor_origin": "authored_candidate",
+      "attempt_status": "completed",
+      "case_id": "screwdriver-tape",
+      "challenge": {
+        "challenge": {
+          "anchor_origin": "authored_candidate",
+          "author_review": {
+            "note": "Real flat white tabletop marker; similar thin bright elongated shape, but no handle/shaft structure.",
+            "origin": "assistant_under_user_authorization",
+            "source_views_and_crops_reviewed": true
+          },
+          "changes_guided_v2_acceptance": false,
+          "contract": {
+            "automatic_retries": 0,
+            "excluded_concepts": [
+              {
+                "description": "Flat white tape strip attached to the tabletop.",
+                "id": "table_tape"
+              },
+              {
+                "description": "A cup or other hollow drinking container.",
+                "id": "cup"
+              },
+              {
+                "description": "A robotic gripper with two opposing fingers.",
+                "id": "robot_gripper"
+              }
+            ],
+            "max_requests_per_pair": 1,
+            "object_id": "screwdriver",
+            "positive_concept": "screwdriver with a white handle and a narrow metallic shaft",
+            "required_visual_attributes": [
+              {
+                "description": "A thin straight shaft is joined to a wider solid white handle.",
+                "id": "joined_handle_shaft"
+              },
+              {
+                "description": "The handle and shaft form one elongated hand tool with a narrow working end.",
+                "id": "tool_shape"
+              }
+            ],
+            "requires_full_visibility": true,
+            "requires_unique_match": true,
+            "version": "semantic_candidate_v1"
+          },
+          "contract_hash": "8d039364e9ca519e8b7ac65bb20622454973bf3d9c238818e280c9257bfad7bf",
+          "decision": "unknown",
+          "frames": [
+            {
+              "assessment": {
+                "candidate_relation": "excluded",
+                "decision": "unknown",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "cup",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "screwdriver",
+                "reasons": [
+                  "candidate_excluded",
+                  "attribute_conflict",
+                  "exclusion_supported"
+                ],
+                "required_attributes": [
+                  {
+                    "id": "joined_handle_shaft",
+                    "support": "contradicted"
+                  },
+                  {
+                    "id": "tool_shape",
+                    "support": "contradicted"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 263,
+                "x2": 389,
+                "y1": 280,
+                "y2": 296
+              },
+              "crop_box": {
+                "x1": 231,
+                "x2": 421,
+                "y1": 272,
+                "y2": 304
+              },
+              "crop_sha256": "a76cc106acb73a7d661a37c32e6e0e10e62d9717b017609bc4a4804acce6a057",
+              "frame_index": 0,
+              "height": 480,
+              "sha256": "0e8608d8d454814fae1234ba4329ceef024a91c92e4483b0ce651b6aff524ffa",
+              "width": 640
+            },
+            {
+              "assessment": {
+                "candidate_relation": "excluded",
+                "decision": "unknown",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "cup",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "screwdriver",
+                "reasons": [
+                  "candidate_excluded",
+                  "attribute_conflict",
+                  "exclusion_supported"
+                ],
+                "required_attributes": [
+                  {
+                    "id": "joined_handle_shaft",
+                    "support": "contradicted"
+                  },
+                  {
+                    "id": "tool_shape",
+                    "support": "contradicted"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 263,
+                "x2": 389,
+                "y1": 280,
+                "y2": 296
+              },
+              "crop_box": {
+                "x1": 231,
+                "x2": 421,
+                "y1": 272,
+                "y2": 304
+              },
+              "crop_sha256": "0a52d49b6bbf2bc8e64381b0e3af5ea0623969103a36674e1b4df4630451648e",
+              "frame_index": 1,
+              "height": 480,
+              "sha256": "70561b3f6997b4b38ae3b1fa686826fb68179274330d7d95772c4d04a568cc86",
+              "width": 640
+            }
+          ],
+          "limitations": "The proposed candidate rectangles were manually authored after source/crop review, not generated by a model locator. Spark challenges these proposals using the same semantic gate. Candidate support is not independent identity, placement or physical execution proof.",
+          "method_version": "semantic_candidate_v1",
+          "preparation_version": "authored_candidate_pair_v1",
+          "prepared_hash": "0ba8a903743cbeb8f6045bec7e33a51b963aa0314cf301c865f24cc68f218207",
+          "reasons": [
+            "attribute_conflict",
+            "candidate_excluded",
+            "exclusion_supported"
+          ],
+          "usage": {
+            "estimated_usd": 0.008205,
+            "input_tokens": 1379,
+            "output_tokens": 1525,
+            "request_attempts": 1
+          }
+        },
+        "changes_guided_v2_acceptance": false,
+        "failure": null,
+        "limitations": "Completion experiment using the unchanged semantic-v1 prompt, schema and diagnostic gate. Low reasoning is an explicit request setting, not a reliability guarantee. Unscored failures never become UNKNOWN predictions or placement decisions. Reported tokens from unsuccessful responses are included; unreported charges remain unknown.",
+        "method_config": {
+          "automatic_retries": 0,
+          "max_output_tokens": 4096,
+          "max_requests_per_pair": 1,
+          "reasoning_effort": "low",
+          "response_schema_name": "proofloop_semantic_candidate_v2"
+        },
+        "method_version": "semantic_candidate_v2",
+        "request_binding": {
+          "contract_hash": "8d039364e9ca519e8b7ac65bb20622454973bf3d9c238818e280c9257bfad7bf",
+          "prepared_hash": "0ba8a903743cbeb8f6045bec7e33a51b963aa0314cf301c865f24cc68f218207",
+          "prompt_sha256": "6f0d2405f3bf4b52547ebfbe77a8b3da0af141a74bf0e366c354b6af177f85b9",
+          "schema_sha256": "1b0fbdbae9f07976d675c122f37eb68a723fbc6b5dff704ab8090d505cf329c6",
+          "source_sha256": [
+            "0e8608d8d454814fae1234ba4329ceef024a91c92e4483b0ce651b6aff524ffa",
+            "70561b3f6997b4b38ae3b1fa686826fb68179274330d7d95772c4d04a568cc86",
+            "a76cc106acb73a7d661a37c32e6e0e10e62d9717b017609bc4a4804acce6a057",
+            "0a52d49b6bbf2bc8e64381b0e3af5ea0623969103a36674e1b4df4630451648e"
+          ]
+        },
+        "status": "completed",
+        "usage": {
+          "estimated_usd": 0.008205,
+          "input_tokens": 1379,
+          "output_tokens": 1525,
+          "request_attempts": 1
+        }
+      },
+      "expected_identity": "unknown",
+      "matches_expected": true,
+      "source_attribution": {
+        "dataset_id": "lerobot/aloha_static_screw_driver",
+        "license": "mit",
+        "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md",
+        "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md",
+        "revision": "51448b4e7638c1773fd07c1e7febce8ebb104635",
+        "source_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/resolve/51448b4e7638c1773fd07c1e7febce8ebb104635/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+        "title": "ALOHA aloha_static_screw_driver episode 0"
+      },
+      "source_family": "aloha_static_screw_driver",
+      "source_id": "aloha_static_screw_driver-e00-high",
+      "source_timestamps_ms": [
+        0,
+        1000
+      ]
+    },
+    {
+      "anchor_origin": "authored_candidate",
+      "attempt_status": "completed",
+      "case_id": "screwdriver-cup",
+      "challenge": {
+        "challenge": {
+          "anchor_origin": "authored_candidate",
+          "author_review": {
+            "note": "Real blue-and-white cup; visibly a hollow container, rather than a screwdriver.",
+            "origin": "assistant_under_user_authorization",
+            "source_views_and_crops_reviewed": true
+          },
+          "changes_guided_v2_acceptance": false,
+          "contract": {
+            "automatic_retries": 0,
+            "excluded_concepts": [
+              {
+                "description": "Flat white tape strip attached to the tabletop.",
+                "id": "table_tape"
+              },
+              {
+                "description": "A cup or other hollow drinking container.",
+                "id": "cup"
+              },
+              {
+                "description": "A robotic gripper with two opposing fingers.",
+                "id": "robot_gripper"
+              }
+            ],
+            "max_requests_per_pair": 1,
+            "object_id": "screwdriver",
+            "positive_concept": "screwdriver with a white handle and a narrow metallic shaft",
+            "required_visual_attributes": [
+              {
+                "description": "A thin straight shaft is joined to a wider solid white handle.",
+                "id": "joined_handle_shaft"
+              },
+              {
+                "description": "The handle and shaft form one elongated hand tool with a narrow working end.",
+                "id": "tool_shape"
+              }
+            ],
+            "requires_full_visibility": true,
+            "requires_unique_match": true,
+            "version": "semantic_candidate_v1"
+          },
+          "contract_hash": "8d039364e9ca519e8b7ac65bb20622454973bf3d9c238818e280c9257bfad7bf",
+          "decision": "unknown",
+          "frames": [
+            {
+              "assessment": {
+                "candidate_relation": "excluded",
+                "decision": "unknown",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "cup",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "screwdriver",
+                "reasons": [
+                  "candidate_excluded",
+                  "attribute_conflict",
+                  "exclusion_supported"
+                ],
+                "required_attributes": [
+                  {
+                    "id": "joined_handle_shaft",
+                    "support": "contradicted"
+                  },
+                  {
+                    "id": "tool_shape",
+                    "support": "contradicted"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 169,
+                "x2": 260,
+                "y1": 47,
+                "y2": 156
+              },
+              "crop_box": {
+                "x1": 146,
+                "x2": 283,
+                "y1": 19,
+                "y2": 184
+              },
+              "crop_sha256": "0d2e2166c698b1b45f22ae7920217c7611c8fd692495ce0af15269c82d8331a8",
+              "frame_index": 0,
+              "height": 480,
+              "sha256": "0e8608d8d454814fae1234ba4329ceef024a91c92e4483b0ce651b6aff524ffa",
+              "width": 640
+            },
+            {
+              "assessment": {
+                "candidate_relation": "excluded",
+                "decision": "unknown",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "cup",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "screwdriver",
+                "reasons": [
+                  "candidate_excluded",
+                  "attribute_conflict",
+                  "exclusion_supported"
+                ],
+                "required_attributes": [
+                  {
+                    "id": "joined_handle_shaft",
+                    "support": "contradicted"
+                  },
+                  {
+                    "id": "tool_shape",
+                    "support": "contradicted"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 169,
+                "x2": 260,
+                "y1": 47,
+                "y2": 156
+              },
+              "crop_box": {
+                "x1": 146,
+                "x2": 283,
+                "y1": 19,
+                "y2": 184
+              },
+              "crop_sha256": "259ccfb5d594905188f806a7835fc8b02fb01a49b660931ed03aeab6e0e141ae",
+              "frame_index": 1,
+              "height": 480,
+              "sha256": "70561b3f6997b4b38ae3b1fa686826fb68179274330d7d95772c4d04a568cc86",
+              "width": 640
+            }
+          ],
+          "limitations": "The proposed candidate rectangles were manually authored after source/crop review, not generated by a model locator. Spark challenges these proposals using the same semantic gate. Candidate support is not independent identity, placement or physical execution proof.",
+          "method_version": "semantic_candidate_v1",
+          "preparation_version": "authored_candidate_pair_v1",
+          "prepared_hash": "0a06489a25f1bd9f691fb06825af2404b3b78f43c36f4535719d0e2b8de00180",
+          "reasons": [
+            "attribute_conflict",
+            "candidate_excluded",
+            "exclusion_supported"
+          ],
+          "usage": {
+            "estimated_usd": 0.006514,
+            "input_tokens": 1427,
+            "output_tokens": 1113,
+            "request_attempts": 1
+          }
+        },
+        "changes_guided_v2_acceptance": false,
+        "failure": null,
+        "limitations": "Completion experiment using the unchanged semantic-v1 prompt, schema and diagnostic gate. Low reasoning is an explicit request setting, not a reliability guarantee. Unscored failures never become UNKNOWN predictions or placement decisions. Reported tokens from unsuccessful responses are included; unreported charges remain unknown.",
+        "method_config": {
+          "automatic_retries": 0,
+          "max_output_tokens": 4096,
+          "max_requests_per_pair": 1,
+          "reasoning_effort": "low",
+          "response_schema_name": "proofloop_semantic_candidate_v2"
+        },
+        "method_version": "semantic_candidate_v2",
+        "request_binding": {
+          "contract_hash": "8d039364e9ca519e8b7ac65bb20622454973bf3d9c238818e280c9257bfad7bf",
+          "prepared_hash": "0a06489a25f1bd9f691fb06825af2404b3b78f43c36f4535719d0e2b8de00180",
+          "prompt_sha256": "6c1bf1c139feb4662917066f44bd66ba75e0a8ec4fe81b27f8f9e7147ccbdf9f",
+          "schema_sha256": "1b0fbdbae9f07976d675c122f37eb68a723fbc6b5dff704ab8090d505cf329c6",
+          "source_sha256": [
+            "0e8608d8d454814fae1234ba4329ceef024a91c92e4483b0ce651b6aff524ffa",
+            "70561b3f6997b4b38ae3b1fa686826fb68179274330d7d95772c4d04a568cc86",
+            "0d2e2166c698b1b45f22ae7920217c7611c8fd692495ce0af15269c82d8331a8",
+            "259ccfb5d594905188f806a7835fc8b02fb01a49b660931ed03aeab6e0e141ae"
+          ]
+        },
+        "status": "completed",
+        "usage": {
+          "estimated_usd": 0.006514,
+          "input_tokens": 1427,
+          "output_tokens": 1113,
+          "request_attempts": 1
+        }
+      },
+      "expected_identity": "unknown",
+      "matches_expected": true,
+      "source_attribution": {
+        "dataset_id": "lerobot/aloha_static_screw_driver",
+        "license": "mit",
+        "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md",
+        "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md",
+        "revision": "51448b4e7638c1773fd07c1e7febce8ebb104635",
+        "source_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/resolve/51448b4e7638c1773fd07c1e7febce8ebb104635/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+        "title": "ALOHA aloha_static_screw_driver episode 0"
+      },
+      "source_family": "aloha_static_screw_driver",
+      "source_id": "aloha_static_screw_driver-e00-high",
+      "source_timestamps_ms": [
+        0,
+        1000
+      ]
+    },
+    {
+      "anchor_origin": "authored_candidate",
+      "attempt_status": "completed",
+      "case_id": "remote-target",
+      "challenge": {
+        "challenge": {
+          "anchor_origin": "authored_candidate",
+          "author_review": {
+            "note": "True rounded white remote body with an open central battery compartment.",
+            "origin": "assistant_under_user_authorization",
+            "source_views_and_crops_reviewed": true
+          },
+          "changes_guided_v2_acceptance": false,
+          "contract": {
+            "automatic_retries": 0,
+            "excluded_concepts": [
+              {
+                "description": "Flat white tape strip attached to the tabletop.",
+                "id": "table_tape"
+              },
+              {
+                "description": "A detached small cylindrical battery separate from the remote body.",
+                "id": "loose_battery"
+              },
+              {
+                "description": "A robotic gripper with two opposing fingers.",
+                "id": "robot_gripper"
+              }
+            ],
+            "max_requests_per_pair": 1,
+            "object_id": "remote_body",
+            "positive_concept": "white remote-control body with an open battery compartment",
+            "required_visual_attributes": [
+              {
+                "description": "A single rounded oblong white plastic body.",
+                "id": "rounded_body"
+              },
+              {
+                "description": "A dark rectangular recessed battery compartment is visible within the white body.",
+                "id": "open_compartment"
+              }
+            ],
+            "requires_full_visibility": true,
+            "requires_unique_match": true,
+            "version": "semantic_candidate_v1"
+          },
+          "contract_hash": "411003ac967d4316dd0348e8466e9915020735347a2dfe31f44d732980a6b400",
+          "decision": "supported",
+          "frames": [
+            {
+              "assessment": {
+                "candidate_relation": "target",
+                "decision": "supported",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "loose_battery",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "remote_body",
+                "reasons": [],
+                "required_attributes": [
+                  {
+                    "id": "rounded_body",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "open_compartment",
+                    "support": "supported"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 214,
+                "x2": 338,
+                "y1": 240,
+                "y2": 284
+              },
+              "crop_box": {
+                "x1": 182,
+                "x2": 370,
+                "y1": 228,
+                "y2": 296
+              },
+              "crop_sha256": "02898129457ae2a3a3ece567ffabdb848c6990579657d4a3797fe4efd4a91727",
+              "frame_index": 0,
+              "height": 480,
+              "sha256": "0793b4082230ecad7bbd29b012507c81bc134df7dfa83edbaf5d407f553d8b61",
+              "width": 640
+            },
+            {
+              "assessment": {
+                "candidate_relation": "target",
+                "decision": "supported",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "loose_battery",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "remote_body",
+                "reasons": [],
+                "required_attributes": [
+                  {
+                    "id": "rounded_body",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "open_compartment",
+                    "support": "supported"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 214,
+                "x2": 338,
+                "y1": 240,
+                "y2": 284
+              },
+              "crop_box": {
+                "x1": 182,
+                "x2": 370,
+                "y1": 228,
+                "y2": 296
+              },
+              "crop_sha256": "51a1813fedf947b4156691c65e6fe5851b8bf5205085ae5c654eff5f047c105c",
+              "frame_index": 1,
+              "height": 480,
+              "sha256": "8ae6a645d617c33526ab1752d13447d970e0e5f5588d8ed736b9dfd66574f74f",
+              "width": 640
+            }
+          ],
+          "limitations": "The proposed candidate rectangles were manually authored after source/crop review, not generated by a model locator. Spark challenges these proposals using the same semantic gate. Candidate support is not independent identity, placement or physical execution proof.",
+          "method_version": "semantic_candidate_v1",
+          "preparation_version": "authored_candidate_pair_v1",
+          "prepared_hash": "ef25a96afd0261934ae833aa43a665b76e2957045e89200b57e38b039fc5d370",
+          "reasons": [],
+          "usage": {
+            "estimated_usd": 0.007977,
+            "input_tokens": 1387,
+            "output_tokens": 1469,
+            "request_attempts": 1
+          }
+        },
+        "changes_guided_v2_acceptance": false,
+        "failure": null,
+        "limitations": "Completion experiment using the unchanged semantic-v1 prompt, schema and diagnostic gate. Low reasoning is an explicit request setting, not a reliability guarantee. Unscored failures never become UNKNOWN predictions or placement decisions. Reported tokens from unsuccessful responses are included; unreported charges remain unknown.",
+        "method_config": {
+          "automatic_retries": 0,
+          "max_output_tokens": 4096,
+          "max_requests_per_pair": 1,
+          "reasoning_effort": "low",
+          "response_schema_name": "proofloop_semantic_candidate_v2"
+        },
+        "method_version": "semantic_candidate_v2",
+        "request_binding": {
+          "contract_hash": "411003ac967d4316dd0348e8466e9915020735347a2dfe31f44d732980a6b400",
+          "prepared_hash": "ef25a96afd0261934ae833aa43a665b76e2957045e89200b57e38b039fc5d370",
+          "prompt_sha256": "29b136a37bf3b837f8c73ad2f8667e03db80b11137bbebc114e761103f3a702a",
+          "schema_sha256": "2f1248a03fdfaf6c1d258926683440f78947eb4f5c6f8d507388c32155a2ff85",
+          "source_sha256": [
+            "0793b4082230ecad7bbd29b012507c81bc134df7dfa83edbaf5d407f553d8b61",
+            "8ae6a645d617c33526ab1752d13447d970e0e5f5588d8ed736b9dfd66574f74f",
+            "02898129457ae2a3a3ece567ffabdb848c6990579657d4a3797fe4efd4a91727",
+            "51a1813fedf947b4156691c65e6fe5851b8bf5205085ae5c654eff5f047c105c"
+          ]
+        },
+        "status": "completed",
+        "usage": {
+          "estimated_usd": 0.007977,
+          "input_tokens": 1387,
+          "output_tokens": 1469,
+          "request_attempts": 1
+        }
+      },
+      "expected_identity": "supported",
+      "matches_expected": true,
+      "source_attribution": {
+        "dataset_id": "lerobot/aloha_static_battery",
+        "license": "apache-2.0",
+        "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md",
+        "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md",
+        "revision": "dd8bda435f5068a0298bd109005828768ecbfa12",
+        "source_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/resolve/dd8bda435f5068a0298bd109005828768ecbfa12/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+        "title": "ALOHA aloha_static_battery episode 0"
+      },
+      "source_family": "aloha_static_battery",
+      "source_id": "aloha_static_battery-e00-high",
+      "source_timestamps_ms": [
+        0,
+        1000
+      ]
+    },
+    {
+      "anchor_origin": "authored_candidate",
+      "attempt_status": "completed",
+      "case_id": "remote-tape",
+      "challenge": {
+        "challenge": {
+          "anchor_origin": "authored_candidate",
+          "author_review": {
+            "note": "Real flat white tabletop marker, with no rounded plastic body or battery recess.",
+            "origin": "assistant_under_user_authorization",
+            "source_views_and_crops_reviewed": true
+          },
+          "changes_guided_v2_acceptance": false,
+          "contract": {
+            "automatic_retries": 0,
+            "excluded_concepts": [
+              {
+                "description": "Flat white tape strip attached to the tabletop.",
+                "id": "table_tape"
+              },
+              {
+                "description": "A detached small cylindrical battery separate from the remote body.",
+                "id": "loose_battery"
+              },
+              {
+                "description": "A robotic gripper with two opposing fingers.",
+                "id": "robot_gripper"
+              }
+            ],
+            "max_requests_per_pair": 1,
+            "object_id": "remote_body",
+            "positive_concept": "white remote-control body with an open battery compartment",
+            "required_visual_attributes": [
+              {
+                "description": "A single rounded oblong white plastic body.",
+                "id": "rounded_body"
+              },
+              {
+                "description": "A dark rectangular recessed battery compartment is visible within the white body.",
+                "id": "open_compartment"
+              }
+            ],
+            "requires_full_visibility": true,
+            "requires_unique_match": true,
+            "version": "semantic_candidate_v1"
+          },
+          "contract_hash": "411003ac967d4316dd0348e8466e9915020735347a2dfe31f44d732980a6b400",
+          "decision": "unknown",
+          "frames": [
+            {
+              "assessment": {
+                "candidate_relation": "excluded",
+                "decision": "unknown",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "loose_battery",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "remote_body",
+                "reasons": [
+                  "candidate_excluded",
+                  "attribute_conflict",
+                  "exclusion_supported"
+                ],
+                "required_attributes": [
+                  {
+                    "id": "rounded_body",
+                    "support": "contradicted"
+                  },
+                  {
+                    "id": "open_compartment",
+                    "support": "contradicted"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 263,
+                "x2": 386,
+                "y1": 284,
+                "y2": 294
+              },
+              "crop_box": {
+                "x1": 232,
+                "x2": 417,
+                "y1": 276,
+                "y2": 302
+              },
+              "crop_sha256": "881f43d7ce60208ef696888adc2fbb858b1f70647d103dfaaa3095514f789c05",
+              "frame_index": 0,
+              "height": 480,
+              "sha256": "0793b4082230ecad7bbd29b012507c81bc134df7dfa83edbaf5d407f553d8b61",
+              "width": 640
+            },
+            {
+              "assessment": {
+                "candidate_relation": "excluded",
+                "decision": "unknown",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "loose_battery",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "remote_body",
+                "reasons": [
+                  "candidate_excluded",
+                  "attribute_conflict",
+                  "exclusion_supported"
+                ],
+                "required_attributes": [
+                  {
+                    "id": "rounded_body",
+                    "support": "contradicted"
+                  },
+                  {
+                    "id": "open_compartment",
+                    "support": "contradicted"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 263,
+                "x2": 386,
+                "y1": 284,
+                "y2": 294
+              },
+              "crop_box": {
+                "x1": 232,
+                "x2": 417,
+                "y1": 276,
+                "y2": 302
+              },
+              "crop_sha256": "4036d53fd67f36887303c2f4ea95fdc5a9cbc5cc3469e05f019fa9cbc6123023",
+              "frame_index": 1,
+              "height": 480,
+              "sha256": "8ae6a645d617c33526ab1752d13447d970e0e5f5588d8ed736b9dfd66574f74f",
+              "width": 640
+            }
+          ],
+          "limitations": "The proposed candidate rectangles were manually authored after source/crop review, not generated by a model locator. Spark challenges these proposals using the same semantic gate. Candidate support is not independent identity, placement or physical execution proof.",
+          "method_version": "semantic_candidate_v1",
+          "preparation_version": "authored_candidate_pair_v1",
+          "prepared_hash": "ec46fa82048905c437f836c6534358b834edb56fd8bd99dec0b96ef260ac157c",
+          "reasons": [
+            "attribute_conflict",
+            "candidate_excluded",
+            "exclusion_supported"
+          ],
+          "usage": {
+            "estimated_usd": 0.007429,
+            "input_tokens": 1377,
+            "output_tokens": 1343,
+            "request_attempts": 1
+          }
+        },
+        "changes_guided_v2_acceptance": false,
+        "failure": null,
+        "limitations": "Completion experiment using the unchanged semantic-v1 prompt, schema and diagnostic gate. Low reasoning is an explicit request setting, not a reliability guarantee. Unscored failures never become UNKNOWN predictions or placement decisions. Reported tokens from unsuccessful responses are included; unreported charges remain unknown.",
+        "method_config": {
+          "automatic_retries": 0,
+          "max_output_tokens": 4096,
+          "max_requests_per_pair": 1,
+          "reasoning_effort": "low",
+          "response_schema_name": "proofloop_semantic_candidate_v2"
+        },
+        "method_version": "semantic_candidate_v2",
+        "request_binding": {
+          "contract_hash": "411003ac967d4316dd0348e8466e9915020735347a2dfe31f44d732980a6b400",
+          "prepared_hash": "ec46fa82048905c437f836c6534358b834edb56fd8bd99dec0b96ef260ac157c",
+          "prompt_sha256": "3eb537fcc3fd21bcabcb4e67e20663231363ad7adc9091c49c055d0abd05ad45",
+          "schema_sha256": "2f1248a03fdfaf6c1d258926683440f78947eb4f5c6f8d507388c32155a2ff85",
+          "source_sha256": [
+            "0793b4082230ecad7bbd29b012507c81bc134df7dfa83edbaf5d407f553d8b61",
+            "8ae6a645d617c33526ab1752d13447d970e0e5f5588d8ed736b9dfd66574f74f",
+            "881f43d7ce60208ef696888adc2fbb858b1f70647d103dfaaa3095514f789c05",
+            "4036d53fd67f36887303c2f4ea95fdc5a9cbc5cc3469e05f019fa9cbc6123023"
+          ]
+        },
+        "status": "completed",
+        "usage": {
+          "estimated_usd": 0.007429,
+          "input_tokens": 1377,
+          "output_tokens": 1343,
+          "request_attempts": 1
+        }
+      },
+      "expected_identity": "unknown",
+      "matches_expected": true,
+      "source_attribution": {
+        "dataset_id": "lerobot/aloha_static_battery",
+        "license": "apache-2.0",
+        "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md",
+        "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md",
+        "revision": "dd8bda435f5068a0298bd109005828768ecbfa12",
+        "source_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/resolve/dd8bda435f5068a0298bd109005828768ecbfa12/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+        "title": "ALOHA aloha_static_battery episode 0"
+      },
+      "source_family": "aloha_static_battery",
+      "source_id": "aloha_static_battery-e00-high",
+      "source_timestamps_ms": [
+        0,
+        1000
+      ]
+    },
+    {
+      "anchor_origin": "authored_candidate",
+      "attempt_status": "completed",
+      "case_id": "remote-battery",
+      "challenge": {
+        "challenge": {
+          "anchor_origin": "authored_candidate",
+          "author_review": {
+            "note": "Real loose battery beside the remote; small image footprint is recorded as a limitation.",
+            "origin": "assistant_under_user_authorization",
+            "source_views_and_crops_reviewed": true
+          },
+          "changes_guided_v2_acceptance": false,
+          "contract": {
+            "automatic_retries": 0,
+            "excluded_concepts": [
+              {
+                "description": "Flat white tape strip attached to the tabletop.",
+                "id": "table_tape"
+              },
+              {
+                "description": "A detached small cylindrical battery separate from the remote body.",
+                "id": "loose_battery"
+              },
+              {
+                "description": "A robotic gripper with two opposing fingers.",
+                "id": "robot_gripper"
+              }
+            ],
+            "max_requests_per_pair": 1,
+            "object_id": "remote_body",
+            "positive_concept": "white remote-control body with an open battery compartment",
+            "required_visual_attributes": [
+              {
+                "description": "A single rounded oblong white plastic body.",
+                "id": "rounded_body"
+              },
+              {
+                "description": "A dark rectangular recessed battery compartment is visible within the white body.",
+                "id": "open_compartment"
+              }
+            ],
+            "requires_full_visibility": true,
+            "requires_unique_match": true,
+            "version": "semantic_candidate_v1"
+          },
+          "contract_hash": "411003ac967d4316dd0348e8466e9915020735347a2dfe31f44d732980a6b400",
+          "decision": "supported",
+          "frames": [
+            {
+              "assessment": {
+                "candidate_relation": "target",
+                "decision": "supported",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "loose_battery",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "remote_body",
+                "reasons": [],
+                "required_attributes": [
+                  {
+                    "id": "rounded_body",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "open_compartment",
+                    "support": "supported"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 382,
+                "x2": 403,
+                "y1": 269,
+                "y2": 294
+              },
+              "crop_box": {
+                "x1": 374,
+                "x2": 411,
+                "y1": 261,
+                "y2": 302
+              },
+              "crop_sha256": "b32d87510b04a0417e8e64211a9a77fe304d052d7ee314436aa2e5fdf4db59b3",
+              "frame_index": 0,
+              "height": 480,
+              "sha256": "0793b4082230ecad7bbd29b012507c81bc134df7dfa83edbaf5d407f553d8b61",
+              "width": 640
+            },
+            {
+              "assessment": {
+                "candidate_relation": "target",
+                "decision": "supported",
+                "excluded_matches": [
+                  {
+                    "id": "table_tape",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "loose_battery",
+                    "support": "not_supported"
+                  },
+                  {
+                    "id": "robot_gripper",
+                    "support": "not_supported"
+                  }
+                ],
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "fully_visible": true,
+                "image_text_used_as_identity_evidence": false,
+                "object_id": "remote_body",
+                "reasons": [],
+                "required_attributes": [
+                  {
+                    "id": "rounded_body",
+                    "support": "supported"
+                  },
+                  {
+                    "id": "open_compartment",
+                    "support": "supported"
+                  }
+                ]
+              },
+              "candidate_box": {
+                "x1": 382,
+                "x2": 403,
+                "y1": 269,
+                "y2": 294
+              },
+              "crop_box": {
+                "x1": 374,
+                "x2": 411,
+                "y1": 261,
+                "y2": 302
+              },
+              "crop_sha256": "854d3c72f568d6a858d90bfc1cce8939f0e21902bd119dc67976d66ce31d746e",
+              "frame_index": 1,
+              "height": 480,
+              "sha256": "8ae6a645d617c33526ab1752d13447d970e0e5f5588d8ed736b9dfd66574f74f",
+              "width": 640
+            }
+          ],
+          "limitations": "The proposed candidate rectangles were manually authored after source/crop review, not generated by a model locator. Spark challenges these proposals using the same semantic gate. Candidate support is not independent identity, placement or physical execution proof.",
+          "method_version": "semantic_candidate_v1",
+          "preparation_version": "authored_candidate_pair_v1",
+          "prepared_hash": "6361ead6845b1873d3947dd241b1f207e727baf8c75bc1cf2c912f8ff42beb1a",
+          "reasons": [],
+          "usage": {
+            "estimated_usd": 0.009675,
+            "input_tokens": 1365,
+            "output_tokens": 1875,
+            "request_attempts": 1
+          }
+        },
+        "changes_guided_v2_acceptance": false,
+        "failure": null,
+        "limitations": "Completion experiment using the unchanged semantic-v1 prompt, schema and diagnostic gate. Low reasoning is an explicit request setting, not a reliability guarantee. Unscored failures never become UNKNOWN predictions or placement decisions. Reported tokens from unsuccessful responses are included; unreported charges remain unknown.",
+        "method_config": {
+          "automatic_retries": 0,
+          "max_output_tokens": 4096,
+          "max_requests_per_pair": 1,
+          "reasoning_effort": "low",
+          "response_schema_name": "proofloop_semantic_candidate_v2"
+        },
+        "method_version": "semantic_candidate_v2",
+        "request_binding": {
+          "contract_hash": "411003ac967d4316dd0348e8466e9915020735347a2dfe31f44d732980a6b400",
+          "prepared_hash": "6361ead6845b1873d3947dd241b1f207e727baf8c75bc1cf2c912f8ff42beb1a",
+          "prompt_sha256": "7b9e01aa7027a28a08eed588ad0ff1ce2ba1cd0f2b27990328276de35096c1e9",
+          "schema_sha256": "2f1248a03fdfaf6c1d258926683440f78947eb4f5c6f8d507388c32155a2ff85",
+          "source_sha256": [
+            "0793b4082230ecad7bbd29b012507c81bc134df7dfa83edbaf5d407f553d8b61",
+            "8ae6a645d617c33526ab1752d13447d970e0e5f5588d8ed736b9dfd66574f74f",
+            "b32d87510b04a0417e8e64211a9a77fe304d052d7ee314436aa2e5fdf4db59b3",
+            "854d3c72f568d6a858d90bfc1cce8939f0e21902bd119dc67976d66ce31d746e"
+          ]
+        },
+        "status": "completed",
+        "usage": {
+          "estimated_usd": 0.009675,
+          "input_tokens": 1365,
+          "output_tokens": 1875,
+          "request_attempts": 1
+        }
+      },
+      "expected_identity": "unknown",
+      "matches_expected": false,
+      "source_attribution": {
+        "dataset_id": "lerobot/aloha_static_battery",
+        "license": "apache-2.0",
+        "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md",
+        "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md",
+        "revision": "dd8bda435f5068a0298bd109005828768ecbfa12",
+        "source_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/resolve/dd8bda435f5068a0298bd109005828768ecbfa12/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+        "title": "ALOHA aloha_static_battery episode 0"
+      },
+      "source_family": "aloha_static_battery",
+      "source_id": "aloha_static_battery-e00-high",
+      "source_timestamps_ms": [
+        0,
+        1000
+      ]
+    }
+  ],
+  "changes_guided_v2_acceptance": false,
+  "cost_summary": {
+    "estimated_allocation_usd": 0.5,
+    "estimated_usd": 0.047778,
+    "input_tokens": 8330,
+    "output_tokens": 8792,
+    "request_attempts": 6
+  },
+  "evaluation_role": "development_reprocessing",
+  "experiment": "bounded_semantic_candidate_v2_trial",
+  "freeze_hash": "bb94485fbe75858e72cdc66d0b2e651fb10c66f4e48e34e47e83615138f0b8df",
+  "limitations": [
+    "Development experiment; reviewed labels and source timestamps are self-reported declarations.",
+    "Cases sharing recordings, source frames or models are correlated, not independent physical trials.",
+    "Authored candidates test the challenger and do not measure automatic locator accuracy.",
+    "Unscored API failures are not UNKNOWN predictions; rates use explicit completed-case denominators.",
+    "Saved source/code hashes detect changes locally; they do not independently prove API origin or capture time.",
+    "Allocation is an estimate, not a provider-enforced billing limit; unreported charges remain unknown.",
+    "Semantic support never grants placement PASS, physical execution proof or changes guided-v2 acceptance."
+  ],
+  "method_config": {
+    "automatic_retries": 0,
+    "max_output_tokens": 4096,
+    "max_requests_per_pair": 1,
+    "reasoning_effort": "low",
+    "response_schema_name": "proofloop_semantic_candidate_v2"
+  },
+  "method_version": "semantic_candidate_v2",
+  "metrics": {
+    "attempted": 6,
+    "case_count": 6,
+    "completed": 6,
+    "completion_rate": 1.0,
+    "correct": 5,
+    "known_negative": {
+      "completed": 4,
+      "count": 4,
+      "unsupported_acceptance_rate": 0.25,
+      "unsupported_accepted": 1
+    },
+    "known_positive": {
+      "completed": 2,
+      "count": 2,
+      "retention_rate": 1.0,
+      "supported": 2
+    },
+    "not_attempted": 0,
+    "scored": 6,
+    "scored_accuracy": 0.8333333333333334,
+    "unscored": 0
+  },
+  "phase": "real_video_authored_distractors",
+  "schema_version": 1
+}
