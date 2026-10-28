@@ -26,6 +26,8 @@ class CandidateReviewTests(unittest.TestCase):
             target.write_bytes(jpeg(suffix=b"authored-crop"))
         with patch("proofloop.candidate_review._crop", side_effect=crop), \
                 patch("proofloop.semantic._crop", side_effect=crop), \
+                patch("proofloop.candidate_review._extractor_path", return_value="authored-fixture-extractor"), \
+                patch("proofloop.semantic._extractor_path", return_value="authored-fixture-extractor"), \
                 patch("proofloop.candidate_review._extractor_version", return_value="authored-fixture"), \
                 patch("proofloop.semantic._extractor_version", return_value="authored-fixture"):
             return prepare_authored_candidate_pair(self.paths, self.boxes, contract(), self.root / "prepared",
