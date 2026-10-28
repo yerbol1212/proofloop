@@ -2506,5 +2506,8 @@ select:focus-visible,
 .disagreement-list .button span { font-size: .8rem; font-weight: 400; color: var(--muted); }
 .disagreement-list .button[aria-pressed="true"] { border-color: var(--accent); background: #f0f2ff; }
 .diagnostic-details { margin-top: 1.25rem; }
+.research-details { padding: 1.25rem; background: white; border: 1px solid var(--border); border-radius: 12px; }
+.research-details > summary { cursor: pointer; font-weight: 600; line-height: 1.5; }
+.research-details > section { margin-top: 1.25rem; }
 .diagnostic-details > summary { cursor: pointer; font-weight: 600; }
 .diagnostic-details > .panel, .log-panel > .panel { margin-top: 1rem; padding: 1rem; box-shadow: none; }

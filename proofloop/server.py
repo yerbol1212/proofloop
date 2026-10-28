@@ -133,7 +133,8 @@ class ProofLoopServer(ThreadingHTTPServer):
 
 
 def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
-                  web_root: Path = DEFAULT_WEB_ROOT, *, video_lab: Any = None) -> ThreadingHTTPServer:
+                  web_root: Path = DEFAULT_WEB_ROOT, *, video_lab: Any = None,
+                  research_lab: Any = None) -> ThreadingHTTPServer:
     """Create, without starting, a server that binds only the IPv4 loopback.
 
     ``engine`` is intentionally injectable so transport tests require no model
@@ -148,6 +149,9 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
     if video_lab is None:
         from .video_lab import VideoLab
         video_lab = VideoLab(root=ROOT)
+    if research_lab is None:
+        from .research_lab import ResearchLab
+        research_lab = ResearchLab(root=ROOT)
 
     class Handler(BaseHTTPRequestHandler):
         server_version = "ProofLoop"
@@ -290,6 +294,8 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 self._json(200, self._snapshot(engine.snapshot()), head=head)
             elif path == "/api/lab":
                 self._json(200, video_lab.snapshot(), head=head)
+            elif path == "/api/research-lab":
+                self._json(200, research_lab.snapshot(), head=head)
             elif path == "/api/recovery":
                 self._json(200, {"recovery": engine.recovery_receipt(),
                                  "verification": engine.verify_recovery()}, head=head)

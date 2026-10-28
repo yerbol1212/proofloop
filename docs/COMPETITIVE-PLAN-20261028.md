@@ -28,3 +28,11 @@ Additional research, including Inner Monologue, AHA/FailGen and Robo2Process, is
 4. **Stress changed task contracts.** Keep images, regions, concepts and the perception method fixed while changing the required region under a newly reviewed contract. Recompute predicates from saved SAM results and call Spark again for the changed requirement. Report reuse and incremental cost explicitly; never reuse a verdict bound to the old specification.
 
 These changes need semantic tests, browser interaction checks and public-safe experiment records before publication. Complete physical procedures, causal action verification and another person's practical use remain separate validation work.
+
+## Completed development slice
+
+All four implementation slices now have code and scoped evidence. Grounded explanations appear in Inspection and Evidence log. Video lab exposes case/check coverage and selectable disagreements. Its separate development inspector replays changed-contract controls and the candidate identity experiment without inference requests.
+
+The two [changed-contract controls](../artifacts/feasibility/contract-stress-20261028.md) passed: both models changed PASS to FAIL on unchanged images after the required region changed. Saved guided perception was re-grounded under new protocol hashes with no new calls; fresh Spark used two calls, estimated $0.018421. The [semantic experiment](SEMANTIC-CHALLENGE-RESULTS-20261028.md) failed its usefulness test: two of four cases completed, only one positive retained support, and the negative was unscored. All five attempts cost an estimated $0.076588. The challenger remains outside placement acceptance.
+
+The final software slice passed 545 tests on Python 3.12; Python 3.9 ran the same 545 tests with one expected optional-parser skip. The strict frontend build passed. Browser checks at desktop and 390-pixel phone width verified requirement explanations, exact disagreement-to-frame selection, explicit missing denominators, saved-replay controls and no page overflow. Software checks do not turn these development measurements into physical validation or a comparative model-quality gain.

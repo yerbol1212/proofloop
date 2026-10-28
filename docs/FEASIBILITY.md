@@ -9,7 +9,7 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | Full Python 3.12 suite: **450/450 passed**, including loopback HTTP checks; strict production frontend build passed | [Published milestone CI passed](https://github.com/yerbol1212/proofloop/actions/runs/40677389554); actual public clone also ran 450 tests on Python 3.9 with one expected optional-parser skip; software tests are separate from perception accuracy |
+| Local tests | Full Python 3.12 suite: **545/545 passed**, including loopback HTTP checks; strict production frontend build passed | [Diagnostics milestone CI passed](https://github.com/yerbol1212/proofloop/actions/runs/40680859251); the updated suite also ran 545 tests on Python 3.9 with one expected optional-parser skip. The earlier actual public clone ran 450 tests; software tests are separate from perception accuracy |
 | Official SAM codec | Official parser independently re-decoded all 16 phone responses; 12 nonempty masks matched saved rasters and four covered responses were empty | Passed on phone inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
 | Positive placement contract | Live Spark fork-left/spoon-right protocol; stable positive location evidence supports wrong-region fail and corrected pass | Passed on one recorded clip |
@@ -34,6 +34,9 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Candy task transfer | One different manipulation recording, two frozen cases: guided 2/2 and Spark 2/2 (UNKNOWN → PASS) | Narrow development transfer only; no FAIL control or independent semantic-identity guarantee |
 | Public-clone reproduction | Fresh source checkout downloaded one pinned licensed clip/card, decoded four frames and wrote an unapproved contract with zero API calls | Preparation path executed; another-person usability remains unvalidated |
 | Recorded Video lab | Reviewed summaries bound to local source hashes; paired frames, calibrated zones, method results and explanations | Read-only; no model calls or robot control |
+| Grounded diagnostics and error review | Requirement/observation/next-step explanations, typed UNKNOWN gaps, source-grouped coverage and selectable per-check disagreements | Implemented; explanations do not infer physical causes or authorize action |
+| Changed-contract controls | Same candy/coffee evidence: both systems PASS under original region, FAIL under opposite-region requirement | Two development controls; zero new guided calls, two fresh Spark calls, incremental estimate $0.018421; no new independent sources |
+| Semantic candidate feasibility | Four selected cases, two classifications, one positive supported, one positive UNKNOWN; negative and low-contrast glass unscored | Five attempts, three incomplete, estimated $0.076588; disabled from acceptance; no demonstrated distractor rejection |
 | Synthetic scene inputs | Four generated scenes with exact prompts, hashes, annotations and provenance | Used in live Meta calls; not physical evidence |
 | Public repository | [yerbol1212/proofloop](https://github.com/yerbol1212/proofloop), verified public; tested build milestones published | Created |
 

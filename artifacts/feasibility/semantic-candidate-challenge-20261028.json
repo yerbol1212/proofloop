@@ -1,0 +1,523 @@
+{
+  "attempts": [
+    {
+      "attempt_index": 1,
+      "case_id": "candy-e00-early-unsupported",
+      "failure_evidence": "observed_classification_and_usage_ledger_only",
+      "method_module_sha256": "fe9bdf4fbd2d0369c451af2d55325591af146b33a03a4f624ef099c2fa23d3d0",
+      "output_token_cap": 2048,
+      "raw_response_retained": false,
+      "scored": false,
+      "status": "incomplete",
+      "usage": {
+        "estimated_usd": 0.010356,
+        "input_tokens": 1322,
+        "output_tokens": 2048,
+        "request_attempts": 1
+      }
+    },
+    {
+      "attempt_index": 2,
+      "case_id": "candy-e00-early-unsupported",
+      "failure_evidence": "observed_classification_and_usage_ledger_only",
+      "method_module_sha256": "5cc2786bceaf6ce9674baa009ee21450774eaa9f80d288f9e2ceb6d41d3eb6ed",
+      "output_token_cap": 4096,
+      "raw_response_retained": false,
+      "scored": false,
+      "status": "incomplete",
+      "usage": {
+        "estimated_usd": 0.019061,
+        "input_tokens": 1322,
+        "output_tokens": 4096,
+        "request_attempts": 1
+      }
+    },
+    {
+      "attempt_index": 3,
+      "case_id": "candy-e00-visible-collection",
+      "failure_evidence": "not_applicable_completed_response",
+      "method_module_sha256": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "output_token_cap": 4096,
+      "raw_response_retained": true,
+      "scored": true,
+      "status": "completed",
+      "usage": {
+        "estimated_usd": 0.013643,
+        "input_tokens": 1316,
+        "output_tokens": 2823,
+        "request_attempts": 1
+      }
+    },
+    {
+      "attempt_index": 4,
+      "case_id": "coffee-e04-dispense",
+      "failure_evidence": "retained_response_and_usage_ledger",
+      "method_module_sha256": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "output_token_cap": 4096,
+      "raw_response_retained": true,
+      "scored": false,
+      "status": "incomplete",
+      "usage": {
+        "estimated_usd": 0.019073,
+        "input_tokens": 1332,
+        "output_tokens": 4096,
+        "request_attempts": 1
+      }
+    },
+    {
+      "attempt_index": 5,
+      "case_id": "coffee-e05-staging",
+      "failure_evidence": "not_applicable_completed_response",
+      "method_module_sha256": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "output_token_cap": 4096,
+      "raw_response_retained": true,
+      "scored": true,
+      "status": "completed",
+      "usage": {
+        "estimated_usd": 0.014455,
+        "input_tokens": 1340,
+        "output_tokens": 3007,
+        "request_attempts": 1
+      }
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "candy-e00-visible-collection",
+      "challenge": {
+        "changes_guided_v2_acceptance": false,
+        "contract": {
+          "automatic_retries": 0,
+          "excluded_concepts": [
+            {
+              "description": "candy wrapper",
+              "id": "wrapper"
+            },
+            {
+              "description": "printed label",
+              "id": "label"
+            }
+          ],
+          "max_requests_per_pair": 1,
+          "object_id": "candy",
+          "positive_concept": "small white oval candy",
+          "required_visual_attributes": [
+            {
+              "description": "white color",
+              "id": "white"
+            },
+            {
+              "description": "oval shape",
+              "id": "oval"
+            },
+            {
+              "description": "physical unwrapped candy",
+              "id": "unwrapped"
+            }
+          ],
+          "requires_full_visibility": true,
+          "requires_unique_match": true,
+          "version": "semantic_candidate_v1"
+        },
+        "contract_hash": "7b0b23df366de9453d4899d32e54d2b3721d6beeb62e6871d37fddfdb04efd62",
+        "decision": "unknown",
+        "frames": [
+          {
+            "assessment": {
+              "candidate_relation": "uncertain",
+              "decision": "unknown",
+              "excluded_matches": [
+                {
+                  "id": "wrapper",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "label",
+                  "support": "uncertain"
+                }
+              ],
+              "frame_index": 0,
+              "full_scene_match_count": "one",
+              "fully_visible": true,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "candy",
+              "reasons": [
+                "candidate_uncertain",
+                "attribute_unsupported",
+                "exclusion_uncertain"
+              ],
+              "required_attributes": [
+                {
+                  "id": "white",
+                  "support": "supported"
+                },
+                {
+                  "id": "oval",
+                  "support": "supported"
+                },
+                {
+                  "id": "unwrapped",
+                  "support": "uncertain"
+                }
+              ]
+            },
+            "candidate_box": {
+              "x1": 261,
+              "x2": 282,
+              "y1": 364,
+              "y2": 389
+            },
+            "crop_box": {
+              "x1": 253,
+              "x2": 290,
+              "y1": 356,
+              "y2": 397
+            },
+            "crop_sha256": "1706918668bf1b2c631e673abdc00697c6c7d9096cf126b3aaa094a6032548c7",
+            "frame_index": 0,
+            "height": 480,
+            "original_candidate_count": 1,
+            "original_locator": {
+              "boundary_uncertain": true,
+              "fully_visible": true,
+              "identity_ambiguous": false
+            },
+            "sha256": "9cd789dba74a73fe9859f38532e0199356e43f2e98378f52cc92f66f9fb88081",
+            "width": 640
+          },
+          {
+            "assessment": {
+              "candidate_relation": "uncertain",
+              "decision": "unknown",
+              "excluded_matches": [
+                {
+                  "id": "wrapper",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "label",
+                  "support": "uncertain"
+                }
+              ],
+              "frame_index": 1,
+              "full_scene_match_count": "one",
+              "fully_visible": true,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "candy",
+              "reasons": [
+                "candidate_uncertain",
+                "attribute_unsupported",
+                "exclusion_uncertain"
+              ],
+              "required_attributes": [
+                {
+                  "id": "white",
+                  "support": "supported"
+                },
+                {
+                  "id": "oval",
+                  "support": "supported"
+                },
+                {
+                  "id": "unwrapped",
+                  "support": "uncertain"
+                }
+              ]
+            },
+            "candidate_box": {
+              "x1": 259,
+              "x2": 282,
+              "y1": 365,
+              "y2": 391
+            },
+            "crop_box": {
+              "x1": 251,
+              "x2": 290,
+              "y1": 357,
+              "y2": 399
+            },
+            "crop_sha256": "85bcfce3edb74db747d8d31c481372b1a1c013a9113ff2dab7f829e14c479f84",
+            "frame_index": 1,
+            "height": 480,
+            "original_candidate_count": 1,
+            "original_locator": {
+              "boundary_uncertain": true,
+              "fully_visible": true,
+              "identity_ambiguous": false
+            },
+            "sha256": "4d6e6bacccd0b6ccfe1a452c20c9c2f1b3895f6fa94c081c82706d1e7df40957",
+            "width": 640
+          }
+        ],
+        "limitations": "Experimental same-model challenge: Spark assigned the original candidate and also challenges it. Agreement is correlated; no independent identity, placement or physical execution proof.",
+        "method_version": "semantic_candidate_v1",
+        "prepared_hash": "9bcae9486ff9b658e55e31e4f488356f4134b8cef1d58c2986d5464182744776",
+        "reasons": [
+          "attribute_unsupported",
+          "candidate_uncertain",
+          "exclusion_uncertain"
+        ],
+        "usage": {
+          "estimated_usd": 0.013643,
+          "input_tokens": 1316,
+          "output_tokens": 2823,
+          "request_attempts": 1
+        }
+      },
+      "expected_identity": "supported",
+      "source_family": "candy",
+      "source_id": "candy-episode-000000",
+      "source_timestamps_ms": [
+        12500,
+        13500
+      ]
+    },
+    {
+      "case_id": "coffee-e05-staging",
+      "challenge": {
+        "changes_guided_v2_acceptance": false,
+        "contract": {
+          "automatic_retries": 0,
+          "excluded_concepts": [
+            {
+              "description": "coffee machine component",
+              "id": "machine"
+            },
+            {
+              "description": "printed picture of a drinking glass",
+              "id": "depiction"
+            }
+          ],
+          "max_requests_per_pair": 1,
+          "object_id": "glass",
+          "positive_concept": "transparent drinking glass",
+          "required_visual_attributes": [
+            {
+              "description": "transparent glass body",
+              "id": "transparent"
+            },
+            {
+              "description": "physical drinking vessel with an open rim",
+              "id": "vessel"
+            }
+          ],
+          "requires_full_visibility": true,
+          "requires_unique_match": true,
+          "version": "semantic_candidate_v1"
+        },
+        "contract_hash": "27c272169900ee85454b6bf6e2876533e0e1a3bc57a663fa8444683745949192",
+        "decision": "supported",
+        "frames": [
+          {
+            "assessment": {
+              "candidate_relation": "target",
+              "decision": "supported",
+              "excluded_matches": [
+                {
+                  "id": "machine",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "depiction",
+                  "support": "not_supported"
+                }
+              ],
+              "frame_index": 0,
+              "full_scene_match_count": "one",
+              "fully_visible": true,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "glass",
+              "reasons": [],
+              "required_attributes": [
+                {
+                  "id": "transparent",
+                  "support": "supported"
+                },
+                {
+                  "id": "vessel",
+                  "support": "supported"
+                }
+              ]
+            },
+            "candidate_box": {
+              "x1": 438,
+              "x2": 519,
+              "y1": 100,
+              "y2": 179
+            },
+            "crop_box": {
+              "x1": 417,
+              "x2": 540,
+              "y1": 80,
+              "y2": 199
+            },
+            "crop_sha256": "fa3621b447839655e96994e0cf56cc28d9fe944e6632ea79424589319c65c1ef",
+            "frame_index": 0,
+            "height": 480,
+            "original_candidate_count": 1,
+            "original_locator": {
+              "boundary_uncertain": false,
+              "fully_visible": true,
+              "identity_ambiguous": false
+            },
+            "sha256": "35ce7712887372a4631a16adb0f3a5f201cfc7e8123470ee6a2553881cb59c5a",
+            "width": 640
+          },
+          {
+            "assessment": {
+              "candidate_relation": "target",
+              "decision": "supported",
+              "excluded_matches": [
+                {
+                  "id": "machine",
+                  "support": "not_supported"
+                },
+                {
+                  "id": "depiction",
+                  "support": "not_supported"
+                }
+              ],
+              "frame_index": 1,
+              "full_scene_match_count": "one",
+              "fully_visible": true,
+              "image_text_used_as_identity_evidence": false,
+              "object_id": "glass",
+              "reasons": [],
+              "required_attributes": [
+                {
+                  "id": "transparent",
+                  "support": "supported"
+                },
+                {
+                  "id": "vessel",
+                  "support": "supported"
+                }
+              ]
+            },
+            "candidate_box": {
+              "x1": 439,
+              "x2": 521,
+              "y1": 100,
+              "y2": 179
+            },
+            "crop_box": {
+              "x1": 418,
+              "x2": 542,
+              "y1": 80,
+              "y2": 199
+            },
+            "crop_sha256": "c455851a7627a76f028f0d86c1aa9b80f1ecf86b38693cefce0b44fa8933e69f",
+            "frame_index": 1,
+            "height": 480,
+            "original_candidate_count": 1,
+            "original_locator": {
+              "boundary_uncertain": false,
+              "fully_visible": true,
+              "identity_ambiguous": false
+            },
+            "sha256": "bd3cd1dbfd8cd26ff41ad83ce33c0175b96885f68022f2549597cf61f10c5bde",
+            "width": 640
+          }
+        ],
+        "limitations": "Experimental same-model challenge: Spark assigned the original candidate and also challenges it. Agreement is correlated; no independent identity, placement or physical execution proof.",
+        "method_version": "semantic_candidate_v1",
+        "prepared_hash": "7d72cc7e155475aad475b6c3de8162ab2b32061f4862d7ec7a524fb8e94105cf",
+        "reasons": [],
+        "usage": {
+          "estimated_usd": 0.014455,
+          "input_tokens": 1340,
+          "output_tokens": 3007,
+          "request_attempts": 1
+        }
+      },
+      "expected_identity": "supported",
+      "source_family": "coffee",
+      "source_id": "coffee-episode-000005",
+      "source_timestamps_ms": [
+        500,
+        1500
+      ]
+    }
+  ],
+  "cost_summary": {
+    "actual_requests": 5,
+    "automatic_retries": 0,
+    "completed_batch_wall_seconds": 61.294,
+    "completed_scored_requests": 2,
+    "estimate_is_billing_guarantee": false,
+    "estimated_allocation_usd": 0.25,
+    "estimated_usd": 0.076588,
+    "explicit_development_reruns": 1,
+    "max_total_attempts": 5,
+    "unscored_incomplete_requests": 3
+  },
+  "evaluation_role": "development_reprocessing",
+  "experiment": "source_bound_semantic_candidate_challenge_20261028",
+  "freeze_hash": "b7eab6219a8ca5ed4141cec768250bec9ccc2c85cf84564254be8f107871edc2",
+  "guided_v2_module_sha256_unchanged": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+  "limitations": [
+    "Selected development cases on previously exposed sources and previously generated locator anchors; not a held-out comparison.",
+    "Same Spark model assigned and challenged candidates; errors can remain correlated and agreement is not independent identity proof.",
+    "No location PASS or guided-v2 acceptance changes are produced by this diagnostic.",
+    "The early-candy 2048-cap call and its explicit 4096-cap development rerun returned incomplete; both costs are included and neither is scored. The other three preselected positive controls received one 4096-cap call each.",
+    "Duplicate matching objects, printed adversarial instructions and broader contradictory attributes lack real-media evaluation in this batch.",
+    "The experiment compares scoped semantic candidate support, not historical placement accuracy or physical task success.",
+    "The first two rejected responses retain usage ledgers and the observed failure classification; their raw provider response bodies were not retained."
+  ],
+  "method_module_sha256": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+  "method_version": "semantic_candidate_v1",
+  "metrics": {
+    "completed_cases": 2,
+    "expected_identity_matches": 1,
+    "negative_candidate_pairs": 1,
+    "negative_pairs_withheld": 0,
+    "positive_candidate_pairs": 3,
+    "positive_pairs_supported": 1,
+    "requested_cases": 4,
+    "scored_negative_pairs": 0,
+    "scored_positive_pairs": 2,
+    "source_recordings": 3
+  },
+  "parent_freeze_hash": "c0d7430577f87626ea409d0664a5a46ee2154801e2fb574e01a1e9740aff7b5a",
+  "schema_version": 1,
+  "source_attribution": {
+    "candy": "https://huggingface.co/datasets/lerobot/aloha_static_candy/blob/7a19ab84a6b7f376d699c7f12c28535725fd0593/README.md",
+    "coffee": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+    "license_basis": "Pinned dataset cards explicitly declare MIT; authored crop derivations remain private."
+  },
+  "unavailable_cases": [
+    {
+      "attempt_indices": [
+        1,
+        2
+      ],
+      "case_id": "candy-e00-early-unsupported",
+      "expected_identity": "unknown",
+      "failure_evidence": "observed_classification_and_usage_ledger_only",
+      "raw_response_retained": false,
+      "source_family": "candy",
+      "source_id": "candy-episode-000000",
+      "source_timestamps_ms": [
+        500,
+        1500
+      ],
+      "status": "incomplete"
+    },
+    {
+      "attempt_indices": [
+        4
+      ],
+      "case_id": "coffee-e04-dispense",
+      "expected_identity": "supported",
+      "failure_evidence": "retained_response_and_usage_ledger",
+      "raw_response_retained": true,
+      "source_family": "coffee",
+      "source_id": "coffee-episode-000004",
+      "source_timestamps_ms": [
+        20000,
+        21000
+      ],
+      "status": "incomplete"
+    }
+  ]
+}

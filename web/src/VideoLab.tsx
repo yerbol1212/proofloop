@@ -5,6 +5,7 @@ import { Icon } from './icons'
 import { AcquisitionPanel } from './AcquisitionPanel'
 import { EvaluationPanel } from './EvaluationPanel'
 import type { EvaluationDTO } from './EvaluationPanel'
+import { ResearchLab } from './ResearchLab'
 
 interface FollowupStep {
   case_id: string
@@ -262,6 +263,12 @@ export function VideoLab() {
     )
   return (
     <div className="video-lab">
+      <details className="research-details">
+        <summary>
+          Development experiments: object identity and changed requirements
+        </summary>
+        <ResearchLab key={revision} />
+      </details>
       <div className="lab-toolbar">
         <p>
           <Icon name="image" />

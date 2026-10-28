@@ -1,0 +1,245 @@
+{
+  "case_count": 2,
+  "controls": [
+    {
+      "case_id": "candy-e00-visible-collection",
+      "changed_contract": {
+        "contract_hash": "a9142fef88fb261c07baac64f8254e71d6c485e913b0ea784eab09d076650216",
+        "expected": "fail",
+        "guided": {
+          "checks": [
+            {
+              "check_id": "candy-in-collection",
+              "status": "fail"
+            }
+          ],
+          "inference_origin": "replayed_saved_live_meta_observations",
+          "status": "fail"
+        },
+        "protocol_hash": "b7c3408f023df6009466fd784007932621495f0df52fed5f43fbe1d214da0065",
+        "required_region": "handling",
+        "spark": {
+          "checks": [
+            {
+              "check_id": "candy-in-collection",
+              "status": "fail"
+            }
+          ],
+          "inference_origin": "live_meta_api",
+          "status": "fail"
+        }
+      },
+      "concepts": {
+        "candy": "small white oval candy without a wrapper"
+      },
+      "costs": {
+        "incremental_guided": {
+          "estimated_usd": 0,
+          "request_count": 0
+        },
+        "incremental_spark": {
+          "estimated_usd": 0.010051,
+          "request_count": 1
+        },
+        "original_guided_perception": {
+          "estimated_usd": 0.016245,
+          "request_count": 3
+        },
+        "original_spark_reference": {
+          "estimated_usd": 0.009097,
+          "request_count": 1
+        }
+      },
+      "original_contract": {
+        "contract_hash": "14e0ad0b9854fa39ebdef7905e01347d21f87ab9c10fcffc04f2a07ec4ddfc88",
+        "expected": "pass",
+        "guided": {
+          "checks": [
+            {
+              "check_id": "candy-in-collection",
+              "status": "pass"
+            }
+          ],
+          "status": "pass"
+        },
+        "inference_origin": "live_meta_api",
+        "protocol_hash": "ae0daa748024a840b936e1c84179d367e74d7bbf8aaa8cd9db8b14c36db82c06",
+        "required_region": "collection",
+        "spark": {
+          "checks": [
+            {
+              "check_id": "candy-in-collection",
+              "status": "pass"
+            }
+          ],
+          "status": "pass"
+        }
+      },
+      "regions": {
+        "collection": [
+          0.2,
+          0.7,
+          0.8,
+          0.95
+        ],
+        "handling": [
+          0.25,
+          0.4,
+          0.75,
+          0.65
+        ]
+      },
+      "source": {
+        "id": "candy-episode-000000",
+        "license": {
+          "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot conversion by Hugging Face. Pinned dataset card explicitly declares MIT. Original paper: https://arxiv.org/abs/2304.13705.",
+          "name": "MIT",
+          "url": "https://huggingface.co/datasets/lerobot/aloha_static_candy/blob/7a19ab84a6b7f376d699c7f12c28535725fd0593/README.md"
+        },
+        "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_candy/resolve/7a19ab84a6b7f376d699c7f12c28535725fd0593/videos/chunk-000/observation.images.cam_high/episode_000000.mp4",
+        "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_candy/blob/7a19ab84a6b7f376d699c7f12c28535725fd0593/README.md",
+        "publisher": "LeRobot / ALOHA authors",
+        "sha256": "8c17c51737f82d63ed9a605da08173c2db40678e193a07efb08f3c9055fcebe1"
+      },
+      "source_frames": [
+        {
+          "sha256": "9cd789dba74a73fe9859f38532e0199356e43f2e98378f52cc92f66f9fb88081",
+          "source_timestamp_ms": 12500
+        },
+        {
+          "sha256": "4d6e6bacccd0b6ccfe1a452c20c9c2f1b3895f6fa94c081c82706d1e7df40957",
+          "source_timestamp_ms": 13500
+        }
+      ]
+    },
+    {
+      "case_id": "coffee-e07-dispense",
+      "changed_contract": {
+        "contract_hash": "35bbc159cf00af193c05767e843d1da10db74da07f273f55403e1b5596d54db1",
+        "expected": "fail",
+        "guided": {
+          "checks": [
+            {
+              "check_id": "glass-under-spout",
+              "status": "fail"
+            }
+          ],
+          "inference_origin": "replayed_saved_live_meta_observations",
+          "status": "fail"
+        },
+        "protocol_hash": "0e94071066e77f7956f16bf7a82e68f91c8515e565aaed4f874941caaa01a53c",
+        "required_region": "staging",
+        "spark": {
+          "checks": [
+            {
+              "check_id": "glass-under-spout",
+              "status": "fail"
+            }
+          ],
+          "inference_origin": "live_meta_api",
+          "status": "fail"
+        }
+      },
+      "concepts": {
+        "glass": "transparent drinking glass"
+      },
+      "costs": {
+        "incremental_guided": {
+          "estimated_usd": 0,
+          "request_count": 0
+        },
+        "incremental_spark": {
+          "estimated_usd": 0.00837,
+          "request_count": 1
+        },
+        "original_guided_perception": {
+          "estimated_usd": 0.011487,
+          "request_count": 3
+        },
+        "original_spark_reference": {
+          "estimated_usd": 0.009475,
+          "request_count": 1
+        }
+      },
+      "original_contract": {
+        "contract_hash": "88a3772f85dba0749cbc2d6996740da204d03597ab42cb3eab642e083bac9d88",
+        "expected": "pass",
+        "guided": {
+          "checks": [
+            {
+              "check_id": "glass-under-spout",
+              "status": "pass"
+            }
+          ],
+          "status": "pass"
+        },
+        "inference_origin": "live_meta_api",
+        "protocol_hash": "947df0779f5eacbc57cdc2206ef41db3f91c3e34aca75fc92738540090cde78e",
+        "required_region": "dispense",
+        "spark": {
+          "checks": [
+            {
+              "check_id": "glass-under-spout",
+              "status": "pass"
+            }
+          ],
+          "status": "pass"
+        }
+      },
+      "regions": {
+        "dispense": [
+          0.38,
+          0.18,
+          0.64,
+          0.46
+        ],
+        "staging": [
+          0.66,
+          0.18,
+          0.87,
+          0.46
+        ]
+      },
+      "source": {
+        "id": "coffee-episode-000007",
+        "license": {
+          "attribution": "ALOHA: Tony Z. Zhao, Vikash Kumar, Sergey Levine, Chelsea Finn (RSS 2023); LeRobot dataset conversion by Hugging Face. Dataset card explicitly declares MIT. Original ALOHA code copyright (c) 2023 Tony Z. Zhao. See retained MIT text and original paper https://arxiv.org/abs/2304.13705.",
+          "name": "MIT",
+          "url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md"
+        },
+        "media_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/resolve/1c52c4c794b6f93d931489263cf15e4331600bfc/videos/chunk-000/observation.images.cam_high/episode_000007.mp4",
+        "page_url": "https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md",
+        "publisher": "LeRobot / ALOHA authors",
+        "sha256": "cdef316e36fdbb74ca7ed6eeee64ef2bc4c0749e2d2734ed36397c1dbdcf5e9c"
+      },
+      "source_frames": [
+        {
+          "sha256": "3bd90d076fd3abe14d91fc257b296d48a8ad2e0e1bb7ca3cf7cfa88f5bb9168e",
+          "source_timestamp_ms": 20000
+        },
+        {
+          "sha256": "a37d4bec5f0f3abbd21aee88300466e80b40ffa5cf2bb08439d07f503e598c65",
+          "source_timestamp_ms": 21000
+        }
+      ]
+    }
+  ],
+  "evaluation_role": "development_reprocessing",
+  "experiment": "authored_opposite_region_contract_control",
+  "incremental_estimated_usd": 0.018421,
+  "incremental_guided_request_count": 0,
+  "incremental_spark_request_count": 2,
+  "limits": [
+    "Same already exposed video evidence with an authored opposite-region requirement; not new video accuracy.",
+    "Guided observations are saved Meta perception replayed and re-grounded under the changed specification, not fresh inference.",
+    "Original perception cost remains explicit; zero incremental guided requests does not mean free perception.",
+    "Spark changed-contract verdicts use fresh calls; original-contract verdicts are saved references.",
+    "Hashes check local consistency, not trusted review timing or independent model identity."
+  ],
+  "natural_execution_failure_verified": false,
+  "new_independent_source_count": 0,
+  "physical_action_execution_verified": false,
+  "plan_hash": "47ae9677cfba6851dbd1fd0580d5898dadabdd4d4a4441af860d09d0e93e430a",
+  "schema_version": "1.0",
+  "status": "completed"
+}

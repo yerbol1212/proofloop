@@ -9,6 +9,7 @@ import unittest
 
 from proofloop.server import create_server, MAX_CONTROL_BYTES, MAX_JSON_BYTES, MAX_TASK_BYTES
 from proofloop.core import ValidationError
+from proofloop.research_lab import ResearchLab
 
 
 class FakeEngine:
@@ -73,7 +74,7 @@ class ServerTests(unittest.TestCase):
         self.media = self.root / "private-frame.jpg"
         self.media.write_bytes(b"authored-test-jpeg")
         self.engine = FakeEngine(self.media)
-        self.server = create_server(self.engine, web_root=self.web)
+        self.server = create_server(self.engine, web_root=self.web, research_lab=ResearchLab(self.root))
         self.thread = threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": 0.01}, daemon=True)
         self.thread.start()
         self.host = f"127.0.0.1:{self.server.server_address[1]}"
@@ -123,6 +124,20 @@ class ServerTests(unittest.TestCase):
         self.assertNotIn("capture_token", json.dumps(body))
         self.assertEqual(403, self.request("GET", "/api/recovery", headers={"Origin": "https://other.example"})[0])
         self.assertEqual(404, self.request("POST", "/api/recovery", {}, self.mutation_headers())[0])
+
+    def test_research_lab_is_read_only_scoped_and_does_not_expose_private_paths(self):
+        status, headers, body = self.request("GET", "/api/research-lab")
+        self.assertEqual(200, status)
+        self.assertEqual("no-store", headers["Cache-Control"])
+        self.assertTrue(body["read_only"])
+        self.assertEqual(0, body["paid_requests_on_open"])
+        self.assertFalse(body["contract_stress"]["available"])
+        self.assertNotIn(str(self.root), json.dumps(body))
+        self.assertNotIn("csrf_token", body)
+        self.assertEqual(403, self.request("GET", "/api/research-lab", headers={"Origin": "https://other.example"})[0])
+        self.assertEqual(404, self.request("POST", "/api/research-lab", {}, self.mutation_headers())[0])
+        self.assertEqual(404, self.request("GET", "/api/research-lab/../../.env.local")[0])
+        self.assertEqual([], self.engine.calls)
         self.assertEqual(b"", self.request("HEAD", "/api/recovery")[2])
         self.assertEqual([], self.engine.calls)
 
