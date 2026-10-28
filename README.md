@@ -13,6 +13,8 @@ This is the event-built feasibility implementation for the Meta Global AI Develo
 - **Placement preparation checkpoint:** reviewed requirements, current PASS and replayed evidence gate a separately recorded operator continuation declaration. That declaration reports intent; it does not verify dispensing or a complete procedure.
 - **Inspectable evidence:** the read-only Video lab preserves source attribution, actual model comparisons and fixed future-evidence trajectories. Linked recovery receipts replay task, plan, parent, media and mask consistency without asserting executed motion.
 - **Grounded explanations and failure review:** each explanation binds the reviewed requirement, supported observation and permitted next step without inventing a physical cause. Video lab shows coverage, accuracy among decided cases, unsupported acceptance and selectable model disagreements with explicit denominators.
+- **Durable inspection service:** asynchronous SQLite jobs bind the exact reviewed task, protocol, session and revision; duplicate requests reuse the job, expired workers cannot retry inference, and verified historical results remain separate from current evidence. A persistent inspection-request allowance survives clients and restarts. See [runtime boundaries](docs/DURABLE-INSPECTIONS.md).
+- **Read-only MCP bridge:** four versioned tools expose capabilities, one known job, verified events and request accounting to local agent clients. It never submits images or authorizes physical action. See [MCP setup and scope](docs/MCP.md) and the [Meta infrastructure research](docs/INFRASTRUCTURE-REVIEW-20261028.md).
 
 Muse Spark drafts custom checks and supplies task-independent object anchors in guided mode; actual SAM 3.1 calls refine those anchors. Spark assigns semantic identity. A prompted mask does not independently prove that identity, and unsupported results remain UNKNOWN. The runtime uses Meta models; Codex assists development.
 
@@ -29,7 +31,7 @@ In the fixed follow-up replay, guided resolved one of two trajectories with late
 
 These are scoped image-zone checks on normal prerecorded demonstrations. A later PASS does not prove that a robot followed ProofLoop's request. The [owned phone recording](artifacts/feasibility/phone-session-20261028.md) produced PASS → FAIL → UNKNOWN → PASS, but was recorded before its planner proposal. Fresh physical operation following the displayed request, broader procedure verification and practical user demand remain unvalidated.
 
-**626/626 Python 3.12 tests passed, and the strict production frontend build passed.** Publication CI is checked separately after pushing the milestone. These software checks do not establish perception accuracy.
+**774/774 Python 3.12 tests passed; Python 3.9 passed with one expected optional-parser skip. The strict production frontend build passed.** Publication CI is checked separately after pushing the milestone. These software checks do not establish perception accuracy.
 
 See the [review and remaining work](docs/AI-SYSTEMS-REVIEW-20261028.md), [feasibility evidence](docs/FEASIBILITY.md), [three-minute demo script](docs/DEMO-SCRIPT.md), [source credits](docs/ONLINE-VIDEO-SOURCES.md) and [event contributions](CONTRIBUTIONS.md). Software tests exercise control behavior separately from model-quality measurements.
 

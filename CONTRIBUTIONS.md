@@ -53,7 +53,12 @@ Project development began on 26 October 2026 after the hackathon kickoff. The re
 - Truthfully authored candidate-box preparation, pinned video/card/frame replay, original-source/crop inspection and separate completion, positive-retention and unsupported-acceptance metrics. These tests do not establish automatic locator performance.
 - A separately frozen crop-only confirmation after the observed distractor error: both positive targets retained support and the false-support battery was withheld. It is an exposed development retest, outside live placement acceptance; original results remain unchanged.
 
-This list describes implementation scope. The full Python 3.12 suite passed **626/626 tests**, and the strict production frontend build passed. Publication CI remains a separate check. Offline tests exercise contracts, acquisition budgets, source ordering, replay, task portability, preparation gates and private record handling. Live and physical validation status is recorded separately in [feasibility status](docs/FEASIBILITY.md). Passing software tests does not establish model accuracy or physical closed-loop recovery.
+- Durable asynchronous inspection jobs with exact task/protocol/session/revision binding, canonical idempotency, atomic claims, heartbeat leases, stale-worker fencing, terminal crash interruption and no automatic inference replay.
+- Persistent per-operation and shared inspection-request admission, numeric reported-token accounting, explicit uncertain attempts and atomic private artifact publication. A request-count allowance is not a provider dollar cap.
+- Versioned allowlisted verification results, redacted HTTP job/event/accounting APIs, same-tab browser polling recovery and a separate read-only stdio MCP adapter with four tools. No robot executor or physical-action authority is exposed.
+- Authored reliability tests for concurrent clients, process/transport interruption, stale bindings, persistence failures, tampering, incomplete response usage and real local HTTP/MCP transport. Browser reload/restart QA uses authored images and injected inference; it adds no real-model accuracy evidence.
+
+This list describes implementation scope. The full Python 3.12 suite passed **774/774 tests**, Python 3.9 passed with one expected optional-parser skip, and the strict production frontend build passed. Publication CI remains a separate check. Offline tests exercise contracts, acquisition budgets, source ordering, replay, task portability, preparation gates and private record handling. Live and physical validation status is recorded separately in [feasibility status](docs/FEASIBILITY.md). Passing software tests does not establish model accuracy or physical closed-loop recovery.
 
 ## External components
 

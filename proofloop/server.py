@@ -15,9 +15,11 @@ import secrets
 import socket
 import sys
 from typing import Any
-from urllib.parse import unquote, urlsplit
+from urllib.parse import parse_qs, unquote, urlsplit
 
 from .core import ValidationError
+from .jobs import JobConflict, JobIntegrityError, JobNotFound, JobValidationError
+from .verification_policy import describe_capabilities
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -122,6 +124,15 @@ def _reject_json_constant(value: str) -> None:
     raise ValueError("Non-finite JSON number")
 
 
+def _unique_json_object(pairs):
+    result = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError("Duplicate JSON field")
+        result[key] = value
+    return result
+
+
 class ProofLoopServer(ThreadingHTTPServer):
     daemon_threads = True
     block_on_close = False
@@ -134,7 +145,8 @@ class ProofLoopServer(ThreadingHTTPServer):
 
 def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                   web_root: Path = DEFAULT_WEB_ROOT, *, video_lab: Any = None,
-                  research_lab: Any = None) -> ThreadingHTTPServer:
+                  research_lab: Any = None, job_service: Any = None,
+                  attempt_journal: Any = None) -> ThreadingHTTPServer:
     """Create, without starting, a server that binds only the IPv4 loopback.
 
     ``engine`` is intentionally injectable so transport tests require no model
@@ -236,7 +248,8 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 body = self.rfile.read(length)
                 if len(body) != length:
                     raise _RequestError(400, "invalid_body", "The JSON request was incomplete.")
-                value = json.loads(body.decode("utf-8"), parse_constant=_reject_json_constant)
+                value = json.loads(body.decode("utf-8"), parse_constant=_reject_json_constant,
+                                   object_pairs_hook=_unique_json_object)
             except (UnicodeError, ValueError):
                 raise _RequestError(400, "invalid_json", "Provide a valid JSON object.")
             except (socket.timeout, TimeoutError):
@@ -288,7 +301,26 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
         def _get(self, *, head: bool = False) -> None:
             self._boundary()
             path = self._path()
-            if path == "/api/health":
+            job_match = re.fullmatch(r"/api/v1/jobs/([0-9a-f]{32})(/events)?", path)
+            if path == "/api/v1/capabilities":
+                self._json(200, job_service.capabilities() if job_service is not None else
+                           {**describe_capabilities(), "enabled": False}, head=head)
+            elif path == "/api/v1/accounting":
+                if attempt_journal is None:
+                    raise _RequestError(503, "service_unavailable", "Persistent request accounting is unavailable.")
+                self._json(200, attempt_journal.summary(), head=head)
+            elif job_match:
+                if job_service is None:
+                    raise _RequestError(503, "service_unavailable", "The durable inspection service is unavailable.")
+                if job_match[2]:
+                    query = parse_qs(urlsplit(self.path).query, keep_blank_values=True)
+                    values = query.get("after_sequence", ["0"])
+                    if set(query) - {"after_sequence"} or len(values) != 1 or not re.fullmatch(r"[0-9]{1,9}", values[0]):
+                        raise _RequestError(400, "invalid_request", "Use a nonnegative event sequence.")
+                    self._json(200, {"events": job_service.events(job_match[1], after_sequence=int(values[0]))}, head=head)
+                else:
+                    self._json(200, {"job": job_service.get(job_match[1])}, head=head)
+            elif path == "/api/health":
                 self._json(200, {"ok": True}, head=head)
             elif path in ("/api/state", "/api/config"):
                 self._json(200, self._snapshot(engine.snapshot()), head=head)
@@ -313,6 +345,24 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
         def _post(self) -> None:
             self._boundary(mutation=True)
             path = self._path()
+            cancel_match = re.fullmatch(r"/api/v1/jobs/([0-9a-f]{32})/cancel", path)
+            if path == "/api/v1/inspections" or cancel_match:
+                if job_service is None:
+                    raise _RequestError(503, "service_unavailable", "The durable inspection service is unavailable.")
+                payload = self._read_json(MAX_JSON_BYTES if not cancel_match else MAX_CONTROL_BYTES)
+                if cancel_match:
+                    if payload:
+                        raise _RequestError(400, "invalid_request", "Cancellation does not accept extra fields.")
+                    self._json(200, {"job": job_service.cancel(cancel_match[1])})
+                else:
+                    if set(payload) != {"idempotency_key", "binding", "inspection"}:
+                        raise _RequestError(400, "invalid_request", "Supply an idempotency key, exact binding and inspection.")
+                    result = job_service.submit_inspection({key: payload[key] for key in ("binding", "inspection")},
+                                                          idempotency_key=payload["idempotency_key"])
+                    self._json(202, {"job": result})
+                return
+            if path == "/api/inspect" and job_service is not None:
+                raise _RequestError(409, "durable_inspection_required", "Refresh ProofLoop to submit through the durable inspection service.")
             methods = {"/api/repair": "begin_repair", "/api/new": "new_inspection", "/api/inspect": "inspect_pair",
                        "/api/task/draft": "draft_task", "/api/task/activate": "activate_task",
                        "/api/workflow/check": "check_workflow", "/api/workflow/continue": "continue_workflow"}
@@ -331,6 +381,14 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 action()
             except _RequestError as exc:
                 self._error(exc.status, exc.code, exc.message)
+            except JobNotFound:
+                self._error(404, "not_found", "This inspection job is unavailable.")
+            except JobConflict:
+                self._error(409, "job_conflict", "This request conflicts with an existing job or its current state.")
+            except JobValidationError:
+                self._error(400, "invalid_request", "Check the job binding and inspection request.")
+            except JobIntegrityError:
+                self._error(409, "integrity_error", "This job could not pass its integrity checks.")
             except ValueError as exc:
                 try:
                     busy = bool(engine.snapshot().get("busy", False))
@@ -373,28 +431,42 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Open ProofLoop's local interactive workbench")
     parser.add_argument("--port", type=int, default=8790)
     parser.add_argument("--seed", type=Path, help="Optional local phone-session report; no report data is published")
+    parser.add_argument("--request-limit", type=int, default=120,
+                        help="Persistent inspection request allowance; fixed when the local journal is created (default 120)")
     args = parser.parse_args(argv)
     if not (DEFAULT_WEB_ROOT / "index.html").is_file():
         print("Frontend is not built. From web/, run npm install and npm run build, then start this server again.", file=sys.stderr)
         return 2
     from .interactive import InteractiveEngine
+    from .inference_journal import AttemptJournal, JournaledMetaClient
+    from .job_service import InspectionJobService
 
     seed = args.seed if args.seed is not None else _default_seed(ROOT)
     if seed is not None and not seed.is_absolute():
         seed = ROOT / seed
     try:
         engine = InteractiveEngine(root=ROOT, seed_report=seed)
-        server = create_server(engine, port=args.port)
+        journal = AttemptJournal(ROOT / "artifacts/local/job-runtime/attempts.sqlite3", request_limit=args.request_limit)
+
+        def inspect(inspection, binding, job_id, guard):
+            def factory(**kwargs):
+                return JournaledMetaClient.from_env(journal=journal, operation_id=job_id, guard=guard, **kwargs)
+            return engine.inspect_pair(inspection, expected_binding=binding, runtime_client_factory=factory)
+
+        jobs = InspectionJobService(engine, inspect_callback=inspect)
+        server = create_server(engine, port=args.port, job_service=jobs, attempt_journal=journal)
     except (OSError, ValueError):
         print("Could not start the local ProofLoop server. Check the local report and choose an available port.", file=sys.stderr)
         return 2
     print(f"ProofLoop is ready at {server.base_url}", flush=True)
+    jobs.start()
     try:
         server.serve_forever(poll_interval=0.2)
     except KeyboardInterrupt:
         pass
     finally:
         server.server_close()
+        jobs.close()
     return 0
 
 

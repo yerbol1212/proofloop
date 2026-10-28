@@ -450,11 +450,24 @@ class InteractiveEngine:
             return self.snapshot()
 
     def _write(self, path: Path, value: Any) -> None:
-        # All writes are private; no raw source or model response is public.
-        descriptor = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o600)
-        with os.fdopen(descriptor, "w", encoding="utf-8") as stream:
-            json.dump(value, stream, indent=2, allow_nan=False)
-            stream.write("\n")
+        # Atomic replacement keeps a failed serialization or interrupted write
+        # from destroying the last complete private evidence/state artifact.
+        data = (json.dumps(value, indent=2, allow_nan=False) + "\n").encode("utf-8")
+        temporary = path.with_name("." + path.name + "." + secrets.token_hex(8) + ".tmp")
+        try:
+            descriptor = os.open(temporary, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
+            with os.fdopen(descriptor, "wb") as stream:
+                stream.write(data)
+                stream.flush()
+                os.fsync(stream.fileno())
+            os.replace(temporary, path)
+            directory = os.open(path.parent, os.O_RDONLY)
+            try:
+                os.fsync(directory)
+            finally:
+                os.close(directory)
+        finally:
+            temporary.unlink(missing_ok=True)
 
     def _persist(self) -> None:
         self._write(self._directory / "state.json", self._state)
@@ -954,8 +967,12 @@ class InteractiveEngine:
             basis = "operator_declared_freshness_and_spacing; logical_order_only_not_measured_capture_time"
         return source, deepcopy(regions), decoded, hashes, times, basis
 
-    def inspect_pair(self, payload: dict[str, Any]) -> dict[str, Any]:
+    def inspect_pair(self, payload: dict[str, Any], *, expected_binding=None,
+                     runtime_client_factory=None) -> dict[str, Any]:
         with self._lock:
+            if expected_binding is not None:
+                from .verification_policy import validate_binding
+                validate_binding(expected_binding, self.snapshot())
             if self._state["busy"]:
                 raise ValidationError("An inspection is already running")
             plan = self._current_acquisition(self._state)
@@ -1021,7 +1038,8 @@ class InteractiveEngine:
         try:
             if self._client_factory is None:
                 load_env_file(self.root / ".env.local")
-                client = MetaClient.from_env(max_requests=request_budget, retries=0, timeout=45 if mode == "guided" else 25)
+                factory = runtime_client_factory or MetaClient.from_env
+                client = factory(max_requests=request_budget, retries=0, timeout=45 if mode == "guided" else 25)
             else:
                 client = self._client_factory()
             if client.max_requests != request_budget or client.retries != 0 or client.ledger:

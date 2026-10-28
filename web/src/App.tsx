@@ -7,6 +7,7 @@ import { RecoveryPanel } from './RecoveryPanel'
 import { AcquisitionPanel } from './AcquisitionPanel'
 import { WorkflowPanel } from './WorkflowPanel'
 import { DiagnosticPanel } from './DiagnosticPanel'
+import { awaitInspection, pendingInspection, rememberInspection } from './inspectionJobs'
 import type {
   EvidenceImage,
   InspectPayload,
@@ -1309,7 +1310,8 @@ export function App() {
     if (
       !live.current ||
       sequence < appliedSequence.current ||
-      (currentRef.current && next.revision < currentRef.current.revision)
+      (currentRef.current && next.session_id === currentRef.current.session_id &&
+        next.revision < currentRef.current.revision)
     )
       return
     appliedSequence.current = sequence
@@ -1342,6 +1344,22 @@ export function App() {
       window.clearInterval(timer)
     }
   }, [refresh])
+  useEffect(() => {
+    const job = pendingInspection()
+    if (!job) return
+    const controller = new AbortController()
+    setPending(true)
+    void awaitInspection(job, controller.signal).catch((error: unknown) => {
+      if (!controller.signal.aborted && live.current)
+        setActionError(error instanceof Error ? error.message : 'The inspection status is unavailable.')
+    }).finally(() => {
+      if (!controller.signal.aborted && live.current) {
+        setPending(false)
+        void refresh()
+      }
+    })
+    return () => controller.abort()
+  }, [refresh])
   async function action(
     path: string,
     payload?: InspectPayload | Record<string, unknown>,
@@ -1351,23 +1369,41 @@ export function App() {
     setPending(true)
     setActionError(null)
     try {
-      const response = await fetch(path, {
+      const current = currentRef.current
+      const inspection = path === '/api/inspect'
+      if (inspection && !current?.active_task?.reviewed)
+        throw new Error('Review and activate the exact task in Task before submitting a bound inspection.')
+      const body = inspection ? {
+        idempotency_key: crypto.randomUUID(),
+        binding: { session_id: current!.session_id, revision: current!.revision,
+          task_hash: current!.active_task!.task_hash, protocol_hash: current!.active_task!.protocol_hash },
+        inspection: payload,
+      } : payload ?? {}
+      const response = await fetch(inspection ? '/api/v1/inspections' : path, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-ProofLoop-Token': csrfRef.current,
         },
-        body: JSON.stringify(payload ?? {}),
+        body: JSON.stringify(body),
       })
       const result = (await response.json()) as Snapshot & {
         error?: { message?: string }
+        job?: { id: string }
       }
       if (!response.ok)
         throw new Error(
           result.error?.message ||
             'The request could not complete. Retry with a new inspection.',
         )
-      applyState(result, ++requestSequence.current)
+      if (inspection) {
+        if (!result.job?.id) throw new Error('The server did not return an inspection job.')
+        rememberInspection(result.job.id)
+        await awaitInspection(result.job.id)
+        // A persisted job is a historical record. Only the authoritative state
+        // endpoint may update the current task and its workflow controls.
+        await refresh()
+      } else applyState(result, ++requestSequence.current)
       setTab(destination)
       return true
     } catch (caught) {
