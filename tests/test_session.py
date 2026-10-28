@@ -214,6 +214,65 @@ class SessionContractTests(unittest.TestCase):
         self.assertIs(True, envelope["approval"]["approved"])
         self.assertEqual("local_operator", envelope["approval"]["origin"])
         self.assertIs(True, envelope["approval"]["unique_targets_confirmed"])
+        self.assertIs(True, envelope["approval"]["human_reviewed_exact_contract"])
+
+    def test_assistant_review_records_authority_without_claiming_exact_human_review(self):
+        value = contract()
+        reference = "Direct user instruction: check the uploaded clip and proceed with next steps."
+        envelope = approve_contract(value, contract_hash(value), confirm_unique_targets=True,
+                                    review_origin="assistant_under_user_authorization",
+                                    authorization_reference=reference)
+        report = evaluate_session(envelope, results_for(), inference_origin="authored_test_fixture")
+        self.assertEqual({"origin": "assistant_under_user_authorization",
+                          "human_reviewed_exact_contract": False,
+                          "authorization_reference": reference}, report["approval_provenance"])
+        self.assertTrue(report["recorded_observation_loop_supported"])
+
+    def test_assistant_review_requires_explicit_authorization_reference(self):
+        value = contract()
+        for reference in (None, "", " \n ", 123, "x" * 2001):
+            with self.subTest(reference_type=type(reference).__name__), self.assertRaises(ValueError):
+                approve_contract(value, contract_hash(value), confirm_unique_targets=True,
+                                 review_origin="assistant_under_user_authorization",
+                                 authorization_reference=reference)
+
+    def test_contradictory_or_missing_review_provenance_is_rejected(self):
+        value = contract()
+        assistant = approve_contract(value, contract_hash(value), confirm_unique_targets=True,
+                                     review_origin="assistant_under_user_authorization",
+                                     authorization_reference="Direct user instruction to proceed")
+        malformed = []
+        for original in (approved(), assistant):
+            changed = deepcopy(original)
+            changed["approval"]["human_reviewed_exact_contract"] = not changed["approval"]["human_reviewed_exact_contract"]
+            malformed.append(changed)
+        for field in ("authorization_reference", "human_reviewed_exact_contract"):
+            changed = deepcopy(assistant)
+            del changed["approval"][field]
+            malformed.append(changed)
+        changed = deepcopy(assistant)
+        changed["approval"]["origin"] = "unspecified_reviewer"
+        malformed.append(changed)
+        for index, changed in enumerate(malformed):
+            with self.subTest(case=index), self.assertRaises(ValueError):
+                evaluate_session(changed, {})
+
+    def test_assistant_review_cannot_authorize_a_different_contract(self):
+        value = contract()
+        envelope = approve_contract(value, contract_hash(value), confirm_unique_targets=True,
+                                    review_origin="assistant_under_user_authorization",
+                                    authorization_reference="Direct user instruction to proceed")
+        envelope["contract"]["regions"]["left"][0] = 0.08
+        with self.assertRaises(ValueError):
+            evaluate_session(envelope, results_for())
+
+    def test_report_only_exposes_whitelisted_approval_provenance(self):
+        envelope = approved()
+        envelope["approval"]["private_notes"] = "private operator notes"
+        report = evaluate_session(envelope, results_for())
+        self.assertEqual({"origin": "local_operator", "human_reviewed_exact_contract": True},
+                         report["approval_provenance"])
+        self.assertNotIn("private operator notes", json.dumps(report))
 
     def test_unapproved_envelope_is_rejected(self):
         envelope = approved()

@@ -6,11 +6,11 @@ ProofLoop turns a confirmed procedure into inspectable checks, evaluates observa
 
 ## Current status
 
-This repository is the initial feasibility implementation for the Meta Global AI Developer Hackathon. Real Spark compilation and SAM grounding passed initial checks on generated tabletop images on 26 October 2026. The [measured report](artifacts/feasibility/live-meta-20261026.md) records results and limits. Offline diagnostic cases are explicitly synthetic oracle observations. Camera performance and the complete physical correction loop remain unvalidated.
+This repository is the feasibility implementation for the Meta Global AI Developer Hackathon. On 28 October 2026, one owned phone recording produced **correct PASS → misplaced fork FAIL → covered UNKNOWN → fresh corrected PASS**, using a real Spark-compiled placement protocol and 16 SAM image calls. The [phone report](artifacts/feasibility/phone-session-20261028.md) records evidence and limits. This is selected-frame evaluation of one recorded clip; the person did not follow a planner proposal generated afterward. Interactive correction and broader camera reliability remain unvalidated.
 
 See [feasibility status](docs/FEASIBILITY.md), [capture checklist](docs/CAPTURE.md) and [contributions](CONTRIBUTIONS.md).
 
-The next build slice is ready: timestamped phone-video extraction and an approved recorded correction session. The [session guide](docs/SESSIONS.md) connects selected frames to location checks, evidence invalidation, a hypothetical repair plan and fresh verification. Decoder integration passed on generated videos; the actual phone run remains pending your footage. The current [recording preset](examples/cutlery/README.md) uses one fork in LEFT and one spoon in RIGHT, with the fork moved and corrected during the clip.
+The [session guide](docs/SESSIONS.md) connects timestamped original frames to placement checks, evidence invalidation, a hypothetical repair plan and fresh verification. The first recorded phone run passed this bounded observation loop. The current [recording preset](examples/cutlery/README.md) uses one fork in LEFT and one spoon in RIGHT, with the fork moved and corrected during the clip. Earlier [generated-image tests](artifacts/feasibility/live-meta-20261026.md) and synthetic oracle diagnostics retain their separate provenance.
 
 ## Run the offline checks
 

@@ -27,6 +27,7 @@ STAGES = ("initial_correct", "wrong_region", "occluded", "corrected")
 ORIGINS = ("owned_phone", "synthetic_test_fixture", "synthetic_fixture", "imagegen_synthetic")
 MAX_REQUESTS = 16
 MAX_JSON_BYTES = 1024 * 1024
+REVIEW_ORIGINS = ("local_operator", "assistant_under_user_authorization")
 
 
 def _canonical(value: Any) -> bytes:
@@ -124,12 +125,34 @@ def session_contract(capture_manifest: dict[str, Any], protocol: Protocol, regio
     return contract
 
 
-def approve_contract(contract: dict[str, Any], expected_hash: str, *, confirm_unique_targets: bool) -> dict[str, Any]:
+def _review_provenance(approval: Mapping[str, Any]) -> dict[str, Any]:
+    """Validate declared reviewer identity without implying a human signed an assistant review."""
+    origin = approval.get("origin")
+    if origin not in REVIEW_ORIGINS:
+        raise ValidationError("Use an explicit supported contract reviewer origin")
+    human_reviewed = origin == "local_operator"
+    if approval.get("human_reviewed_exact_contract") is not human_reviewed:
+        raise ValidationError("Exact-contract human review must agree with the declared reviewer origin")
+    provenance = {"origin": origin, "human_reviewed_exact_contract": human_reviewed}
+    reference = approval.get("authorization_reference")
+    if origin == "assistant_under_user_authorization":
+        if not isinstance(reference, str) or not reference.strip() or len(reference) > 2000:
+            raise ValidationError("Assistant review requires a nonempty direct user instruction reference")
+        provenance["authorization_reference"] = reference
+    return provenance
+
+
+def approve_contract(contract: dict[str, Any], expected_hash: str, *, confirm_unique_targets: bool,
+                     review_origin: str = "local_operator",
+                     authorization_reference: str | None = None) -> dict[str, Any]:
     _validate_contract(contract)
     if confirm_unique_targets is not True or expected_hash != contract_hash(contract):
         raise ValidationError("Review the exact contract hash and explicitly confirm unique target tools")
+    provenance = _review_provenance({"origin": review_origin,
+                                    "human_reviewed_exact_contract": review_origin == "local_operator",
+                                    "authorization_reference": authorization_reference})
     return {"contract": deepcopy(contract), "contract_hash": expected_hash,
-            "approval": {"approved": True, "origin": "local_operator", "unique_targets_confirmed": True}}
+            "approval": {"approved": True, "unique_targets_confirmed": True, **provenance}}
 
 
 def _approved(envelope: Mapping[str, Any]) -> Protocol:
@@ -138,9 +161,10 @@ def _approved(envelope: Mapping[str, Any]) -> Protocol:
     protocol = _validate_contract(envelope["contract"])
     approval = envelope["approval"]
     if (not isinstance(approval, Mapping) or approval.get("approved") is not True
-            or approval.get("origin") != "local_operator" or approval.get("unique_targets_confirmed") is not True
+            or approval.get("unique_targets_confirmed") is not True
             or envelope["contract_hash"] != contract_hash(envelope["contract"])):
         raise ValidationError("Session approval is missing or stale")
+    _review_provenance(approval)
     return protocol
 
 
@@ -243,11 +267,13 @@ def evaluate_session(envelope: Mapping[str, Any], results: Mapping[str, Any], *,
     gates["invalidation_snapshots_unknown"] = all(item["status"] == "unknown" for item in trace if item["event"] == "invalidation")
     return {"schema_version": "1.0", "experiment": "recorded_placement_correction_session",
             "contract_hash": envelope["contract_hash"], "protocol_hash": protocol.content_hash,
+            "approval_provenance": _review_provenance(envelope["approval"]),
             "inference_origin": inference_origin, "evidence_origin": capture["evidence_origin"],
             "stage_statuses": stage_statuses, "gates": gates, "trace": trace,
             "recorded_observation_loop_supported": all(gates.values()),
             "physical_action_execution_verified": False,
-            "limits": ["Source ownership, unique targets, calibration and action boundaries are human declarations.",
+            "limits": ["Source ownership, unique targets, calibration and action boundaries are declared assumptions; reviewer provenance is explicit.",
+                       "Local approval records an assertion, not independent proof that a person or assistant performed the stated review.",
                        "Location results depend on the approved unique-target scene contract; no exact count or absence is proved.",
                        "This evaluates selected frames of a recorded clip, not continuous tracking or an interactive repair experiment.",
                        "A plan is hypothetical; its predicted effects never create real observations.",
@@ -363,10 +389,12 @@ def main(argv: list[str] | None = None) -> int:
     draft.add_argument("--regions", type=Path, required=True)
     draft.add_argument("--concepts", type=Path, required=True)
     draft.add_argument("--output", type=Path, required=True)
-    approve = commands.add_parser("approve", help="Record the local operator's review of the exact contract")
+    approve = commands.add_parser("approve", help="Record the declared reviewer's review of the exact contract")
     approve.add_argument("--draft", type=Path, required=True)
     approve.add_argument("--hash", required=True)
     approve.add_argument("--confirm-unique-targets", action="store_true")
+    approve.add_argument("--review-origin", choices=REVIEW_ORIGINS, default="local_operator")
+    approve.add_argument("--authorization-reference", help="Direct user instruction reference required for assistant review")
     approve.add_argument("--output", type=Path, required=True)
     run = commands.add_parser("run", help="Evaluate an approved recorded clip with real SAM image calls")
     run.add_argument("--approval", type=Path, required=True)
@@ -386,7 +414,8 @@ def main(argv: list[str] | None = None) -> int:
             print(f"Unapproved contract hash: {value['contract_hash']}")
         elif args.command == "approve":
             value = _read(args.draft)
-            envelope = approve_contract(value["contract"], args.hash, confirm_unique_targets=args.confirm_unique_targets)
+            envelope = approve_contract(value["contract"], args.hash, confirm_unique_targets=args.confirm_unique_targets,
+                                        review_origin=args.review_origin, authorization_reference=args.authorization_reference)
             verify_capture_files(envelope)
             _save(destination, envelope)
             print("Saved approval of the exact protocol, calibration, concepts, unique targets and source frames.")

@@ -8,7 +8,7 @@ Start with the [phone recording checklist](CAPTURE.md). One continuous clip, at 
 
 1. Preflight and extract the clip with `proofloop.capture`. Inspect the displayed JPEGs and adjust selection if hands, movement or a shifted camera invalidate a checkpoint.
 2. Draft location requirements with Spark. Confirm that there is one visually distinct target instance of each supplied class. This explicit scene contract supports placement checks; it is not a count inferred by the model.
-3. Select normalized LEFT/RIGHT rectangles on the displayed, autorotated images. Supply the two object-to-SAM concept mappings. The generated-scene calibration is not reused automatically.
+3. Select normalized LEFT/RIGHT rectangles on the displayed, autorotated images. Supply the two object-to-SAM concept mappings. Region IDs follow the task's written labels; a rotated recording can place those named regions above/below each other in image coordinates. The generated-scene calibration is not reused automatically.
 4. Review the complete session contract before approval. Its hash binds the protocol, rectangles, concepts, uniqueness flags, clip hash, stage windows, frame hashes and actual source timestamps. Any edit requires a new approval.
 5. Run at most 16 new SAM image calls, with no retries. Invalid approvals, changed files and invalid timelines stop before inference. A malformed returned source/model/decoder binding stops further calls immediately. The original source and frames are checked again before the report can support a completed loop.
 
@@ -56,12 +56,16 @@ Inspect the draft, including source frames, requirements, region boundaries and 
 
 These commands never silently approve a model draft. Local approval records an operator assertion; it is not cryptographic proof of ownership or a detector of forged media. Use new artifact paths for another run. The runner never overwrites evidence or silently reuses prior responses.
 
+If the user explicitly delegates the next processing steps, technical review can instead be recorded with `--review-origin assistant_under_user_authorization` and `--authorization-reference` containing the direct user instruction. That mode preserves the exact contract hash and records `human_reviewed_exact_contract: false`. Assistant-selected timestamps similarly use `ground_truth_origin: user_task_with_assistant_reviewed_timestamps` with explicit `annotation_review` authority and `human_reviewed_offsets: false`. These fields identify who performed the review; they never turn an assistant review into a human signoff.
+
+The capture manifest is immutable evidence of the extraction step. Its `extracted_pending_visual_review` status records that earlier moment; the separate, hash-bound session approval records the subsequent review without modifying the manifest.
+
 ## Interpreting results
 
 The report contains `stage_statuses`, `trace`, `gates`, reported usage, failures and provenance. `recorded_observation_loop_supported` means the selected recorded observations support the scripted pass → fail → unknown → fresh pass pattern under the approved contract. It does not mean an action was automatically recognized or executed. `physical_action_execution_verified` remains false.
 
 The planner's optimality is limited to its declared finite model: moving one object costs 1 and a subsequent inspection costs 0.25. Physical obstacles, collisions and robot motion are outside that model. Unknown locations request inspection before a move is planned.
 
-The [authored session diagnostic](../artifacts/feasibility/session-oracle-20261026.json) exercises this flow with synthetic SAM-shaped results and zero model requests. The [decoder experiment](../artifacts/feasibility/capture-decoder-20261026.md) uses actual FFmpeg on generated color patterns. Neither is a phone-camera model result. Real phone footage is the next evidence gate.
+The [authored session diagnostic](../artifacts/feasibility/session-oracle-20261026.json) exercises this flow with synthetic SAM-shaped results and zero model requests. The [decoder experiment](../artifacts/feasibility/capture-decoder-20261026.md) uses actual FFmpeg on generated color patterns. The separate [first phone experiment](../artifacts/feasibility/phone-session-20261028.md) supports the expected observation loop on one real recorded clip with actual Meta calls. Interactive correction and broader evaluation remain separate gates.
 
 Raw clips and extracted images stay in ignored `inputs/local/phone/`; approvals, model responses and traces stay in ignored `artifacts/local/`. Only separately reviewed public-safe summaries should be published.

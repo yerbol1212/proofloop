@@ -1,6 +1,6 @@
 # Feasibility status
 
-Updated: 27 October 2026, Asia/Almaty. The recorded live API and decoder experiments are dated 26 October in UTC.
+Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original experiment dates.
 
 ## Gates
 
@@ -9,19 +9,27 @@ Updated: 27 October 2026, Asia/Almaty. The recorded live API and decoder experim
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | 167 tests cover the core, compiler modes, grounding, accounting, capture and recorded-session contracts | Passed |
-| Official SAM codec | `meta-sam-parser==0.1.0` decoded actual live image masks; box-local raster coordinates mapped into image coordinates | Passed on generated inputs |
+| Local tests | 176 tests cover the core, compiler modes, grounding, accounting, capture, recorded sessions and explicit reviewer provenance | Passed |
+| Official SAM codec | Official parser independently re-decoded all 16 phone responses; 12 nonempty masks matched saved rasters and four covered responses were empty | Passed on phone inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
-| Positive placement contract | New explicit unique-target location mode compiled correctly with live Spark; wrong-region checks tested on authored observations | Passed software and draft gates; camera pending |
-| Phone-video importer | Actual FFmpeg/FFprobe: 4 synthetic cases, 26 extracted JPEGs; rotation, returned PTS and HD resizing checked | Passed decoder gate |
-| Recorded correction session | Approved contract binding, fresh stage-isolated observations, hypothetical move/inspect plan and failure handling tested with authored SAM-shaped results | Passed software integration; camera pending |
-| Available fork/spoon objects | Two real SAM calls found the intended classes/sides on one generated image; current capture preset uses fork LEFT and spoon RIGHT | Passed initial concept probe; actual cutlery pending |
-| Real SAM grounding and mask parsing | Eight scene calls; intended positive regions, wrong-region evidence and conservative occlusion behavior | Passed on generated inputs |
-| Physical correction and fresh verification | No owned camera recordings supplied yet | Pending media and live perception |
+| Positive placement contract | Live Spark fork-left/spoon-right protocol; stable positive location evidence supports wrong-region fail and corrected pass | Passed on one recorded clip |
+| Phone-video importer | Original 47.4-second phone clip; rotation handled and eight actual timestamped JPEGs extracted | Passed on phone input |
+| Recorded correction session | Frozen contract, three unknown invalidation snapshots, hypothetical move/inspect plan and fresh corrected-stage evidence | Passed selected-frame observation loop |
+| Available fork/spoon objects | 16 genuine SAM calls on actual cutlery frames; all four stage outcomes matched the scripted check | Passed initial phone case |
+| Real SAM grounding and mask parsing | Correct and wrong-region placement plus covered-scene abstention on actual phone frames | Passed initial phone case |
+| Physical correction and fresh verification | New post-correction frames pass; recorded before the planner proposal | Recorded observation supported; interactive loop pending |
 | Synthetic scene inputs | Four generated scenes with exact prompts, hashes, annotations and provenance | Used in live Meta calls; not physical evidence |
 | Public repository | [yerbol1212/proofloop](https://github.com/yerbol1212/proofloop), verified public; tested build milestones published | Created |
 
-## Initial measured results
+## First owned phone result
+
+The [28 October phone report](../artifacts/feasibility/phone-session-20261028.md) records one 47.4-second clip, eight selected original frames, one live Spark compilation and 16 live SAM image calls. The checker returned **pass → fail → unknown → pass**. The bounded planner proposed moving the fork from RIGHT to LEFT and inspecting it afterward. Its prediction never wrote measured facts or cleared the wrong-state result; fresh post-correction observations supplied the last pass.
+
+Technical timestamp selection, calibration and exact-contract review were performed by the assistant under the user's direct instruction to proceed. The report explicitly records that a person did not review the exact contract or selected offsets. Region names follow the handwritten paper labels: they correspond to upper/lower bands in the displayed portrait video. Calibration and the contract were frozen before SAM inference.
+
+The estimated cost for this round is $0.045654 at the published Standard rates. SAM median latency was 1.2425 seconds and Spark took 4.987 seconds. The report preserves the one-clip, declared-unique-target and selected-frame limits. It proves neither complete visibility nor exact counts; it is not an interactive repair or held-out accuracy result. Original media, extracted images, raw responses and private authorization text remain local.
+
+## Earlier measured results
 
 The synthetic oracle diagnostic contains 17 authored episodes and 24 stage assertions. All match expected checker outputs. The bounded planner assertion passes. These are authored software diagnostics, not model accuracy or physical benchmark scores. The raw [oracle report](../artifacts/feasibility/oracle-report.md) preserves provenance and per-case outcomes.
 

@@ -1,7 +1,8 @@
 """Private phone-video preflight and timestamped frame extraction.
 
 This module makes no inference calls. Stage labels, visibility, and ownership
-are human declarations; an unedited video is evidence, not automatic truth.
+are declared assumptions with explicit reviewer provenance; an unedited video
+is evidence, not automatic truth.
 """
 
 from __future__ import annotations
@@ -161,8 +162,21 @@ def validate_plan(plan: Mapping[str, Any], duration_seconds: float) -> list[dict
         raise CaptureError("Capture plan must use schema_version 1.0")
     if plan.get("evidence_origin") not in {"owned_phone", "synthetic_test_fixture"}:
         raise CaptureError("Declare owned_phone or synthetic_test_fixture provenance explicitly")
-    if plan.get("ground_truth_origin") != "human_declared_not_model_inferred":
-        raise CaptureError("Stage labels must be explicitly human declared, never inferred from the timeline")
+    annotation_origin = plan.get("ground_truth_origin")
+    if annotation_origin not in {"human_declared_not_model_inferred", "user_task_with_assistant_reviewed_timestamps"}:
+        raise CaptureError("Declare stage annotation provenance explicitly; timeline labels are not model ground truth")
+    if annotation_origin == "user_task_with_assistant_reviewed_timestamps":
+        review = plan.get("annotation_review")
+        if (not isinstance(review, Mapping) or set(review) != {
+                "review_origin", "authorization_reference", "human_reviewed_offsets"}
+                or review.get("review_origin") != "assistant_under_user_authorization"
+                or review.get("human_reviewed_offsets") is not False):
+            raise CaptureError("Assistant-reviewed timestamps need explicit authority and no claim of human offset review")
+        reference = review.get("authorization_reference")
+        if not isinstance(reference, str) or not reference.strip() or len(reference) > 2000:
+            raise CaptureError("Assistant timestamp review requires a nonempty direct user instruction reference")
+    elif "annotation_review" in plan:
+        raise CaptureError("Assistant annotation review must use its explicit annotation provenance mode")
     stages = plan.get("stages")
     if not isinstance(stages, list) or not 1 <= len(stages) <= MAX_STAGES:
         raise CaptureError("Plan must contain between 1 and 32 stages")
@@ -285,7 +299,7 @@ def _save(path: Path, value: Any) -> None:
 
 def extract_capture(source: Path, plan: Mapping[str, Any], output: Path, *,
                     confirmed_offsets: bool = False) -> dict[str, Any]:
-    """Extract original frames after a person confirms the plan against the clip.
+    """Extract original frames after the declared reviewer confirms the clip plan.
 
     No stage transition, ownership, visibility or successful correction is
     inferred here. Original decoded PTS, not requested seek times, are retained.
@@ -304,7 +318,7 @@ def extract_capture(source: Path, plan: Mapping[str, Any], output: Path, *,
         "schema_version": "1.0", "experiment": "phone_capture_preflight",
         "evidence_origin": plan["evidence_origin"],
         "origin_verification": "caller_declared_not_independently_verified",
-        "ground_truth_origin": "human_declared_not_model_inferred", "offsets_confirmed": True,
+        "ground_truth_origin": plan["ground_truth_origin"], "offsets_confirmed": True,
         "inference_performed": False, "physical_repair_verified": False,
         "source": dict(info, file=os.path.relpath(source, destination)),
         "extraction": {"decoder": "ffmpeg", "autorotate": True, "max_dimension": 1280,
@@ -312,12 +326,14 @@ def extract_capture(source: Path, plan: Mapping[str, Any], output: Path, *,
                        "no_frame_interpolation": True},
         "stages": [], "status": "incomplete",
         "limits": [
-            "Stage labels and boundaries are user annotations, not model observations.",
+            "Stage labels and boundaries are reviewer annotations, not model observations.",
             "PTS are media-relative and do not prove wall-clock capture time.",
             "Duplicate image hashes cannot establish distinct stable visual evidence.",
             "Region rectangles must be approved on the displayed extracted image before grounding.",
         ],
     }
+    if "annotation_review" in plan:
+        manifest["annotation_review"] = deepcopy(plan["annotation_review"])
     try:
         seen_timestamps: set[float] = set()
         for stage in stages:

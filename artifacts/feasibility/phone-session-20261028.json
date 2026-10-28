@@ -1,0 +1,781 @@
+{
+  "schema_version": "1.0",
+  "experiment": "recorded_phone_placement_correction_session",
+  "report_date": "2026-10-28",
+  "report_timezone": "Asia/Almaty",
+  "claim": "A genuine Spark location draft and sixteen genuine SAM image calls supported the scripted pass/fail/unknown/pass sequence on selected frames of one real phone recording.",
+  "inference_origin": "live_meta_api_on_recorded_frames",
+  "evidence_origin": "owned_phone",
+  "source_ownership_verification": "caller_declared_not_independently_verified",
+  "source": {
+    "sha256": "56eaa3ac4c5c79ba0290148a1b9e27ffd5c33e83a3058fa0989fe62e18b5f120",
+    "bytes": 47090369,
+    "duration_seconds": 47.4,
+    "encoded_width": 1920,
+    "encoded_height": 1080,
+    "display_rotation_degrees": 270,
+    "display_width": 1080,
+    "display_height": 1920,
+    "average_frame_rate": 29.99894518476847,
+    "timestamp_basis": "decoded video PTS normalized to first video frame; not wall-clock time"
+  },
+  "review": {
+    "origin": "assistant_under_user_authorization",
+    "human_reviewed_exact_contract": false,
+    "human_reviewed_offsets": false,
+    "approval_scope": "assistant reviewed recorded-session contract for this run; no assertion of exact human review"
+  },
+  "calibration": {
+    "coordinate_system": "normalized x_min, y_min, x_max, y_max on the autorotated displayed frame",
+    "regions": {
+      "left": [
+        0.0,
+        0.11,
+        1.0,
+        0.48
+      ],
+      "right": [
+        0.0,
+        0.495,
+        1.0,
+        0.9
+      ]
+    },
+    "labels": "Handwritten paper labels define region names; LEFT is upper and RIGHT lower in displayed portrait frames."
+  },
+  "protocol_hash": "bec50a01b7bc713c80894e786c32f8cc24176a54f9b591b4b55361cb918287aa",
+  "contract_hash": "5df0f1df659490c205e8e42ffc55b7a3d1bbec009b011973c5b17e5723dc3762",
+  "compiler": {
+    "model": "muse-spark-1.3",
+    "source_origin": "live_meta_api",
+    "draft_approved": false,
+    "requires_human_approval": true,
+    "draft_review_status": "awaiting_human_review",
+    "requirements": "The unique fork must be located in left and the unique spoon in right.",
+    "content_hash": "bec50a01b7bc713c80894e786c32f8cc24176a54f9b591b4b55361cb918287aa",
+    "protocol": {
+      "id": "proofloop-task",
+      "version": "draft-1",
+      "objects": [
+        "fork",
+        "spoon"
+      ],
+      "regions": [
+        "left",
+        "right"
+      ],
+      "checks": [
+        {
+          "id": "check-fork-left",
+          "kind": "location",
+          "object_id": "fork",
+          "region_id": "left",
+          "max_age_ms": 30000,
+          "min_confidence": 0.8,
+          "min_stable_samples": 2,
+          "unique_target": true
+        },
+        {
+          "id": "check-spoon-right",
+          "kind": "location",
+          "object_id": "spoon",
+          "region_id": "right",
+          "max_age_ms": 30000,
+          "min_confidence": 0.8,
+          "min_stable_samples": 2,
+          "unique_target": true
+        }
+      ],
+      "steps": [],
+      "checkpoints": []
+    },
+    "semantic_review_origin": "assistant_under_user_authorization",
+    "latency_seconds": 4.987,
+    "reported_usage": {
+      "input_tokens": 433,
+      "output_tokens": 1203,
+      "total_tokens": 1636
+    },
+    "output_reasoning_tokens": 1096
+  },
+  "stage_statuses": {
+    "initial_correct": "pass",
+    "wrong_region": "fail",
+    "occluded": "unknown",
+    "corrected": "pass"
+  },
+  "gates": {
+    "initial_correct_pass": true,
+    "wrong_region_fail": true,
+    "occluded_unknown": true,
+    "corrected_pass": true,
+    "invalidation_snapshots_unknown": true,
+    "source_files_still_match": true,
+    "no_inference_or_storage_failures": true
+  },
+  "trace": [
+    {
+      "event": "stage",
+      "stage_id": "initial_correct",
+      "source_timestamp_ms": 8000,
+      "attempt_id": 0,
+      "revision": 0,
+      "status": "pass",
+      "checks": [
+        {
+          "check_id": "check-fork-left",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region"
+        },
+        {
+          "check_id": "check-spoon-right",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "location",
+          "object_id": "fork",
+          "region_id": "left",
+          "value": "left",
+          "timestamp_ms": 3000,
+          "confidence": 0.9532163739204407,
+          "stable_samples": 2,
+          "fully_visible": false,
+          "absence_validated": false
+        },
+        {
+          "kind": "location",
+          "object_id": "spoon",
+          "region_id": "right",
+          "value": "right",
+          "timestamp_ms": 3000,
+          "confidence": 0.9532163739204407,
+          "stable_samples": 2,
+          "fully_visible": false,
+          "absence_validated": false
+        }
+      ]
+    },
+    {
+      "event": "invalidation",
+      "stage_id": "wrong_region",
+      "source_timestamp_ms": 8000,
+      "attempt_id": 0,
+      "revision": 1,
+      "status": "unknown",
+      "checks": [
+        {
+          "check_id": "check-fork-left",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision"
+        },
+        {
+          "check_id": "check-spoon-right",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision"
+        }
+      ]
+    },
+    {
+      "event": "stage",
+      "stage_id": "wrong_region",
+      "source_timestamp_ms": 21000,
+      "attempt_id": 0,
+      "revision": 1,
+      "status": "fail",
+      "checks": [
+        {
+          "check_id": "check-fork-left",
+          "status": "fail",
+          "reason": "Declared unique target is positively located in another approved region"
+        },
+        {
+          "check_id": "check-spoon-right",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "location",
+          "object_id": "fork",
+          "region_id": "left",
+          "value": "right",
+          "timestamp_ms": 16000,
+          "confidence": 0.9532163739204407,
+          "stable_samples": 2,
+          "fully_visible": false,
+          "absence_validated": false
+        },
+        {
+          "kind": "location",
+          "object_id": "spoon",
+          "region_id": "right",
+          "value": "right",
+          "timestamp_ms": 16000,
+          "confidence": 0.9569892287254333,
+          "stable_samples": 2,
+          "fully_visible": false,
+          "absence_validated": false
+        }
+      ]
+    },
+    {
+      "event": "repair_proposal",
+      "stage_id": "wrong_region",
+      "hypothetical": true,
+      "execution_verified": false,
+      "plan": {
+        "action_ids": [
+          "move-fork-right-to-left",
+          "inspect-fork"
+        ],
+        "total_cost": 1.25,
+        "states_expanded": 4,
+        "predicted_final_world": {
+          "fork": "left",
+          "spoon": "right"
+        },
+        "predicted_final_known": {
+          "spoon": "right",
+          "fork": "left"
+        },
+        "execution_requires_fresh_observation": true,
+        "optimality_scope": "minimum cost within the supplied finite deterministic action model"
+      },
+      "cost_units": "declared planning units, not seconds or dollars",
+      "action_model": "Declared move cost=1, subsequent inspection cost=0.25; physical obstacles not modeled"
+    },
+    {
+      "event": "invalidation",
+      "stage_id": "occluded",
+      "source_timestamp_ms": 21000,
+      "attempt_id": 0,
+      "revision": 2,
+      "status": "unknown",
+      "checks": [
+        {
+          "check_id": "check-fork-left",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision"
+        },
+        {
+          "check_id": "check-spoon-right",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision"
+        }
+      ]
+    },
+    {
+      "event": "stage",
+      "stage_id": "occluded",
+      "source_timestamp_ms": 34000,
+      "attempt_id": 0,
+      "revision": 2,
+      "status": "unknown",
+      "checks": [
+        {
+          "check_id": "check-fork-left",
+          "status": "unknown",
+          "reason": "Observation is unavailable or ambiguous"
+        },
+        {
+          "check_id": "check-spoon-right",
+          "status": "unknown",
+          "reason": "Observation is unavailable or ambiguous"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "location",
+          "object_id": "fork",
+          "region_id": "left",
+          "value": null,
+          "timestamp_ms": 31000,
+          "confidence": 0.0,
+          "stable_samples": 1,
+          "fully_visible": false,
+          "absence_validated": false
+        },
+        {
+          "kind": "location",
+          "object_id": "spoon",
+          "region_id": "right",
+          "value": null,
+          "timestamp_ms": 31000,
+          "confidence": 0.0,
+          "stable_samples": 1,
+          "fully_visible": false,
+          "absence_validated": false
+        }
+      ]
+    },
+    {
+      "event": "invalidation",
+      "stage_id": "corrected",
+      "source_timestamp_ms": 34000,
+      "attempt_id": 1,
+      "revision": 1,
+      "status": "unknown",
+      "checks": [
+        {
+          "check_id": "check-fork-left",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision"
+        },
+        {
+          "check_id": "check-spoon-right",
+          "status": "unknown",
+          "reason": "No current evidence for this attempt and revision"
+        }
+      ]
+    },
+    {
+      "event": "stage",
+      "stage_id": "corrected",
+      "source_timestamp_ms": 47000,
+      "attempt_id": 1,
+      "revision": 1,
+      "status": "pass",
+      "checks": [
+        {
+          "check_id": "check-fork-left",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region"
+        },
+        {
+          "check_id": "check-spoon-right",
+          "status": "pass",
+          "reason": "Declared unique target is positively located in its required region"
+        }
+      ],
+      "observations": [
+        {
+          "kind": "location",
+          "object_id": "fork",
+          "region_id": "left",
+          "value": "left",
+          "timestamp_ms": 42002,
+          "confidence": 0.9649122953414917,
+          "stable_samples": 2,
+          "fully_visible": false,
+          "absence_validated": false
+        },
+        {
+          "kind": "location",
+          "object_id": "spoon",
+          "region_id": "right",
+          "value": "right",
+          "timestamp_ms": 42002,
+          "confidence": 0.9569892287254333,
+          "stable_samples": 2,
+          "fully_visible": false,
+          "absence_validated": false
+        }
+      ]
+    }
+  ],
+  "frames": [
+    {
+      "stage_id": "initial_correct",
+      "source_timestamp_ms": 3000,
+      "source_timestamp_seconds": 3.0,
+      "sha256": "9c7387a887f36c197fa745888a1f7698765f91cfbb78c5be413f6d23aa38d844",
+      "width": 720,
+      "height": 1280,
+      "calls": [
+        {
+          "concept": "fork",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 23,
+                "y1": 446,
+                "x2": 667,
+                "y2": 520,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9569892287254333,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 26633
+            }
+          ],
+          "latency_seconds": 3.015
+        },
+        {
+          "concept": "spoon",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 28,
+                "y1": 659,
+                "x2": 671,
+                "y2": 799,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9569892287254333,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 37418
+            }
+          ],
+          "latency_seconds": 2.105
+        }
+      ]
+    },
+    {
+      "stage_id": "initial_correct",
+      "source_timestamp_ms": 5000,
+      "source_timestamp_seconds": 5.0,
+      "sha256": "9200b41b5c6feb63383bb14ceed7be20406e7d870a7ae5317dc801ab3b35b963",
+      "width": 720,
+      "height": 1280,
+      "calls": [
+        {
+          "concept": "fork",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 23,
+                "y1": 447,
+                "x2": 668,
+                "y2": 521,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9532163739204407,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 27018
+            }
+          ],
+          "latency_seconds": 1.703
+        },
+        {
+          "concept": "spoon",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 28,
+                "y1": 661,
+                "x2": 672,
+                "y2": 801,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9532163739204407,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 37609
+            }
+          ],
+          "latency_seconds": 1.375
+        }
+      ]
+    },
+    {
+      "stage_id": "wrong_region",
+      "source_timestamp_ms": 16000,
+      "source_timestamp_seconds": 16.0,
+      "sha256": "d1e9f03dcbac2fdba864f48e7ab28b313946985db30216e08849ab2cd2ff87f0",
+      "width": 720,
+      "height": 1280,
+      "calls": [
+        {
+          "concept": "fork",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 4,
+                "y1": 873,
+                "x2": 645,
+                "y2": 957,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9532163739204407,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 26680
+            }
+          ],
+          "latency_seconds": 1.04
+        },
+        {
+          "concept": "spoon",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 25,
+                "y1": 655,
+                "x2": 663,
+                "y2": 793,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9569892287254333,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 36577
+            }
+          ],
+          "latency_seconds": 1.253
+        }
+      ]
+    },
+    {
+      "stage_id": "wrong_region",
+      "source_timestamp_ms": 18000,
+      "source_timestamp_seconds": 18.0,
+      "sha256": "39fbd92aa1d2b7cce10ff9028f9e2a64b4540fba1e2767775bff96b064620588",
+      "width": 720,
+      "height": 1280,
+      "calls": [
+        {
+          "concept": "fork",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 4,
+                "y1": 872,
+                "x2": 643,
+                "y2": 954,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9532163739204407,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 26589
+            }
+          ],
+          "latency_seconds": 0.989
+        },
+        {
+          "concept": "spoon",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 25,
+                "y1": 653,
+                "x2": 661,
+                "y2": 793,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9569892287254333,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 36506
+            }
+          ],
+          "latency_seconds": 2.223
+        }
+      ]
+    },
+    {
+      "stage_id": "occluded",
+      "source_timestamp_ms": 29000,
+      "source_timestamp_seconds": 29.0,
+      "sha256": "8df14247bc2abdc4436910d2e26a79576d24d758c05fba86be8ca6563042f058",
+      "width": 720,
+      "height": 1280,
+      "calls": [
+        {
+          "concept": "fork",
+          "response_status": "completed",
+          "detected_object_count": 0,
+          "detections": [],
+          "latency_seconds": 1.232
+        },
+        {
+          "concept": "spoon",
+          "response_status": "completed",
+          "detected_object_count": 0,
+          "detections": [],
+          "latency_seconds": 1.131
+        }
+      ]
+    },
+    {
+      "stage_id": "occluded",
+      "source_timestamp_ms": 31000,
+      "source_timestamp_seconds": 31.0,
+      "sha256": "a38038b196de8a2d8e98b790c5c3b24fe268dce0f716d031e17f8640379cbba2",
+      "width": 720,
+      "height": 1280,
+      "calls": [
+        {
+          "concept": "fork",
+          "response_status": "completed",
+          "detected_object_count": 0,
+          "detections": [],
+          "latency_seconds": 0.881
+        },
+        {
+          "concept": "spoon",
+          "response_status": "completed",
+          "detected_object_count": 0,
+          "detections": [],
+          "latency_seconds": 0.605
+        }
+      ]
+    },
+    {
+      "stage_id": "corrected",
+      "source_timestamp_ms": 42002,
+      "source_timestamp_seconds": 42.001667,
+      "sha256": "e5493a549ac0633e3723156555db154075845ce02c157cf4bc70505c86ebc732",
+      "width": 720,
+      "height": 1280,
+      "calls": [
+        {
+          "concept": "fork",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 26,
+                "y1": 435,
+                "x2": 667,
+                "y2": 518,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.96875,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 25761
+            }
+          ],
+          "latency_seconds": 1.215
+        },
+        {
+          "concept": "spoon",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 51,
+                "y1": 645,
+                "x2": 691,
+                "y2": 783,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9609756469726562,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 36923
+            }
+          ],
+          "latency_seconds": 1.93
+        }
+      ]
+    },
+    {
+      "stage_id": "corrected",
+      "source_timestamp_ms": 44002,
+      "source_timestamp_seconds": 44.001667,
+      "sha256": "aefeb2a5e1b4144fb50c7eb49d82bb26e5f36d26c558c2d47b9fd0dc863a6a88",
+      "width": 720,
+      "height": 1280,
+      "calls": [
+        {
+          "concept": "fork",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 29,
+                "y1": 444,
+                "x2": 668,
+                "y2": 524,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9649122953414917,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 26239
+            }
+          ],
+          "latency_seconds": 0.841
+        },
+        {
+          "concept": "spoon",
+          "response_status": "completed",
+          "detected_object_count": 1,
+          "detections": [
+            {
+              "box_pixels": {
+                "x1": 53,
+                "y1": 652,
+                "x2": 691,
+                "y2": 790,
+                "width": 720,
+                "height": 1280
+              },
+              "confidence": 0.9569892287254333,
+              "mask_decoded": true,
+              "mask_foreground_pixels": 36757
+            }
+          ],
+          "latency_seconds": 1.325
+        }
+      ]
+    }
+  ],
+  "recorded_observation_loop_supported": true,
+  "physical_action_execution_verified": false,
+  "interactive_planner_directed_repair_verified": false,
+  "usage": {
+    "spark_requests": 1,
+    "sam_image_requests": 16,
+    "total_inference_requests": 17,
+    "spark_input_tokens": 433,
+    "spark_output_tokens": 1203,
+    "spark_latency_seconds": 4.987,
+    "sam_latency_seconds": {
+      "minimum": 0.605,
+      "median": 1.2425,
+      "maximum": 3.015,
+      "sum_of_serial_call_latencies": 22.863
+    },
+    "published_standard_rates_usd": {
+      "spark_per_million_input_tokens": 1.25,
+      "spark_per_million_output_tokens": 4.25,
+      "sam_per_image": 0.0025
+    },
+    "estimated_spark_usd": 0.005654,
+    "estimated_sam_usd": 0.04,
+    "estimated_total_usd": 0.045654,
+    "estimate_note": "Published Standard list-price arithmetic for these completed calls only; not an invoice, credit balance measurement, billing guarantee, or hard stop."
+  },
+  "limits": [
+    "One scripted, selected-frame case from an owned phone clip; source ownership and unique targets are caller-declared assumptions.",
+    "The assistant reviewed frame selection and calibration under the user's authorization. The human did not review the exact contract or offsets in this run.",
+    "A local approval assertion records provenance; it does not independently prove that a review occurred.",
+    "Region names follow handwritten LEFT and RIGHT labels on paper. Because the displayed clip is portrait, LEFT is in the upper displayed portion and RIGHT is below it.",
+    "The location predicates depend on exactly one declared target of each kind. SAM detections do not prove exact counts, absence, or complete visibility.",
+    "Stage boundaries were annotated by the assistant and supplied to the runner; automatic action-boundary or occlusion detection was not tested.",
+    "The final pass uses later source frames and a fresh attempt/revision. This is recorded observation, not continuous tracking or an interactive planner-directed repair experiment.",
+    "The person recorded the correction before inference and did not see or follow the later generated repair proposal.",
+    "The repair proposal is hypothetical; planning cost is in declared units, not seconds or dollars. Its predicted effects never create real observations.",
+    "Model confidence is not a calibrated probability of correctness. This case does not establish held-out accuracy, general procedure learning, industrial reliability, or that all ProofLoop features are complete.",
+    "Original video, extracted images, raw provider payloads, provider response IDs, credentials and private authorization text are excluded from this public report."
+  ]
+}

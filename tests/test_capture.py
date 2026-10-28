@@ -37,6 +37,17 @@ def short_plan():
     return plan
 
 
+def assistant_plan():
+    plan = short_plan()
+    plan["ground_truth_origin"] = "user_task_with_assistant_reviewed_timestamps"
+    plan["annotation_review"] = {
+        "review_origin": "assistant_under_user_authorization",
+        "authorization_reference": "Direct user instruction: check the uploaded clip and proceed with next steps.",
+        "human_reviewed_offsets": False,
+    }
+    return plan
+
+
 class CapturePlanTests(unittest.TestCase):
     def test_locked_schedule_has_four_stages_and_two_frames_each(self):
         plan = default_plan()
@@ -98,6 +109,32 @@ class CapturePlanTests(unittest.TestCase):
             plan = short_plan()
             plan[field] = value
             with self.assertRaises(CaptureError):
+                validate_plan(plan, 8)
+
+    def test_assistant_timestamp_review_has_explicit_nonhuman_provenance(self):
+        plan = assistant_plan()
+        self.assertEqual([1, 3], validate_plan(plan, 8)[0]["sample_seconds"])
+        self.assertIs(False, plan["annotation_review"]["human_reviewed_offsets"])
+
+    def test_assistant_timestamp_review_rejects_missing_or_contradictory_authority(self):
+        malformed = []
+        for field in ("review_origin", "authorization_reference", "human_reviewed_offsets"):
+            plan = assistant_plan()
+            del plan["annotation_review"][field]
+            malformed.append(plan)
+        for field, value in (("review_origin", "local_operator"),
+                             ("human_reviewed_offsets", True),
+                             ("authorization_reference", " \n "),
+                             ("authorization_reference", None),
+                             ("authorization_reference", "x" * 2001)):
+            plan = assistant_plan()
+            plan["annotation_review"][field] = value
+            malformed.append(plan)
+        plan = assistant_plan()
+        plan["ground_truth_origin"] = "human_declared_not_model_inferred"
+        malformed.append(plan)
+        for index, plan in enumerate(malformed):
+            with self.subTest(case=index), self.assertRaises(CaptureError):
                 validate_plan(plan, 8)
 
 
@@ -164,6 +201,8 @@ class CaptureDecoderTests(unittest.TestCase):
         self.assertEqual("synthetic_test_fixture", manifest["evidence_origin"])
         self.assertFalse(manifest["inference_performed"])
         self.assertFalse(manifest["physical_repair_verified"])
+        self.assertEqual("human_declared_not_model_inferred", manifest["ground_truth_origin"])
+        self.assertNotIn("annotation_review", manifest)
         self.assertEqual("extracted_pending_visual_review", manifest["status"])
         self.assertTrue(stage["distinct_frame_hashes"])
         self.assertEqual(0o600, (self.output / "manifest.json").stat().st_mode & 0o777)
@@ -174,6 +213,24 @@ class CaptureDecoderTests(unittest.TestCase):
                 self.assertIn("setpts=PTS-STARTPTS", command[command.index("-vf") + 1])
                 self.assertIn("-map_metadata", command)
                 self.assertIn("-n", command)
+
+    def test_extraction_preserves_assistant_annotation_review_without_human_claim(self):
+        plan = assistant_plan()
+        expected_review = deepcopy(plan["annotation_review"])
+        manifest = extract_capture(self.source, plan, self.output, confirmed_offsets=True)
+        plan["annotation_review"]["authorization_reference"] = "changed later"
+        self.assertEqual("user_task_with_assistant_reviewed_timestamps", manifest["ground_truth_origin"])
+        self.assertEqual(expected_review, manifest["annotation_review"])
+        self.assertIs(False, manifest["annotation_review"]["human_reviewed_offsets"])
+        stored = json.loads((self.output / "manifest.json").read_text())
+        self.assertEqual(expected_review, stored["annotation_review"])
+
+    def test_unattributed_assistant_timestamp_review_stops_before_output_creation(self):
+        plan = assistant_plan()
+        del plan["annotation_review"]
+        with self.assertRaises(CaptureError):
+            extract_capture(self.source, plan, self.output, confirmed_offsets=True)
+        self.assertFalse(self.output.exists())
 
     def test_confirmation_is_required_before_even_decoding(self):
         with self.assertRaisesRegex(CaptureError, "confirm-offsets"):

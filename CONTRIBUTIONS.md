@@ -20,6 +20,7 @@ Project development began on 26 October 2026 after the hackathon kickoff. The re
 - Reviewable recorded-session contracts that bind calibration, model concepts, selected frames and unique-target assumptions.
 - Authored fork/spoon capture preset with unapproved placement requirements and separate camera calibration.
 - Stage-isolated correction traces with movement/occlusion invalidation, a bounded hypothetical repair and fresh post-correction evidence.
+- First owned phone experiment with actual Spark/SAM calls, explicit assistant-review provenance and a separately reviewed public results summary.
 
 This list describes the implementation scope; live and physical validation status is recorded separately in `docs/FEASIBILITY.md`.
 
