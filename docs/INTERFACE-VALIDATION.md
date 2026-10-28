@@ -1,5 +1,18 @@
 # Interactive interface validation — 28 October 2026
 
+## Task editor and recorded Video Lab milestone
+
+- Python 3.12: 321 offline tests pass. The backend milestone `b6a5ebe` passed GitHub CI on Python 3.9 and 3.12. The final interface production build also passes strict TypeScript checks.
+- A real Spark draft correctly changed the fork requirement to RIGHT and spoon to LEFT. Drafting preserved the active contract and its evidence. Exact-draft activation was separately exercised through HTTP under the user's development authorization, recorded as assistant review, and invalidated old evidence. Browser checks confirmed activation stays disabled before review, and edited inputs require a new draft. No assistant action was labeled human approval.
+- Task mode and visual descriptions are part of the reviewed contract. The interface identifies text prompts to SAM separately from descriptions sent to the guided Spark locator. Supported compilation remains observable placement, with temporal and hidden-state requirements explicitly excluded.
+- The read-only Video Lab displayed both actual experiments: eight pilot cases from four coffee recordings, then four cases from two new recordings. It preserved the original SAM failures, baseline results, UNKNOWN outcomes, original frame pairs, frozen labels, license attribution and links to publisher videos. Opening or switching lab views made no model calls.
+- The guided comparison displayed 2/4 label matches, concept-only SAM 0/4 and Spark alone 4/4. These results establish neither superiority nor general accuracy. The footage is prerecorded; it does not show an operator or robot following our proposed correction.
+- An isolated server used the existing authored mixed-evidence fixture: known wrong fork plus unknown spoon. The browser displayed **More evidence is needed**, a targeted spoon inspection, and **Capture requested views**, without physical move instructions. Clicking it cleared the old evidence and required new captures. This establishes UI behavior only, not perception accuracy.
+- Desktop 1536 × 1024 and mobile 390 × 844 were checked in the built-in browser. The task editor and Video Lab both kept document/body width at 390 px. The comparison table scrolls inside its own focusable region. Source attribution, experiment switching and case switching worked.
+- Private final screenshots: `qa/proofloop-ui/video-lab-final-desktop.jpg`, `video-lab-final-mobile.jpg`, `task-editor-final-mobile.jpg`, and `mixed-evidence-inspection.jpg` in the parent workspace. Original phone photos, downloaded videos, raw responses and QA images remain outside the public repository.
+
+## Original camera interface milestone
+
 ## Checks and provenance
 
 - Python 3.12: 228 offline tests pass. Python 3.9: 228 run, one optional official-parser test skipped.
@@ -18,7 +31,7 @@ The image-generated desktop and mobile concepts preceded frontend implementation
 
 | Point | Concept → implementation |
 | --- | --- |
-| Header and hierarchy | Plain ProofLoop wordmark, two centered tabs, New inspection, large problem heading and single supporting sentence match the intended hierarchy. |
+| Header and hierarchy | Plain ProofLoop wordmark, centered navigation, New inspection, large problem heading and single supporting sentence match the intended hierarchy. The new Task and Video Lab tabs extend the original two-tab navigation. |
 | Evidence composition | Two portrait views, region labels and detection boxes remain side by side on desktop. The app preserves the entire original photos with neutral letterboxing; the generated concept had tightened their framing. Evidence is never a generated mockup. |
 | Inspector and action | Per-target fail/pass rows lead into the bounded repair and indigo Start repair button. Compact instruction copy keeps the action and four-step rail visible at the concept viewport. |
 | Typography and color | Self-hosted Inter, cool white canvas, navy type, thin borders, indigo controls and text-plus-color status indicators follow the design tokens. |
@@ -30,4 +43,4 @@ The repair specifies “from RIGHT to LEFT” because the planner knows the wron
 
 ## Remaining validation
 
-The runtime uses the real Meta client with at most four SAM calls per inspection and no retries. This interface round did not spend additional model credits. A new person-following-the-proposal test needs two fresh upright JPEG/PNG photos after Start repair. Phone LAN access, HEIC conversion and real camera hardware behavior remain outside this version's verified scope. The earlier real Spark/SAM phone experiment retains its separate recorded-session evidence.
+The runtime uses the real Meta client with no retries. With two to six targets, concept mode permits at most 4–12 SAM calls; guided mode adds one Spark request for a 5–13 request cap. The original camera-interface milestone spent no additional model credits; the later live task draft and recorded comparisons have their own public-safe reports. A new person-following-the-proposal test still needs two fresh supported photos after Start repair. Guided mode requires upright JPEGs no larger than 1280 pixels. Phone LAN access, HEIC conversion and real camera hardware behavior remain outside this version's verified scope. The earlier real Spark/SAM phone experiment retains its separate recorded-session evidence.

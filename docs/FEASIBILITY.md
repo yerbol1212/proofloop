@@ -9,7 +9,7 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | 228 tests cover the core, compiler, grounding, capture, recorded sessions, interactive engine and loopback HTTP boundary | Passed; system Python skips the optional parser test |
+| Local tests | 321 tests passed on Python 3.12; GitHub CI passed Python 3.9/3.12 at [b6a5ebe](https://github.com/yerbol1212/proofloop/commit/b6a5ebe) | Passed software checks; optional parser availability differs by Python version |
 | Official SAM codec | Official parser independently re-decoded all 16 phone responses; 12 nonempty masks matched saved rasters and four covered responses were empty | Passed on phone inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
 | Positive placement contract | Live Spark fork-left/spoon-right protocol; stable positive location evidence supports wrong-region fail and corrected pass | Passed on one recorded clip |
@@ -18,7 +18,11 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Available fork/spoon objects | 16 genuine SAM calls on actual cutlery frames; all four stage outcomes matched the scripted check | Passed initial phone case |
 | Real SAM grounding and mask parsing | Correct and wrong-region placement plus covered-scene abstention on actual phone frames | Passed initial phone case |
 | Physical correction and fresh verification | New post-correction frames pass; recorded before the planner proposal | Recorded observation supported; interactive loop pending |
-| Interactive workbench | Real recorded seed, repair invalidation, paired uploads, numeric calibration, offline fixture fail/pass/unknown/request-error/disconnect states | Browser flow passed with authored fixtures; new physical correction pending |
+| Interactive workbench | Reviewed task editor, reason-specific inspection requests, paired fresh capture, optional guided perception and read-only Video lab | Software/browser flow supported; physical interactive correction pending |
+| Editable task activation | Real Spark region-swap draft preserved the active verdict until exact reviewed activation, which invalidated prior evidence | Passed one live compilation/integration check |
+| Online recorded pilot | Four coffee episodes / eight authored placement cases: SAM 0/8 label matches, all unknown; Spark 7/8 | Completed; initial concept-only SAM failed to ground the target |
+| New-source guided comparison | Two more episodes / four cases: guided 2/4, concept-only SAM 0/4, Spark 4/4 | Partial grounding improvement; no baseline-superiority claim |
+| Recorded Video lab | Reviewed summaries bound to local source hashes; paired frames, calibrated zones, method results and explanations | Read-only; no model calls or robot control |
 | Synthetic scene inputs | Four generated scenes with exact prompts, hashes, annotations and provenance | Used in live Meta calls; not physical evidence |
 | Public repository | [yerbol1212/proofloop](https://github.com/yerbol1212/proofloop), verified public; tested build milestones published | Created |
 
@@ -29,6 +33,16 @@ The [28 October phone report](../artifacts/feasibility/phone-session-20261028.md
 Technical timestamp selection, calibration and exact-contract review were performed by the assistant under the user's direct instruction to proceed. The report explicitly records that a person did not review the exact contract or selected offsets. Region names follow the handwritten paper labels: they correspond to upper/lower bands in the displayed portrait video. Calibration and the contract were frozen before SAM inference.
 
 The estimated cost for this round is $0.045654 at the published Standard rates. SAM median latency was 1.2425 seconds and Spark took 4.987 seconds. The report preserves the one-clip, declared-unique-target and selected-frame limits. It proves neither complete visibility nor exact counts; it is not an interactive repair or held-out accuracy result. Original media, extracted images, raw responses and private authorization text remain local.
+
+## Added workflow and online evaluation
+
+The workbench's task editor compiles explicit placement requirements for two to six unique target classes in LEFT/RIGHT. Drafting does not change the active contract or verdict. Exact reviewed activation binds the requirements, checks, concepts and perception mode, then invalidates earlier evidence. The [live task-editor record](../artifacts/feasibility/task-editor-live-20261028.json) captures one real Spark compilation with swapped fork/spoon requirements and assistant-authorized activation; it claims neither human review nor physical execution.
+
+Unknown evidence now produces a targeted inspection request based on the actual grounding reason: review region support, target identity, confidence, stability or freshness. It does not infer absence or an unseen physical mistake from a missing detection. An optional Spark-box-guided SAM mode receives object concepts without desired placements or acceptance regions; Spark assigns identity and SAM refines its proposed boundary. The mask is not independent semantic-identity verification.
+
+The [online evaluation report](../artifacts/feasibility/online-video-20261028.md) preserves two frozen experiments on six real LeRobot coffee recordings, totaling 12 authored state pairs. The original eight-case pilot returned **SAM 0/8 label matches, all UNKNOWN; Spark 7/8**. On four new-source cases, **guided SAM 2/4; concept-only SAM 0/4; Spark 4/4**. Guided perception improved coverage over concept-only SAM here but did not beat Spark. Original failures and separate development probes remain disclosed.
+
+The Video lab exposes these results, source/license attribution, selected images, zones and explanations without new model calls. Source media remains local. Early staging frames are normal intermediate demonstration states that fail an authored placement gate; they are not publisher-labeled robot mistakes. Cases share a task/camera and are correlated. These results establish neither natural-error recognition, continuous action recognition, physical closed-loop recovery, held-out reliability nor validated market demand. See [sources](ONLINE-VIDEO-SOURCES.md) and the [benchmark procedure](BENCHMARK.md).
 
 ## Earlier measured results
 

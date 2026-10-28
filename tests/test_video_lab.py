@@ -98,11 +98,16 @@ class VideoLabTests(unittest.TestCase):
     def test_optional_guided_condition_keeps_its_identity_limit_and_unknown_result(self):
         report = deepcopy(self.report)
         report["conditions"]["guided"] = deepcopy(report["conditions"]["sam"])
+        report["conditions"]["guided"]["cases"][0]["grounding"]["evidence"]["check_grounding"][0]["reason"] = (
+            "No source images were supplied for this object")
         save(self.run / "report.json", report)
         save(self.summary, public_summary(self.envelope, report))
         run = self.lab.snapshot()["runs"][0]
         self.assertEqual("unknown", run["cases"][0]["guided"])
         self.assertIn("guided", run["cases"][0]["reasons"])
+        self.assertIn("supported guided mask measurements", run["cases"][0]["reasons"]["guided"])
+        self.assertNotIn("No source images", run["cases"][0]["reasons"]["guided"])
+        self.assertEqual(2, len(run["cases"][0]["images"]))
         self.assertIn("does not independently prove", run["conditions"]["guided"]["method_note"])
         self.assertTrue(any("does not independently prove" in limit for limit in run["limits"]))
 

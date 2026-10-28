@@ -20,7 +20,14 @@ export interface PlacementCheck {
 }
 export interface Snapshot {
   session_id: string
-  phase: 'mistake' | 'awaiting_capture' | 'checking' | 'verified' | 'unknown' | 'needs_evidence' | 'error'
+  phase:
+    | 'mistake'
+    | 'awaiting_capture'
+    | 'checking'
+    | 'verified'
+    | 'unknown'
+    | 'needs_evidence'
+    | 'error'
   status: Status
   revision: number
   source_kind: 'recorded' | Source | 'none'
@@ -29,7 +36,13 @@ export interface Snapshot {
   proposal: { title: string; steps: string[]; hypothetical: boolean } | null
   regions: Regions
   capture_token: string | null
-  trace: { id: string; event: string; label: string; status: Status; revision: number }[]
+  trace: {
+    id: string
+    event: string
+    label: string
+    status: Status
+    revision: number
+  }[]
   busy: boolean
   error: string | null
   api_ready: boolean
@@ -40,6 +53,62 @@ export interface Snapshot {
   stale: boolean
   pending_token_issued_at_ms: number | null
   csrf_token: string
+  active_task?: ActiveTask
+  task_draft?: TaskDraft | null
+  draft_error?: string | null
+  busy_operation?: 'task_draft' | 'inspection' | null
+  inspection_request?: {
+    title: string
+    instructions: string[]
+    object_ids: string[]
+    reason: string
+  } | null
+}
+export interface TaskCheck {
+  id: string
+  kind: string
+  object_id: string
+  region_id: string
+  unique_target?: boolean
+}
+export interface TaskProtocol {
+  id: string
+  version: string
+  objects: string[]
+  regions: string[]
+  checks: TaskCheck[]
+}
+export interface ActiveTask {
+  title: string
+  objects: string[]
+  requirements: string
+  protocol_hash: string
+  protocol: TaskProtocol
+  concepts: Record<string, string>
+  origin: string
+  reviewed: boolean
+  human_reviewed: boolean
+  review_origin: string
+  model?: string
+  perception_mode?: 'concept' | 'guided'
+  perception_note?: string
+}
+export interface TaskDraft {
+  draft_id: string
+  draft_hash: string
+  title: string
+  requirements: string
+  objects: string[]
+  protocol: TaskProtocol
+  protocol_hash: string
+  concepts: Record<string, string>
+  origin: string
+  requires_human_approval: boolean
+  approved: boolean
+  model: string
+  claim_limit: string
+  perception_mode?: 'concept' | 'guided'
+  perception_note?: string
 }
 export interface LocalPhoto {
   data_url: string

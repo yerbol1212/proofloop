@@ -204,6 +204,15 @@ class VideoLab:
                 if name in ("sam", "guided"):
                     grounding = result.get("grounding", {}).get("evidence", {})
                     reason_parts = [_reason(item.get("reason")) for item in grounding.get("check_grounding", [])] or reason_parts
+                if name == "guided":
+                    # The source pair exists even when an ambiguous locator
+                    # yields no SAM measurement. Do not imply a missing upload.
+                    reason_parts = [
+                        "The supplied views did not yield enough supported guided mask measurements. "
+                        "Inspect the target from a clearer view."
+                        if "No source images were supplied" in reason else reason
+                        for reason in reason_parts
+                    ]
                 reasons[name] = " ".join(dict.fromkeys(reason_parts))[:1600]
             source = sources[case["source_id"]]
             cases.append({"id": case["id"], "source_id": source["id"], "source_publisher": source["publisher"],
@@ -215,9 +224,14 @@ class VideoLab:
                           "images": images, "regions": deepcopy(case["regions"]),
                           "annotation_reason": case["annotation"]["reason"] if case["annotation"] else None})
         title = "Guided perception comparison" if "guided" in by_condition else "Text-prompt development pilot"
+        task_summary = " ".join(
+            f"{check.object_id.replace('_', ' ')} must be in {check.region_id.upper()}."
+            if check.kind == "location" else
+            f"{check.object_id.replace('_', ' ')} must be {'visible' if check.expected else 'absent'} in {check.region_id.upper()}."
+            for check in protocol.checks)
         return ({"id": run_id, "title": title, "contract_hash": envelope["contract_hash"],
                  "source_kind": "external_recorded_video", "inference_origin": report.get("inference_origin"),
-                 "requirements": contract["requirements"], "objects": list(protocol.objects),
+                 "requirements": contract["requirements"], "task_summary": task_summary, "objects": list(protocol.objects),
                  "concepts": deepcopy(contract["concepts"]), "case_count": len(cases), "source_count": len(sources),
                  "metrics": {name: deepcopy(summary["conditions"][name].get("metrics")) for name in by_condition},
                  "conditions": {name: {**({"method_note": GUIDED_NOTE} if name == "guided" else {}),

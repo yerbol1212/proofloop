@@ -19,6 +19,8 @@ SAM returned no objects for the chosen transparent-glass concept. The original r
 
 The guided implementation was frozen after development probes, before inference on episodes 000004 and 000005. Four newly labeled cases used the unchanged regions and semantic concept. All three conditions ran on the same exact input pairs.
 
+The verbatim requirements text retains the initial pilot's descriptive reference to four episodes. The bound source list contains exactly two episodes for this comparison; labels, regions and evaluated placement semantics are unaffected. The immutable evaluated contract is preserved, and the interface derives its short task summary from the executable checks.
+
 | Condition | Matches labels | Unknown | Incorrect passes | Correct acceptance | Actual requests | Est. USD |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: |
 | SAM + checker | 0/4 | 4 | 0 | 0/2 | 8 | 0.020000 |
