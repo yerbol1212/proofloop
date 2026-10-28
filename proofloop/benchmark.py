@@ -18,7 +18,7 @@ import time
 from typing import Any, Callable, Mapping, Sequence
 from urllib.parse import urlparse
 
-from .core import EvidenceStore, Protocol, ValidationError, aggregate_status, evaluate
+from .core import EvidenceStore, Observation, Protocol, ValidationError, aggregate_status, evaluate
 from .grounding import SamImageEvidence, ground_sam_images
 from .meta import MAX_IMAGE_BYTES, SPARK_MODEL, MetaAPIError, MetaClient, load_env_file
 from .session import _bound_result, _review_provenance
@@ -28,6 +28,7 @@ STATUSES = ("pass", "fail", "unknown")
 CONDITIONS = ("sam", "spark")  # Preserve the original two-condition default.
 AVAILABLE_CONDITIONS = CONDITIONS + ("guided",)
 EVALUATION_ROLES = ("development_reprocessing", "new_source_holdback")
+KNOWN_GUIDED_VERSIONS = ("normalized_boxes_v2",)
 GUIDED_NOTE = ("Task-independent Spark assigns object identity and boxes; SAM refines the prompted mask. "
                "A prompted mask does not independently prove semantic identity. Missing/ambiguous localization stays unknown.")
 MAX_JSON_BYTES = 2 * 1024 * 1024
@@ -297,10 +298,14 @@ def evaluate_sam(envelope: Mapping[str, Any], results: Mapping[str, Any], *,
 
 
 def evaluate_guided(envelope: Mapping[str, Any], results: Mapping[str, Any], *,
-                    inference_origin: str = "provided_results_not_verified_live") -> list[dict[str, Any]]:
+                    inference_origin: str = "provided_results_not_verified_live",
+                    observation_version: str | None = None) -> list[dict[str, Any]]:
     """Ground actual guided SAM responses without treating boxes as observations."""
+    if observation_version is not None and observation_version not in KNOWN_GUIDED_VERSIONS:
+        raise ValidationError("Unknown declared guided observation version")
     if not isinstance(results, Mapping):
         raise ValidationError("Guided results need source-bound case mappings")
+    versions = set()
     for by_frame in results.values():
         if not isinstance(by_frame, Mapping):
             raise ValidationError("Guided results need source-bound image mappings")
@@ -312,9 +317,19 @@ def evaluate_guided(envelope: Mapping[str, Any], results: Mapping[str, Any], *,
                 if (not isinstance(provenance, Mapping) or provenance.get("method") != "spark_box_guided_sam"
                         or provenance.get("locator_model") != SPARK_MODEL):
                     raise ValidationError("Guided SAM responses must preserve their Spark identity provenance")
+                version = provenance.get("version")
+                if "version" in provenance and version not in KNOWN_GUIDED_VERSIONS:
+                    raise ValidationError("Unknown guided response observation version")
+                versions.add(version)  # None means the historical, genuinely unversioned v1 format.
+    if len(versions) > 1:
+        raise ValidationError("Do not mix legacy and versioned guided responses")
+    if observation_version is not None and versions and versions != {observation_version}:
+        raise ValidationError("Guided responses differ from the declared observation version")
     cases = evaluate_sam(envelope, results, inference_origin=inference_origin)
     for case in cases:
         case["method_note"] = GUIDED_NOTE
+        if observation_version is not None:
+            case["observation_version"] = observation_version
     return cases
 
 
@@ -429,6 +444,186 @@ def comparison_metrics(envelope: Mapping[str, Any], cases: Sequence[Mapping[str,
                               "Missing predictions count against accuracy; all-UNKNOWN cannot accept positive cases."}
 
 
+def _case_signature(case: Mapping[str, Any]) -> list[tuple[str, str]]:
+    return sorted((item["check_id"], item["status"]) for item in case["checks"])
+
+
+def _replay_grounding(protocol: Protocol, case: Mapping[str, Any], result: Mapping[str, Any]) -> int:
+    """Replay saved checker inputs, not a new inference or independent image proof."""
+    if "grounding" not in result:
+        return 0
+    grounding = result["grounding"]
+    if not isinstance(grounding, Mapping) or not isinstance(grounding.get("observations"), list):
+        raise ValidationError("Grounded report needs explicit saved observations")
+    evidence = grounding.get("evidence")
+    if not isinstance(evidence, Mapping) or not isinstance(evidence.get("observations"), Mapping):
+        raise ValidationError("Grounded report needs hashed observation manifests")
+    manifests = evidence["observations"]
+    observations = [Observation.from_dict(item) for item in grounding["observations"]]
+    if len(observations) != len(protocol.checks) or not observations:
+        raise ValidationError("Grounded report must cover every approved check")
+    store = EvidenceStore(protocol, observations[0].session_id)
+    check_by_id = {check.id: check for check in protocol.checks}
+    seen = set()
+    source_hashes = {frame["sha256"] for frame in case["frames"]}
+    for observation in observations:
+        manifest = manifests.get(observation.evidence_id)
+        if (not isinstance(manifest, Mapping) or not isinstance(manifest.get("check_id"), str)
+                or manifest["check_id"] not in check_by_id):
+            raise ValidationError("Grounded observation has no approved evidence manifest")
+        identifier = manifest["check_id"]
+        if identifier in seen:
+            raise ValidationError("Grounded observation repeats an approved check")
+        seen.add(identifier)
+        check = check_by_id[identifier]
+        if (observation.kind, observation.object_id, observation.region_id) != (check.kind, check.object_id, check.region_id):
+            raise ValidationError("Grounded observation differs from its declared predicate")
+        if observation.fully_visible or observation.absence_validated:
+            raise ValidationError("Recorded SAM grounding cannot manufacture a completeness or absence contract")
+        expected_id = "sam-grounding://" + hashlib.sha256(json.dumps(
+            manifest, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+        if observation.evidence_id != expected_id:
+            raise ValidationError("Grounded evidence manifest differs from its recorded digest")
+        fields = {"spec_hash": observation.spec_hash, "session_id": observation.session_id,
+                  "attempt_id": observation.attempt_id, "revision": observation.revision,
+                  "grounded_value": observation.value, "grounded_confidence": observation.confidence,
+                  "stable_samples": observation.stable_samples, "timestamp_ms": observation.timestamp_ms}
+        if any(type(manifest.get(key)) is not type(value) or manifest.get(key) != value for key, value in fields.items()):
+            raise ValidationError("Saved observation differs from its hashed evidence values")
+        support = manifest.get("source_hashes")
+        if (not isinstance(support, list) or any(not isinstance(value, str) for value in support)
+                or len(set(support)) != len(support) or set(support) - source_hashes):
+            raise ValidationError("Grounded evidence refers to an unapproved or repeated source frame")
+        if observation.value is not None and observation.stable_samples != len(support):
+            raise ValidationError("Grounded stability differs from its supporting distinct source count")
+        if observation.timestamp_ms > case["evaluation_timestamp_ms"]:
+            raise ValidationError("Grounded evidence lies after the recorded evaluation time")
+        store.add(observation)
+    replayed = evaluate(protocol, store, now_ms=case["evaluation_timestamp_ms"])
+    if sorted((item.check_id, item.status.value) for item in replayed) != _case_signature(result):
+        raise ValidationError("Reported check verdict differs from replayed grounded evidence")
+    by_id = {item.check_id: item for item in replayed}
+    for check in result["checks"]:
+        if check.get("evidence_ids") != list(by_id[check["check_id"]].evidence_ids):
+            raise ValidationError("Reported check evidence differs from its replayed binding")
+    return len(replayed)
+
+
+def _same_metrics(actual: Any, expected: Any) -> bool:
+    if isinstance(expected, dict):
+        return (isinstance(actual, Mapping) and set(actual) == set(expected)
+                and all(_same_metrics(actual[key], value) for key, value in expected.items()))
+    if expected is None:
+        return actual is None
+    if type(expected) is int:
+        return type(actual) is int and actual == expected
+    return type(actual) in (int, float) and math.isfinite(actual) and actual == expected
+
+
+def validate_report(envelope: Mapping[str, Any], report: Mapping[str, Any], *,
+                    raw_results: Mapping[str, Mapping[str, Any]] | None = None) -> dict[str, Any]:
+    """Validate recorded decisions/totals; this does not verify physical perception.
+
+    Completed conditions require full case coverage and recomputable metrics.
+    Running/error conditions remain unscored rather than gaining fake UNKNOWNs.
+    Optional private sidecars replay the original adapter results and versions.
+    """
+    protocol = _approved(envelope)
+    if (not isinstance(report, Mapping) or report.get("contract_hash") != envelope["contract_hash"]
+            or report.get("status") not in ("completed", "running", "error")):
+        raise ValidationError("Report must bind the approved contract and declare its completion status")
+    _evaluation_role(report.get("evaluation_role"))
+    conditions = report.get("conditions")
+    if not isinstance(conditions, Mapping) or not conditions or set(conditions) - set(AVAILABLE_CONDITIONS):
+        raise ValidationError("Report needs explicit supported conditions")
+    if raw_results is not None and (not isinstance(raw_results, Mapping) or set(raw_results) - set(conditions)):
+        raise ValidationError("Raw report sidecars identify an unexpected condition")
+    expected_cases = {case["id"]: case for case in envelope["contract"]["cases"]}
+    expected_checks = {check.id for check in protocol.checks}
+    grounded_count = checked_cases = completed_count = sidecar_count = 0
+    for name, condition in conditions.items():
+        if not isinstance(condition, Mapping) or condition.get("status") not in ("completed", "running", "error"):
+            raise ValidationError("Condition needs an explicit completion status")
+        version = condition.get("observation_version")
+        if "observation_version" in condition and (name != "guided" or version not in KNOWN_GUIDED_VERSIONS):
+            raise ValidationError("Condition declares an unknown observation version")
+        if condition["status"] != "completed":
+            if report["status"] == "completed" or condition.get("cases") or condition.get("metrics") is not None:
+                raise ValidationError("Incomplete conditions cannot carry completed decisions or scores")
+            continue
+        completed_count += 1
+        cases = condition.get("cases")
+        if not isinstance(cases, list) or len(cases) != len(expected_cases):
+            raise ValidationError("Completed condition must cover every approved case exactly once")
+        seen = set()
+        for result in cases:
+            if (not isinstance(result, Mapping) or not isinstance(result.get("case_id"), str)
+                    or result["case_id"] not in expected_cases or result["case_id"] in seen):
+                raise ValidationError("Completed condition has duplicate or unapproved case IDs")
+            seen.add(result["case_id"])
+            case = expected_cases[result["case_id"]]
+            if result.get("frame_hashes") != [frame["sha256"] for frame in case["frames"]]:
+                raise ValidationError("Reported case does not bind the exact approved source pair")
+            checks = result.get("checks")
+            if (not isinstance(checks, list) or len(checks) != len(expected_checks)
+                    or any(not isinstance(item, Mapping) or not isinstance(item.get("check_id"), str) for item in checks)
+                    or {item["check_id"] for item in checks} != expected_checks
+                    or any(item.get("status") not in STATUSES for item in checks)):
+                raise ValidationError("Reported check IDs, coverage or statuses differ from the approved protocol")
+            statuses = [item["status"] for item in checks]
+            aggregate = "fail" if "fail" in statuses else "pass" if all(value == "pass" for value in statuses) else "unknown"
+            if result.get("status") != aggregate:
+                raise ValidationError("Reported case aggregate contradicts its per-check decisions")
+            if "observation_version" in result and (name != "guided" or result["observation_version"] != version):
+                raise ValidationError("Case observation version differs from its condition")
+            if name in ("sam", "guided") and "grounding" not in result:
+                raise ValidationError("Completed SAM conditions require saved grounded observations")
+            grounded_count += _replay_grounding(protocol, case, result)
+            checked_cases += 1
+        recomputed = comparison_metrics(envelope, cases)
+        expected_metrics = _safe_metrics(recomputed)
+        stored_metrics = condition.get("metrics")
+        if (not isinstance(stored_metrics, Mapping) or not set(expected_metrics) <= set(stored_metrics)
+                or not _same_metrics({key: stored_metrics[key] for key in expected_metrics}, expected_metrics)):
+            raise ValidationError("Reported metrics contradict validated recorded decisions")
+        if raw_results is not None and name in raw_results:
+            raw = raw_results[name]
+            if not isinstance(raw, Mapping) or set(raw) != set(expected_cases):
+                raise ValidationError("Completed inference sidecar must cover every approved case")
+            if name in ("sam", "guided"):
+                for identifier, by_frame in raw.items():
+                    if (not isinstance(by_frame, Mapping)
+                            or set(by_frame) != {frame["sha256"] for frame in expected_cases[identifier]["frames"]}):
+                        raise ValidationError("Completed inference sidecar must bind both source images")
+                    for by_object in by_frame.values():
+                        if (not isinstance(by_object, Mapping) or set(by_object) - set(protocol.objects)
+                                or (name == "sam" and set(by_object) != set(protocol.objects))):
+                            raise ValidationError("Inference sidecar object coverage differs from its condition")
+                        if name == "guided" and version is None and any(
+                                isinstance(value, Mapping) and isinstance(value.get("guided_provenance"), Mapping)
+                                and "version" in value["guided_provenance"] for value in by_object.values()):
+                            raise ValidationError("Versioned guided sidecar requires a declared condition version")
+            evaluator = {"sam": evaluate_sam, "spark": evaluate_spark, "guided": evaluate_guided}[name]
+            replayed = evaluator(envelope, raw,
+                                 **({"observation_version": version} if name == "guided" else {}))
+            recorded = {case["case_id"]: case for case in cases}
+            for replay in replayed:
+                prior = recorded[replay["case_id"]]
+                if replay["status"] != prior["status"] or _case_signature(replay) != _case_signature(prior):
+                    raise ValidationError("Recorded decisions differ from their private inference sidecar")
+                if name in ("sam", "guided") and "grounding" in prior:
+                    def observation_values(value: Mapping[str, Any]) -> list[str]:
+                        return sorted(json.dumps({key: item for key, item in observation.items() if key != "evidence_id"},
+                                                 sort_keys=True, allow_nan=False)
+                                      for observation in value["grounding"]["observations"])
+                    if observation_values(replay) != observation_values(prior):
+                        raise ValidationError("Saved grounded values differ from their private inference sidecar")
+            sidecar_count += 1
+    return {"verdict_consistency_checked": checked_cases > 0, "metrics_recomputed": completed_count > 0,
+            "grounded_decisions_replayed": grounded_count, "case_decisions_checked": checked_cases,
+            "inference_sidecars_replayed": sidecar_count}
+
+
 def _save(path: Path, value: Any) -> None:
     path.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
     data = json.dumps(value, indent=2, sort_keys=True, allow_nan=False) + "\n"
@@ -508,7 +703,8 @@ def run_benchmark(client_factory: Callable[[int], Any], envelope: Mapping[str, A
                     _save(output / condition / f"{case['id']}.json", pair)
                     results[case["id"]] = pair["results"]
                     entry["unavailable_by_case"][case["id"]] = deepcopy(pair["unavailable"])
-                    evaluate_guided(envelope, {case["id"]: pair["results"]})
+                    evaluate_guided(envelope, {case["id"]: pair["results"]},
+                                    observation_version=entry["observation_version"])
                     if any(_file_hash(image) != frame["sha256"] for image, frame in zip(images, case["frames"])):
                         raise ValidationError("Source image changed during inference")
                 else:
@@ -526,7 +722,8 @@ def run_benchmark(client_factory: Callable[[int], Any], envelope: Mapping[str, A
                 _save(output / condition / "results.json", results)
             verify_media(envelope, project_root=project_root)
             evaluator = {"sam": evaluate_sam, "spark": evaluate_spark, "guided": evaluate_guided}[condition]
-            evaluated = evaluator(envelope, results, inference_origin="live_meta_api")
+            evaluated = evaluator(envelope, results, inference_origin="live_meta_api",
+                                  **({"observation_version": entry["observation_version"]} if condition == "guided" else {}))
             entry.update(status="completed", cases=evaluated, metrics=comparison_metrics(envelope, evaluated))
         except (MetaAPIError, ValidationError, ValueError, TypeError, OSError) as error:
             entry.update(status="error", error_type=type(error).__name__,
@@ -577,9 +774,8 @@ def _safe_metrics(value: Any) -> dict[str, Any] | None:
 
 def public_summary(envelope: Mapping[str, Any], report: Mapping[str, Any]) -> dict[str, Any]:
     """Allowlist export, never raw media, masks, provider IDs, prompts or paths."""
-    _approved(envelope)
-    if report.get("contract_hash") != envelope["contract_hash"]:
-        raise ValidationError("Report does not bind this approved recorded contract")
+    protocol = _approved(envelope)
+    validate_report(envelope, report)
     evaluation_role = _evaluation_role(report.get("evaluation_role"))
     return {"schema_version": "1.0", "experiment": "licensed_recorded_video_comparison",
             **({"evaluation_role": evaluation_role} if evaluation_role is not None else {}),
@@ -601,7 +797,10 @@ def public_summary(envelope: Mapping[str, Any], report: Mapping[str, Any]) -> di
                                    "status": value.get("status"), "metrics": _safe_metrics(value.get("metrics")),
                                    "wall_seconds": _safe_number(value.get("wall_seconds")),
                                    "estimated_usd": _safe_number(value.get("usage", {}).get("estimated_usd")),
-                                   "cases": [{"case_id": case["case_id"], "status": case["status"]}
+                                   "cases": [{"case_id": case["case_id"], "status": case["status"],
+                                              **({"checks": [{"check_id": item["check_id"], "status": item["status"]}
+                                                             for item in sorted(case["checks"], key=lambda item: item["check_id"])]}
+                                                 if len(protocol.checks) > 1 else {})}
                                              for case in value.get("cases", [])
                                              if case.get("case_id") in {item["id"] for item in envelope["contract"]["cases"]}
                                              and case.get("status") in STATUSES]}

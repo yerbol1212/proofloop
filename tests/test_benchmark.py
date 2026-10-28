@@ -10,7 +10,7 @@ from unittest.mock import patch
 
 from proofloop.benchmark import (approve_manifest, baseline_prompt, comparison_metrics, evaluate_guided, evaluate_sam,
                                  evaluate_spark, manifest_hash, public_summary, request_requirements,
-                                 run_benchmark, validate_manifest, verify_media)
+                                 run_benchmark, validate_manifest, validate_report, verify_media)
 from proofloop.core import Protocol, ValidationError
 from proofloop.meta import MetaAPIError, SAM_MODEL, SPARK_MODEL
 
@@ -78,6 +78,22 @@ def spark_result(case, status="pass"):
             "response": {"status": "completed", "model": SPARK_MODEL},
             "parsed": {"checks": [{"check_id": "glass-dispense", "status": status,
                                     "reason": "Authored baseline test fixture"}]}}
+
+
+def complete_report(envelope, *, conditions=("sam", "spark")):
+    """A complete authored report with computed metrics, never real inference."""
+    report = {"contract_hash": envelope["contract_hash"], "status": "completed", "inference_origin": "authored_fixture",
+              "conditions": {}}
+    for name in conditions:
+        if name == "spark":
+            results = {case["id"]: spark_result(case, case["annotation"]["status"])
+                       for case in envelope["contract"]["cases"]}
+            cases = evaluate_spark(envelope, results)
+        else:
+            cases = evaluate_sam(envelope, sam_results(envelope))
+        report["conditions"][name] = {"status": "completed", "cases": cases,
+                                     "metrics": comparison_metrics(envelope, cases)}
+    return report
 
 
 def media_fixture(root, envelope):
@@ -299,15 +315,17 @@ class RecordedBenchmarkTests(unittest.TestCase):
 
     def test_export_preserves_explicit_role_and_version_without_guessing_legacy(self):
         envelope = approved()
-        report = {"contract_hash": envelope["contract_hash"], "status": "completed", "conditions": {"guided": {
-            "status": "completed", "observation_version": "normalized_boxes_v2", "cases": [], "metrics": {}}}}
+        report = complete_report(envelope, conditions=("guided",))
+        report["conditions"]["guided"]["observation_version"] = "normalized_boxes_v2"
         legacy = public_summary(envelope, report)
         self.assertNotIn("evaluation_role", legacy)
         self.assertEqual("normalized_boxes_v2", legacy["conditions"]["guided"]["observation_version"])
         report["evaluation_role"] = "development_reprocessing"
         self.assertEqual("development_reprocessing", public_summary(envelope, report)["evaluation_role"])
         report["conditions"]["guided"]["observation_version"] = "PRIVATE_SENTINEL"
-        self.assertNotIn("observation_version", public_summary(envelope, report)["conditions"]["guided"])
+        with self.assertRaisesRegex(ValidationError, "observation version"):
+            public_summary(envelope, report)
+        report["conditions"]["guided"]["observation_version"] = "normalized_boxes_v2"
         report["evaluation_role"] = "arbitrary_holdout_claim"
         with self.assertRaisesRegex(ValidationError, "Evaluation role"):
             public_summary(envelope, report)
@@ -368,6 +386,161 @@ class RecordedBenchmarkTests(unittest.TestCase):
             self.assertIn("Spark", exported["conditions"]["guided"]["method_note"])
             self.assertNotIn("locator", json.dumps(exported))
 
+    def test_completed_sam_and_guided_cannot_strip_their_grounded_observations(self):
+        envelope = approved()
+        for name in ("sam", "guided"):
+            report = complete_report(envelope, conditions=(name,))
+            del report["conditions"][name]["cases"][0]["grounding"]
+            with self.subTest(condition=name), self.assertRaisesRegex(ValidationError, "require saved grounded"):
+                public_summary(envelope, report)
+        # Spark judgments legitimately have no SAM grounding to replay.
+        self.assertTrue(validate_report(envelope, complete_report(envelope, conditions=("spark",)))["metrics_recomputed"])
+
+    def test_completed_report_rejects_invented_metrics_even_when_export_is_allowlisted(self):
+        envelope = approved()
+        for mutate in (lambda r: r["conditions"]["sam"]["metrics"].update(accuracy=0.123),
+                       lambda r: r["conditions"]["sam"]["metrics"].update(correct=99),
+                       lambda r: r["conditions"]["sam"]["metrics"]["confusion"]["pass"].update(fail=99),
+                       lambda r: r["conditions"]["sam"]["metrics"].update(correct=True)):
+            report = complete_report(envelope)
+            mutate(report)
+            with self.assertRaisesRegex(ValidationError, "metrics"):
+                public_summary(envelope, report)
+
+    def test_completed_report_requires_exact_cases_checks_statuses_and_frame_bindings(self):
+        envelope = approved()
+        def condition(r):
+            return r["conditions"]["sam"]
+        mutations = [lambda r: condition(r)["cases"].pop(),
+                     lambda r: condition(r)["cases"].__setitem__(1, deepcopy(condition(r)["cases"][0])),
+                     lambda r: condition(r)["cases"][0].update(case_id="outside"),
+                     lambda r: condition(r)["cases"][0].update(case_id=[]),
+                     lambda r: condition(r)["cases"][0]["frame_hashes"].reverse(),
+                     lambda r: condition(r)["cases"][0]["checks"].clear(),
+                     lambda r: condition(r)["cases"][0]["checks"][0].update(check_id=[]),
+                     lambda r: condition(r)["cases"][0]["checks"][0].update(status=True),
+                     lambda r: condition(r)["cases"][0]["checks"][0].update(status="pass")]
+        for mutate in mutations:
+            report = complete_report(envelope)
+            mutate(report)
+            with self.assertRaises(ValidationError):
+                validate_report(envelope, report)
+
+    def test_checker_replay_rejects_a_consistent_looking_relabel_with_recomputed_metrics(self):
+        envelope = approved()
+        report = complete_report(envelope)
+        condition = report["conditions"]["sam"]
+        case = condition["cases"][0]
+        case["checks"][0]["status"] = case["status"] = "pass"
+        condition["metrics"] = comparison_metrics(envelope, condition["cases"])
+        with self.assertRaisesRegex(ValidationError, "replayed grounded"):
+            validate_report(envelope, report)
+
+    def test_checker_replay_rejects_changed_observation_values_and_evidence_bindings(self):
+        envelope = approved()
+        for mutate in (lambda c: c["grounding"]["observations"][0].update(confidence=.99),
+                       lambda c: c["grounding"]["observations"][0].update(value="dispense"),
+                       lambda c: c["checks"][0].update(evidence_ids=["unbound"]),
+                       lambda c: next(iter(c["grounding"]["evidence"]["observations"].values())).update(stable_samples=999)):
+            report = complete_report(envelope)
+            mutate(report["conditions"]["sam"]["cases"][0])
+            with self.assertRaises(ValidationError):
+                validate_report(envelope, report)
+
+    def test_guided_replay_accepts_uniform_legacy_or_known_version_but_not_mixes(self):
+        envelope = approved()
+        raw = sam_results(envelope)
+        for by_frame in raw.values():
+            for by_object in by_frame.values():
+                for value in by_object.values():
+                    value["guided_provenance"] = {"method": "spark_box_guided_sam", "locator_model": SPARK_MODEL}
+        self.assertEqual(2, len(evaluate_guided(envelope, raw)))
+        with self.assertRaisesRegex(ValidationError, "declared"):
+            evaluate_guided(envelope, raw, observation_version="normalized_boxes_v2")
+        first = next(iter(raw["initial"].values()))["glass"]
+        first["guided_provenance"]["version"] = "incorrect_version"
+        with self.assertRaisesRegex(ValidationError, "Unknown"):
+            evaluate_guided(envelope, raw)
+        first["guided_provenance"]["version"] = "normalized_boxes_v2"
+        with self.assertRaisesRegex(ValidationError, "mix"):
+            evaluate_guided(envelope, raw)
+        for by_frame in raw.values():
+            for by_object in by_frame.values():
+                for value in by_object.values():
+                    value["guided_provenance"]["version"] = "normalized_boxes_v2"
+        self.assertEqual(2, len(evaluate_guided(envelope, raw, observation_version="normalized_boxes_v2")))
+
+    def test_completed_sidecar_cannot_drop_cases_or_change_decisions(self):
+        envelope = approved()
+        report = complete_report(envelope)
+        raw_spark = {case["id"]: spark_result(case, case["annotation"]["status"])
+                     for case in envelope["contract"]["cases"]}
+        raw_sam = sam_results(envelope)
+        audit = validate_report(envelope, report, raw_results={"sam": raw_sam, "spark": raw_spark})
+        self.assertEqual(2, audit["inference_sidecars_replayed"])
+        self.assertEqual(2, audit["grounded_decisions_replayed"])
+        changed = deepcopy(raw_spark)
+        changed["initial"]["parsed"]["checks"][0]["status"] = "pass"
+        with self.assertRaisesRegex(ValidationError, "private inference"):
+            validate_report(envelope, report, raw_results={"spark": changed})
+        raw_sam.pop("initial")
+        with self.assertRaisesRegex(ValidationError, "cover every"):
+            validate_report(envelope, report, raw_results={"sam": raw_sam})
+
+    def test_condition_version_must_match_the_actual_guided_sidecar(self):
+        envelope = approved()
+        report = complete_report(envelope, conditions=("guided",))
+        raw = sam_results(envelope)
+        for by_frame in raw.values():
+            for by_object in by_frame.values():
+                for value in by_object.values():
+                    value["guided_provenance"] = {"method": "spark_box_guided_sam", "locator_model": SPARK_MODEL}
+        self.assertEqual(1, validate_report(envelope, report, raw_results={"guided": raw})["inference_sidecars_replayed"])
+        report["conditions"]["guided"]["observation_version"] = "normalized_boxes_v2"
+        with self.assertRaisesRegex(ValidationError, "declared observation version"):
+            validate_report(envelope, report, raw_results={"guided": raw})
+        for by_frame in raw.values():
+            for by_object in by_frame.values():
+                for value in by_object.values():
+                    value["guided_provenance"]["version"] = "normalized_boxes_v2"
+        self.assertEqual(1, validate_report(envelope, report, raw_results={"guided": raw})["inference_sidecars_replayed"])
+        del report["conditions"]["guided"]["observation_version"]
+        with self.assertRaisesRegex(ValidationError, "requires a declared"):
+            validate_report(envelope, report, raw_results={"guided": raw})
+
+    def test_error_condition_stays_unscored_and_cannot_claim_report_audit_success(self):
+        envelope = approved()
+        report = {"contract_hash": envelope["contract_hash"], "status": "error", "conditions": {"sam": {"status": "error"}}}
+        audit = validate_report(envelope, report)
+        self.assertFalse(audit["verdict_consistency_checked"])
+        self.assertFalse(audit["metrics_recomputed"])
+        self.assertEqual(0, audit["grounded_decisions_replayed"])
+        self.assertIsNone(public_summary(envelope, report)["conditions"]["sam"]["metrics"])
+        report["conditions"]["sam"]["metrics"] = {}
+        with self.assertRaisesRegex(ValidationError, "Incomplete"):
+            public_summary(envelope, report)
+
+    def test_multi_check_export_binds_each_verdict_even_when_aggregate_stays_fail(self):
+        value = contract()
+        value["protocol"]["checks"].append({**value["protocol"]["checks"][0], "id": "glass-staging", "region_id": "staging"})
+        for case in value["cases"]:
+            checks = {"glass-dispense": "fail" if case["id"] == "initial" else "pass",
+                      "glass-staging": "pass" if case["id"] == "initial" else "fail"}
+            case["annotation"].update(status="fail", checks=checks)
+        envelope = approved(value)
+        cases = evaluate_sam(envelope, sam_results(envelope))
+        for case in cases:
+            case.pop("grounding")  # This fixture represents a baseline with no grounded observations.
+        report = {"contract_hash": envelope["contract_hash"], "status": "completed", "conditions": {"spark": {
+            "status": "completed", "cases": cases, "metrics": comparison_metrics(envelope, cases)}}}
+        before = public_summary(envelope, report)
+        for check in report["conditions"]["spark"]["cases"][0]["checks"]:
+            if check["status"] == "pass": check["status"] = "unknown"
+        after = public_summary(envelope, report)
+        self.assertEqual("fail", after["conditions"]["spark"]["cases"][0]["status"])
+        self.assertNotEqual(before, after)
+        self.assertIn("checks", after["conditions"]["spark"]["cases"][0])
+
     def test_run_rejects_media_mutated_during_request(self):
         class MutatingClient:
             retries = 0
@@ -391,11 +564,11 @@ class RecordedBenchmarkTests(unittest.TestCase):
         envelope = approved()
         envelope["contract"]["sources"][0]["license"]["extra_private"] = "PRIVATE_SENTINEL"
         envelope["contract_hash"] = manifest_hash(envelope["contract"])
-        report = {"contract_hash": envelope["contract_hash"], "status": "completed",
-                  "inference_origin": "live_meta_api", "limits": ["PRIVATE_SENTINEL"],
-                  "conditions": {"sam": {"status": "completed", "metrics": {"extra_private": "PRIVATE_SENTINEL"},
-                                           "usage": {"requests": ["PRIVATE_SENTINEL"]},
-                                           "cases": [{"case_id": "initial", "status": "fail", "raw": "PRIVATE_SENTINEL"}]}}}
+        report = complete_report(envelope, conditions=("sam",))
+        report["limits"] = ["PRIVATE_SENTINEL"]
+        report["conditions"]["sam"]["metrics"]["extra_private"] = "PRIVATE_SENTINEL"
+        report["conditions"]["sam"]["usage"] = {"requests": ["PRIVATE_SENTINEL"]}
+        report["conditions"]["sam"]["cases"][0]["raw"] = "PRIVATE_SENTINEL"
         summary = public_summary(envelope, report)
         self.assertNotIn("PRIVATE_SENTINEL", json.dumps(summary))
         self.assertEqual({"name", "url", "attribution"}, set(summary["sources"][0]["license"]))

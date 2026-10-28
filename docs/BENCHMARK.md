@@ -138,3 +138,7 @@ This explicit export selects publisher/license attribution, source digests, case
 ## Verification
 
 `python -m unittest tests.test_benchmark` uses clearly authored, nonphotographic transport and adapter-shape fixtures. It checks frozen labels, source binding, duplicate/stale/ambiguous observations, calibration, review provenance, budget rejection, equal-image baseline input, all-UNKNOWN behavior, error handling and export filtering. Passing these tests is software verification, not model-performance evidence.
+
+Completed reports are now validated before export and Video Lab display: exact case/frame/check coverage, valid per-check statuses, consistent aggregate verdicts and metrics recomputed from those decisions. SAM conditions require saved grounded observations, which are replayed through the checker. Available private inference sidecars are also replayed; changed sidecars invalidate the Lab cache. Unknown/mixed guided versions are rejected while genuinely unversioned historical results keep their format. Multi-check public cases bind individual check statuses, so an existing aggregate FAIL cannot conceal another altered verdict.
+
+This checks consistency of the saved records. It is not independent proof of API origin, image semantics, capture time or physical execution. The four original published comparisons regenerate unchanged. Their scores were consistent; the correction hardens imported/replayed records against malformed or contradictory data.

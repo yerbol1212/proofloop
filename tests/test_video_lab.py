@@ -9,7 +9,7 @@ import tempfile
 import threading
 import unittest
 
-from proofloop.benchmark import approve_manifest, evaluate_sam, evaluate_spark, manifest_hash, public_summary
+from proofloop.benchmark import approve_manifest, comparison_metrics, evaluate_sam, evaluate_spark, manifest_hash, public_summary
 from proofloop.server import create_server
 from proofloop.video_lab import VideoLab
 from tests.test_benchmark import approved, media_fixture, sam_results, spark_result
@@ -38,6 +38,8 @@ def fixture(root):
                           "metrics": {}, "usage": {"estimated_usd": .01}, "wall_seconds": 1},
                   "spark": {"status": "completed", "cases": evaluate_spark(envelope, raw_spark),
                             "metrics": {}, "usage": {"estimated_usd": .02}, "wall_seconds": 2}}}
+    for condition in report["conditions"].values():
+        condition["metrics"] = comparison_metrics(envelope, condition["cases"])
     run = root / "artifacts/local/online-benchmark-fixture"
     save(run / "approved-manifest.json", envelope)
     save(run / "report.json", report)
@@ -134,6 +136,28 @@ class VideoLabTests(unittest.TestCase):
         self.assertNotIn("evaluation_role", run)
         self.assertNotIn("observation_version", run["conditions"]["guided"])
 
+    def test_private_check_or_metric_tampering_is_rejected_without_republishing_summary(self):
+        for mutation in (lambda r: r["conditions"]["sam"]["cases"][0]["checks"][0].update(status="pass"),
+                         lambda r: r["conditions"]["sam"]["metrics"].update(accuracy=1)):
+            report = deepcopy(self.report)
+            mutation(report)
+            save(self.run / "report.json", report)
+            self.assertFalse(self.lab.snapshot()["available"])
+
+    def test_sidecar_changes_invalidate_cached_projection_and_are_replayed(self):
+        self.assertTrue(self.lab.snapshot()["available"])
+        raw = sam_results(self.envelope, empty=True)
+        sidecar = self.run / "sam/results.json"
+        save(sidecar, raw)
+        run = self.lab.snapshot()["runs"][0]
+        self.assertTrue(run["report_integrity"]["metrics_recomputed"])
+        self.assertEqual(1, run["report_integrity"]["inference_sidecars_replayed"])
+        self.assertEqual(2, run["report_integrity"]["grounded_decisions_replayed"])
+        # The same UNKNOWN verdict from a different/no input is insufficient.
+        raw.pop("initial")
+        save(sidecar, raw)
+        self.assertFalse(self.lab.snapshot()["available"])
+
     def test_original_video_change_invalidates_a_cached_projection(self):
         self.assertTrue(self.lab.snapshot()["available"])
         video = self.root / self.envelope["contract"]["sources"][0]["file"]
@@ -144,8 +168,10 @@ class VideoLabTests(unittest.TestCase):
         report = deepcopy(self.report)
         report["conditions"]["sam"]["cases"][0]["frame_hashes"].reverse()
         save(self.run / "report.json", report)
-        # Regenerating a public summary does not conceal a bad private binding.
-        save(self.summary, public_summary(self.envelope, report))
+        # Export itself now rejects the bad binding before publication.
+        from proofloop.core import ValidationError
+        with self.assertRaises(ValidationError):
+            public_summary(self.envelope, report)
         self.assertFalse(self.lab.snapshot()["available"])
         report["contract_hash"] = "0" * 64
         save(self.run / "report.json", report)

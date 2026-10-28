@@ -14,7 +14,7 @@ import struct
 import threading
 from typing import Any, Mapping, Sequence
 
-from .benchmark import AVAILABLE_CONDITIONS, GUIDED_NOTE, ROOT, STATUSES, _approved, _file_hash, public_summary, verify_media
+from .benchmark import AVAILABLE_CONDITIONS, GUIDED_NOTE, ROOT, STATUSES, _approved, _file_hash, public_summary, validate_report, verify_media
 from .capture import _jpeg_dimensions
 from .core import ValidationError
 
@@ -112,6 +112,7 @@ class VideoLab:
         with self._lock:
             reports, summaries = self._paths()
             records = reports + summaries + [path.parent / "approved-manifest.json" for path in reports]
+            records += [path.parent / name / "results.json" for path in reports for name in AVAILABLE_CONDITIONS]
             key = self._stats(records + list(self._tracked_paths))
             if key == self._fingerprint:
                 return deepcopy(self._snapshot)
@@ -157,6 +158,12 @@ class VideoLab:
         if summary is None:
             raise ValidationError("Private lab run differs from its reviewed public summary")
         paths = verify_media(envelope, project_root=self.root)
+        sidecars = {}
+        for name, condition in report["conditions"].items():
+            candidate = report_path.parent / name / "results.json"
+            if candidate.exists() and condition.get("status") == "completed":
+                sidecars[name] = _read(_inside(candidate, self.root / "artifacts/local"), MAX_REPORT_BYTES)
+        integrity = validate_report(envelope, report, raw_results=sidecars)
         conditions = report.get("conditions")
         if not isinstance(conditions, Mapping) or set(conditions) - set(AVAILABLE_CONDITIONS):
             raise ValidationError("Lab conditions are invalid")
@@ -238,6 +245,7 @@ class VideoLab:
         return ({"id": run_id, "title": title, "contract_hash": envelope["contract_hash"],
                  **({"evaluation_role": evaluation_role} if evaluation_role is not None else {}),
                  "source_kind": "external_recorded_video", "inference_origin": report.get("inference_origin"),
+                 "report_integrity": integrity,
                  "requirements": contract["requirements"], "task_summary": task_summary, "objects": list(protocol.objects),
                  "concepts": deepcopy(contract["concepts"]), "case_count": len(cases), "source_count": len(sources),
                  "metrics": {name: deepcopy(summary["conditions"][name].get("metrics")) for name in by_condition},
