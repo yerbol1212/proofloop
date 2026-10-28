@@ -92,6 +92,7 @@ export interface ActiveTask {
   model?: string
   perception_mode?: 'concept' | 'guided'
   perception_note?: string
+  perception_version?: string
 }
 export interface TaskDraft {
   draft_id: string
@@ -109,6 +110,7 @@ export interface TaskDraft {
   claim_limit: string
   perception_mode?: 'concept' | 'guided'
   perception_note?: string
+  perception_version?: string
 }
 export interface LocalPhoto {
   data_url: string

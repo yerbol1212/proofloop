@@ -1,5 +1,13 @@
 # Interactive interface validation — 28 October 2026
 
+## Normalized grounding revision
+
+- The updated production frontend passed strict TypeScript/Vite checks. The backend suite has 334 tests, including normalized geometry, separate uncertainty gates, unchanged low-confidence abstention, method-version review and evaluation-role behavior.
+- The Video Lab visibly preserved guided v1's original 2/4 result and displayed its method as original. A separate v2 development replay showed 4/4 with an explicit exposed-source warning; the distinct new-source experiment showed guided 3/4, text SAM 0/4 and Spark 4/4. Selection defaults to the new-source experiment, without sorting by score.
+- The remaining episode 000006 dispense UNKNOWN and reviewed PASS label were both visible. Case switching preserved the original source images and calibration. Opening/switching these views made no model requests.
+- Desktop viewport was verified as 1536 × 1024; mobile as 390 × 844, with document/body width 390 px. Browser error/warning inspection was empty. Final screenshots `guided-v2-lab-desktop.jpg` and `guided-v2-lab-mobile.jpg` remain in the parent workspace's private `qa/proofloop-ui/` folder and were inspected in the image viewer.
+- Guided task review includes its method version. A backend regression verifies that older reviewed versions cannot activate or inspect, and mismatched inference versions cannot verify a task. UI changes do not establish physical recovery or general perception accuracy.
+
 ## Task editor and recorded Video Lab milestone
 
 - Python 3.12: 321 offline tests pass. The backend milestone `b6a5ebe` passed GitHub CI on Python 3.9 and 3.12. The final interface production build also passes strict TypeScript checks.

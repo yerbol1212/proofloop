@@ -1806,6 +1806,13 @@ select:focus-visible,
 .lab-metrics tbody th {
   font-weight: 600;
 }
+.lab-method-version {
+  display: block;
+  margin-top: 5px;
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 400;
+}
 .lab-limit {
   font-size: 13px;
   color: var(--muted);

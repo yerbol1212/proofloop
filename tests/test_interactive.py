@@ -18,6 +18,7 @@ import zlib
 
 from proofloop.core import ValidationError
 from proofloop.interactive import InteractiveEngine, FRESHNESS_MS, TOKEN_LIFETIME_MS, UPRIGHT_IMAGE_MESSAGE
+from proofloop.guided import GUIDED_VERSION, guided_segment_pair
 from proofloop.meta import MetaAPIError, SAM_MODEL
 from proofloop.session import approve_contract, contract_hash, evaluate_session, session_contract
 from tests.test_session import capture_manifest, detection
@@ -794,8 +795,8 @@ class InteractiveTests(unittest.TestCase):
             for frame in value["parsed"]["frames"]:
                 frame["height"] = 100
                 for target in frame["objects"]:
-                    target["candidates"] = [{"x1": 60 if target["object_id"] == "spoon" else 10,
-                                               "y1": 10, "x2": 80 if target["object_id"] == "spoon" else 30, "y2": 30}]
+                    target["candidates"] = [{"x1": 600 if target["object_id"] == "spoon" else 100,
+                                               "y1": 100, "x2": 810 if target["object_id"] == "spoon" else 310, "y2": 310}]
             if locator_transform:
                 locator_transform(value, paths)
         def refined(value, path):
@@ -828,8 +829,11 @@ class InteractiveTests(unittest.TestCase):
         draft, state = self.activate_guided()
         self.assertEqual("concept", old["perception_mode"])
         self.assertEqual("guided", draft["perception_mode"])
+        self.assertEqual(GUIDED_VERSION, draft["perception_version"])
+        self.assertIn(GUIDED_VERSION, draft["perception_note"])
         self.assertIn("does not independently verify identity", draft["perception_note"])
         self.assertEqual("guided", state["active_task"]["perception_mode"])
+        self.assertEqual(GUIDED_VERSION, state["active_task"]["perception_version"])
         self.assertEqual(draft["draft_hash"], state["active_task"]["task_hash"])
         self.assertNotEqual(old["protocol_hash"], state["active_task"]["protocol_hash"])
         self.assertEqual(("unknown", []), (state["status"], state["images"]))
@@ -846,11 +850,13 @@ class InteractiveTests(unittest.TestCase):
         self.assertIn("Spark assigns object identity", state["source_note"])
         self.assertIn("without independently verifying identity", state["perception_provenance"]["identity_basis"])
         self.assertTrue(state["perception_provenance"]["task_independent_locator"])
+        self.assertEqual(GUIDED_VERSION, state["perception_provenance"]["version"])
         self.assertNotIn("Place fork", client.calls[0][1])
         self.assertNotIn('"regions"', client.calls[0][1])
         self.assertTrue(all(len(image["boxes"]) == 2 for image in state["images"]))
         capture = next(self.engine._directory.glob("inspection-*/capture.json"))
         self.assertEqual("guided", json.loads(capture.read_text())["perception_mode"])
+        self.assertEqual(GUIDED_VERSION, json.loads(capture.read_text())["perception_version"])
         self.assertTrue(next(self.engine._directory.glob("inspection-*/guided.json")).is_file())
 
     def test_missing_guided_anchors_remain_unknown_without_fabricated_sam_completion(self):
@@ -868,6 +874,22 @@ class InteractiveTests(unittest.TestCase):
         self.assertEqual(2, state["perception_provenance"]["missing_or_ambiguous_anchors"])
         self.assertIsNone(state["proposal"])
         self.assertFalse(list(self.engine._directory.glob("inspection-*/result-*-fork.json")))
+
+    def test_coarse_guided_boundaries_do_not_waive_the_reviewed_sam_confidence_gate(self):
+        self.activate_guided()
+        def coarse(value, _):
+            for frame in value["parsed"]["frames"]:
+                for target in frame["objects"]:
+                    target["boundary_uncertain"] = True
+        def weak(value, _):
+            value["objects"][0]["confidence"] = .36
+        client = self.guided_client(locator_transform=coarse, sam_transform=weak)
+        state = self.engine.inspect_pair(self.guided_payload())
+        self.assertEqual(5, len(client.calls))
+        self.assertEqual("unknown", state["status"])
+        self.assertTrue(all(check["status"] == "unknown" for check in state["checks"]))
+        self.assertEqual("confidence_below_threshold", state["inspection_request"]["reason"])
+        self.assertIsNone(state["proposal"])
 
     def test_guided_wrong_locator_source_or_sam_source_stops_without_pass(self):
         for index, which in enumerate(("locator", "sam")):
@@ -905,6 +927,61 @@ class InteractiveTests(unittest.TestCase):
         draft = self.engine.draft_task(self.task_payload())["task_draft"]
         with self.assertRaises(ValidationError):
             self.engine.activate_task(dict(self.activate_payload(draft), perception_mode="guided"))
+
+    def test_guided_version_is_bound_in_exact_review_hash_and_private_approval(self):
+        draft, state = self.activate_guided()
+        content = {key: value for key, value in draft.items() if key != "draft_hash"}
+        digest = lambda value: hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":"), allow_nan=False).encode()).hexdigest()
+        self.assertEqual(draft["draft_hash"], digest(content))
+        content["perception_version"] = "different-method-version"
+        self.assertNotEqual(draft["draft_hash"], digest(content))
+        self.assertEqual(draft["draft_hash"], state["active_task"]["task_hash"])
+        approval = next(self.engine._directory.glob("task-approval-*.json"))
+        self.assertEqual(GUIDED_VERSION, json.loads(approval.read_text())["perception_version"])
+
+    def test_old_or_missing_guided_version_cannot_activate_under_new_method(self):
+        self.install_compiler(placements={"fork": "left", "spoon": "right"})
+        draft = self.engine.draft_task(dict(self.task_payload(), perception_mode="guided"))["task_draft"]
+        with patch("proofloop.interactive.GUIDED_VERSION", "normalized_boxes_future"):
+            with self.assertRaisesRegex(ValidationError, "review a new task draft"):
+                self.engine.activate_task(self.activate_payload(draft))
+        self.engine._state["task_draft"].pop("perception_version")
+        with self.assertRaisesRegex(ValidationError, "review a new task draft"):
+            self.engine.activate_task(self.activate_payload(draft))
+        self.assertEqual("concept", self.engine.snapshot()["active_task"]["perception_mode"])
+        self.assertFalse(list(self.engine._directory.glob("task-approval-*.json")))
+
+    def test_active_guided_version_change_requires_new_review_before_paid_inspection(self):
+        self.activate_guided()
+        client = self.guided_client()
+        payload = self.guided_payload()
+        with patch("proofloop.interactive.GUIDED_VERSION", "normalized_boxes_future"):
+            with self.assertRaisesRegex(ValidationError, "review a new task draft before inspection"):
+                self.engine.inspect_pair(payload)
+        self.assertEqual([], client.calls)
+        self.assertEqual("unknown", self.engine.snapshot()["status"])
+
+    def test_guided_result_from_another_version_cannot_verify_current_task(self):
+        self.activate_guided()
+        self.guided_client()
+        def wrong_version(*args, **kwargs):
+            result = guided_segment_pair(*args, **kwargs)
+            result["provenance"]["version"] = "unreviewed-method"
+            return result
+        with patch("proofloop.interactive.guided_segment_pair", side_effect=wrong_version):
+            state = self.engine.inspect_pair(self.guided_payload())
+        self.assertEqual(("error", "unknown"), (state["phase"], state["status"]))
+        self.assertIsNone(state["verified_at_ms"])
+        self.assertIsNone(state["perception_provenance"])
+
+    def test_guided_version_changes_do_not_change_default_concept_request_or_review_shape(self):
+        self.install_compiler()
+        draft = self.engine.draft_task(self.task_payload())["task_draft"]
+        self.assertNotIn("perception_version", draft)
+        with patch("proofloop.interactive.GUIDED_VERSION", "normalized_boxes_future"):
+            state = self.engine.activate_task(self.activate_payload(draft))
+        self.assertEqual("concept", state["active_task"]["perception_mode"])
+        self.assertNotIn("perception_version", state["active_task"])
 
 
 if __name__ == "__main__":

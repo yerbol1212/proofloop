@@ -1079,7 +1079,7 @@ function EvidenceLog({ state }: { state: Snapshot }) {
               <dt>Perception</dt>
               <dd>
                 {state.active_task.perception_mode === 'guided'
-                  ? 'Spark-guided SAM'
+                  ? `Spark-guided SAM${state.active_task.perception_version === 'normalized_boxes_v2' ? ' v2' : ''}`
                   : 'SAM concept prompts'}
               </dd>
             </div>

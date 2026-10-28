@@ -111,6 +111,29 @@ class VideoLabTests(unittest.TestCase):
         self.assertIn("does not independently prove", run["conditions"]["guided"]["method_note"])
         self.assertTrue(any("does not independently prove" in limit for limit in run["limits"]))
 
+    def test_normalized_version_and_declared_role_control_titles_without_relabeling_legacy(self):
+        self.assertEqual("Text-prompt development pilot", self.lab.snapshot()["runs"][0]["title"])
+        report = deepcopy(self.report)
+        report["conditions"]["guided"] = deepcopy(report["conditions"]["sam"])
+        report["conditions"]["guided"]["observation_version"] = "normalized_boxes_v2"
+        for role, title in (("development_reprocessing", "Normalized grounding — development replay"),
+                            ("new_source_holdback", "Normalized grounding — new sources")):
+            report["evaluation_role"] = role
+            save(self.run / "report.json", report)
+            save(self.summary, public_summary(self.envelope, report))
+            run = self.lab.snapshot()["runs"][0]
+            self.assertEqual(title, run["title"])
+            self.assertEqual(role, run["evaluation_role"])
+            self.assertEqual("normalized_boxes_v2", run["conditions"]["guided"]["observation_version"])
+        del report["evaluation_role"]
+        del report["conditions"]["guided"]["observation_version"]
+        save(self.run / "report.json", report)
+        save(self.summary, public_summary(self.envelope, report))
+        run = self.lab.snapshot()["runs"][0]
+        self.assertEqual("Guided perception comparison", run["title"])
+        self.assertNotIn("evaluation_role", run)
+        self.assertNotIn("observation_version", run["conditions"]["guided"])
+
     def test_original_video_change_invalidates_a_cached_projection(self):
         self.assertTrue(self.lab.snapshot()["available"])
         video = self.root / self.envelope["contract"]["sources"][0]["file"]

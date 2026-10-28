@@ -6,13 +6,18 @@ ProofLoop turns a confirmed procedure into inspectable checks, evaluates observa
 
 ## Current status
 
-This repository is the feasibility implementation for the Meta Global AI Developer Hackathon. The local workbench now supports **editable reviewed task contracts**, targeted requests for better evidence, fresh correction checks and a read-only **Video lab**. Spark drafts placement checks for an explicit inventory; activating the reviewed contract invalidates previous evidence. Unknown observations prompt inspection before a physical repair is proposed. Optional Spark-guided SAM adds object localization and mask refinement, with Spark-assigned identity explicitly disclosed.
+This repository is the feasibility implementation for the Meta Global AI Developer Hackathon. The local workbench now supports **editable reviewed task contracts**, targeted requests for better evidence, fresh correction checks and a read-only **Video lab**. Spark drafts placement checks for an explicit inventory; activating the reviewed contract invalidates previous evidence. Unknown observations prompt inspection before a physical repair is proposed. Optional Spark-guided SAM now uses normalized coordinate grounding and separates identity, visibility and boundary uncertainty. Its method version is bound to task review; Spark-assigned identity remains explicit.
 
-Real online tests now cover **six LeRobot coffee recordings and 12 selected state pairs**, without new participant filming. On the initial eight-case pilot, SAM + checker matched **0/8** labels (all UNKNOWN), while Spark alone matched **7/8**. On four new-source cases, guided SAM + checker matched **2/4**, concept-only SAM **0/4**, and Spark alone **4/4**. The original failure is preserved. These are authored image-zone placement labels on normal demonstrations, not natural robot errors, action recognition, physical closed-loop recovery or evidence of superiority over Spark. See the [measured online report](artifacts/feasibility/online-video-20261028.md), [source credits](docs/ONLINE-VIDEO-SOURCES.md) and [benchmark guide](docs/BENCHMARK.md).
+The online corpus contains **eight original LeRobot coffee recordings and 16 unique authored placement pairs**. The original pilot remains **text SAM 0/8** label matches (all UNKNOWN), versus **Spark 7/8**. Historical guided v1 matched **2/4** on episodes 000004/000005, versus text SAM **0/4** and Spark **4/4**; those results are unchanged.
+
+Normalized guided v2 matched **4/4 on a development replay** of those already tested sources. On **four fresh pairs from episodes 000006/000007**, v2 matched **3/4**, with one UNKNOWN; text SAM matched **0/4**, Spark **4/4**. V2 was tested on four replay pairs and four fresh pairs, not the whole corpus. The remaining case lacks a supported first-view mask and has a second-view SAM score of 0.746 below the unchanged 0.8 threshold. This is partial progress, not a complete fix or better accuracy than Spark. See the [guided-fix report](artifacts/feasibility/guided-fix-20261028.md) and [historical results](artifacts/feasibility/online-video-20261028.md).
+
+These are scoped image-zone checks on normal demonstrations. They do not establish natural-error recognition, action recognition or physical closed-loop recovery. [Source credits](docs/ONLINE-VIDEO-SOURCES.md) and the [benchmark guide](docs/BENCHMARK.md) document provenance and correlated-case limits.
 
 The earlier owned phone recording produced **correct PASS → misplaced fork FAIL → covered UNKNOWN → fresh corrected PASS** using real Spark/SAM calls. The [phone report](artifacts/feasibility/phone-session-20261028.md) retains its selected-frame limits: the person did not follow a planner proposal generated afterward. Physical interactive closure remains unvalidated.
 
-**321 Python 3.12 tests pass**. GitHub CI passed Python 3.9 and 3.12 at [b6a5ebe](https://github.com/yerbol1212/proofloop/commit/b6a5ebe); software tests do not establish perception accuracy.
+**334 Python 3.12 tests pass**. Earlier GitHub CI passed Python 3.9 and 3.12 at [b6a5ebe](https://github.com/yerbol1212/proofloop/commit/b6a5ebe); software tests do not establish perception accuracy.
+
 See [feasibility status](docs/FEASIBILITY.md), [capture checklist](docs/CAPTURE.md) and [contributions](CONTRIBUTIONS.md).
 
 ## Open the interactive workbench

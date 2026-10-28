@@ -39,8 +39,16 @@ interface LabRun {
   task_summary?: string
   case_count: number
   source_count: number
+  evaluation_role?: 'development_reprocessing' | 'new_source_holdback'
   metrics: Record<string, Metric>
-  conditions: Record<string, { estimated_usd: number; wall_seconds: number }>
+  conditions: Record<
+    string,
+    {
+      estimated_usd: number
+      wall_seconds: number
+      observation_version?: string
+    }
+  >
   limits: string[]
   cases: LabCase[]
 }
@@ -91,7 +99,10 @@ export function VideoLab() {
       })
     return () => controller.abort()
   }, [revision])
-  const run = runs.find((item) => item.id === selectedRun) || runs[0]
+  const run =
+    runs.find((item) => item.id === selectedRun) ||
+    runs.find((item) => item.evaluation_role === 'new_source_holdback') ||
+    runs[0]
   const current =
     run?.cases.find((item) => item.id === selectedCase) || run?.cases[0]
   if (loading)
@@ -162,6 +173,13 @@ export function VideoLab() {
             <p className="lab-requirements">
               {run.task_summary || run.requirements}
             </p>
+            {run.evaluation_role ? (
+              <p className="lab-limit">
+                {run.evaluation_role === 'development_reprocessing'
+                  ? 'Development replay: these examples were already exposed during debugging. This is not new-source evidence.'
+                  : 'New-source check: these recordings were reserved until the revised method was frozen. The camera and task setup are still shared.'}
+              </p>
+            ) : null}
             <div
               className="lab-table-scroll"
               tabIndex={0}
@@ -183,7 +201,17 @@ export function VideoLab() {
                 <tbody>
                   {Object.entries(run.metrics).map(([name, metric]) => (
                     <tr key={name}>
-                      <th scope="row">{names[name] || name}</th>
+                      <th scope="row">
+                        {names[name] || name}
+                        {name === 'guided' ? (
+                          <small className="lab-method-version">
+                            {run.conditions[name]?.observation_version ===
+                            'normalized_boxes_v2'
+                              ? 'Normalized grounding v2'
+                              : 'Original guided method'}
+                          </small>
+                        ) : null}
+                      </th>
                       <td>
                         {metric.correct} / {metric.eligible_cases}
                       </td>

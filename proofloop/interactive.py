@@ -26,7 +26,7 @@ from .compiler import CompilerError, compile_protocol
 from .concepts import validate_concept_mapping
 from .core import EvidenceStore, Protocol, ValidationError, aggregate_status, evaluate
 from .grounding import SamImageEvidence, ground_sam_images
-from .guided import guided_segment_pair
+from .guided import GUIDED_VERSION, guided_segment_pair
 from .meta import MAX_IMAGE_BYTES, MetaAPIError, MetaClient, load_env_file
 from .session import _approved, _bound_result, _repair_proposal, evaluate_session, verify_capture_files
 
@@ -38,9 +38,17 @@ MAX_PIXELS = 16_000_000
 MAX_TASK_OBJECTS = 6
 PERCEPTION_NOTES = {
     "concept": "SAM detects reviewed text concepts; reported confidence is not a calibrated correctness probability.",
-    "guided": "Spark assigns object identity from the two images; SAM refines its prompted boundaries and does not independently verify identity.",
+    "guided": "Spark assigns object identity from the two images; SAM refines its prompted boundaries and does not independently verify identity. Both views must support full target visibility; ambiguous identity or unsupported visibility stays unknown.",
 }
 UPRIGHT_IMAGE_MESSAGE = "JPEG orientation metadata requires rotation. Export an upright PNG or JPEG with orientation removed, or use camera capture."
+
+
+def _perception_details(mode: str) -> dict[str, Any]:
+    details = {"perception_mode": mode, "perception_note": PERCEPTION_NOTES[mode]}
+    if mode == "guided":
+        details.update(perception_version=GUIDED_VERSION,
+                       perception_note=f"Guided method version: {GUIDED_VERSION}. " + details["perception_note"])
+    return details
 
 
 def _now_ms() -> int:
@@ -236,8 +244,7 @@ class InteractiveEngine:
                 "protocol_hash": self._protocol.content_hash, "protocol": self._protocol.to_dict(),
                 "concepts": dict(self._concepts), "origin": origin, "reviewed": reviewed,
                 "human_reviewed": reviewed and review_origin == "local_operator", "review_origin": review_origin,
-                "model": model, "task_hash": None, "perception_mode": perception_mode,
-                "perception_note": PERCEPTION_NOTES[perception_mode]}
+                "model": model, "task_hash": None, **_perception_details(perception_mode)}
 
     @staticmethod
     def _validate_task_input(payload: Any) -> tuple[str, str, list[str], dict[str, str], str]:
@@ -307,7 +314,7 @@ class InteractiveEngine:
                      "concepts": concepts,
                      "origin": origin, "model": envelope["model"], "requires_human_approval": True,
                      "approved": False, "claim_limit": envelope["claim_limit"],
-                     "perception_mode": mode, "perception_note": PERCEPTION_NOTES[mode]}
+                     **_perception_details(mode)}
             draft["draft_hash"] = hashlib.sha256(json.dumps(draft, sort_keys=True, separators=(",", ":"),
                                                               allow_nan=False).encode()).hexdigest()
             record = {"draft": draft, "compiler_envelope": envelope, "usage": client.usage_summary(),
@@ -352,6 +359,8 @@ class InteractiveEngine:
             if (not draft or self._draft_record is None or payload.get("draft_id") != draft["draft_id"]
                     or payload.get("draft_hash") != draft["draft_hash"]):
                 raise ValidationError("Review the current task draft before activating it")
+            if draft["perception_mode"] == "guided" and draft.get("perception_version") != GUIDED_VERSION:
+                raise ValidationError("Guided perception changed. Request and review a new task draft before activation")
             if payload.get("confirm_requirements") is not True or payload.get("confirm_unique_targets") is not True:
                 raise ValidationError("Confirm the exact requirements and every unique target before activation")
             origin = payload.get("review_origin", "local_operator")
@@ -369,6 +378,8 @@ class InteractiveEngine:
                         "confirm_requirements": True, "confirm_unique_targets": True}
             if origin == "assistant_under_user_authorization":
                 approval["authorization_reference"] = reference.strip()
+            if draft["perception_mode"] == "guided":
+                approval["perception_version"] = draft["perception_version"]
             # Persist approval before changing the in-memory executable task.
             self._write(self._directory / ("task-approval-" + draft["draft_id"] + ".json"), approval)
             self._protocol, self._concepts = protocol, dict(draft["concepts"])
@@ -619,6 +630,9 @@ class InteractiveEngine:
     def _validate_pair(self, payload: Any):
         if not isinstance(payload, dict):
             raise ValidationError("An inspection payload is required")
+        if (self._state["active_task"].get("perception_mode", "concept") == "guided"
+                and self._state["active_task"].get("perception_version") != GUIDED_VERSION):
+            raise ValidationError("Guided perception changed. Request and review a new task draft before inspection")
         supplied = payload.get("capture_token")
         if (not self._token or not isinstance(supplied, str) or not secrets.compare_digest(supplied, self._token)
                 or self._token_revision != self._state["revision"] or self._token_issued_ms is None
@@ -696,6 +710,7 @@ class InteractiveEngine:
                     "protocol_hash": self._protocol.content_hash,
                     "task_hash": self._state["active_task"]["task_hash"], "concepts": dict(self._concepts),
                     "perception_mode": mode,
+                    **({"perception_version": self._state["active_task"]["perception_version"]} if mode == "guided" else {}),
                     "regions": regions, "source_sha256": hashes, "timestamp_basis": basis,
                     "source_timestamps_ms": times, "token_issued_at_ms": issued_at,
                     "operator_confirmations": {key: True for key in ("regions", "unique_targets", "fresh_capture", "pair_spacing")}})
@@ -718,6 +733,8 @@ class InteractiveEngine:
             samples = []
             guided = guided_segment_pair(client, paths, self._concepts) if mode == "guided" else None
             if guided is not None:
+                if guided.get("provenance", {}).get("version") != self._state["active_task"]["perception_version"]:
+                    raise ValidationError("Guided result does not match the reviewed perception version")
                 self._write(run_directory / "guided.json", guided)
             for index, path in enumerate(paths):
                 frame_results = []
@@ -766,6 +783,7 @@ class InteractiveEngine:
                     self._state["source_note"] += " " + PERCEPTION_NOTES["guided"]
                     self._state["perception_provenance"] = {
                         "method": "spark_box_guided_sam", "task_independent_locator": True,
+                        "version": guided["provenance"]["version"],
                         "identity_basis": "Spark-assigned; SAM refines boundaries without independently verifying identity",
                         "missing_or_ambiguous_anchors": len(guided["unavailable"]),
                     }

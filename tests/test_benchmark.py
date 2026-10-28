@@ -273,6 +273,45 @@ class RecordedBenchmarkTests(unittest.TestCase):
             self.assertTrue((output / "approved-manifest.json").is_file())
             self.assertEqual("error", json.loads((output / "report.json").read_text())["status"])
 
+    def test_evaluation_role_rejected_before_media_access_or_paid_calls(self):
+        for role in ("heldout", "", False, [], {"unexpected": "value"}):
+            with self.subTest(role=role), self.assertRaisesRegex(ValidationError, "Evaluation role"):
+                run_benchmark(lambda _: self.fail("Invalid role must not create a client"), approved(), Path("unused"),
+                              max_requests=6, evaluation_role=role)
+
+    def test_evaluation_role_persists_even_when_first_request_fails(self):
+        class FailureClient:
+            retries = 0
+            def segment_image(self, *args, **kwargs):
+                raise MetaAPIError("Authored failure", code="fixture_error")
+            def usage_summary(self):
+                return {"request_attempts": 1, "estimated_usd": 0}
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            envelope = media_fixture(root, approved())
+            for role in ("development_reprocessing", "new_source_holdback"):
+                output = root / "artifacts/local" / role
+                report = run_benchmark(lambda _: FailureClient(), envelope, output, project_root=root,
+                                       max_requests=6, evaluation_role=role)
+                self.assertEqual(role, report["evaluation_role"])
+                self.assertEqual(role, json.loads((output / "report.json").read_text())["evaluation_role"])
+                self.assertEqual(role, public_summary(envelope, report)["evaluation_role"])
+
+    def test_export_preserves_explicit_role_and_version_without_guessing_legacy(self):
+        envelope = approved()
+        report = {"contract_hash": envelope["contract_hash"], "status": "completed", "conditions": {"guided": {
+            "status": "completed", "observation_version": "normalized_boxes_v2", "cases": [], "metrics": {}}}}
+        legacy = public_summary(envelope, report)
+        self.assertNotIn("evaluation_role", legacy)
+        self.assertEqual("normalized_boxes_v2", legacy["conditions"]["guided"]["observation_version"])
+        report["evaluation_role"] = "development_reprocessing"
+        self.assertEqual("development_reprocessing", public_summary(envelope, report)["evaluation_role"])
+        report["conditions"]["guided"]["observation_version"] = "PRIVATE_SENTINEL"
+        self.assertNotIn("observation_version", public_summary(envelope, report)["conditions"]["guided"])
+        report["evaluation_role"] = "arbitrary_holdout_claim"
+        with self.assertRaisesRegex(ValidationError, "Evaluation role"):
+            public_summary(envelope, report)
+
     def test_guided_budget_is_optional_and_an_upper_bound(self):
         envelope = approved()
         self.assertEqual({"sam": 4, "spark": 2}, request_requirements(envelope))

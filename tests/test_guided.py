@@ -8,7 +8,7 @@ import tempfile
 import unittest
 
 from proofloop.core import ValidationError
-from proofloop.guided import guided_segment_pair
+from proofloop.guided import GUIDED_VERSION, guided_segment_pair, normalized_box_to_pixels
 from proofloop.meta import MetaAPIError, SAM_MODEL, SPARK_MODEL
 
 
@@ -42,10 +42,11 @@ class FakeClient:
         paths = kwargs["image_paths"]
         value = {"sources": [{"sha256": sha(path)} for path in paths],
                  "response": {"model": SPARK_MODEL, "status": "completed"},
-                 "parsed": {"frames": [
+                 "parsed": {"coordinate_system": "normalized_0_1000", "frames": [
                      {"frame_index": i, "width": 100, "height": 80,
-                      "objects": [{"object_id": key, "ambiguous": False,
-                                   "candidates": [candidate()]} for key in self.concepts]}
+                      "objects": [{"object_id": key, "identity_ambiguous": False,
+                                   "fully_visible": True, "boundary_uncertain": False,
+                                   "candidates": [candidate(100, 125, 310, 387)]} for key in self.concepts]}
                      for i in range(2)]}}
         if self.transform:
             self.transform(value, paths)
@@ -116,7 +117,7 @@ class GuidedSegmentationTests(unittest.TestCase):
 
     def test_ambiguous_single_candidate_and_multiple_candidates_are_not_chosen(self):
         def ambiguous(value, _):
-            value["parsed"]["frames"][0]["objects"][0]["ambiguous"] = True
+            value["parsed"]["frames"][0]["objects"][0]["identity_ambiguous"] = True
             value["parsed"]["frames"][1]["objects"][0]["candidates"].append(candidate(40, 40, 50, 50))
         client = FakeClient(transform=ambiguous)
         report = self.run_pair(client)
@@ -147,8 +148,8 @@ class GuidedSegmentationTests(unittest.TestCase):
         self.assertTrue(all(by_object["glass"]["objects"] == [] for by_object in report["results"].values()))
 
     def test_locator_out_of_bounds_float_boolean_and_degenerate_boxes_rejected(self):
-        for field, value in (("x1", -1), ("x2", 100), ("y2", 80), ("x1", 2.5),
-                             ("x1", True), ("x2", 10), ("y2", 10)):
+        for field, value in (("x1", -1), ("x2", 1001), ("y2", 1001), ("x1", 2.5),
+                             ("x1", True), ("x2", 100), ("y2", 125)):
             def mutation(result, _, field=field, value=value):
                 result["parsed"]["frames"][0]["objects"][0]["candidates"][0][field] = value
             client = FakeClient(transform=mutation)
@@ -239,6 +240,41 @@ class GuidedSegmentationTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             self.run_pair(client)
         self.assertEqual([], client.calls)
+
+    def test_normalized_edges_convert_to_original_pixels_with_inclusive_right_bottom(self):
+        self.assertEqual(candidate(0, 0, 639, 479),
+                         normalized_box_to_pixels(candidate(0, 0, 1000, 1000), 640, 480))
+        self.assertEqual(candidate(64, 96, 191, 191),
+                         normalized_box_to_pixels(candidate(100, 200, 300, 400), 640, 480))
+        self.assertEqual(candidate(0, 0, 0, 0),
+                         normalized_box_to_pixels(candidate(1, 1, 2, 2), 100, 80))
+        for invalid in (candidate(-1, 0, 10, 10), candidate(0, 0, 1001, 10),
+                        candidate(10, 0, 10, 10), candidate(True, 0, 10, 10)):
+            with self.assertRaises(ValidationError):
+                normalized_box_to_pixels(invalid, 640, 480)
+
+    def test_boundary_precision_can_be_refined_but_identity_and_occlusion_cannot(self):
+        def edge_uncertain(value, _):
+            for frame in value["parsed"]["frames"]:
+                frame["objects"][0]["boundary_uncertain"] = True
+        report = self.run_pair(FakeClient(transform=edge_uncertain))
+        self.assertEqual(GUIDED_VERSION, report["provenance"]["version"])
+        self.assertEqual(2, sum(len(objects) for objects in report["results"].values()))
+        for field, value in (("identity_ambiguous", True), ("fully_visible", False)):
+            def unsupported(result, _, field=field, value=value):
+                for frame in result["parsed"]["frames"]:
+                    frame["objects"][0][field] = value
+            client = FakeClient(transform=unsupported)
+            result = self.run_pair(client)
+            self.assertEqual(1, len(client.calls))
+            self.assertEqual(2, len(result["unavailable"]))
+            self.assertTrue(all(not objects for objects in result["results"].values()))
+
+    def test_wrong_coordinate_system_is_rejected_without_sam_call(self):
+        client = FakeClient(transform=lambda value, _: value["parsed"].update(coordinate_system="image_pixels"))
+        with self.assertRaises(ValidationError):
+            self.run_pair(client)
+        self.assertEqual(1, len(client.calls))
 
 
 if __name__ == "__main__":

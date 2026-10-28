@@ -224,17 +224,26 @@ class VideoLab:
                           "images": images, "regions": deepcopy(case["regions"]),
                           "annotation_reason": case["annotation"]["reason"] if case["annotation"] else None})
         title = "Guided perception comparison" if "guided" in by_condition else "Text-prompt development pilot"
+        evaluation_role = summary.get("evaluation_role")
+        normalized = summary["conditions"].get("guided", {}).get("observation_version") == "normalized_boxes_v2"
+        if normalized and evaluation_role == "development_reprocessing":
+            title = "Normalized grounding — development replay"
+        elif normalized and evaluation_role == "new_source_holdback":
+            title = "Normalized grounding — new sources"
         task_summary = " ".join(
             f"{check.object_id.replace('_', ' ')} must be in {check.region_id.upper()}."
             if check.kind == "location" else
             f"{check.object_id.replace('_', ' ')} must be {'visible' if check.expected else 'absent'} in {check.region_id.upper()}."
             for check in protocol.checks)
         return ({"id": run_id, "title": title, "contract_hash": envelope["contract_hash"],
+                 **({"evaluation_role": evaluation_role} if evaluation_role is not None else {}),
                  "source_kind": "external_recorded_video", "inference_origin": report.get("inference_origin"),
                  "requirements": contract["requirements"], "task_summary": task_summary, "objects": list(protocol.objects),
                  "concepts": deepcopy(contract["concepts"]), "case_count": len(cases), "source_count": len(sources),
                  "metrics": {name: deepcopy(summary["conditions"][name].get("metrics")) for name in by_condition},
                  "conditions": {name: {**({"method_note": GUIDED_NOTE} if name == "guided" else {}),
+                                       **({"observation_version": "normalized_boxes_v2"}
+                                          if name == "guided" and summary["conditions"][name].get("observation_version") == "normalized_boxes_v2" else {}),
                                        "estimated_usd": summary["conditions"][name].get("estimated_usd"),
                                        "wall_seconds": summary["conditions"][name].get("wall_seconds")}
                                 for name in by_condition},

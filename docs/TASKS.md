@@ -15,6 +15,8 @@ Supported compilation is deliberately limited to positive location predicates. T
 
 The runtime caps concept inspections at `2 × target count` requests and guided inspections at `1 + 2 × target count`, with no automatic retries. The inspection request identifies what further evidence is needed, including an expired pair, unsupported region, ambiguous target, low confidence or inconsistent views. It does not infer that a non-detected object is absent or hidden.
 
+Guided drafts and active tasks also bind `perception_version` into the exact review hash. A changed guided method requires a newly reviewed draft before activation or inspection; a returned observation with another version cannot verify the task. The current `normalized_boxes_v2` uses normalized Spark boxes converted to SAM source pixels and retains separate identity, full-visibility and boundary-precision flags.
+
 ## Local API
 
 All mutations use the same Origin and `X-ProofLoop-Token` boundary as inspection:

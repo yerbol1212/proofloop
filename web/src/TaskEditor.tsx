@@ -200,7 +200,8 @@ export function TaskEditor({
           <span className="field-hint">
             Guided mode adds a Spark request to locate targets, then asks SAM to
             refine their boundaries. It uses more inference and can still return
-            unknown. Guided uploads require upright JPEGs up to 1280 pixels.
+            unknown. Keep every target fully visible in both views. Guided
+            uploads require upright JPEGs up to 1280 pixels.
           </span>
         </label>
         <div className="confirmations">
@@ -274,7 +275,7 @@ export function TaskEditor({
             <p className="task-scope">
               Perception:{' '}
               {(draft.perception_mode || 'concept') === 'guided'
-                ? 'Spark-guided SAM. Object identity is proposed by Spark; SAM refines the boundary.'
+                ? `Spark-guided SAM${draft.perception_version === 'normalized_boxes_v2' ? ' v2' : ''}. Both views must support full target visibility. Object identity is proposed by Spark; SAM refines the boundary.`
                 : 'SAM concept prompts.'}
             </p>
             <h3>{draft.title}</h3>

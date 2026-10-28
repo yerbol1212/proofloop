@@ -63,7 +63,7 @@ The manifest binds each source MP4 and each extracted frame to its SHA-256 and e
 
 The initial acquired MP4 batch is **60,618,733 bytes**. Exact direct URLs, hashes, license evidence, and roles for these files are in the ignored provenance record.
 
-## New source episodes reserved for a frozen follow-up
+## Episodes 000004 / 000005: v1 follow-up, then v2 development
 
 Episodes **000004 and 000005** were subsequently acquired from the same pinned ALOHA dataset revision, adding **20,276,528 bytes**. Both are original 22-second, 640 × 480 recordings. Their eight selected frames at the same 0.500 / 1.500 and 20.000 / 21.000 second checkpoints were individually reviewed before inference, retaining the original calibration rectangles and placement labels.
 
@@ -72,9 +72,30 @@ Episodes **000004 and 000005** were subsequently acquired from the same pinned A
 | 000004 | 9,969,665 | `df615acc2f5b6955e9f5d94dbac3946a8d5e752b9d409981ebf5562ccd2ed5dd` |
 | 000005 | 10,306,863 | `db802ba1036c19d81a3c631ca5eeea67c37b01196e568ba935d1d4b26423e19a` |
 
-The new draft and independent annotation freeze are saved locally as `contract-draft-new-episodes.json` and `new-episodes-label-review.json` under the online-review folder. Concept selection must finish on development episode 000000 before this follow-up contract is approved or tested. The draft concept is a placeholder until then; it is not evidence that an alternative prompt works. The original eight-case manifest remains unchanged.
+The draft and independent annotation freeze are saved locally as `contract-draft-new-episodes.json` and `new-episodes-label-review.json` under the online-review folder. The initial draft's concept was a placeholder; the evaluated contract retained the original semantic concept, `transparent drinking glass`, after development-only probing. The original eight-case manifest remains unchanged.
 
-These are new source episodes withheld from model testing during prompt selection, but their near-identical camera, objects, and task support only a narrow transfer check. They do not establish generalization to a different environment or procedure. Total acquired MP4 media across both batches is **80,895,261 bytes**, below the initial 150 MB cap.
+These episodes were withheld from model testing during v1 selection, but their failures subsequently informed v2 development. Their later replay is therefore development evidence. Their near-identical camera, objects, and task support only a narrow transfer check; they do not establish generalization to another environment or procedure. Total acquired MP4 media at this stage was **80,895,261 bytes**.
+
+## Episodes 000006 / 000007: fresh sources after the v2 fix
+
+Two further original `cam_high` recordings were acquired from the same pinned revision and [explicit MIT dataset license](https://huggingface.co/datasets/lerobot/aloha_static_coffee/blob/1c52c4c794b6f93d931489263cf15e4331600bfc/README.md). The ALOHA authors and Hugging Face / LeRobot retain the same attribution. Each recording is 22 seconds at 640 × 480 and 50 fps.
+
+| Episode | Bytes | SHA-256 |
+| --- | ---: | --- |
+| 000006 | 9,971,739 | `e5229682cc6ee275d13f6010a355c54428d8c9dd07ebb4681c107fc4d92fd91e` |
+| 000007 | 9,959,554 | `cdef316e36fdbb74ca7ed6eeee64ef2bc4c0749e2d2734ed36397c1dbdcf5e9c` |
+
+Both files' bytes and hashes were rechecked against the retained download records. Direct URLs follow the original pinned download pattern above. The eight frames use the same preselected **0.500 / 1.500** staging and **20.000 / 21.000** dispense checkpoints; no checkpoint or region rectangle changed after visual review. Labels describe supported visible placement only. In episode 000006 at 20 seconds, the gripper overlaps part of the glass rim, which may legitimately cause a stricter perception method to abstain; the label does not claim amodal completeness.
+
+The source and assistant review records are in `guided-v2-holdback-provenance.json` and `guided-v2-holdback-label-review.json` under the ignored online-review folder. The source/label contract hash is:
+
+```text
+88a3772f85dba0749cbc2d6996740da204d03597ab42cb3eab642e083bac9d88
+```
+
+`algorithm-freeze-guided-v2.json` separately records the v2 module and locator schema hashes before inference. Keeping both freezes distinguishes previously untested source episodes from a replay used during development. The [completed comparison](../artifacts/feasibility/guided-fix-20261028.md) reports the actual results and remaining unknown. This remains a narrow same-task, same-camera transfer check.
+
+The two new videos add **19,931,293 bytes**. Total acquired MP4 media across all batches is **100,826,554 bytes**, below the initial 150 MB cap. Raw media remains ignored and unpublished.
 
 ## Other sources checked
 

@@ -27,6 +27,7 @@ ROOT = Path(__file__).resolve().parents[1]
 STATUSES = ("pass", "fail", "unknown")
 CONDITIONS = ("sam", "spark")  # Preserve the original two-condition default.
 AVAILABLE_CONDITIONS = CONDITIONS + ("guided",)
+EVALUATION_ROLES = ("development_reprocessing", "new_source_holdback")
 GUIDED_NOTE = ("Task-independent Spark assigns object identity and boxes; SAM refines the prompted mask. "
                "A prompted mask does not independently prove semantic identity. Missing/ambiguous localization stays unknown.")
 MAX_JSON_BYTES = 2 * 1024 * 1024
@@ -37,6 +38,12 @@ _ID = re.compile(r"^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$")
 def manifest_hash(contract: Mapping[str, Any]) -> str:
     return hashlib.sha256(json.dumps(contract, sort_keys=True, separators=(",", ":"),
                                      allow_nan=False).encode()).hexdigest()
+
+
+def _evaluation_role(value: Any) -> str | None:
+    if value is not None and value not in EVALUATION_ROLES:
+        raise ValidationError("Evaluation role must be development_reprocessing or new_source_holdback")
+    return value
 
 
 def _text(value: Any, label: str, maximum: int = 4000) -> str:
@@ -442,8 +449,10 @@ def _read(path: Path) -> Any:
 
 
 def run_benchmark(client_factory: Callable[[int], Any], envelope: Mapping[str, Any], output: Path, *,
-                  max_requests: int, conditions: Sequence[str] = CONDITIONS, project_root: Path = ROOT) -> dict[str, Any]:
+                  max_requests: int, conditions: Sequence[str] = CONDITIONS, project_root: Path = ROOT,
+                  evaluation_role: str | None = None) -> dict[str, Any]:
     """Perform bounded real requests; stop on failure with a saved partial report."""
+    evaluation_role = _evaluation_role(evaluation_role)  # Reject bad metadata before media access or paid calls.
     required = request_requirements(envelope, conditions)
     _integer(max_requests, "explicit request budget", 1)
     if sum(required.values()) > max_requests or max_requests > 1000:
@@ -459,6 +468,8 @@ def run_benchmark(client_factory: Callable[[int], Any], envelope: Mapping[str, A
                               "evidence_origin": "external_recorded_video", "physical_action_execution_verified": False,
                               "conditions": {}, "status": "running", "request_budget": max_requests,
                               "approval_provenance": _review_provenance(envelope["approval"])}
+    if evaluation_role is not None:
+        report["evaluation_role"] = evaluation_role
     protocol = _approved(envelope)
     for condition in conditions:
         client = client_factory(required[condition])
@@ -468,7 +479,8 @@ def run_benchmark(client_factory: Callable[[int], Any], envelope: Mapping[str, A
         started = time.monotonic()
         entry: dict[str, Any] = {"status": "running", "planned_requests": required[condition]}
         if condition == "guided":
-            entry.update(method_note=GUIDED_NOTE, unavailable_by_case={})
+            from .guided import GUIDED_VERSION
+            entry.update(method_note=GUIDED_NOTE, observation_version=GUIDED_VERSION, unavailable_by_case={})
         report["conditions"][condition] = entry
         _save(output / "report.json", report)
         try:
@@ -568,7 +580,9 @@ def public_summary(envelope: Mapping[str, Any], report: Mapping[str, Any]) -> di
     _approved(envelope)
     if report.get("contract_hash") != envelope["contract_hash"]:
         raise ValidationError("Report does not bind this approved recorded contract")
+    evaluation_role = _evaluation_role(report.get("evaluation_role"))
     return {"schema_version": "1.0", "experiment": "licensed_recorded_video_comparison",
+            **({"evaluation_role": evaluation_role} if evaluation_role is not None else {}),
             "contract_hash": envelope["contract_hash"], "protocol_hash": _approved(envelope).content_hash,
             "dataset_id": envelope["contract"]["dataset_id"], "evidence_origin": "external_recorded_video",
             "inference_origin": (report.get("inference_origin") if report.get("inference_origin") in
@@ -581,6 +595,9 @@ def public_summary(envelope: Mapping[str, Any], report: Mapping[str, Any]) -> di
                          "sha256": source["sha256"]}
                         for source in envelope["contract"]["sources"]],
             "conditions": {name: {**({"method_note": GUIDED_NOTE} if name == "guided" else {}),
+                                   **({"observation_version": value["observation_version"]}
+                                      if name == "guided" and value.get("observation_version") in
+                                      ("normalized_boxes_v2",) else {}),
                                    "status": value.get("status"), "metrics": _safe_metrics(value.get("metrics")),
                                    "wall_seconds": _safe_number(value.get("wall_seconds")),
                                    "estimated_usd": _safe_number(value.get("usage", {}).get("estimated_usd")),
@@ -605,6 +622,8 @@ def main(argv: list[str] | None = None) -> int:
     run.add_argument("--output", type=Path, required=True)
     run.add_argument("--max-requests", type=int, required=True)
     run.add_argument("--condition", action="append", choices=AVAILABLE_CONDITIONS)
+    run.add_argument("--evaluation-role", choices=EVALUATION_ROLES,
+                     help="Explicitly label reused development sources or a caller-declared new-source holdback")
     export = commands.add_parser("export", help="Write a reviewable allowlisted summary without media or raw results")
     export.add_argument("manifest", type=Path)
     export.add_argument("report", type=Path)
@@ -621,7 +640,7 @@ def main(argv: list[str] | None = None) -> int:
             load_env_file(ROOT / ".env.local")
             result = run_benchmark(lambda budget: MetaClient.from_env(max_requests=budget, retries=0, timeout=90),
                                    envelope, args.output, max_requests=args.max_requests,
-                                   conditions=args.condition or CONDITIONS)
+                                   conditions=args.condition or CONDITIONS, evaluation_role=args.evaluation_role)
             result = {"status": result["status"], "contract_hash": result["contract_hash"],
                       "conditions": {name: {"status": value["status"], "metrics": value.get("metrics"),
                                              "estimated_usd": value.get("usage", {}).get("estimated_usd")}

@@ -121,6 +121,10 @@ That example budget is correct for **four cases with one object**: eight SAM req
 
 Private `guided/<case-id>.json` files retain locator output, source bindings, omitted targets, exact SAM prompts and returned masks. The final report and Video Lab expose the method's identity limitation. They do not turn locator boxes, hypothetical object positions or missing candidates into fabricated SAM evidence.
 
+The current `normalized_boxes_v2` locator uses Spark's normalized 0–1000 coordinates and strictly converts outer box edges into inclusive SAM source pixels. Identity ambiguity, full visibility and boundary precision are separate. The report exports its `observation_version`; old reports without it retain their original meaning. See the [method and measured revision](GUIDED-PERCEPTION.md).
+
+Declare evaluation exposure before a run using `--evaluation-role development_reprocessing` for already exposed cases or `--evaluation-role new_source_holdback` for reserved sources. The optional role is validated before inference, saved in the report/export, and shown separately in Video Lab. It is a caller declaration, not independent proof of source isolation. A replay of known failures cannot become a new-source score by changing its label. Legacy runs omit this field.
+
 When a first concept fails, preserve that experiment unchanged. If it motivates this new observation method, test the new method under a new explicit condition/run and report the development exposure. Do not relabel failed cases or silently replace the original method's results.
 
 ## Reviewable public summary
