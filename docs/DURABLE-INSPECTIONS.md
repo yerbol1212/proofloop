@@ -46,6 +46,8 @@ Every reservation counts, including unfinished and failed requests. There are no
 
 This is a request-count bound, **not a provider-enforced dollar cap**. Unreported usage and a lost connection can make actual billing unknown. This allowance covers the durable inspection path; separate explicit research commands and the task-drafting call are not routed through this journal. Check provider billing for account-wide spend.
 
+Following the separate 2026-10-29 completion probe, the production factory uses `BoundedSparkClient`: an omitted Spark reasoning choice defaults to `low`. Explicit `None` or other supported reasoning choices remain explicit caller choices. Existing output-token caps, SAM payloads, persistent attempt admission and zero retries are preserved. The [tracking result](TRACKING-RESULTS-20261029.md) retains the original high-reasoning incomplete request beside its separately frozen successful repair; this is a completion result, not a general accuracy claim.
+
 ## Validation and remaining boundaries
 
 Offline tests use authored pixels, injected clients and mocked HTTP. They cover competing submissions/claims, exact-key conflicts, lease expiry, interrupted work, stale worker fencing, persistent allowances, reported usage on incomplete responses, failed artifact writes, tampering, binding changes, HTTP origin/CSRF/duplicate-key checks, and actual engine/worker interoperability. They are software reliability evidence, not fresh model accuracy measurements.
