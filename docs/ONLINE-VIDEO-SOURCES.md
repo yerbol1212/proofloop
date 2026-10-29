@@ -108,6 +108,17 @@ UNKNOWN labels refer to failure to establish the required two consistent locatio
 - **IndustReal:** [the TU Eindhoven data record](https://research.tue.nl/en/datasets/industreal-dataset-of-egocentric-videos-for-procedure-understandi/) explicitly lists Apache-2.0 for the dataset. Its linked 4TU publisher page timed out during this acquisition; no IndustReal video was downloaded. The [authors’ project](https://timschoonbeek.github.io/industreal.html) remains a useful source for the need to recognize correct completion rather than merely recognize an action.
 - **Full CaptainCook4D recordings:** the first 12 GoPro 360p Box links from the [official downloader metadata](https://github.com/CaptainCook4D/downloader) returned HTTP 404 on 2026-10-28. We did not substitute an unknown mirror or bypass a consent gate.
 
+## Contact/tracking extension: 29 October 2026
+
+The [contact protocol](CONTACT-PROTOCOL-20261029.md) adds two original ALOHA robot recordings distributed through LeRobot. Both pinned dataset cards were downloaded and their declared licenses checked before inference. These are external recordings, not team-created video or naturally annotated ProofLoop failures.
+
+| Source | Declared license | Bytes | Original SHA-256 |
+| --- | --- | ---: | --- |
+| [Screwdriver episode 000003](https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/resolve/51448b4e7638c1773fd07c1e7febce8ebb104635/videos/chunk-000/observation.images.cam_high/episode_000003.mp4) | [MIT card](https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md) | 3,132,360 | `6b69b8cab6a8c0702f12fb7a270eda723aecf2f9671bca3f517c4e5d48562c90` |
+| [Battery/remote episode 000003](https://huggingface.co/datasets/lerobot/aloha_static_battery/resolve/dd8bda435f5068a0298bd109005828768ecbfa12/videos/chunk-000/observation.images.cam_high/episode_000003.mp4) | [Apache-2.0 card](https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md) | 4,161,469 | `2579796191bd0d20dec5d77463062357ef74b39b34227f2935b387b773acf9f3` |
+
+The two files add 7,293,829 bytes. Native 640 × 480, 50-fps source frames are sampled every tenth frame and encoded losslessly as 5-fps H.264 without resizing or cropping. All 100 selected decoded frames and their extracted JPEGs replay exactly. Later boxes and clear/unclear labels are assistant-authored scoring references frozen before the contact-model trial; only reviewed frame-zero boxes initialize tracking. Later strict-mask and warning experiments reuse these now-exposed recordings and the prior episode-2 sources, without changing labels. The cached warning retest is selected after inspecting failures and is not held-out validation. Original media, masks and overlays stay private; public reports retain attribution, transformation records and hashes.
+
 ## Reuse obligations
 
 Keep dataset credit, applicable copyright and license notices, and a clear statement of authored labels and any transformations with public demo excerpts. The reviewed dataset cards add no restriction prohibiting inference through a third-party API; this selection is based on their explicit permissive data licenses. No gated access, YouTube ripping, or unknown-rights footage was used. Raw media remains outside Git. A demo must identify these recordings as external source assets and show only ProofLoop functionality built during the hackathon as the team's contribution.
