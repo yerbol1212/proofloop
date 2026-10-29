@@ -1,0 +1,463 @@
+{
+  "audit_scope": "retained_source_payload_mask_geometry_and_accounting_integrity_not_model_quality",
+  "checks": {
+    "all15_crop_source_rgb_exact": true,
+    "all15_projection_exact_translation": true,
+    "all_original_views_cases_retained": true,
+    "both_clear_reference_positive_pairs_proposal_gate_passed": true,
+    "cached_vetoes_and_artificial_edge_rules_replayed": true,
+    "confidence_unchanged": true,
+    "exact_public_plan_bytes_in_publication_commit": true,
+    "exact_public_private_plan": true,
+    "full_retained_summary_replay": true,
+    "journal_payload_multiset_equals_exact_crop_requests": true,
+    "journal_single_request_operations": true,
+    "journal_token_usage_equals_provider": true,
+    "no_extra_response_projection_artifacts": true,
+    "official_raw_sam_redecode_all15": true,
+    "retained_ledger_usage_equals_provider": true
+  },
+  "counts": {
+    "crop_requests": 15,
+    "errors": 0,
+    "estimated_usd": 0.0375,
+    "geometry_eligible_pairs": 4,
+    "missing_original_proposal_views": 3,
+    "pairs": 9,
+    "reference_pass_geometry_eligible_pairs": 2,
+    "reference_pass_pairs": 2,
+    "retries": 0,
+    "source_views": 18,
+    "spark_requests": 0,
+    "successful_sam_requests": 15,
+    "unknown_reference_geometry_eligible_pairs": 1,
+    "unscored_available_crops": 0
+  },
+  "errors": [],
+  "limits": [
+    "Proposal eligibility only; identity, visibility, gripper separation and original-region support remain unassessed.",
+    "One UNKNOWN-reference cloth pair is geometry eligible; this probe cannot establish safe task acceptance.",
+    "Crops and originals remain one physical source observation.",
+    "Assistant-authored exposed references are not human ground truth or fresh-source validation.",
+    "Local hash and journal consistency are not signatures or independently trusted API/capture provenance."
+  ],
+  "placement_accepted": false,
+  "private_plan_sha256": "d92eb2c322ed7f92cdb4f430da767f8ef38bb9799f70003b7135b82e67361207",
+  "production_promotion_allowed": false,
+  "public_plan_byte_sha256": "806a76abd70fcc7fc3532286106a1059163a75af11648c332f7b1f778b1ac9fa",
+  "publication_commit": "8f7a557684138fa2b1cff60ddbe3d5bd511466a4",
+  "receipts": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "confidence_unchanged": true,
+      "crop_sha256": "eadb4189de87c5c0b164f5fec72bc2c9fb504e6a32581ac2cb54a28b217ddfa3",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "5656709dc40fa24951bbf2a97463fadd3c4ccc9d684748b35e16b0d736aaa38d"
+      ],
+      "prepared_file_sha256": "c6c3771fdfdbd3687c08f3c36e45e04675d2dc9154b043b400ec1d9c6504d657",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "db2d74607ba8c1f1c055696c080d571f8a2444960d4d71468184529b9c5707fc",
+      "projection_sha256": "f53bf1f2e6585b164b9f7563a1190daabef223ed1476f483c5e5647fa418edde",
+      "proposal_eligible": true,
+      "provider_response_sha256": "08616493208131de46e9d304fabcc2617290ffa5878c4a61924c3326210745f7",
+      "raw_response_sha256": "dcf7143f8b71d32c92a75f62e24014b2840c7329e5cf547807ce250f86e45800",
+      "request_sha256": "4370aa6a60570fc8da549e8f9d6494f49b3266b97f23dc0f71de607cb0f4612c",
+      "scores": [
+        0.8518518805503845
+      ],
+      "source_sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+      "view_index": 0,
+      "withheld_reasons": []
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "confidence_unchanged": true,
+      "crop_sha256": "25d2dd15671fe8fc7b4d16b625872773d53e30d150457ed9af2af280813e8a2e",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "21472cf49e143478f739820ecb0b40b757a69fac1802520edf47a8d4f6cc6c51"
+      ],
+      "prepared_file_sha256": "3274d7fd40e40a5f731516f779371db24c1e810698cac0e0955dfd4e0bce2d76",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "fc2689e921f4157e5c7f8e09ba3efce2ea8f99c3e3dc0cd6f95bfb5cece33dfe",
+      "projection_sha256": "499ff3a667287d04e1b568aa7ff8307efc5e575cfbdce3fe0db5d39bb36668cf",
+      "proposal_eligible": true,
+      "provider_response_sha256": "8b1ce7bd55d5ef1420ec7f9143e09a9d5a6c0d5d5031b681cf891a58a49bf114",
+      "raw_response_sha256": "75dc585408a64e5758bb88092dc9040fa10a278b9a1b1490d0afd4da91dbe322",
+      "request_sha256": "036030763f3c842914a0e0bf395eedc7e2f8108d2fa6b574e72876c6d96de9a8",
+      "scores": [
+        0.8552036285400391
+      ],
+      "source_sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+      "view_index": 1,
+      "withheld_reasons": []
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-1",
+      "confidence_unchanged": true,
+      "crop_sha256": "209f56751612f8c0dd6d0897434383265bc96c530eaec152760d4d07a8bfa94e",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "b1fd4bdf4221959d257997a8e49cea3a3fa8421297ab916b3c4fed6bc139bf45"
+      ],
+      "prepared_file_sha256": "d46da1a1252052af1aa951fc2d6019c62d0f0d0e8cff276ab0753eb8dd668b92",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "587861191d24bc269e9cedd693ee4feda16e6857bf6fb261ba10c984a048fff5",
+      "projection_sha256": "88609175464df591835a282303290218a535bbd46703a871fe4413656158e899",
+      "proposal_eligible": true,
+      "provider_response_sha256": "22ab800e4b1ab8203075bdb81e4dd2a42ccd8da0d4546eba0c428f858d3f8dc8",
+      "raw_response_sha256": "e905a292340750821ee35c7bc03394281589629c337d3ae028030d12bf7d10a7",
+      "request_sha256": "2e6c9ce04e28039c8fa155d0d157bebee26285093cd220da2b2b306d9860aaf3",
+      "scores": [
+        0.8709677457809448
+      ],
+      "source_sha256": "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d",
+      "view_index": 3,
+      "withheld_reasons": []
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-2",
+      "confidence_unchanged": true,
+      "crop_sha256": "a238d2b30c011275f4071cfac3af81a67efbc6a1fee1289ef098838ab6b43e9f",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "a105db6fa9927c6d354e528a5d0573c451dc411a4a2a81710a54ee75a987fdba"
+      ],
+      "prepared_file_sha256": "9ee67bfaacc04014c849dcc240fe3416fa094ef2674ebba3636da91fed700eda",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "9519c6ccf121b955befb46ae760c9b8e9163b4f9ecb0e26c8ad2fa6d72993ec5",
+      "projection_sha256": "1475caeddbf1b9014c656aab1c2295eb36b7cd32a58e2509bde2f8187941408a",
+      "proposal_eligible": false,
+      "provider_response_sha256": "99f209864d81c1889641ff8edf3b8998613edb73697dce81146ea2b3fa17f608",
+      "raw_response_sha256": "8d3ee049fdfed576c439cf46bafd1fde53c93adb6daa499440f401114183ab7d",
+      "request_sha256": "2ea26163cc0b6d73b3d663965ff994e4dbffdc06cebb66d80e22a11d3fcfe45f",
+      "scores": [
+        0.6521739363670349
+      ],
+      "source_sha256": "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+      "view_index": 4,
+      "withheld_reasons": [
+        "crop_sam_score_below_0_8"
+      ]
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-2",
+      "confidence_unchanged": true,
+      "crop_sha256": "3a78ad09001f22f0c950ce5a94ed5916fd6f6b7fa2fefe81142bf23a16b788c0",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "be0783eb21f2ffe5698bf146e49bdea661dc0ae3221c40e3ed1185779965b318"
+      ],
+      "prepared_file_sha256": "5d1aa1d160176a6ea8283216b0ee1013f15728b0ae8c920ac514f507d9fb9e68",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "838954d0b5df06b80a44ab99c7dad32d339f89d27b301e2e4e701f0c495d8574",
+      "projection_sha256": "5eb555d46d05232cc4aa3e0c35cc7d0ec42a627d50fc6cc02bff696af0bec050",
+      "proposal_eligible": true,
+      "provider_response_sha256": "7670df4213b60ee391835ec70f204794e09726e75e36c98430fb5690a182b3ef",
+      "raw_response_sha256": "0f19a620c7e46c292604f4429953d8ba7fefe389db19b54b594d4645de56f630",
+      "request_sha256": "1cc4b1abd1abf734d86a8e8d5b1e9cc1d572fceb65355d2a7a04465107bc2e8d",
+      "scores": [
+        0.9139785170555115
+      ],
+      "source_sha256": "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a",
+      "view_index": 5,
+      "withheld_reasons": []
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-0",
+      "confidence_unchanged": true,
+      "crop_sha256": "22ca63225dd55937066bf488a76b678ebe199751a50e02861fa5c4f5b9d70e40",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "20d9dd74f30832a648aef8a8016b86dbee00e6efcf0cf7ab932ff19ac6ff6895"
+      ],
+      "prepared_file_sha256": "79cbd1c62c3fed0deece8b6a3de9dd240f9eefa7d68ac189aca62e3f87c54219",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "1a9e13cbe8a67cac6a4a66c1cb9a41adc80248acf50e933dc70adf5ef433f03e",
+      "projection_sha256": "e4f40631581c2634d9eb4058671c4f5f502d9de3c994f036f11409a6cae86cae",
+      "proposal_eligible": false,
+      "provider_response_sha256": "1515e7247720a04a6870d6b68c6c09d4d6b40a098770c25a7c04e82b3b95999f",
+      "raw_response_sha256": "65cf61dd6661456658c2c2beb62a6c7ef3291f0c953b93a9e3095648687eae6d",
+      "request_sha256": "cb337ee1c8db76bf866ea120754e70233057a60833db94b27ff1032f31922da5",
+      "scores": [
+        0.9375000596046448
+      ],
+      "source_sha256": "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+      "view_index": 6,
+      "withheld_reasons": [
+        "cached_not_fully_visible"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-0",
+      "confidence_unchanged": true,
+      "crop_sha256": "9f5c5123fe55e2bd9e9f6eec7ea9e05300b5dd3edab9f36879d920c9644c230e",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "c89adef00f8b11716222071b15419989c5fa0bfdb0f103f7c918a707dd841108"
+      ],
+      "prepared_file_sha256": "eb9728e37285a5743e25169f9eb658191ca52a1e4df0bca17830fed1caafa598",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "5a9dba17f86d69a1e802b00e60b31a210824142524283de6897a5dcdcaf1c76a",
+      "projection_sha256": "7229c40653b3006d1a6f50c2888b53cb1b8ecbeee1bf73a486bab51af1235f38",
+      "proposal_eligible": false,
+      "provider_response_sha256": "567a00c080e8c1fe19f6207a35306f8935d2b7e250cff07d19a689b0e4304409",
+      "raw_response_sha256": "172dc1f78c84a8cc49843ff995bd08d5b216d8a99e35b71b664bf68f63d44376",
+      "request_sha256": "843ea569d6b93958a7167767e66cdc7b150f46da4b1ca2b54e76e0c99d363ba8",
+      "scores": [
+        0.941605806350708
+      ],
+      "source_sha256": "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115",
+      "view_index": 7,
+      "withheld_reasons": [
+        "cached_not_fully_visible"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-1",
+      "confidence_unchanged": true,
+      "crop_sha256": "b8869652dfb97701af928f48f09ca9f0b59a085f07c5de0de17cb8735ea80acc",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "f97cfddffeb8cb727d41042189c659ef415a4fbbe984a285b3e3e268e5894d76"
+      ],
+      "prepared_file_sha256": "cd7a7c8b3c2afe83d692c9d93203d486fd9abbd48fa82413473488d4b7b5b24e",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "6e5ac86e109e624b144a1142228f5183adaa2e1dd88fec7ae6ebf179a3b95651",
+      "projection_sha256": "2790a38038098b851359c529fe5a5000001aa5ee8d3db5c69618c3f4837a97fa",
+      "proposal_eligible": false,
+      "provider_response_sha256": "4ed6968b11eac827d54ab2bddbf1ab3af3a8cf621f02eee0b8128d9e71544ee7",
+      "raw_response_sha256": "1ed77b0e116b53a1401b66e520237854383f73681eb329b133b5f6d47c28c2f9",
+      "request_sha256": "66ab27ea2b026c81c1381fbe16e177afc9df4ea598d977eef6c61a42077269c8",
+      "scores": [
+        0.9726027250289917
+      ],
+      "source_sha256": "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+      "view_index": 8,
+      "withheld_reasons": [
+        "cached_not_fully_visible"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-1",
+      "confidence_unchanged": true,
+      "crop_sha256": "339bf3bdeb502cc94e58fc6ea60c06f8d868c47d37eeca8da4820d67ce67e083",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "b36293180ccc14b6866a22ed07512e4258d396f76f99d91139dcfd3539ff05fe"
+      ],
+      "prepared_file_sha256": "c577d57cc7bd830cadec508e17b0cd0dec65d8d6fdfcba8bcca7c3dd50e41d2d",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "d0cc9b8c84f439808de89d7b17e97b8efa746425b89959bb01df6f81591960f9",
+      "projection_sha256": "708c4da14f1be9a2a461479a1bff5d5d6cff337c9b5138c0833a5d70034e21ca",
+      "proposal_eligible": false,
+      "provider_response_sha256": "2d386a99ac9d0daa6eada0fc560fabf4e8902a40a42996021b559de2b7101c6a",
+      "raw_response_sha256": "6ace63f8498fffbacae413c29f67079a587e32c3248cc3c3e6548bfa5d0007ea",
+      "request_sha256": "54f933832eba0e7c5490c64e3c0791f21ae4f8ebd345bafbb32c0da19cee1350",
+      "scores": [
+        0.96875
+      ],
+      "source_sha256": "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668",
+      "view_index": 9,
+      "withheld_reasons": [
+        "cached_not_fully_visible"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "confidence_unchanged": true,
+      "crop_sha256": "b2cf88601a699f311cfe36f19e0a9b4480f1877f12f3c60c253e05efa2483ee9",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "50569b9b39034959c75e102e10ce6d93788ca909e283b5719c05f9967f330dda"
+      ],
+      "prepared_file_sha256": "3d8a8a722f9fb41dbd658d8329f7cafa94131bcdc7e401c6e2529c7b861d5d32",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "96a4c5bf31985d958270d750b0696bfcef2fc7f0a34a73cc0378258e0bd41b95",
+      "projection_sha256": "c915ffdb23f5c314ef7d2dc2b4f6000213e4d4447ad5104298de4ed3f4b1496f",
+      "proposal_eligible": true,
+      "provider_response_sha256": "31ba47a0285759e6136e63a2b1be3ec83cb169a0a9eb59b6d1ed227050db8f4e",
+      "raw_response_sha256": "4516d770290df899290a8d7a9571a56d186464ad5d31c04feb3fe5c1ea597b50",
+      "request_sha256": "7c8d6fa433d5ffb2a32b35d278bc00f6d8b809ac4c2ac32b9f0647170e32ff2c",
+      "scores": [
+        0.9569892287254333
+      ],
+      "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+      "view_index": 10,
+      "withheld_reasons": []
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "confidence_unchanged": true,
+      "crop_sha256": "9b27a9391617514393b2cee5e8d8a4b4044aedfa8a128881fbaf9d93bf32333c",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "35dea28032ed418ac47121e6fb952004fe4630aa36226e54af0482339a4d4638"
+      ],
+      "prepared_file_sha256": "8e5d29872a489964f13128c54bd85a74ea769058948878efe7df6219be473a82",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "04bde1a2a27b14dc0f6dcee7f9a238d3310aefcc41e7e93c63e833928cddc2b3",
+      "projection_sha256": "087e109fccac92624a57ef7bb63c2cee184fd074dc00def667b2cfae99deda5a",
+      "proposal_eligible": true,
+      "provider_response_sha256": "0462d0b3732ba30324093c58d67c0c23657976277ce459b30d1894645060735d",
+      "raw_response_sha256": "079d15a805048d9161f439c80513a782b3a723ce6f3724d6e0712dc4967dd936",
+      "request_sha256": "1192a13b4b1fe0ccdd36817cbe8069847968eab7ba5b20481156877575de0f2f",
+      "scores": [
+        0.9336099624633789
+      ],
+      "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+      "view_index": 11,
+      "withheld_reasons": []
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "confidence_unchanged": true,
+      "crop_sha256": "95dc0fcb6fc0e5e9b5e2c32de5de91609d36ca61f0657ca3565e3fcd9f26c621",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "e7462103329e0cfe80332a5a66103e63c346c24e0f87baf4f6867b425ced210d"
+      ],
+      "prepared_file_sha256": "f542abed8d0b2f5c2133dc4cc2d9f0a78eb461e73121dba4bc1cc438af13921c",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "11b9ee020f1e7f8d88509b34f104db828b91b6c2252e7d4b86a95a9926496458",
+      "projection_sha256": "ec27aec34f208267fb95f404e74ae450e7bf6dad5e0e960e0816d51f1047b9d4",
+      "proposal_eligible": true,
+      "provider_response_sha256": "6be82be683c8dec1741ebcb04dde37c9cf147960c1eea690c6aab3519e107497",
+      "raw_response_sha256": "c517d3b0f0e221462e7f0e5aac77bb20f3cf22a82d07adef600c93112cd6973f",
+      "request_sha256": "2bd95cc84f0ac1e574b9bb577a3a8db5e71223b831f6aacf32fc919bbc870e86",
+      "scores": [
+        0.8750000596046448
+      ],
+      "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+      "view_index": 12,
+      "withheld_reasons": []
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "confidence_unchanged": true,
+      "crop_sha256": "26a8f0f77ab63d2aeb1de3313af12805d406133ee5b4efe9c7998c4087aa962e",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "a4f97ac23467fd19b292f22842a2a5d65b905dd1f5d19565259c40634ef95f0d"
+      ],
+      "prepared_file_sha256": "d0ae666faf44ca9f721f0e93c603b59eec498b4321559705d669cb2157aac1d8",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "9f4caf7dd929eab2deae83cda8ad0aad708436cc120eb681bc37ef13499d94bc",
+      "projection_sha256": "079c547fb8e3557c852c2a6dc8d187c3445e5e591b15a3063e4d4bd56ca5097e",
+      "proposal_eligible": true,
+      "provider_response_sha256": "1912ba34fb57c9b11ccf115e46731d7e38651fcdb5c8471426cd31ba328f49d8",
+      "raw_response_sha256": "68bfb3bca43f93a3779fc2b3623ea5cbb50d135e94bfbc4fcdf74c26b66a74a2",
+      "request_sha256": "35820644956e0517d3777d38c79d2bfaca17035cd37d0ee7e2dc2caf0eef51d4",
+      "scores": [
+        0.8400000333786011
+      ],
+      "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+      "view_index": 13,
+      "withheld_reasons": []
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "confidence_unchanged": true,
+      "crop_sha256": "53acf96c472ecb2935ba16bc85f9729236597d63b5c3cc1972dc91b5643a6d97",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "bc242d7098a3cb18e22be8795a55385981d0be9273ec2eec7d075166d4346cf5"
+      ],
+      "prepared_file_sha256": "4eaacce3bb16d32dd50b3604418487abcae55cfb21be2df64da551e092b691de",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "b059321cecb0d086579d9192ac97b0458f6b0526899e3337f1426fd966f4a999",
+      "projection_sha256": "664f9628e49e29500389586b48132a375b25bcb6c739a96d5f56885b85679510",
+      "proposal_eligible": true,
+      "provider_response_sha256": "a4ab5bd1b0437506db4417623d1d97d21bdf2b43f2ec06d9316a8014b1fbd695",
+      "raw_response_sha256": "de39949e6e73048f4a1ae735fff2c5c5fc3292d73e538dc3e5f8328d5722544e",
+      "request_sha256": "9b471eac15933f69f38d017f0c75f6817383d3c3668033095cc3a9fb106064c0",
+      "scores": [
+        0.8518518805503845
+      ],
+      "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+      "view_index": 14,
+      "withheld_reasons": []
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "confidence_unchanged": true,
+      "crop_sha256": "426ab9366bc6baca2c7e056d67bce1e4817f60840a50291120a6927a636059e3",
+      "crop_source_rgb_exact": true,
+      "decoded_objects": 1,
+      "mask_raster_sha256s": [
+        "d7e2b5d04eee1745f0caf35a76a1f99b039b635dd287c7b0683868b0a3430357"
+      ],
+      "prepared_file_sha256": "2091e5a4ccb13b541e8ad406ce6c829331e4d6cae75f81a1e4d10f42d706ef50",
+      "projection_exact_translation": true,
+      "projection_file_sha256": "998ede4d678b8cc6601d42a736312ad07bce4c2b43065c45b532c9e13b4ddbc5",
+      "projection_sha256": "b1408af1473fa8a330b3390081f2c1255dce6c98fc82dce5a5589a494cd34127",
+      "proposal_eligible": true,
+      "provider_response_sha256": "bf9f73b18f15d896e2083f56ba7a805bef51a76568ce97fd6ca9a28b16000cc9",
+      "raw_response_sha256": "e4756464e2ff099df93c554cf562c3afe314f50d5501628916a8f9d900ea3dc2",
+      "request_sha256": "a643472f9031b57d88599fc30fdf165385c674613aee71935748bce9f5fae26b",
+      "scores": [
+        0.8518518805503845
+      ],
+      "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+      "view_index": 15,
+      "withheld_reasons": []
+    }
+  ],
+  "result_summary_sha256": "f8609deaed1c53c48fa33c8fb00d0e541d0e3e55a0c03c882c3792be71495790",
+  "schema_version": "proofloop_context_crop_independent_audit_v1",
+  "status": "passed",
+  "task_accuracy_claimed": false,
+  "task_predictions_produced": false,
+  "visual_diagnostic_review": {
+    "assistant_review_not_human_ground_truth": true,
+    "observations": [
+      {
+        "case_id": "bridge-scripted-0-pair-0",
+        "observation": "At the displayed resolution both returned masks appear confined to the blue-handled fork, with no visible red-handled spoon foreground; this is a visual diagnostic, not an independently verified semantic guarantee.",
+        "view_indices": [
+          0,
+          1
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-2",
+        "observation": "Both masks cover the visible cloth; the first crop still shows a gripper at or immediately above the cloth edge. Geometric eligibility therefore cannot establish fully clear visibility or no gripper contact.",
+        "view_indices": [
+          10,
+          11
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-0",
+        "observation": "At the displayed resolution the masks appear confined to the front brown cup, with the rear blue cup excluded. Full-source identity, uniqueness, original-region and visibility checks still need separate assessment.",
+        "view_indices": [
+          12,
+          13
+        ]
+      }
+    ],
+    "reviewed_source_and_binary_mask_views": [
+      0,
+      1,
+      10,
+      11,
+      12,
+      13
+    ]
+  }
+}

@@ -12,11 +12,11 @@ Current upload evaluation now advances from the declared logical pair epoch by a
 
 Independent review reproduced a second defect: a pair became stale after 31,001 ms, then became PASS again when the wall clock moved backwards. Workflow continuation was restored without new images or model calls.
 
-Each accepted current pair now has a server monotonic anchor and a nondecreasing elapsed floor: the maximum of nonnegative wall elapsed, monotonic elapsed and previously observed elapsed. Snapshot age, model-result evaluation, current acquisition, workflow replay and pre-repair evidence share it. A clock correction cannot revive expired evidence or freeze aging while monotonic time advances. Only accepted new observations reset the anchor. Missing runtime anchors withhold current authority; historical receipts cannot recreate them.
+Each accepted current pair now has a server monotonic anchor and a nondecreasing elapsed floor: the maximum of nonnegative wall elapsed, monotonic elapsed and previously observed elapsed. Snapshot age, model-result evaluation, current acquisition, workflow replay and pre-repair evidence share it. A clock correction cannot revive expired evidence or freeze aging while monotonic time advances. Only accepted new observations reset the anchor. Missing runtime anchors withhold current authority; historical receipts cannot recreate them. Forward wall-clock jumps can conservatively expire evidence early and require new observations.
 
 ## Decision time and history
 
-A receipt records its actual evaluation instant. If later disk persistence, process suspension or delivery consumes the freshness window, that genuinely fresh evaluation can remain a valid historical record. Current state and workflow must nevertheless be expired. The regression suite covers that boundary explicitly; the system makes no fresh-at-HTTP-delivery or physical-execution claim.
+A receipt records its decision point on the declared source clock, advanced by the nondecreasing server elapsed floor. This is not a trusted wall-clock or independently measured capture timestamp. If later disk persistence, process suspension or delivery consumes the freshness window, that genuinely fresh evaluation can remain a valid historical record. Current state and workflow must nevertheless be expired. The regression suite covers that boundary explicitly; the system makes no fresh-at-HTTP-delivery or physical-execution claim. Thirty seconds is a ceiling; individual checks can expire earlier, and uploads conservatively include their declared one-second view spacing.
 
 Existing source timestamps and sealed historical receipts are not rewritten. Old uploads with unrecorded past model latency cannot acquire a reconstructed trustworthy completion time. Historical consistency replay remains distinct from current workflow permission.
 
@@ -25,5 +25,7 @@ Existing source timestamps and sealed historical receipts are not rewritten. Old
 Fifteen new regressions cover delayed success and wrong placement, recovery consistency, no double-counting, bounded follow-ups, camera/historical handling, later expiry, pre- and post-expiry rollback, monotonic aging during wall regression, missing anchors, exhausted budgets and delayed persistence. The production owner's six-module suite passes 141 tests on Python 3.12 and 3.9. The independent reviewer separately reran the original rollback attack and verified UNKNOWN with workflow blocked and no additional fixture calls.
 
 The full repository suite passes 1,517 tests on Python 3.12 and Python 3.9, with four expected optional-dependency skips on 3.9. CodeRabbit completed an additional review of the eleven changed or added files with zero findings. These software checks do not measure perception accuracy.
+
+The idle local workbench was restarted with the same seed, data directory and reviewed task. Health, readiness and frontend HTTP checks pass; the task hash and concept perception mode are unchanged, and the persistent service journal retains zero provider attempts. The separate crop experiment uses its own explicitly capped journal.
 
 The concurrent [context-crop probe](CONTEXT-CROP-PLAN-20261030.md) is a separate experimental perception investigation. It does not alter production acceptance or claim to fix these clock defects through models.
