@@ -1,0 +1,229 @@
+{
+  "component_gate": {
+    "all6_views_reported": true,
+    "complete_accounting": true,
+    "near_reference_warning": 1,
+    "separated_references_available_without_near_warning": 5
+  },
+  "experiment": {
+    "annotation_origin": "assistant_authored_manual_gripper_boxes",
+    "annotation_sha256": "34efac17dba7665541fd024cedaf0b6aca298300d5aa1132773539485dbd3d53",
+    "dependencies": {
+      "ffmpeg_version": "ffmpeg version 9.0 Copyright (c) 2000-2026 the FFmpeg developers",
+      "meta_sam_parser_distribution": "0.1.0",
+      "sam_model": "sam-3.1",
+      "spark_max_output_tokens": 4096,
+      "spark_model": "muse-spark-1.3",
+      "spark_reasoning_effort": "low"
+    },
+    "entries": [
+      {
+        "box": {
+          "x1": 195,
+          "x2": 312,
+          "y1": 168,
+          "y2": 266
+        },
+        "case_id": "ur5-cloth-0-pair-2",
+        "decoded_frame_index": 65,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 0,
+        "height": 480,
+        "object_id": "cloth",
+        "prompt": "<0f>1<|box;x1=195;y1=168;x2=312;y2=266;w=640;h=480|>",
+        "source_id": "ur5-cloth-0",
+        "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+        "target_sha256": "eb16ad29f7569d9516aa1c30d445d8faa299aceda42ed371ff72488a0f22e04a",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 229,
+          "x2": 344,
+          "y1": 156,
+          "y2": 265
+        },
+        "case_id": "ur5-cloth-0-pair-2",
+        "decoded_frame_index": 70,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 1,
+        "height": 480,
+        "object_id": "cloth",
+        "prompt": "<0f>1<|box;x1=229;y1=156;x2=344;y2=265;w=640;h=480|>",
+        "source_id": "ur5-cloth-0",
+        "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+        "target_sha256": "c60444c44bb625785e403f30156fbb3d75d3071ff592a28526e8681360ff8251",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 347,
+          "x2": 426,
+          "y1": 145,
+          "y2": 249
+        },
+        "case_id": "ur5-cup-4-pair-0",
+        "decoded_frame_index": 0,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 0,
+        "height": 480,
+        "object_id": "brown_cup",
+        "prompt": "<0f>1<|box;x1=347;y1=145;x2=426;y2=249;w=640;h=480|>",
+        "source_id": "ur5-cup-4",
+        "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+        "target_sha256": "f68cba7986f7e46a0de25dae4d28eb964bab6ea7648b20b8977150748018be87",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 347,
+          "x2": 426,
+          "y1": 145,
+          "y2": 249
+        },
+        "case_id": "ur5-cup-4-pair-0",
+        "decoded_frame_index": 5,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 1,
+        "height": 480,
+        "object_id": "brown_cup",
+        "prompt": "<0f>1<|box;x1=347;y1=145;x2=426;y2=249;w=640;h=480|>",
+        "source_id": "ur5-cup-4",
+        "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+        "target_sha256": "4c0b05752b3da4f6f1fcbb2014f519a226fe5be6c877f4b8f55b3fa594146622",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 285,
+          "x2": 342,
+          "y1": 109,
+          "y2": 191
+        },
+        "case_id": "ur5-cup-4-pair-1",
+        "decoded_frame_index": 58,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 0,
+        "height": 480,
+        "object_id": "brown_cup",
+        "prompt": "<0f>1<|box;x1=285;y1=109;x2=342;y2=191;w=640;h=480|>",
+        "source_id": "ur5-cup-4",
+        "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+        "target_sha256": "67654267910d1e5250c4b1e29406ee8690101fb72c0bf3604f229319336f284f",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 285,
+          "x2": 342,
+          "y1": 83,
+          "y2": 162
+        },
+        "case_id": "ur5-cup-4-pair-1",
+        "decoded_frame_index": 63,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 1,
+        "height": 480,
+        "object_id": "brown_cup",
+        "prompt": "<0f>1<|box;x1=285;y1=83;x2=342;y2=162;w=640;h=480|>",
+        "source_id": "ur5-cup-4",
+        "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+        "target_sha256": "34d7a7ba98ccf880d091737c2c50e586cd50afc8c69ec3e3d01a11b748e703ca",
+        "width": 640
+      }
+    ],
+    "implementation_sha256": {
+      "proofloop/anchor_padding_experiment.py": "4386f987c575b446b379bb517f6aeb8182873d88c623212585ecd1c9c4ce9bcd",
+      "proofloop/benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+      "proofloop/bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+      "proofloop/capture.py": "77e94f6a5941fc5378037ccef46ba71060821a7457331e04bd35600dcbba682a",
+      "proofloop/concept_verified_experiment.py": "f2eded145ae2c1458374d94fa80da136e7e7f7586cc4a4b61818e3f6e75f5def",
+      "proofloop/core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+      "proofloop/gripper_geometry.py": "20125923b19f95a06c72039f4944de5c014b6a8230f777729c1348a4289d0052",
+      "proofloop/grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+      "proofloop/guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+      "proofloop/image_gripper_experiment.py": "a11fd36099713b781fc1ba372a9858a14074821c1a03eef7d5d1a0993a1371bb",
+      "proofloop/image_gripper_veto.py": "b01e77015615c6dbdcad584750d1c0f5c713a12d3036ed69237f1cecedeccaab",
+      "proofloop/inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+      "proofloop/mask_semantics.py": "de84183204cbc02ca6a4b4b2369a0061845eded7afcc1f9bf4add0b7800a1a9f",
+      "proofloop/meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+      "proofloop/prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+      "proofloop/prospective_audit.py": "50bc6c4e457b416cdf0cb54f793bc121db1eb924ab2a5cfe3a346ea6bbc1a6f5",
+      "proofloop/semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "proofloop/session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869",
+      "proofloop/tracking_geometry.py": "9c5cfdcb513a3839fa82eae19050dc50da2be62842b76329a47a4e4a0b3dfc01",
+      "proofloop/video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b",
+      "tools/probe_spatial_gripper.py": "5f783163cfe8c932a6012fe4484dcb5881efa9f2acb207d36ee70855aec24a0b"
+    },
+    "limits": [
+      "Manual gripper boxes are assistant annotations, not automatic localization or ground-truth masks.",
+      "Only a spatial object token enters SAM; no semantic text, Spark inference or production promotion.",
+      "These six views do not improve or replace the original nine task results or positive-retention denominators.",
+      "Near proposals are negative warnings; far masks do not establish visibility, safety or physical separation."
+    ],
+    "max_requests": 6,
+    "parent_plan_sha256": "437737c8e97c5de61ae93d86c19f37ff97e84d5662a51fc918625c51def73dbb",
+    "parent_summary_sha256": "652aa916b7f960b82956534121b4b25bf15ec32a2313038f5d9fcfdb7d21648a",
+    "plan_sha256": "80fecc1e9179d145a17b31bf210912603cf6dbc35bd6e1013e43c75e15735407",
+    "planned_requests": 6,
+    "scope": "exposed_development_manual_anchor_six_view_diagnostic_only",
+    "version": "manual_spatial_gripper_six_view_diagnostic_v1"
+  },
+  "manual_anchor_file_sha256": "2afb093f5892525ff6bf7a1d4f2fe835806ae9d8ef11d0238a424bbd647fdac8",
+  "publication_before_first_paid_admission_required": true,
+  "reference_views": [
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "decoded_frame_index": 65,
+      "expected_diagnostic": "near_warning",
+      "frame_index": 0,
+      "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "decoded_frame_index": 70,
+      "expected_diagnostic": "available_without_near_warning",
+      "frame_index": 1,
+      "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "decoded_frame_index": 0,
+      "expected_diagnostic": "available_without_near_warning",
+      "frame_index": 0,
+      "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "decoded_frame_index": 5,
+      "expected_diagnostic": "available_without_near_warning",
+      "frame_index": 1,
+      "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "decoded_frame_index": 58,
+      "expected_diagnostic": "available_without_near_warning",
+      "frame_index": 0,
+      "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "decoded_frame_index": 63,
+      "expected_diagnostic": "available_without_near_warning",
+      "frame_index": 1,
+      "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+    }
+  ],
+  "request_cap": 6,
+  "retries": 0,
+  "root_visual_review": "all_six_original_images_and_manual_boxes_reviewed_before_spatial_inference",
+  "schema_version": "proofloop_manual_spatial_gripper_control_plan_v1",
+  "scope": "diagnostic_only_no_replacement_of_task_metrics_no_production_qualification",
+  "stop_http_statuses": [
+    401,
+    402,
+    403,
+    429
+  ]
+}

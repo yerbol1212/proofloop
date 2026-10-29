@@ -1,0 +1,399 @@
+{
+  "accounting": {
+    "accounting_incomplete": false,
+    "estimate_basis": "18 completed SAM image requests at the recorded Standard rate of 0.0025 USD. Not an independently reconciled invoice or dollar cap.",
+    "estimated_usd": 0.045,
+    "journal_outcomes": {
+      "ok": 18,
+      "rejected": 0,
+      "reserved": 0,
+      "uncertain": 0
+    },
+    "new_sam_requests": 18,
+    "new_spark_requests": 0,
+    "reported_input_tokens": 0,
+    "reported_output_tokens": 0,
+    "total_new_requests": 18,
+    "unreported_charge_possible": false
+  },
+  "audit_consistency_passed": true,
+  "case_results": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "missing_prediction": false,
+      "parent_prediction": "unknown",
+      "prediction": "unknown",
+      "reason": "parent_unknown_unchanged",
+      "reference": "fail",
+      "status": "completed"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-1",
+      "missing_prediction": false,
+      "parent_prediction": "unknown",
+      "prediction": "unknown",
+      "reason": "parent_unknown_unchanged",
+      "reference": "unknown",
+      "status": "completed"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-2",
+      "missing_prediction": false,
+      "parent_prediction": "unknown",
+      "prediction": "unknown",
+      "reason": "parent_unknown_unchanged",
+      "reference": "unknown",
+      "status": "completed"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-0",
+      "missing_prediction": false,
+      "parent_prediction": "unknown",
+      "prediction": "unknown",
+      "reason": "parent_unknown_unchanged",
+      "reference": "unknown",
+      "status": "completed"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-1",
+      "missing_prediction": false,
+      "parent_prediction": "unknown",
+      "prediction": "unknown",
+      "reason": "parent_unknown_unchanged",
+      "reference": "unknown",
+      "status": "completed"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "missing_prediction": true,
+      "parent_prediction": "pass",
+      "prediction": null,
+      "reason": "added_geometry_unavailable",
+      "reference": "unknown",
+      "status": "unscored"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "missing_prediction": false,
+      "parent_prediction": "unknown",
+      "prediction": "unknown",
+      "reason": "parent_unknown_unchanged",
+      "reference": "pass",
+      "status": "completed"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "missing_prediction": false,
+      "parent_prediction": "unknown",
+      "prediction": "unknown",
+      "reason": "parent_unknown_unchanged",
+      "reference": "pass",
+      "status": "completed"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-2",
+      "missing_prediction": false,
+      "parent_prediction": "unknown",
+      "prediction": "unknown",
+      "reason": "parent_unknown_unchanged",
+      "reference": "unknown",
+      "status": "completed"
+    }
+  ],
+  "changes_production_acceptance": false,
+  "checks": {
+    "all_case_projections_recomputed": true,
+    "all_eighteen_completed_raw_responses_reparsed": true,
+    "all_eighteen_exact_request_payload_hashes_match_admission_journal": true,
+    "all_raw_response_attempt_ledger_and_persistent_usage_consistent": true,
+    "all_source_media_parent_artifacts_and_frozen_implementations_replayed": true,
+    "no_failed_or_unavailable_diagnostic_became_a_scored_near_or_far_measurement": true,
+    "official_decoder_entrypoint_returns_zero_masks_for_every_response": true
+  },
+  "component_gate": {
+    "checks_passed": {
+      "all18_views_reported": true,
+      "complete_accounting": true,
+      "near_reference_warning": false,
+      "new_positive_decisions": true,
+      "parent_incorrect_cloth_pass_withheld": true,
+      "separated_references_available_without_near_warning": false
+    },
+    "cloth_corrected_to_measured_unknown": false,
+    "cloth_pass_removed_only_by_missing_geometry": true,
+    "passed": false,
+    "verdict": "reject_component"
+  },
+  "counts": {
+    "authored_far_references": 5,
+    "authored_near_references": 1,
+    "cases": 9,
+    "completed_transport_responses": 18,
+    "far_available_views": 0,
+    "geometry_available_views": 0,
+    "geometry_unavailable_views": 18,
+    "gripper_instances": 0,
+    "known_parent_unknown_cases_preserved": 8,
+    "missing_candidate_task_predictions": 1,
+    "near_warning_views": 0,
+    "new_positive_decisions": 0,
+    "original_views": 18,
+    "unscored_reference_views": 6
+  },
+  "interpretation": "Completed empty proposals do not establish that grippers are absent. The prior cloth PASS becomes an unscored missing prediction because added geometry is unavailable; it was not successfully corrected to a measured UNKNOWN.",
+  "limitations": [
+    "All inputs remain exposed development images from the same three recordings and two original source families.",
+    "Zero gripper foreground masks were returned, so this trial cannot establish geometry accuracy or diagnostic specificity.",
+    "The six view references are assistant-authored visual diagnostics, not ground-truth mask-distance annotations.",
+    "Clear-positive retention remains zero of two; preserving eight prior UNKNOWNs does not establish a useful verifier.",
+    "Local request hashes and adapter metadata establish consistency, not cryptographic provider authenticity.",
+    "No heldback recordings, physical correction following a request or practical user demand were evaluated."
+  ],
+  "local_commit_precedes_first_recorded_admission": true,
+  "new_model_calls_by_reviewer": 0,
+  "parent_plan_sha256": "437737c8e97c5de61ae93d86c19f37ff97e84d5662a51fc918625c51def73dbb",
+  "physical_action_execution_verified": false,
+  "private_plan_sha256": "a5948603ed730de67bd1ed3241cc7e572b866ad1158fc52cefff1e09c28e29c8",
+  "production_qualified": false,
+  "public_plan_sha256": "9d5155c6a6ee4ed9cee3a9198c2f0b10767a01ea55929d981d27b962a4a0f141",
+  "publication_commit": "975a8f2718eed462fbd098e64a467ed3d95864f7",
+  "result_summary_sha256": "6cd4ba9593b4de006f35e14553670e4a1ccecf2c2f602670d21665999bb9f81c",
+  "reviewer": "independent assistant product_value_review",
+  "schema_version": "proofloop_independent_image_gripper_audit_v1",
+  "view_results": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "diagnostic_match": null,
+      "frame_index": 0,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "1492116b3bd4885d2a71cb19257ff063e92fce85c2f00140abcc6d3cfe15190a",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "diagnostic_match": null,
+      "frame_index": 1,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "527b005805b540a516ed38370c2bf38228dc54b3d6aad31e640544453fe1b1a4",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-1",
+      "diagnostic_match": null,
+      "frame_index": 0,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "bd3b1080a99382cb023c2a081dc1b3bcf5adf5111a727c54604cfab5568a1c16",
+      "reason_codes": [
+        "target_candidate_count_not_one"
+      ],
+      "source_sha256": "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-1",
+      "diagnostic_match": null,
+      "frame_index": 1,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "7651bf20da9e4b2c858f0f115ca17f8e22e59563b1b38a64a95a7fe7339a47d9",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-2",
+      "diagnostic_match": null,
+      "frame_index": 0,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "f1a828a31c6d980af2f968f1ad1c8b52e58392b42127b134db49832203be67d1",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-2",
+      "diagnostic_match": null,
+      "frame_index": 1,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "39b372220fcaaf9522eae3e5900f83fb2cb9465eb50805b249a2d3035bddac83",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-0",
+      "diagnostic_match": null,
+      "frame_index": 0,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "0e7d03adc0684da0985f197d02434b6b7088acd03fda70e26d19c87fde1ad5f8",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-0",
+      "diagnostic_match": null,
+      "frame_index": 1,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "7521555e2037e077bfc451f61b0d10df914ce92b53a1f2ca4ec5f1ffff90b538",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-1",
+      "diagnostic_match": null,
+      "frame_index": 0,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "3828db18f4744ce6cdedfa8bc7823f9291f442be44a0f20683875fdcda283735",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-1",
+      "diagnostic_match": null,
+      "frame_index": 1,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "e81f64e3c6bf9544754b5983cd9d13dac8406443aeb41a14c33754cb49f22489",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "diagnostic_match": null,
+      "frame_index": 0,
+      "geometry_reference": "near_gripper_proposal",
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "f3d3285f886ea590dfe84aa788064b03771be84e5c7513abd8055f13182f3fc5",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "diagnostic_match": null,
+      "frame_index": 1,
+      "geometry_reference": "no_near_proposal_observed",
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "56b6f9a752f0292827a990603e23720faa2d69a78d98659475437cba6727241b",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "diagnostic_match": null,
+      "frame_index": 0,
+      "geometry_reference": "no_near_proposal_observed",
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "5e17ae89d96c58493b7c22be0a5b4d5d02e2141a41f14130e03852a9ddf540b4",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "diagnostic_match": null,
+      "frame_index": 1,
+      "geometry_reference": "no_near_proposal_observed",
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "69ab9ad9bae080148f0af92a17d8355f7b71d437f35c3dbb9f6e57bc07cd42dd",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "diagnostic_match": null,
+      "frame_index": 0,
+      "geometry_reference": "no_near_proposal_observed",
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "6686747424afe1ff5c220b57afe0e44dd54a31855aa34eb1c4e9fd563638a3e2",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "diagnostic_match": null,
+      "frame_index": 1,
+      "geometry_reference": "no_near_proposal_observed",
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "4927363f3fbf1d9a90de87adcaade8dd27043ff554000e0d61ae2e63327ef8bf",
+      "reason_codes": [
+        "gripper_missing_not_verified_absent"
+      ],
+      "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-2",
+      "diagnostic_match": null,
+      "frame_index": 0,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "7b93b8fc587ddb6990e379096cac081889e2ff764bfde3d120da9a48fcb926ed",
+      "reason_codes": [
+        "target_candidate_count_not_one"
+      ],
+      "source_sha256": "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+      "warning": "geometry_unavailable"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-2",
+      "diagnostic_match": null,
+      "frame_index": 1,
+      "geometry_reference": null,
+      "gripper_object_count": 0,
+      "raw_provider_body_sha256": "8e40029e2579ae1a5b5201d5cfc13630f08e86af6950f2a2232b784953f6637a",
+      "reason_codes": [
+        "target_candidate_count_not_one"
+      ],
+      "source_sha256": "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67",
+      "warning": "geometry_unavailable"
+    }
+  ]
+}
