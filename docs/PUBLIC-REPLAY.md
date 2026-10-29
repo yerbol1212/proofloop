@@ -4,14 +4,14 @@ This read-only walkthrough works from a public checkout or complete installed wo
 
 ## Start an isolated offline workbench
 
-Build the frontend from the checkout first:
+The source walkthrough needs Python 3.9+ and Node 24. Its offline Python runtime uses the standard library, so a private development virtual environment is not required. Build the frontend from the checkout first:
 
 ```sh
 cd web
 npm ci
 npm run build
 cd ..
-.venv/bin/python -m proofloop.server --offline --port 8791 --data-dir artifacts/local/public-walkthrough
+python3 -m proofloop.server --offline --port 8791 --data-dir artifacts/local/public-walkthrough
 ```
 
 For a complete installed wheel, use `proofloop serve --offline --port 8791 --data-dir artifacts/local/public-walkthrough`. Open <http://127.0.0.1:8791/> and select **Video lab → Public tracking replay**. The public inspector works even when there are no private recorded-video runs. The key is not needed; offline mode rejects new live inspection, tracking and Spark compilation requests before admission. Existing admitted jobs and authored task presets remain separate.
