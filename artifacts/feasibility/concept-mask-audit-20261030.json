@@ -1,0 +1,396 @@
+{
+  "accounting": {
+    "accounting_incomplete": false,
+    "control_estimated_usd": 0.006883,
+    "estimate_basis": "Sum of rounded per-attempt Standard-rate estimates: SAM image 0.0025 USD; Spark input 1.25/output 4.25 USD per million tokens. Not an independently reconciled invoice or dollar cap.",
+    "main_estimated_usd": 0.049724,
+    "persistent_outcomes": {
+      "ok": 20,
+      "rejected": 0,
+      "reserved": 0,
+      "uncertain": 0
+    },
+    "reported_input_tokens": 4397,
+    "reported_output_tokens": 1438,
+    "total_estimated_usd": 0.056607,
+    "unreported_charge_possible": false
+  },
+  "audit_consistency_passed": true,
+  "audit_scope": "Local source/request/response/classification/accounting consistency replay; not provider attestation or independent human annotation.",
+  "case_results": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reference": "fail",
+      "sam_frames": [
+        {
+          "frame_index": 0,
+          "object_count": 1,
+          "raw_provider_body_sha256": "78fa0d0de844a1a448e64143e9c766ee7924910da887ba6f1a44edc5b0a23e0e",
+          "scores": [
+            0.827957034111023
+          ],
+          "source_sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1"
+        },
+        {
+          "frame_index": 1,
+          "object_count": 1,
+          "raw_provider_body_sha256": "36870997d96ffe291805ed164dc782d319054f8be4a9448a959d93a415788109",
+          "scores": [
+            0.7730495929718018
+          ],
+          "source_sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+        }
+      ],
+      "semantic_status": "withheld"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-1",
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reference": "unknown",
+      "sam_frames": [
+        {
+          "frame_index": 0,
+          "object_count": 0,
+          "raw_provider_body_sha256": "6ce81082e92523fde05631668aa4792a01783fc5e395b69d1b35b6ada491f455",
+          "scores": [],
+          "source_sha256": "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b"
+        },
+        {
+          "frame_index": 1,
+          "object_count": 1,
+          "raw_provider_body_sha256": "9355b41ecabba05af5c048feef9a3ff612d20c78bf5b991cdb220a38e841eebb",
+          "scores": [
+            0.8400000333786011
+          ],
+          "source_sha256": "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d"
+        }
+      ],
+      "semantic_status": "withheld"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-2",
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reference": "unknown",
+      "sam_frames": [
+        {
+          "frame_index": 0,
+          "object_count": 1,
+          "raw_provider_body_sha256": "38318ca30bc49a813c08d6270715ff33d8b5cb8b1f04044993b3b9ffc27b0207",
+          "scores": [
+            0.5816993117332458
+          ],
+          "source_sha256": "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3"
+        },
+        {
+          "frame_index": 1,
+          "object_count": 1,
+          "raw_provider_body_sha256": "c2b4edf0d2770477b9649a8079f9b86536b155900d5be3383df729d0352563ed",
+          "scores": [
+            0.827957034111023
+          ],
+          "source_sha256": "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a"
+        }
+      ],
+      "semantic_status": "withheld"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-0",
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reference": "unknown",
+      "sam_frames": [
+        {
+          "frame_index": 0,
+          "object_count": 1,
+          "raw_provider_body_sha256": "35638dabc1ffec1176640dc8a2280ccee193aef050cda27c0742e731a8f6ab97",
+          "scores": [
+            0.9179486632347107
+          ],
+          "source_sha256": "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8"
+        },
+        {
+          "frame_index": 1,
+          "object_count": 1,
+          "raw_provider_body_sha256": "faf528f43fe75eaac7ae450fe2a269755e42350076e96245d5e73aa19facb730",
+          "scores": [
+            0.9259259104728699
+          ],
+          "source_sha256": "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115"
+        }
+      ],
+      "semantic_status": "withheld"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-1",
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reference": "unknown",
+      "sam_frames": [
+        {
+          "frame_index": 0,
+          "object_count": 1,
+          "raw_provider_body_sha256": "551b4170f6d6d8d9a7eb0eb869b958b89d4453fa27b9f2414792d6af82e5d6ff",
+          "scores": [
+            0.9609756469726562
+          ],
+          "source_sha256": "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235"
+        },
+        {
+          "frame_index": 1,
+          "object_count": 1,
+          "raw_provider_body_sha256": "02973acc171b6207a2ae8ee5deb5e50cf20c8dc7182f0cb6d670f456acc32b89",
+          "scores": [
+            0.9609756469726562
+          ],
+          "source_sha256": "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668"
+        }
+      ],
+      "semantic_status": "withheld"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "missing_prediction": false,
+      "prediction": "pass",
+      "reference": "unknown",
+      "sam_frames": [
+        {
+          "frame_index": 0,
+          "object_count": 1,
+          "raw_provider_body_sha256": "99c9afa23295b18d7adccb11e792a507987355565159f9a24af66895985cfbdc",
+          "scores": [
+            0.941605806350708
+          ],
+          "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c"
+        },
+        {
+          "frame_index": 1,
+          "object_count": 1,
+          "raw_provider_body_sha256": "837f94393da2c9d804938a9ef2883224604cb8160e1057b2d2fdf09f4342c359",
+          "scores": [
+            0.9259259104728699
+          ],
+          "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+        }
+      ],
+      "semantic_status": "completed"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reference": "pass",
+      "sam_frames": [
+        {
+          "frame_index": 0,
+          "object_count": 1,
+          "raw_provider_body_sha256": "42d62cf912be86a255c6d7909b496efa1a6b55d62baed8e3b43ab0abef701294",
+          "scores": [
+            0.7299578189849854
+          ],
+          "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba"
+        },
+        {
+          "frame_index": 1,
+          "object_count": 1,
+          "raw_provider_body_sha256": "3ea3775690e7f74ea9952bbe9a3711b017e6151700ef94e9ae1a82d8f7404130",
+          "scores": [
+            0.8709677457809448
+          ],
+          "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+        }
+      ],
+      "semantic_status": "withheld"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reference": "pass",
+      "sam_frames": [
+        {
+          "frame_index": 0,
+          "object_count": 1,
+          "raw_provider_body_sha256": "809689634a0fbe1b3e730ebcd73d8415e862ddf279a3f144117d617e187f9578",
+          "scores": [
+            0.7142857313156128
+          ],
+          "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636"
+        },
+        {
+          "frame_index": 1,
+          "object_count": 1,
+          "raw_provider_body_sha256": "9364764c76070b8d040358969e684001fa3a5198d2a18ea56deb055161cdf0e7",
+          "scores": [
+            0.8750000596046448
+          ],
+          "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+        }
+      ],
+      "semantic_status": "withheld"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-2",
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reference": "unknown",
+      "sam_frames": [
+        {
+          "frame_index": 0,
+          "object_count": 0,
+          "raw_provider_body_sha256": "18042bca23787c8259e57a2b012c7738ba6352e531b1e330ac99f1836be2aa3f",
+          "scores": [],
+          "source_sha256": "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd"
+        },
+        {
+          "frame_index": 1,
+          "object_count": 0,
+          "raw_provider_body_sha256": "3d6e26e5bad957648a8326c5d7e17781176f76d446f3bd41ff3e5b944ae7c985",
+          "scores": [],
+          "source_sha256": "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67"
+        }
+      ],
+      "semantic_status": "withheld"
+    }
+  ],
+  "challenger_classifications": [
+    {
+      "classifications": [
+        {
+          "frame_index": 0,
+          "full_scene_match_count": "one",
+          "full_visibility": "supported",
+          "identity": "supported",
+          "mask_target_only": "supported",
+          "target_extent_covered": "supported"
+        },
+        {
+          "frame_index": 1,
+          "full_scene_match_count": "one",
+          "full_visibility": "supported",
+          "identity": "supported",
+          "mask_target_only": "supported",
+          "target_extent_covered": "supported"
+        }
+      ],
+      "decision": "supported",
+      "prepared_sha256": "f169ae4b163f4490e57c4f79e09323c66cb931e4d653b094849f0b5b56d8bd2f",
+      "raw_provider_body_sha256": "b7b74380a5d83b7422809cc71c1c6a966cc22f3788fe8573865d3e2f3236f56c",
+      "role": "main:ur5-cloth-0-pair-2"
+    },
+    {
+      "classifications": [
+        {
+          "frame_index": 0,
+          "full_scene_match_count": "one",
+          "full_visibility": "supported",
+          "identity": "supported",
+          "mask_target_only": "contradicted",
+          "target_extent_covered": "supported"
+        },
+        {
+          "frame_index": 1,
+          "full_scene_match_count": "one",
+          "full_visibility": "supported",
+          "identity": "supported",
+          "mask_target_only": "contradicted",
+          "target_extent_covered": "supported"
+        }
+      ],
+      "decision": "unknown",
+      "prepared_sha256": "22e2da86420aa37e634100ced443335c67276341aac629559f57500aa521e0ea",
+      "raw_provider_body_sha256": "33b82235c3cac70a66ec3b7b1a38c05d9c73468a3d52bfde276fb677aeaa6a96",
+      "role": "separate_reused_spatial_mask_control"
+    }
+  ],
+  "changes_production_acceptance": false,
+  "checks": {
+    "all_nine_cases_preserved": true,
+    "all_twenty_completed_response_usage_records_match_attempts_and_journal": true,
+    "all_twenty_exact_request_payload_hashes_match_persistent_admissions": true,
+    "eighteen_new_sam_bodies_officially_reparsed_and_decoded": true,
+    "frozen_public_plan_and_implementation_unchanged": true,
+    "original_media_and_cached_locator_replayed": true,
+    "reported_token_totals_and_local_rate_estimates_recomputed": true,
+    "separate_control_excluded_from_main_denominator": true,
+    "six_ordered_attachments_per_challenge_reproduced": true,
+    "two_challenger_bodies_strictly_reparsed": true
+  },
+  "control_prepared_sha256": "22e2da86420aa37e634100ced443335c67276341aac629559f57500aa521e0ea",
+  "control_report_sha256": "041c10f984055949d04eec90c1ce73e32a6e9ae44bf63a0f935a2ffc82c3f2f2",
+  "counts": {
+    "cached_locators": 9,
+    "combined_request_limit": 28,
+    "main_cases": 9,
+    "missing_predictions": 0,
+    "new_control_spark_requests": 1,
+    "new_main_spark_requests": 1,
+    "new_sam_decoded_objects": 15,
+    "new_sam_requests": 18,
+    "remaining_request_slots": 8,
+    "reused_control_sam_responses": 2,
+    "total_new_requests": 20
+  },
+  "limitations": [
+    "All nine main cases are exposed development inputs from three recordings and two original source families.",
+    "Reference labels remain assistant authored; near-contact and nested-object visibility are annotation sensitive.",
+    "The control detects known mixed foreground in two reused images but does not establish general semantic correctness.",
+    "Hashes and saved adapter metadata establish local consistency, not cryptographic authenticity of provider origin.",
+    "No heldback recording, physical response to a requested correction, practical user demand or calibrated reliability was evaluated."
+  ],
+  "local_commit_precedes_first_recorded_admission": true,
+  "main_plan_sha256": "437737c8e97c5de61ae93d86c19f37ff97e84d5662a51fc918625c51def73dbb",
+  "main_summary_sha256": "1458248dd249915aa0f041df93e6d32f9ed25bd0db7f3a4ee8077d7593dcd341",
+  "metrics": {
+    "clear_positive_retention": {
+      "denominator": 2,
+      "numerator": 0
+    },
+    "exact_reference_matches": {
+      "denominator": 9,
+      "numerator": 5
+    },
+    "incorrect_pass_against_nonpass_references": {
+      "denominator": 7,
+      "numerator": 1
+    },
+    "nonunknown_decision_coverage": {
+      "denominator": 9,
+      "numerator": 1
+    },
+    "prediction_counts": {
+      "fail": 0,
+      "pass": 1,
+      "unknown": 8
+    },
+    "supported_fail_retention": {
+      "denominator": 1,
+      "numerator": 0
+    },
+    "unknown_reference_withheld": {
+      "denominator": 6,
+      "numerator": 5
+    }
+  },
+  "new_model_calls_by_reviewer": 0,
+  "physical_action_execution_verified": false,
+  "predeclared_gate": {
+    "checks_passed": {
+      "complete_source_response_accounting": true,
+      "control_completed_and_withheld": true,
+      "main_clear_pass_retention": false,
+      "main_exact_reference_matches": false,
+      "main_supported_fail_retention": false,
+      "main_unknown_withheld": false
+    },
+    "passed": false,
+    "verdict": "reject_candidate_for_production"
+  },
+  "public_plan_sha256": "2b4e42b91488bbfb67d9a71f7836e3b627697e35b8dacb8e2f89c1e539fbb765",
+  "publication_commit": "930a7622e3d5215e562c1b6ad987f2ff93ca976c",
+  "reviewer": "independent assistant product_value_review",
+  "schema_version": "proofloop_independent_concept_audit_v1"
+}

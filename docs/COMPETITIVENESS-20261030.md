@@ -53,3 +53,7 @@ The exposed development set keeps **all nine cases: two PASS, one FAIL and six U
 5. Obtain an unfamiliar person's observed run and feedback when available. Do not invent customers, time savings or industrial deployment.
 
 The goal is a small capability that reliably earns its claim. Additional infrastructure becomes worthwhile when it supports that capability or resolves an observed operational defect.
+
+## Result of the first intervention
+
+The [completed concept-mask experiment](CONCEPT-MASK-RESULTS-20261030.md) fails the gate: 5/9 reference matches, 0/2 clear positives and one incorrect PASS on the ambiguous cloth pair. Its separate mixed-mask control succeeds. The 20-call trial costs an estimated $0.056607. Independent raw-response, source and accounting replay passes, but that does not rescue the failed capability. The method remains outside production; the initial competitive verdict remains unchanged.
