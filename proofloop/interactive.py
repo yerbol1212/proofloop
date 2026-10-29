@@ -25,12 +25,13 @@ from typing import Any
 from .acquisition import build_acquisition_plan, check_source_pair
 from .compiler import COFFEE_PLACEMENT_PRESET, CompilerError, authored_coffee_protocol, compile_protocol
 from .concepts import validate_concept_mapping
-from .core import EvidenceStore, Protocol, ValidationError, aggregate_status, evaluate
+from .core import EvidenceStore, Protocol, ValidationError, aggregate_status
 from .diagnostics import explain_checks
 from .grounding import SamImageEvidence, ground_sam_images
 from .guided import GUIDED_VERSION, guided_segment_pair
 from .meta import MAX_IMAGE_BYTES, MetaAPIError, MetaClient, load_env_file
-from .recovery import digest, evidence_bundle, replay_evidence, save_receipt, task_contract, verify_recovery_receipt
+from .recovery import (current_pair_expired, digest, evaluate_pair, evidence_bundle, replay_evidence,
+                       save_receipt, task_contract, verify_recovery_receipt)
 from .session import _approved, _bound_result, _repair_proposal, evaluate_session, verify_capture_files
 from .workflow import validate_continuation, workflow_status
 
@@ -57,6 +58,10 @@ def _perception_details(mode: str) -> dict[str, Any]:
 
 def _now_ms() -> int:
     return round(time.time() * 1000)
+
+
+def _monotonic_ms() -> int:
+    return time.monotonic_ns() // 1_000_000
 
 
 def _read_json(path: Path) -> Any:
@@ -193,6 +198,8 @@ class InteractiveEngine:
         self._draft_record: dict[str, Any] | None = None
         self._evidence_record: dict[str, Any] | None = None
         self._workflow_replay = None
+        self._evidence_received_monotonic_ms: int | None = None
+        self._evidence_elapsed_floor_ms = 0
         self._reset_acquisition()
         self._recovery_record: dict[str, Any] | None = None
         self._recovery_path: Path | None = None
@@ -513,10 +520,11 @@ class InteractiveEngine:
         if self._evidence_record is None:
             return None
         bundle = deepcopy(self._evidence_record)
-        if self._state["source_kind"] == "camera":
-            bundle["evaluation_now_ms"] = _now_ms()
-        elif self._state["source_kind"] == "upload":
-            bundle["evaluation_now_ms"] = 1000 + max(0, _now_ms() - self._state["evidence_received_at_ms"])
+        if self._state["source_kind"] in ("camera", "upload"):
+            current_time, _ = self._current_evidence_time()
+            if current_time is None:
+                return None  # Current anchors cannot be reconstructed from historical receipts.
+            bundle["evaluation_now_ms"] = current_time
         return bundle
 
     def _start_recovery(self, before: dict[str, Any]) -> None:
@@ -630,16 +638,15 @@ class InteractiveEngine:
         if self._acquisition_context is None:
             return deepcopy(self._acquisition_plan)
         context = self._acquisition_context
-        elapsed = max(0, _now_ms() - context["received_at_ms"])
-        # Uploaded spacing remains operator-declared. Advancing logical time
-        # by server elapsed time makes expiration explicit without inventing a
-        # measured capture timestamp.
-        now = context["now_ms"] + elapsed
+        current_time, _ = self._current_evidence_time()
+        now = current_time if current_time is not None else context["now_ms"]
         plan = build_acquisition_plan(self._protocol, context["store"],
             grounding=context["grounding"], locator=context["locator"],
             samples=context["samples"], regions=context["regions"],
             attempts_used=self._acquisition_attempts, max_attempts=2,
             used_source_hashes=tuple(self._seen_hashes), now_ms=now,
+            source_pair_expired=current_time is None or current_pair_expired(context.get("source_kind", "none"),
+                context.get("timestamps", []), now),
             object_labels=self._concepts)
         if plan["status"] == "not_needed":
             return None
@@ -798,13 +805,40 @@ class InteractiveEngine:
             pass
         return False
 
+    def _current_evidence_time(self) -> tuple[int | None, int | None]:
+        """Return a non-decreasing current source clock and displayed age.
+
+        Receipt wall time supplies the camera epoch; upload source time remains
+        explicitly logical. Monotonic elapsed time prevents a wall-clock rollback
+        from prolonging freshness, and the observed wall high-water prevents an
+        expired revision from becoming current again. These in-process anchors
+        are never fabricated when opening historical saved evidence.
+        """
+        with self._lock:
+            source = self._state["source_kind"]
+            received = self._state["evidence_received_at_ms"]
+            monotonic_anchor = self._evidence_received_monotonic_ms
+            if (source not in ("camera", "upload") or type(received) is not int
+                    or type(monotonic_anchor) is not int):
+                return None, None
+            elapsed = max(0, _now_ms() - received, _monotonic_ms() - monotonic_anchor,
+                          self._evidence_elapsed_floor_ms)
+            self._evidence_elapsed_floor_ms = elapsed
+            if source == "upload":
+                return 1000 + elapsed, elapsed
+            first_capture = self._state["evidence_observed_at_ms"]
+            if type(first_capture) is not int:
+                return None, None
+            current_time = received + elapsed
+            return current_time, max(0, current_time - first_capture)
+
     def snapshot(self) -> dict[str, Any]:
         with self._lock:
             state = deepcopy(self._state)
-            evidence_time = state["evidence_observed_at_ms"] if state["source_kind"] == "camera" else state["evidence_received_at_ms"]
-            age = None if evidence_time is None else max(0, _now_ms() - evidence_time)
+            _, age = self._current_evidence_time()
             state.update(api_ready=self._api_ready(), evidence_age_ms=age,
-                         stale=state["source_kind"] == "recorded" or age is not None and age > FRESHNESS_MS,
+                         stale=state["source_kind"] == "recorded" or
+                               state["source_kind"] in ("camera", "upload") and (age is None or age > FRESHNESS_MS),
                          pending_token_issued_at_ms=self._token_issued_ms)
             if state["stale"] and state["source_kind"] != "recorded" and state["phase"] in ("verified", "mistake", "unknown"):
                 state["phase"], state["status"] = "unknown", "unknown"
@@ -838,8 +872,10 @@ class InteractiveEngine:
                     or bundle["contract"]["protocol_hash"] != binding["protocol_hash"]
                     or bundle["revision"] != binding["revision"]):
                 return proof
-            bundle["evaluation_now_ms"] = (_now_ms() if state["source_kind"] == "camera" else
-                bundle["evaluation_now_ms"] + max(0, _now_ms() - state["evidence_received_at_ms"]))
+            current_time, _ = self._current_evidence_time()
+            if current_time is None:
+                return proof
+            bundle["evaluation_now_ms"] = current_time
             replayed = replay_evidence(bundle, self.root)
             recorded = {item["check_id"]: item["status"] for item in state["checks"]}
             replay_statuses = {item["check_id"]: item["status"] for item in replayed["checks"]}
@@ -967,6 +1003,7 @@ class InteractiveEngine:
         else:
             times = [0, 1000]
             basis = "operator_declared_freshness_and_spacing; logical_order_only_not_measured_capture_time"
+        basis += "; freshness_uses_non_decreasing_server_elapsed_not_trusted_capture_time"
         return source, deepcopy(regions), decoded, hashes, times, basis
 
     def inspect_pair(self, payload: dict[str, Any], *, expected_binding=None,
@@ -998,13 +1035,16 @@ class InteractiveEngine:
             self._state["capture_token"] = None
             self._seen_hashes.update(hashes)
             self._evidence_record = None
+            received_at_ms = _now_ms()
+            self._evidence_received_monotonic_ms = _monotonic_ms()
+            self._evidence_elapsed_floor_ms = 0
             self._state.update(phase="checking", status="unknown", busy=True, busy_operation="inspection", error=None, source_kind=source,
                                proposal=None, verified_at_ms=None, regions=regions, images=[], usage=None, perception_provenance=None,
                                source_note=("Inspecting two new views with task-independent Spark localization and Meta SAM. "
                                             "The correction is not yet verified." if mode == "guided" else
                                             "Inspecting two new views with Meta SAM. The correction is not yet verified."),
                                inference_origin="live_meta_api" if self._client_factory is None else "injected_client_not_verified_live",
-                               evidence_received_at_ms=_now_ms(),
+                               evidence_received_at_ms=received_at_ms,
                                evidence_observed_at_ms=times[0] if source == "camera" else None,
                                evidence_age_basis="client_reported_capture_time" if source == "camera" else "server_received_time_capture_age_operator_declared")
             self._unknown_checks("Fresh image inspection is in progress")
@@ -1079,8 +1119,14 @@ class InteractiveEngine:
             grounded = ground_sam_images(self._protocol, regions, samples, session_id=store.session_id, revision=revision)
             for observation in grounded.observations:
                 store.add(observation)
-            now = _now_ms() if source == "camera" else 1000
-            verdicts = evaluate(self._protocol, store, now_ms=now)
+            # Provider latency consumes the same freshness window used by
+            # snapshot(), workflow replay and recovery. A completed detection
+            # must not close a recovery after its uploaded evidence expired.
+            evaluated_at_ms = _now_ms()
+            now, _ = self._current_evidence_time()
+            if now is None:
+                raise ValidationError("Current evidence freshness anchor is unavailable")
+            verdicts = evaluate_pair(self._protocol, store, source_kind=source, timestamps=times, now_ms=now)
             outcome = {"status": aggregate_status(verdicts).value, "checks": [item.to_dict() for item in verdicts]}
             self._write(run_directory / "evaluation.json", {"timestamp_basis": basis, "grounding": grounded.to_dict(),
                          "evaluation": outcome, "usage": client.usage_summary()})
@@ -1108,7 +1154,7 @@ class InteractiveEngine:
                 if any(check["status"] == "unknown" for check in outcome["checks"]):
                     self._acquisition_context = {"store": store, "grounding": grounded.to_dict(),
                         "samples": samples, "regions": regions, "locator": guided.get("locator") if guided else None,
-                        "now_ms": now, "received_at_ms": _now_ms()}
+                        "now_ms": now, "received_at_ms": evaluated_at_ms, "source_kind": source, "timestamps": times}
                     self._acquisition_plan = None
                     # A known misplaced item cannot authorize motion while
                     # another required target remains unconfirmed.

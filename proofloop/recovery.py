@@ -15,13 +15,40 @@ from pathlib import Path
 import re
 from typing import Any, Mapping
 
-from .core import EvidenceStore, Observation, Protocol, ValidationError, aggregate_status, evaluate
+from .core import CheckResult, EvidenceStore, Observation, Protocol, Status, ValidationError, aggregate_status, evaluate
 from .grounding import SamImageEvidence, ground_sam_images
 from .session import _bound_result, _repair_proposal
 
 ROOT = Path(__file__).resolve().parents[1]
 OUTCOMES = {"awaiting_fresh_evidence", "fresh_goal_verified_after_requested_repair",
             "fresh_goal_verified_after_inspection", "still_failed", "needs_evidence", "error", "cancelled_task_change"}
+
+
+def current_pair_expired(source_kind: str, timestamps: list[int], now_ms: int) -> bool:
+    """Apply the workbench's 30-second current-pair window without new clocks.
+
+    Camera age starts at its first client-declared capture. Upload timestamps
+    are logical and end at 1000; their evaluation time includes actual server
+    elapsed time since receipt. Recorded evidence keeps its historical clock.
+    """
+    if source_kind not in ("camera", "upload"):
+        return False
+    if (not isinstance(timestamps, (list, tuple)) or len(timestamps) != 2
+            or any(type(value) is not int or value < 0 for value in timestamps)
+            or timestamps[1] < timestamps[0] or type(now_ms) is not int):
+        raise ValidationError("Current pair freshness requires its declared source timestamps and evaluation time")
+    anchor = timestamps[0] if source_kind == "camera" else timestamps[-1]
+    return now_ms - anchor > 30_000
+
+
+def evaluate_pair(protocol: Protocol, store: EvidenceStore, *, source_kind: str,
+                  timestamps: list[int], now_ms: int) -> tuple[CheckResult, ...]:
+    """Replay checks and the same whole-pair freshness used by current state."""
+    verdicts = evaluate(protocol, store, now_ms=now_ms)
+    if current_pair_expired(source_kind, timestamps, now_ms):
+        return tuple(CheckResult(item.check_id, Status.UNKNOWN, "Source pair evidence is stale", item.evidence_ids)
+                     for item in verdicts)
+    return tuple(verdicts)
 
 
 def digest(value: Any) -> str:
@@ -147,7 +174,8 @@ def replay_evidence(bundle: Any, root: Path) -> dict[str, Any]:
     grounded = ground_sam_images(protocol, contract["regions"], samples, session_id=store.session_id, revision=store.revision)
     for observation in grounded.observations:
         store.add(observation)
-    verdicts = evaluate(protocol, store, now_ms=bundle["evaluation_now_ms"])
+    verdicts = evaluate_pair(protocol, store, source_kind=bundle["source_kind"],
+                             timestamps=times, now_ms=bundle["evaluation_now_ms"])
     return {"status": aggregate_status(verdicts).value, "checks": [item.to_dict() for item in verdicts],
             "observations": [item.to_dict() for item in grounded.observations],
             "source_hashes": [frame["sha256"] for frame in frames]}

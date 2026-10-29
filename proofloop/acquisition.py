@@ -291,6 +291,7 @@ def build_acquisition_plan(protocol: Protocol, store: EvidenceStore, *,
                            used_source_hashes: Iterable[str] = (), source_mode: str = "live",
                            available_timestamps_ms: Sequence[int] | None = None,
                            now_ms: int | None = None,
+                           source_pair_expired: bool = False,
                            region_labels: Mapping[str, str] | None = None,
                            object_labels: Mapping[str, str] | None = None) -> dict[str, Any]:
     """Return a public-safe request for UNKNOWN checks with a finite budget.
@@ -304,6 +305,9 @@ def build_acquisition_plan(protocol: Protocol, store: EvidenceStore, *,
     chronological admissible pair is fixed without looking at model outcomes;
     insufficient later timestamps is terminal, not permission to reuse frames.
     ``source_mode='recorded'`` is timeline analysis, never physical repair proof.
+    The current-scene caller can supply ``source_pair_expired=True`` when its
+    whole-pair window expired even though the latest observation alone is recent.
+    This supplies typed stale-evidence requests without changing source times.
     """
     if not isinstance(protocol, Protocol) or not isinstance(store, EvidenceStore):
         raise ValidationError("Acquisition requires an approved protocol and EvidenceStore")
@@ -313,10 +317,12 @@ def build_acquisition_plan(protocol: Protocol, store: EvidenceStore, *,
         raise ValidationError("Acquisition supports at most two follow-up submissions")
     if source_mode not in ("live", "recorded"):
         raise ValidationError("source_mode must be live or recorded")
+    if type(source_pair_expired) is not bool or source_pair_expired and source_mode != "live":
+        raise ValidationError("Only current live evidence can declare its source pair expired")
     at = store.current_time_ms if now_ms is None else _nonnegative(now_ms, "now_ms")
     verdicts = evaluate(protocol, store, now_ms=at)
-    unknown_ids = [result.check_id for result in verdicts if result.status == Status.UNKNOWN]
-    failed_ids = [result.check_id for result in verdicts if result.status == Status.FAIL]
+    unknown_ids = [result.check_id for result in verdicts if source_pair_expired or result.status == Status.UNKNOWN]
+    failed_ids = [result.check_id for result in verdicts if not source_pair_expired and result.status == Status.FAIL]
     evidence = _evidence(grounding)
     if not isinstance(evidence, Mapping):
         raise ValidationError("Saved grounding evidence must be a mapping")
@@ -361,7 +367,7 @@ def build_acquisition_plan(protocol: Protocol, store: EvidenceStore, *,
         observation = matching[-1] if matching else None
         if check.kind == "before":
             causes = {"temporal_history_required": set()}
-        elif observation is not None and at - observation.timestamp_ms > check.max_age_ms:
+        elif source_pair_expired or observation is not None and at - observation.timestamp_ms > check.max_age_ms:
             causes = {"stale_evidence": set()}
         else:
             causes = _diagnose(check, observation, sources, raw_sources, locator, rectangles, frame_hashes)
