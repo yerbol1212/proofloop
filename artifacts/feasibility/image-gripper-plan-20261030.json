@@ -1,0 +1,505 @@
+{
+  "component_gate": {
+    "all18_views_reported": true,
+    "complete_accounting": true,
+    "near_reference_warning": 1,
+    "new_positive_decisions": 0,
+    "parent_incorrect_cloth_pass_withheld": true,
+    "separated_references_available_without_near_warning": 5
+  },
+  "experiment": {
+    "cases": [
+      {
+        "case_id": "bridge-scripted-0-pair-0",
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 181,
+              "x2": 300,
+              "y1": 158,
+              "y2": 263
+            },
+            "source_sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+            "target_sha256": "bfcb523d3f6ee046a9896751d03ce5d1dfab6dcc475b1ecf720004a7ecd83126",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 181,
+              "x2": 300,
+              "y1": 158,
+              "y2": 263
+            },
+            "source_sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+            "target_sha256": "c56db4b9fd59ba31e01ca00669bf8da07366bdea59590998b90cb864b02a01b5",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "original_contract_hash": "2a4f747826572f76d131c0c5491b64185f5c8c003744361cecbad17ff6b7c8a8",
+        "parent_prediction": "unknown",
+        "parent_result_sha256": "6b816855693257ebf86ea3caba78ac58a3e95d76561080012022477b8fa0baf5",
+        "parent_status": "completed",
+        "truth": "fail"
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-1",
+        "frames": [
+          {
+            "eligible": false,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": null,
+            "source_sha256": "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+            "target_sha256": "df9f1b932337f3885f5eb645ff1a2189762f4011a01faf91f62fe353e26e51af",
+            "width": 640,
+            "withheld_reason": "no_candidate"
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 181,
+              "x2": 299,
+              "y1": 188,
+              "y2": 291
+            },
+            "source_sha256": "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d",
+            "target_sha256": "bd18303ed96405fcf43b3a638099e5e3fb365a1eb816357931fb26e5f34720d9",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "original_contract_hash": "5bf3871a214be0c792f0a1465e1f2ba9e54dbea8c670e8e20fbb39b44aa045a4",
+        "parent_prediction": "unknown",
+        "parent_result_sha256": "7f75ddffd654b3f089ba50e28fe04aa26466cf33e6ef71564f6d772b585f273c",
+        "parent_status": "completed",
+        "truth": "unknown"
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-2",
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 252,
+              "x2": 392,
+              "y1": 176,
+              "y2": 277
+            },
+            "source_sha256": "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+            "target_sha256": "0c967a82d111b9ea7fef57513738344eb64bf6dc35ba67b252a58a5ae9b88f24",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 181,
+              "x2": 325,
+              "y1": 188,
+              "y2": 291
+            },
+            "source_sha256": "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a",
+            "target_sha256": "1dc8b4454aebf7218a1f63152dcba47210f2f8f99abb327b7262236ae18c99eb",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "original_contract_hash": "aa0912823d266fc0898e30faf85a293d5068c4bba029c546cc60e88243937c90",
+        "parent_prediction": "unknown",
+        "parent_result_sha256": "a760ceb27641a3373b53bf6277762fe9d0ba5fd0fd781d6d891b50943c4052ce",
+        "parent_status": "completed",
+        "truth": "unknown"
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-0",
+        "frames": [
+          {
+            "eligible": false,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": null,
+            "source_sha256": "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+            "target_sha256": "65dba1b3eba50737a4958a95d8ddfdda089fa2675ca58ee51189acc19a7497b3",
+            "width": 640,
+            "withheld_reason": "not_fully_visible"
+          },
+          {
+            "eligible": false,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": null,
+            "source_sha256": "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115",
+            "target_sha256": "a04a024290e2f3da3d3c08593d610d6f9e051a60c2f0bf3abd0c2f837b471fed",
+            "width": 640,
+            "withheld_reason": "not_fully_visible"
+          }
+        ],
+        "original_contract_hash": "d7c60f27386a4943e5b0d897b1bbe71d12cce4d96732b88229e63a43479c6e48",
+        "parent_prediction": "unknown",
+        "parent_result_sha256": "2b0d18cc7d6d7f8de285ee7d89303a26d74435fd060c5bc53ff2a0ff8fbe0581",
+        "parent_status": "completed",
+        "truth": "unknown"
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-1",
+        "frames": [
+          {
+            "eligible": false,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": null,
+            "source_sha256": "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+            "target_sha256": "a6a4350309f9617679409d659884824616127f9959e3d9ec237e3fc988a6a8c6",
+            "width": 640,
+            "withheld_reason": "not_fully_visible"
+          },
+          {
+            "eligible": false,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": null,
+            "source_sha256": "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668",
+            "target_sha256": "1f29ff083a49e87b47e4f33b3672ec0ca18bca1d215711c65e3464a58e40f217",
+            "width": 640,
+            "withheld_reason": "not_fully_visible"
+          }
+        ],
+        "original_contract_hash": "41b0f8e88e66349341f5f360a6f223d7717fdfdf9682832672c3597fc5999165",
+        "parent_prediction": "unknown",
+        "parent_result_sha256": "1e2dd9f67be899a3295200041e7bba32843d8c5e0296a99957e77b2bba6c67ff",
+        "parent_status": "completed",
+        "truth": "unknown"
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-2",
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": {
+              "x1": 92,
+              "x2": 201,
+              "y1": 256,
+              "y2": 343
+            },
+            "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+            "target_sha256": "eb16ad29f7569d9516aa1c30d445d8faa299aceda42ed371ff72488a0f22e04a",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": {
+              "x1": 93,
+              "x2": 203,
+              "y1": 264,
+              "y2": 371
+            },
+            "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+            "target_sha256": "c60444c44bb625785e403f30156fbb3d75d3071ff592a28526e8681360ff8251",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "original_contract_hash": "c9dab92186cb7ac0c50c14cea06371dc85a1378f35bffd30f0835f7e9cfc5d18",
+        "parent_prediction": "pass",
+        "parent_result_sha256": "d55e7d2254c01b0b8902075dc09276ed35a877eaa04d0a07f70083f0e77b5c7b",
+        "parent_status": "completed",
+        "truth": "unknown"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-0",
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 228,
+              "x2": 277,
+              "y1": 189,
+              "y2": 264
+            },
+            "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+            "target_sha256": "f68cba7986f7e46a0de25dae4d28eb964bab6ea7648b20b8977150748018be87",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 228,
+              "x2": 277,
+              "y1": 189,
+              "y2": 264
+            },
+            "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+            "target_sha256": "4c0b05752b3da4f6f1fcbb2014f519a226fe5be6c877f4b8f55b3fa594146622",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "original_contract_hash": "b516f4169ced89f2ff8aeba0765426a14973b6e7dabeb307401f52ed4a7d9c49",
+        "parent_prediction": "unknown",
+        "parent_result_sha256": "777627ad0aa2e8bbe2f141592a6f36979a6ba1aad8d54bec5e923216babbfae4",
+        "parent_status": "completed",
+        "truth": "pass"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-1",
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 227,
+              "x2": 277,
+              "y1": 189,
+              "y2": 266
+            },
+            "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+            "target_sha256": "67654267910d1e5250c4b1e29406ee8690101fb72c0bf3604f229319336f284f",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 227,
+              "x2": 277,
+              "y1": 218,
+              "y2": 293
+            },
+            "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+            "target_sha256": "34d7a7ba98ccf880d091737c2c50e586cd50afc8c69ec3e3d01a11b748e703ca",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "original_contract_hash": "e1c8aa1fadb8709c468801247ac3d778e0cc33abd16827b2d859f2d5ff060db3",
+        "parent_prediction": "unknown",
+        "parent_result_sha256": "04cf3c9adde75ec3cb211ce6af9e4c544845fe8d350919e7c842b09bd6d58b70",
+        "parent_status": "completed",
+        "truth": "pass"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-2",
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 230,
+              "x2": 280,
+              "y1": 175,
+              "y2": 264
+            },
+            "source_sha256": "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+            "target_sha256": "e5a389dd3844c344665e7f398727b0bad071564dbb8862004fde353bcd3dd644",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 229,
+              "x2": 280,
+              "y1": 175,
+              "y2": 265
+            },
+            "source_sha256": "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67",
+            "target_sha256": "28acd326b9d968922f4a7a20fc5def7ce5884620c8e4a75d16892f1215f37507",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "original_contract_hash": "219c440fb0323c4d582c3f8248467678d090d6f67100af901053017f4e452c92",
+        "parent_prediction": "unknown",
+        "parent_result_sha256": "6ddf6f6da6bcfeccd5a973758387ca81386997fa560a8b7c39d2868d7d2ad3f5",
+        "parent_status": "completed",
+        "truth": "unknown"
+      }
+    ],
+    "concept": "robot gripper",
+    "created_unix_ms": 1793304332711,
+    "dependencies": {
+      "ffmpeg_version": "ffmpeg version 9.0 Copyright (c) 2000-2026 the FFmpeg developers",
+      "meta_sam_parser_distribution": "0.1.0",
+      "sam_model": "sam-3.1",
+      "spark_max_output_tokens": 4096,
+      "spark_model": "muse-spark-1.3",
+      "spark_reasoning_effort": "low"
+    },
+    "evaluation_role": "post_outcome_exposed_development_negative_only_followup",
+    "frame_annotations": {
+      "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba": "no_near_proposal_observed",
+      "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3": "no_near_proposal_observed",
+      "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c": "near_gripper_proposal",
+      "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a": "no_near_proposal_observed",
+      "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636": "no_near_proposal_observed",
+      "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8": "no_near_proposal_observed"
+    },
+    "geometry_config": {
+      "confidence_usage": "reported_only_for_negative_risk_never_positive_qualification",
+      "distance_cap": 4,
+      "distance_metric": "chebyshev_foreground_pixel_centers",
+      "gripper_concept": "robot gripper",
+      "mapping": "box_local_mask_nearest_source_pixel_center_inclusive_xyxy",
+      "max_geometry_seconds": 30.0,
+      "max_gripper_proposals": 64,
+      "max_source_mapped_pixels": 32000000,
+      "source_pixel_margin": 3
+    },
+    "implementation_sha256": {
+      "anchor_padding_experiment.py": "4386f987c575b446b379bb517f6aeb8182873d88c623212585ecd1c9c4ce9bcd",
+      "benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+      "bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+      "capture.py": "77e94f6a5941fc5378037ccef46ba71060821a7457331e04bd35600dcbba682a",
+      "concept_verified_experiment.py": "f2eded145ae2c1458374d94fa80da136e7e7f7586cc4a4b61818e3f6e75f5def",
+      "core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+      "gripper_geometry.py": "20125923b19f95a06c72039f4944de5c014b6a8230f777729c1348a4289d0052",
+      "grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+      "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+      "image_gripper_experiment.py": "a11fd36099713b781fc1ba372a9858a14074821c1a03eef7d5d1a0993a1371bb",
+      "image_gripper_veto.py": "b01e77015615c6dbdcad584750d1c0f5c713a12d3036ed69237f1cecedeccaab",
+      "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+      "mask_semantics.py": "de84183204cbc02ca6a4b4b2369a0061845eded7afcc1f9bf4add0b7800a1a9f",
+      "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+      "prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+      "prospective_audit.py": "50bc6c4e457b416cdf0cb54f793bc121db1eb924ab2a5cfe3a346ea6bbc1a6f5",
+      "semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869",
+      "tracking_geometry.py": "9c5cfdcb513a3839fa82eae19050dc50da2be62842b76329a47a4e4a0b3dfc01",
+      "video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b"
+    },
+    "limits": [
+      "Post-outcome development reusing exposed source media, original target inference and judgments.",
+      "The added SAM concept is robot gripper on every original full image; no Spark calls or retries.",
+      "Near proposals can withhold parent support; far proposals never establish full visibility or identity.",
+      "UNKNOWN stays UNKNOWN; missing added diagnostics remain explicit and cannot qualify parent positives.",
+      "Geometry reference labels and view denominators are separate from task success and positive retention.",
+      "No production promotion, physical contact claim, safety assurance or observed repair is provided."
+    ],
+    "max_requests": 18,
+    "method": "source_image_gripper_negative_warning_development_v1",
+    "parent_artifact_count": 47,
+    "parent_inventory_sha256": "d6297655b868feaeadbbcbec1d16c170c4f0e96b03b54886780ca36e2769d128",
+    "parent_plan_sha256": "437737c8e97c5de61ae93d86c19f37ff97e84d5662a51fc918625c51def73dbb",
+    "parent_summary_sha256": "652aa916b7f960b82956534121b4b25bf15ec32a2313038f5d9fcfdb7d21648a",
+    "plan_sha256": "a5948603ed730de67bd1ed3241cc7e572b866ad1158fc52cefff1e09c28e29c8",
+    "planned_requests": 18,
+    "schema_version": "source_image_gripper_negative_warning_development_v1"
+  },
+  "preregister_before_inference": true,
+  "production_gate": "not_qualified_regardless_of_component_result_clear_positive_retention_remains_zero_of_two",
+  "request_cap": 18,
+  "retries": 0,
+  "schema_version": "proofloop_image_gripper_followup_plan_v1",
+  "stop_http_statuses": [
+    401,
+    402,
+    403,
+    429
+  ],
+  "visual_reference_file_sha256": "f92a18dd3d78bf49b1c429f4e3ab90227e2b9d65ef7bfba8e293c2ea072c3604",
+  "visual_references": {
+    "annotation_origin": "root_assistant_visual_review_before_gripper_inference",
+    "limits": [
+      "References are authored visual potential-near/separated judgments, not independent human annotation or ground-truth pixel distances.",
+      "All eighteen source views and all nine task cases must remain reported.",
+      "A missing/failed gripper proposal cannot pass an expected available-separation diagnostic.",
+      "No near warning does not establish gripper absence, full visibility or physical separation.",
+      "Parent two clear task positives remain unrecovered; this diagnostic cannot promote the method."
+    ],
+    "parent_plan_sha256": "437737c8e97c5de61ae93d86c19f37ff97e84d5662a51fc918625c51def73dbb",
+    "schema_version": "proofloop_still_gripper_visual_references_v1",
+    "source_pixel_margin": 3,
+    "views": [
+      {
+        "case_id": "ur5-cloth-0-pair-2",
+        "decoded_frame_index": 65,
+        "expected_diagnostic": "near_warning",
+        "frame_index": 0,
+        "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c"
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-2",
+        "decoded_frame_index": 70,
+        "expected_diagnostic": "available_without_near_warning",
+        "frame_index": 1,
+        "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-0",
+        "decoded_frame_index": 0,
+        "expected_diagnostic": "available_without_near_warning",
+        "frame_index": 0,
+        "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-0",
+        "decoded_frame_index": 5,
+        "expected_diagnostic": "available_without_near_warning",
+        "frame_index": 1,
+        "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-1",
+        "decoded_frame_index": 58,
+        "expected_diagnostic": "available_without_near_warning",
+        "frame_index": 0,
+        "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-1",
+        "decoded_frame_index": 63,
+        "expected_diagnostic": "available_without_near_warning",
+        "frame_index": 1,
+        "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+      }
+    ]
+  }
+}

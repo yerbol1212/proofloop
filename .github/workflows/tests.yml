@@ -21,6 +21,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
       - if: matrix.python-version == '3.12'
         run: python -m pip install meta-sam-parser==0.1.0
+      - name: Install media tools for actual codec integration
+        if: matrix.python-version == '3.12'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
       - run: python -m unittest discover -s tests -v
       - run: python -m proofloop.feasibility --output artifacts/feasibility
       - run: python -m proofloop.replay_bundle

@@ -474,7 +474,10 @@ class MaskSemanticsRealCodecTests(unittest.TestCase):
             import meta_sam_parser  # noqa: F401
         except (ImportError, TypeError, SyntaxError):
             self.skipTest("Optional official SAM parser requires Python >=3.10")
-        executable = module.semantic._extractor_path()
+        try:
+            executable = module.semantic._extractor_path()
+        except ValidationError:
+            self.skipTest("Optional FFmpeg is required for the actual codec integration")
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
             source = contract()

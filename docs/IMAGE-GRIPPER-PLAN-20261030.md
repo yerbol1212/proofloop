@@ -1,0 +1,17 @@
+# Still-image gripper warning: fixed follow-up
+
+The [concept-mask experiment](CONCEPT-MASK-RESULTS-20261030.md) incorrectly accepted an ambiguous cloth pair after Spark marked both views fully visible. This follow-up tests a separate negative signal: distance between the target's actual foreground and independently prompted gripper foreground on the same original image.
+
+Keep all 18 original JPEGs, all nine task cases, original target SAM results, completed semantic judgments, source timestamps, regions and reference labels. Add exactly one SAM request with the fixed positive concept **robot gripper** per original image: maximum 18 new requests, no Spark calls or automatic retries. This is a separate declared allowance; the previous trial's eight unused slots remain unused.
+
+The adapter officially re-decodes retained source-bound target and gripper responses and checks geometry. It compares every gripper proposal at the already established three-source-pixel Chebyshev margin. Any near proposal may withhold support. Low-score but otherwise valid gripper proposals can raise a negative warning; they cannot qualify identity, visibility or positive acceptance. Target confidence remains unchanged. Missing, malformed or unavailable foreground stays unavailable. Far masks do not prove absence, separation, physical contact or occlusion.
+
+The projected task result can only remove a parent decision. Parent UNKNOWN stays UNKNOWN. Parent PASS/FAIL becomes UNKNOWN when a near warning is measured; without a warning, failed/unavailable added geometry makes that qualified result unscored. Available far comparisons may preserve the parent decision but cannot create a new one. Failed model calls remain visible in a separate 18-view diagnostic denominator.
+
+Before new inference, six source views have fixed assistant-authored visual references: cloth frame 65 as potentially near, cloth frame 70 and cup frames 0, 5, 58 and 63 as visibly separated. These are diagnostic judgments, not independent human annotations or ground-truth masks. Unlabeled views remain in the report. A missing proposal cannot satisfy a separated-view control.
+
+The component gate requires a warning on the contact-risk control, available comparisons without near warnings on all five separated controls, withholding the parent's incorrect cloth PASS, zero new positive task decisions and consistent accounting. It does **not** qualify production: the parent's two clear task positives remain unrecovered. No heldback recordings are tested here.
+
+The [exact machine-readable declaration](../artifacts/feasibility/image-gripper-plan-20261030.json) binds private plan `a5948603ed730de67bd1ed3241cc7e572b866ad1158fc52cefff1e09c28e29c8`, the parent inventory, original contracts/target responses, implementation and dependency hashes, all source hashes and the six references before the first paid admission. Its file SHA-256 is `9d5155c6a6ee4ed9cee3a9198c2f0b10767a01ea55929d981d27b962a4a0f141`. Individual one-request clients and a separate persistent 18-request journal enforce the allowance. HTTP 401/402/403/429 stop subsequent admission; other failed parts remain unscored without replacement or retry. Local cost estimates and all outcomes will be published.
+
+The independent review passes 42 targeted tests and 200 foreground-distance comparisons against brute-force geometry. The complete 1,457-test suite passes on Python 3.12; Python 3.9 passes with three expected optional-dependency skips. These are software checks before inference, not accuracy results.
