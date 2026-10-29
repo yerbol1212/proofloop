@@ -1,0 +1,475 @@
+{
+  "annotation_origin": "assistant_visual_review_before_inference_not_official_dataset_ground_truth",
+  "config": {
+    "automatic_retry": false,
+    "baseline": "unchanged guided-v2 request settings; its Spark locator is the shared Spark baseline",
+    "estimated_allocation_usd": 3.0,
+    "localization_iou_threshold": 0.3,
+    "localization_sensitivity_thresholds": [
+      0.2,
+      0.3,
+      0.5
+    ],
+    "max_requests": 42,
+    "min_confidence": 0.8,
+    "min_spacing_ms": 500,
+    "min_stable_views": 2,
+    "semantic_checkpoints": "only preselected annotated frames with an actual tracker candidate"
+  },
+  "created_at_utc": "2026-10-29T04:46:09.281976+00:00",
+  "evaluation_role": "new_episodes_in_exposed_dataset_families_development",
+  "experiment_version": "frozen_occlusion_tracking_comparison_v1",
+  "freeze_hash": "92ee474a66ca90a38d713effd8481fd72392a3dfa201a06e8d4f65338f878512",
+  "guard_config": {
+    "crop_rule": "25_percent_context_min_8_pixels_clipped_no_upsampling_jpeg_q2_yuvj444p",
+    "max_output_tokens": 4096,
+    "max_requests": 1,
+    "reasoning_effort": "low",
+    "retries": 0
+  },
+  "implementation_sha256": {
+    "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+    "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+    "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+    "semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+    "tracking_evaluation.py": "7b91a3ed5eb9572fe718dc4acf21fb94ee2a2d39cd93120b34569d1dfa08a5a0",
+    "tracking_experiment.py": "745ecb9793ec79edb3f84495c498746860259e4339fd15982c08f45037dc63f6",
+    "tracking_guard.py": "4d56c6adac1e554fa6bd8ca3c74da5e69ae3be0a56dc9e63f61f14c5bc059f90",
+    "tracking_policy.py": "3923ba07753ae5208ea281698061031e4613a54b55f6fe568fcc9fba591e12bb",
+    "video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b"
+  },
+  "inference_started": false,
+  "limitations": [
+    "New episodes from previously exposed dataset families; development sample only.",
+    "Partial occlusion and re-exposure, not verified full disappearance or true identity switches.",
+    "Tracking is manually initialized; still baselines localize automatically, with different compute.",
+    "Reference labels and later boxes are scoring-only; the models see only initial seeds, runtime candidates and target descriptions.",
+    "A request-count ceiling and cost estimate are not a provider billing cap."
+  ],
+  "methods": [
+    "spark_two_view_locator",
+    "guided_v2_stills",
+    "sam_video_presence",
+    "semantic_reacquisition"
+  ],
+  "references": [
+    {
+      "clip_id": "screwdriver",
+      "condition": "clear",
+      "distractor_boxes": [
+        [
+          0.4140625,
+          0.5875,
+          0.609375,
+          0.6145833333333334
+        ]
+      ],
+      "expected": "supported",
+      "frame_index": 0,
+      "target_box": [
+        0.484375,
+        0.70625,
+        0.675,
+        0.7458333333333333
+      ]
+    },
+    {
+      "clip_id": "screwdriver",
+      "condition": "clear",
+      "distractor_boxes": [
+        [
+          0.4140625,
+          0.5875,
+          0.609375,
+          0.6145833333333334
+        ]
+      ],
+      "expected": "supported",
+      "frame_index": 5,
+      "target_box": [
+        0.484375,
+        0.70625,
+        0.675,
+        0.7458333333333333
+      ]
+    },
+    {
+      "clip_id": "screwdriver",
+      "condition": "partial_occlusion",
+      "distractor_boxes": [
+        [
+          0.4140625,
+          0.5875,
+          0.609375,
+          0.6145833333333334
+        ]
+      ],
+      "expected": "unknown",
+      "frame_index": 8,
+      "target_box": null
+    },
+    {
+      "clip_id": "screwdriver",
+      "condition": "hidden_or_unidentifiable",
+      "distractor_boxes": [
+        [
+          0.4140625,
+          0.5875,
+          0.609375,
+          0.6145833333333334
+        ]
+      ],
+      "expected": "unknown",
+      "frame_index": 13,
+      "target_box": null
+    },
+    {
+      "clip_id": "screwdriver",
+      "condition": "partial_occlusion",
+      "distractor_boxes": [
+        [
+          0.4140625,
+          0.5875,
+          0.609375,
+          0.6145833333333334
+        ]
+      ],
+      "expected": "unknown",
+      "frame_index": 17,
+      "target_box": null
+    },
+    {
+      "clip_id": "screwdriver",
+      "condition": "partial_occlusion",
+      "distractor_boxes": [
+        [
+          0.4140625,
+          0.5875,
+          0.609375,
+          0.6145833333333334
+        ]
+      ],
+      "expected": "unknown",
+      "frame_index": 22,
+      "target_box": null
+    },
+    {
+      "clip_id": "screwdriver",
+      "condition": "partial_occlusion",
+      "distractor_boxes": [
+        [
+          0.4140625,
+          0.5875,
+          0.609375,
+          0.6145833333333334
+        ]
+      ],
+      "expected": "unknown",
+      "frame_index": 30,
+      "target_box": null
+    },
+    {
+      "clip_id": "screwdriver",
+      "condition": "hidden_or_unidentifiable",
+      "distractor_boxes": [
+        [
+          0.4140625,
+          0.5875,
+          0.609375,
+          0.6145833333333334
+        ]
+      ],
+      "expected": "unknown",
+      "frame_index": 37,
+      "target_box": null
+    },
+    {
+      "clip_id": "remote",
+      "condition": "clear",
+      "distractor_boxes": [
+        [
+          0.4109375,
+          0.59375,
+          0.6015625,
+          0.6125
+        ]
+      ],
+      "expected": "supported",
+      "frame_index": 0,
+      "target_box": [
+        0.35,
+        0.50625,
+        0.5390625,
+        0.5958333333333333
+      ]
+    },
+    {
+      "clip_id": "remote",
+      "condition": "clear",
+      "distractor_boxes": [
+        [
+          0.4109375,
+          0.59375,
+          0.6015625,
+          0.6125
+        ]
+      ],
+      "expected": "supported",
+      "frame_index": 5,
+      "target_box": [
+        0.35,
+        0.50625,
+        0.5390625,
+        0.5958333333333333
+      ]
+    },
+    {
+      "clip_id": "remote",
+      "condition": "clear",
+      "distractor_boxes": [
+        [
+          0.4109375,
+          0.59375,
+          0.6015625,
+          0.6125
+        ]
+      ],
+      "expected": "supported",
+      "frame_index": 15,
+      "target_box": [
+        0.35,
+        0.50625,
+        0.5390625,
+        0.5958333333333333
+      ]
+    },
+    {
+      "clip_id": "remote",
+      "condition": "partial_occlusion",
+      "distractor_boxes": [
+        [
+          0.4109375,
+          0.59375,
+          0.6015625,
+          0.6125
+        ]
+      ],
+      "expected": "unknown",
+      "frame_index": 25,
+      "target_box": null
+    },
+    {
+      "clip_id": "remote",
+      "condition": "partial_occlusion",
+      "distractor_boxes": [
+        [
+          0.4109375,
+          0.59375,
+          0.6015625,
+          0.6125
+        ]
+      ],
+      "expected": "unknown",
+      "frame_index": 35,
+      "target_box": null
+    },
+    {
+      "clip_id": "remote",
+      "condition": "partial_occlusion",
+      "distractor_boxes": [
+        [
+          0.4109375,
+          0.59375,
+          0.6015625,
+          0.6125
+        ]
+      ],
+      "expected": "unknown",
+      "frame_index": 45,
+      "target_box": null
+    },
+    {
+      "clip_id": "remote",
+      "condition": "reexposed",
+      "distractor_boxes": [
+        [
+          0.4109375,
+          0.59375,
+          0.6015625,
+          0.6125
+        ]
+      ],
+      "expected": "supported",
+      "frame_index": 54,
+      "target_box": [
+        0.35,
+        0.50625,
+        0.5390625,
+        0.5958333333333333
+      ]
+    },
+    {
+      "clip_id": "remote",
+      "condition": "reexposed",
+      "distractor_boxes": [
+        [
+          0.4109375,
+          0.59375,
+          0.6015625,
+          0.6125
+        ]
+      ],
+      "expected": "supported",
+      "frame_index": 59,
+      "target_box": [
+        0.35,
+        0.50625,
+        0.5390625,
+        0.5958333333333333
+      ]
+    }
+  ],
+  "sources": [
+    {
+      "checkpoint_indices": [
+        0,
+        5,
+        8,
+        13,
+        17,
+        22,
+        30,
+        37
+      ],
+      "clip_id": "screwdriver",
+      "contract": {
+        "attributes": {
+          "metal_shaft": "A thin straight metallic shaft extending from the handle, with a tool tip.",
+          "separate_handle": "A light cream or yellow handle distinctly wider than its shaft."
+        },
+        "concept": "light-handled screwdriver with a thin metal shaft",
+        "exclusions": {
+          "robot_gripper": "A robot gripper finger or robot arm component.",
+          "tape_strip": "A flat straight white tape strip without a wider handle and attached shaft."
+        },
+        "target_id": "target"
+      },
+      "derivation": {
+        "decoded_frame_md5_list_sha256": "3bc9007405d2d7cba42c8849c64a63580233b7ffe1e3f9719bff62627a0d7a6b",
+        "native_fps": 50,
+        "original_sha256": "7ea053856501fc819f3f80b00c4d56553404cfc5e4a1340298db49f1893903fd",
+        "pixel_transform": "lossless_h264_native_yuv420p_no_crop_no_resize",
+        "selected_native_frame_stride": 10,
+        "tracking_clip_sha256": "ec407e9ef83ba3fdd1a42202ede13433564c74e289ed48e358133c8e905e3f26",
+        "tracking_fps": 5,
+        "verified_frames": 40
+      },
+      "initial_seeds": [
+        {
+          "box": {
+            "x1": 310,
+            "x2": 431,
+            "y1": 339,
+            "y2": 357
+          },
+          "frame_index": 0,
+          "object_id": "target",
+          "track_id": 1
+        },
+        {
+          "box": {
+            "x1": 265,
+            "x2": 389,
+            "y1": 282,
+            "y2": 294
+          },
+          "frame_index": 0,
+          "object_id": "white_tape",
+          "track_id": 2
+        }
+      ],
+      "source_attribution": {
+        "dataset": "lerobot/aloha_static_screw_driver",
+        "episode": 1,
+        "license": "mit",
+        "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md",
+        "remote_path": "videos/chunk-000/observation.images.cam_high/episode_000001.mp4",
+        "revision": "51448b4e7638c1773fd07c1e7febce8ebb104635",
+        "source_role": "new_source_episode_same_exposed_dataset_family",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/resolve/51448b4e7638c1773fd07c1e7febce8ebb104635/videos/chunk-000/observation.images.cam_high/episode_000001.mp4"
+      },
+      "tracking_frame_count": 40
+    },
+    {
+      "checkpoint_indices": [
+        0,
+        5,
+        15,
+        25,
+        35,
+        45,
+        54,
+        59
+      ],
+      "clip_id": "remote",
+      "contract": {
+        "attributes": {
+          "battery_compartment": "A rectangular recessed battery compartment visibly within that body.",
+          "white_body": "A white rounded rectangular plastic body, wider and longer than a loose battery."
+        },
+        "concept": "white remote-control body with a visible rectangular battery compartment",
+        "exclusions": {
+          "loose_battery": "A standalone cylindrical battery, not the surrounding white device body.",
+          "robot_gripper": "A robot gripper finger or arm component.",
+          "tape_strip": "A narrow straight white tape strip without a rounded rectangular body."
+        },
+        "target_id": "target"
+      },
+      "derivation": {
+        "decoded_frame_md5_list_sha256": "88474f42f20a0f03e18860591a7e835ec1decf0d46bc4894b6db611359d4af52",
+        "native_fps": 50,
+        "original_sha256": "5070edbfa507a04b6b59a05dacc2db6c10eefb015107146cb84d4285faa61315",
+        "pixel_transform": "lossless_h264_native_yuv420p_no_crop_no_resize",
+        "selected_native_frame_stride": 10,
+        "tracking_clip_sha256": "213adcd18342fbaa3d42e525e7bedcc54edfc745e498a300a8172c1f39039f7f",
+        "tracking_fps": 5,
+        "verified_frames": 60
+      },
+      "initial_seeds": [
+        {
+          "box": {
+            "x1": 224,
+            "x2": 344,
+            "y1": 243,
+            "y2": 285
+          },
+          "frame_index": 0,
+          "object_id": "target",
+          "track_id": 1
+        },
+        {
+          "box": {
+            "x1": 263,
+            "x2": 384,
+            "y1": 285,
+            "y2": 293
+          },
+          "frame_index": 0,
+          "object_id": "white_tape",
+          "track_id": 2
+        }
+      ],
+      "source_attribution": {
+        "dataset": "lerobot/aloha_static_battery",
+        "episode": 1,
+        "license": "apache-2.0",
+        "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md",
+        "remote_path": "videos/chunk-000/observation.images.cam_high/episode_000001.mp4",
+        "revision": "dd8bda435f5068a0298bd109005828768ecbfa12",
+        "source_role": "new_source_episode_same_exposed_dataset_family",
+        "url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/resolve/dd8bda435f5068a0298bd109005828768ecbfa12/videos/chunk-000/observation.images.cam_high/episode_000001.mp4"
+      },
+      "tracking_frame_count": 60
+    }
+  ]
+}
