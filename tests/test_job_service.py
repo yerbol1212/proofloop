@@ -272,15 +272,40 @@ class JobServiceTests(unittest.TestCase):
         self.assertNotIn("private-token", json.dumps(result))
 
     def test_heartbeat_keeps_a_long_inspection_claim_alive(self):
-        self.engine.release.clear()
-        service = self.service(lease_ms=90).start()
+        # Advance logical time only after each background heartbeat commits.
+        # A real scheduler/fsync pause can legitimately exceed a 90 ms lease;
+        # requiring otherwise makes this a host-speed test, not a lease test.
+        clock, renewals = [1000], []
+        entered, release, renewed = threading.Event(), threading.Event(), threading.Event()
+        self.addCleanup(release.set)
+        def inspect(payload, binding, job_id, guard):
+            entered.set()
+            if not release.wait(10):
+                raise RuntimeError("The authored heartbeat fixture was not released")
+            return self.engine.inspect_pair(payload, expected_binding=binding)
+        service = self.service(lease_ms=90, clock_ms=lambda: clock[0], inspect_callback=inspect)
+        heartbeat = service.store.heartbeat
+        def observe_heartbeat(*args, **kwargs):
+            result = heartbeat(*args, **kwargs)
+            renewals.append((kwargs["now_ms"], result["lease_expires_ms"]))
+            clock[0] += 30
+            if len(renewals) >= 4:
+                renewed.set()
+            return result
+        service.store.heartbeat = observe_heartbeat
+        service.start()
         job = service.submit_inspection(self.request(), idempotency_key="heartbeat")
-        self.assertTrue(self.engine.entered.wait(1))
-        time.sleep(.22)
+        self.assertTrue(entered.wait(5))
+        self.assertTrue(renewed.wait(5))
+        initial_expiry = next(event["job"]["lease_expires_ms"] for event in service.events(job["id"])
+                              if event["event_type"] == "claimed")
+        self.assertGreater(clock[0], initial_expiry)
+        self.assertTrue(all(expiry == now + 90 for now, expiry in renewals))
         self.assertEqual("running", service.get(job["id"])["state"])
-        self.engine.release.set()
+        release.set()
         result = self.finish(service, job)
         self.assertEqual("succeeded", result["state"])
+        self.assertEqual(1, self.engine.calls)
         self.assertIn("heartbeat", [event["event_type"] for event in service.events(job["id"])])
 
     def test_expired_dispatched_lease_stays_interrupted_after_late_completion(self):

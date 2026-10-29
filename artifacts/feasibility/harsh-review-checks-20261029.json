@@ -70,6 +70,26 @@
   ],
   "date": "2026-10-29",
   "evaluation_role": "review_driven_software_fixes_and_cached_policy_inspector_not_new_model_accuracy",
+  "heartbeat_fix_validation": {
+    "production_lease_logic_changed": false,
+    "python_3_12_service_tests_passed": 25,
+    "python_3_9_service_tests_passed": 25,
+    "renewal_and_forced_expiry_repetitions_passed": 20
+  },
+  "initial_publication_ci": {
+    "cancelled_job": "unittest (3.12)",
+    "conclusion": "failure",
+    "failed_job": "unittest (3.9)",
+    "failure": "90-ms real-time heartbeat test returned interrupted on slower runner",
+    "head_sha": "e7559d08be40259239c8842927e1cce1e398982c",
+    "passed_jobs": [
+      "frontend",
+      "installed-workbench"
+    ],
+    "resolution": "event-driven committed renewals and injected logical time replace the scheduler-dependent 90-ms expectation; production expiry unchanged",
+    "resolution_status": "timing_assumption_fixed_and_focused_regressions_passed; final CI published separately",
+    "url": "https://github.com/yerbol1212/proofloop/actions/runs/40863205156"
+  },
   "local_validation": {
     "clean_wheel_outside_checkout": {
       "actual_doctor_passed": true,
@@ -113,11 +133,20 @@
     "historical_cohorts_and_thresholds_changed": false,
     "portable_bundle_sha256": "6c140a3bacd7bab49839cdadf5c633f8be18762b039da7a76759ed7a2e379d0f"
   },
+  "publication_ci_workflow": "https://github.com/yerbol1212/proofloop/actions/workflows/tests.yml",
   "reviewers": [
     "independent skeptical product and AI systems agent",
     "independent adversarial runtime agent",
     "CodeRabbit CLI 0.9.1"
   ],
+  "running_workbench_browser_smoke": {
+    "meta_provider_attempt_delta": 0,
+    "page_errors": 0,
+    "result": "passed",
+    "scope": "read-only actual local workbench",
+    "task_binding_preserved": true,
+    "unexpected_console_errors": 0
+  },
   "schema_version": "proofloop_harsh_review_validation_v1",
   "unresolved_review_findings": [
     "No demonstrated perception superiority over Spark alone.",
