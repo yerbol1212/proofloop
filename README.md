@@ -31,7 +31,7 @@ In the fixed follow-up replay, guided resolved one of two trajectories with late
 
 These are scoped image-zone checks on normal prerecorded demonstrations. A later PASS does not prove that a robot followed ProofLoop's request. The [owned phone recording](artifacts/feasibility/phone-session-20261028.md) produced PASS → FAIL → UNKNOWN → PASS, but was recorded before its planner proposal. Fresh physical operation following the displayed request, broader procedure verification and practical user demand remain unvalidated.
 
-**1,011/1,011 Python 3.12 tests passed; the Python 3.9 suite passed with two expected optional-parser skips. The strict production frontend build passed.** Publication CI is checked separately after pushing the milestone. These software checks do not establish perception accuracy.
+**1,167/1,167 Python 3.12 tests passed; the Python 3.9 suite passed with two expected optional-parser skips. The strict production frontend build passed.** Publication CI is checked separately after pushing the milestone. These software checks do not establish perception accuracy.
 
 See the [review and remaining work](docs/AI-SYSTEMS-REVIEW-20261028.md), [feasibility evidence](docs/FEASIBILITY.md), [three-minute demo script](docs/DEMO-SCRIPT.md), [source credits](docs/ONLINE-VIDEO-SOURCES.md) and [event contributions](CONTRIBUTIONS.md). Software tests exercise control behavior separately from model-quality measurements.
 

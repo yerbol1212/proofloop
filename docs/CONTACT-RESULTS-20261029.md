@@ -40,6 +40,19 @@ The implementation passed **1,088 tests on Python 3.12**, and Python 3.9 passed 
 
 ## Separate gripper geometry test
 
-The next bounded trial uses four separate SAM video calls, with independently reviewed frame-zero left/right gripper boxes. It preserves every target mask, v2/v3 judgment, reference, incomplete request and prior score. Both grippers must have valid source-bound foreground at confidence ≥0.8. A fixed Chebyshev foreground-pixel-center distance greater than three source pixels can supplement an existing clear semantic assessment; proximity or unavailable evidence yields UNKNOWN. The margin is frozen before obtaining these gripper responses.
+The separate trial used four SAM video calls, with independently reviewed frame-zero left/right gripper boxes. It preserves every target mask, v2/v3 judgment, reference, incomplete request and prior score. Both grippers must have valid source-bound foreground at confidence ≥0.8. A fixed Chebyshev foreground-pixel-center distance greater than three source pixels can supplement an existing clear semantic assessment; proximity or unavailable evidence yields UNKNOWN. The margin was frozen before obtaining these gripper responses.
 
 Separation is a conservative veto, not proof of physical noncontact or complete visibility. SAM can miss fingers, merge objects or track the wrong region. Source-matched masks and reported confidence do not remove that limitation. No contrast threshold is fitted to the observed contact error.
+
+The [public plan](../artifacts/feasibility/gripper-plan-20261029.json) and implementation were pushed in `7337ae8ef237ed8d2e21286e9cf6d6f9a70f638d` before the four calls. Freeze hash: `923b5f20f77e2805d935027b1cf013f87e71b33f62c52e9b2ef7197ab9e230ef`. All four completed, with 220 reported billed frames, no new Spark requests and **$0.044** estimated incremental cost. The [canonical full result](../artifacts/feasibility/gripper-results-20261029.json) preserves the entire earlier contact result and its failed operation.
+
+| Cohort | v2 / current-view method | Clear checkpoints supported | Unclear checkpoints supported |
+| --- | --- | ---: | ---: |
+| Exposed episode 2 | Unchanged semantic baseline | 4/6 | 0/10 |
+| Exposed episode 2 | Strict gripper separation | **0/6** | 0/10 |
+| New episode 3 | Unchanged semantic baseline | 4/7, one positive unscored | 0/9 |
+| New episode 3 | Strict gripper separation | **2/7**, one positive unscored | 0/9 |
+
+The strict gate removes the borderline contact assessment, but its gripper evidence is unavailable because reported gripper scores fall below 0.8. It also discards too many clear views. **This is a failed retention intervention and is not adopted as a general acceptance gate.** Missing or weak gripper masks cannot verify separation. Together these trials admitted 54 new attempts, with $0.475506 estimated from reported usage; the original uncertain network operation may have an additional unreported charge.
+
+A separately frozen [negative-only cached retest](GRIPPER-VETO-PROTOCOL-20261029.md) now evaluates whether near-mask proposals can add warnings while keeping every positive decision within the unchanged semantic baseline. It was selected after inspecting these failures and uses no new model calls. Its result must not be described as fresh or held-out validation.
