@@ -1,6 +1,6 @@
 # Feasibility status
 
-Updated: 29 October 2026, Asia/Almaty. Earlier reports retain their original experiment dates.
+Updated: 30 October 2026, Asia/Almaty. Earlier reports retain their original experiment dates.
 
 ## Gates
 
@@ -9,7 +9,7 @@ Updated: 29 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | Full Python 3.12 suite: **1,278/1,278 passed**, including loopback HTTP checks; Python 3.9 passes with two expected optional-parser skips | [Publication CI](https://github.com/yerbol1212/proofloop/actions/workflows/tests.yml) covers both Python jobs, frontend checks and installed-workbench verification. The earlier actual public-clone run remains historical; software tests do not establish perception accuracy |
+| Local tests | Full Python 3.12 suite: **1,356/1,356 passed**, including loopback HTTP checks; Python 3.9 passes with two expected optional-parser skips | [Publication CI](https://github.com/yerbol1212/proofloop/actions/workflows/tests.yml) covers both Python jobs, frontend checks and installed-workbench verification. The earlier actual public-clone run remains historical; software tests do not establish perception accuracy |
 | Official SAM codec | Official parser independently re-decoded all 16 phone responses; 12 nonempty masks matched saved rasters and four covered responses were empty | Passed on phone inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
 | Positive placement contract | Live Spark fork-left/spoon-right protocol; stable positive location evidence supports wrong-region fail and corrected pass | Passed on one recorded clip |
@@ -53,6 +53,8 @@ Updated: 29 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Portable policy replay | Six published method reports on four recordings reproduce from packaged cached measurements with zero API calls | Exact frozen dependencies and schema/source checks passed; policy/score replay only, original raw media/masks remain private |
 | Public replay walkthrough | Empty private storage and no key: two cohort tables, four recordings, 32 reviewed checkpoints, all three method decisions, false warning and unscored outcome | Desktop/mobile browser QA and clean-wheel HTTP checks passed with zero provider attempts; [walkthrough](PUBLIC-REPLAY.md) |
 | Harsh-review operational fixes | Atomic 32-pending / 256-MiB retained-payload limits, early offline rejection, robust SDK errors, profile-aware doctor and pre-dispatch cached CLI recovery key | [Ranked review](HARSH-REVIEW-20261029.md); focused and full regression checks passed, no frozen perception changes |
+| Preregistered new-family comparison | Nine fixed pairs, three recordings, two original families: guided 7/9 versus Spark 6/9; unsupported PASS 0/7 versus 2/7; clear acceptance 0/2 versus 1/2 | [Full result](NEW-SOURCE-RESULTS-20261029.md): 31 attempts, $0.126211 estimated, no missing predictions or reported financial uncertainty; higher abstention remains a major limitation |
+| Review and source preparation | Lost Spark responses retain possible-charge uncertainty; point-in-time missing submissions no longer claim definitive non-admission; exact source preparation is reproducible | [Evidence review](EVIDENCE-REVIEW-20261029.md), [correctness review](SECOND-CORRECTNESS-REVIEW-20261029.md) and [pinned source command](PROSPECTIVE-SOURCES-20261029.md); no confidence or acceptance-policy relaxation |
 | Installed workbench | Fresh wheel installed outside checkout serves bundled UI, replays the comparison and completes an asynchronous cached job with zero provider attempts | Local clean-install smoke and [installed-workbench CI](https://github.com/yerbol1212/proofloop/actions/runs/40849139921) passed; [sanitized validation report](../artifacts/feasibility/infrastructure-checks-20261029.json) |
 
 ## First owned phone result

@@ -1,0 +1,472 @@
+{
+  "cases": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "frames": [
+        {
+          "eligible": true,
+          "frame_index": 0,
+          "height": 480,
+          "object_id": "fork",
+          "original_box": {
+            "x1": 181,
+            "x2": 300,
+            "y1": 158,
+            "y2": 263
+          },
+          "padded_box": {
+            "x1": 149,
+            "x2": 332,
+            "y1": 126,
+            "y2": 295
+          },
+          "source_sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+          "width": 640,
+          "withheld_reason": null
+        },
+        {
+          "eligible": true,
+          "frame_index": 1,
+          "height": 480,
+          "object_id": "fork",
+          "original_box": {
+            "x1": 181,
+            "x2": 300,
+            "y1": 158,
+            "y2": 263
+          },
+          "padded_box": {
+            "x1": 149,
+            "x2": 332,
+            "y1": 126,
+            "y2": 295
+          },
+          "source_sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+          "width": 640,
+          "withheld_reason": null
+        }
+      ],
+      "locator_sha256": "43325bc63321aa6ed96405942e7f08f1a4a183e05e366b70a685be3e362e5bef",
+      "original_contract_hash": "2a4f747826572f76d131c0c5491b64185f5c8c003744361cecbad17ff6b7c8a8",
+      "original_pair_sha256": "83624132ff9ec55ded5d2e56fe3fb80d1eab6e10d21a84b610b0e628b584c2e9",
+      "source_sha256": [
+        "e1c8e5f7942ae4bdab72c897b5fa09a53dcc6099b0bea64e5bacb52675085161"
+      ],
+      "truth": "fail"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-1",
+      "frames": [
+        {
+          "eligible": false,
+          "frame_index": 0,
+          "height": 480,
+          "object_id": "fork",
+          "original_box": null,
+          "padded_box": null,
+          "source_sha256": "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+          "width": 640,
+          "withheld_reason": "no_candidate"
+        },
+        {
+          "eligible": true,
+          "frame_index": 1,
+          "height": 480,
+          "object_id": "fork",
+          "original_box": {
+            "x1": 181,
+            "x2": 299,
+            "y1": 188,
+            "y2": 291
+          },
+          "padded_box": {
+            "x1": 149,
+            "x2": 331,
+            "y1": 156,
+            "y2": 323
+          },
+          "source_sha256": "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d",
+          "width": 640,
+          "withheld_reason": null
+        }
+      ],
+      "locator_sha256": "9203a6ce1e93df7f7b5f74e1fbc6e7ee80b384a2ca0e15197c8cffd91c410436",
+      "original_contract_hash": "5bf3871a214be0c792f0a1465e1f2ba9e54dbea8c670e8e20fbb39b44aa045a4",
+      "original_pair_sha256": "8c01c10a95af01b5eddaf2cd602d36a496e97753d2cadfec42b8f3f42e946940",
+      "source_sha256": [
+        "e1c8e5f7942ae4bdab72c897b5fa09a53dcc6099b0bea64e5bacb52675085161"
+      ],
+      "truth": "unknown"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-2",
+      "frames": [
+        {
+          "eligible": true,
+          "frame_index": 0,
+          "height": 480,
+          "object_id": "fork",
+          "original_box": {
+            "x1": 252,
+            "x2": 392,
+            "y1": 176,
+            "y2": 277
+          },
+          "padded_box": {
+            "x1": 220,
+            "x2": 424,
+            "y1": 144,
+            "y2": 309
+          },
+          "source_sha256": "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+          "width": 640,
+          "withheld_reason": null
+        },
+        {
+          "eligible": true,
+          "frame_index": 1,
+          "height": 480,
+          "object_id": "fork",
+          "original_box": {
+            "x1": 181,
+            "x2": 325,
+            "y1": 188,
+            "y2": 291
+          },
+          "padded_box": {
+            "x1": 149,
+            "x2": 357,
+            "y1": 156,
+            "y2": 323
+          },
+          "source_sha256": "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a",
+          "width": 640,
+          "withheld_reason": null
+        }
+      ],
+      "locator_sha256": "1906df21db1a6661050fb9eff3bafe0e2bf82290fe1f762881e3b73f11595e38",
+      "original_contract_hash": "aa0912823d266fc0898e30faf85a293d5068c4bba029c546cc60e88243937c90",
+      "original_pair_sha256": "3e744ee4c2166a06cdb6335f17e5fe46cfb0ab19959722459dd4d2f697e5159e",
+      "source_sha256": [
+        "e1c8e5f7942ae4bdab72c897b5fa09a53dcc6099b0bea64e5bacb52675085161"
+      ],
+      "truth": "unknown"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-0",
+      "frames": [
+        {
+          "eligible": false,
+          "frame_index": 0,
+          "height": 480,
+          "object_id": "cloth",
+          "original_box": null,
+          "padded_box": null,
+          "source_sha256": "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+          "width": 640,
+          "withheld_reason": "not_fully_visible"
+        },
+        {
+          "eligible": false,
+          "frame_index": 1,
+          "height": 480,
+          "object_id": "cloth",
+          "original_box": null,
+          "padded_box": null,
+          "source_sha256": "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115",
+          "width": 640,
+          "withheld_reason": "not_fully_visible"
+        }
+      ],
+      "locator_sha256": "76eac24c8ab0af085336b320b25637c36c1b672d2e81820132eb2c18b0532aec",
+      "original_contract_hash": "d7c60f27386a4943e5b0d897b1bbe71d12cce4d96732b88229e63a43479c6e48",
+      "original_pair_sha256": "590bbc88b33c500b2e012527238cea99bd47eda23437027679a3536a7e396e5a",
+      "source_sha256": [
+        "ae5da22ea02178c9336ff04473bbd2c2c0794f1826e2805193de13193ca8a26f"
+      ],
+      "truth": "unknown"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-1",
+      "frames": [
+        {
+          "eligible": false,
+          "frame_index": 0,
+          "height": 480,
+          "object_id": "cloth",
+          "original_box": null,
+          "padded_box": null,
+          "source_sha256": "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+          "width": 640,
+          "withheld_reason": "not_fully_visible"
+        },
+        {
+          "eligible": false,
+          "frame_index": 1,
+          "height": 480,
+          "object_id": "cloth",
+          "original_box": null,
+          "padded_box": null,
+          "source_sha256": "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668",
+          "width": 640,
+          "withheld_reason": "not_fully_visible"
+        }
+      ],
+      "locator_sha256": "793b33c2e88b75f30b6d0adacc7f8fd91afa1a742da2c8430530b17e6dc37d4d",
+      "original_contract_hash": "41b0f8e88e66349341f5f360a6f223d7717fdfdf9682832672c3597fc5999165",
+      "original_pair_sha256": "ef25e989ea8473e6b3631b287ad25034e53379cc6b7f1f5406a302061684faa1",
+      "source_sha256": [
+        "ae5da22ea02178c9336ff04473bbd2c2c0794f1826e2805193de13193ca8a26f"
+      ],
+      "truth": "unknown"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "frames": [
+        {
+          "eligible": true,
+          "frame_index": 0,
+          "height": 480,
+          "object_id": "cloth",
+          "original_box": {
+            "x1": 92,
+            "x2": 201,
+            "y1": 256,
+            "y2": 343
+          },
+          "padded_box": {
+            "x1": 60,
+            "x2": 233,
+            "y1": 224,
+            "y2": 375
+          },
+          "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+          "width": 640,
+          "withheld_reason": null
+        },
+        {
+          "eligible": true,
+          "frame_index": 1,
+          "height": 480,
+          "object_id": "cloth",
+          "original_box": {
+            "x1": 93,
+            "x2": 203,
+            "y1": 264,
+            "y2": 371
+          },
+          "padded_box": {
+            "x1": 61,
+            "x2": 235,
+            "y1": 232,
+            "y2": 403
+          },
+          "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+          "width": 640,
+          "withheld_reason": null
+        }
+      ],
+      "locator_sha256": "dc776348ebf1cf2b9a090e52eed994f4d55b8d4e795c01e2a7ff1bf3bd61a53c",
+      "original_contract_hash": "c9dab92186cb7ac0c50c14cea06371dc85a1378f35bffd30f0835f7e9cfc5d18",
+      "original_pair_sha256": "53589f635093dbe5ef308e0d076309d38307f806ae11321e73f78fd3a15a62b9",
+      "source_sha256": [
+        "ae5da22ea02178c9336ff04473bbd2c2c0794f1826e2805193de13193ca8a26f"
+      ],
+      "truth": "unknown"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "frames": [
+        {
+          "eligible": true,
+          "frame_index": 0,
+          "height": 480,
+          "object_id": "brown_cup",
+          "original_box": {
+            "x1": 228,
+            "x2": 277,
+            "y1": 189,
+            "y2": 264
+          },
+          "padded_box": {
+            "x1": 196,
+            "x2": 309,
+            "y1": 157,
+            "y2": 296
+          },
+          "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+          "width": 640,
+          "withheld_reason": null
+        },
+        {
+          "eligible": true,
+          "frame_index": 1,
+          "height": 480,
+          "object_id": "brown_cup",
+          "original_box": {
+            "x1": 228,
+            "x2": 277,
+            "y1": 189,
+            "y2": 264
+          },
+          "padded_box": {
+            "x1": 196,
+            "x2": 309,
+            "y1": 157,
+            "y2": 296
+          },
+          "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+          "width": 640,
+          "withheld_reason": null
+        }
+      ],
+      "locator_sha256": "e591bd614c92447d44ae92887dbf8af79b1e7fc2d8d7865609ba2b23974944af",
+      "original_contract_hash": "b516f4169ced89f2ff8aeba0765426a14973b6e7dabeb307401f52ed4a7d9c49",
+      "original_pair_sha256": "bf75d5b7d8dab7630aa93b51fc0a406de7b1ee13f85be1c89b965458bb09c228",
+      "source_sha256": [
+        "2759938cf27fc003f68d01611095f168f95ae6e313c92e49dc2dd3e997adb9be"
+      ],
+      "truth": "pass"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "frames": [
+        {
+          "eligible": true,
+          "frame_index": 0,
+          "height": 480,
+          "object_id": "brown_cup",
+          "original_box": {
+            "x1": 227,
+            "x2": 277,
+            "y1": 189,
+            "y2": 266
+          },
+          "padded_box": {
+            "x1": 195,
+            "x2": 309,
+            "y1": 157,
+            "y2": 298
+          },
+          "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+          "width": 640,
+          "withheld_reason": null
+        },
+        {
+          "eligible": true,
+          "frame_index": 1,
+          "height": 480,
+          "object_id": "brown_cup",
+          "original_box": {
+            "x1": 227,
+            "x2": 277,
+            "y1": 218,
+            "y2": 293
+          },
+          "padded_box": {
+            "x1": 195,
+            "x2": 309,
+            "y1": 186,
+            "y2": 325
+          },
+          "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+          "width": 640,
+          "withheld_reason": null
+        }
+      ],
+      "locator_sha256": "1909d1980d45d3046755a189aa610053f5e95da37158f93fa03be611a6b782d6",
+      "original_contract_hash": "e1c8aa1fadb8709c468801247ac3d778e0cc33abd16827b2d859f2d5ff060db3",
+      "original_pair_sha256": "e26db9dbc6ff16dea3a195311e9cca4e89dc8843e6f68f23cb09ad8527a2b50e",
+      "source_sha256": [
+        "2759938cf27fc003f68d01611095f168f95ae6e313c92e49dc2dd3e997adb9be"
+      ],
+      "truth": "pass"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-2",
+      "frames": [
+        {
+          "eligible": true,
+          "frame_index": 0,
+          "height": 480,
+          "object_id": "brown_cup",
+          "original_box": {
+            "x1": 230,
+            "x2": 280,
+            "y1": 175,
+            "y2": 264
+          },
+          "padded_box": {
+            "x1": 198,
+            "x2": 312,
+            "y1": 143,
+            "y2": 296
+          },
+          "source_sha256": "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+          "width": 640,
+          "withheld_reason": null
+        },
+        {
+          "eligible": true,
+          "frame_index": 1,
+          "height": 480,
+          "object_id": "brown_cup",
+          "original_box": {
+            "x1": 229,
+            "x2": 280,
+            "y1": 175,
+            "y2": 265
+          },
+          "padded_box": {
+            "x1": 197,
+            "x2": 312,
+            "y1": 143,
+            "y2": 297
+          },
+          "source_sha256": "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67",
+          "width": 640,
+          "withheld_reason": null
+        }
+      ],
+      "locator_sha256": "7318aef853403a02515f26bfcc885a370ca53f0a380ca8caa514e2c0fbf14cd9",
+      "original_contract_hash": "219c440fb0323c4d582c3f8248467678d090d6f67100af901053017f4e452c92",
+      "original_pair_sha256": "d2cc4ad17263eaccabb47ed5e0880af5cf7483b1541a5e81a3c8a413e1f3572c",
+      "source_sha256": [
+        "2759938cf27fc003f68d01611095f168f95ae6e313c92e49dc2dd3e997adb9be"
+      ],
+      "truth": "unknown"
+    }
+  ],
+  "created_unix_ms": 1793301792717,
+  "evaluation_role": "post_outcome_exposed_development",
+  "implementation_sha256": {
+    "anchor_padding_experiment.py": "4386f987c575b446b379bb517f6aeb8182873d88c623212585ecd1c9c4ce9bcd",
+    "benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+    "bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+    "capture.py": "77e94f6a5941fc5378037ccef46ba71060821a7457331e04bd35600dcbba682a",
+    "core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+    "grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+    "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+    "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+    "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+    "prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+    "session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869"
+  },
+  "limits": [
+    "Post-outcome exposed development ablation using cached Spark locators; no fresh-source accuracy claim.",
+    "Identity/visibility gates, labels, region calibration and confidence/stability thresholds are unchanged.",
+    "Padded SAM masks do not independently prove semantic identity; larger anchors can include distractors.",
+    "No live acceptance promotion, implicit fallback or verified physical correction is provided."
+  ],
+  "max_requests": 18,
+  "method": "cached_locator_image_margin_sam_development_v1",
+  "padding_rule": "ceil(max(source_width,source_height)/20) pixels symmetrically, clamped inclusive bounds",
+  "plan_sha256": "244e8464cc49f633ebabaad3b505caa3eb5f078fc911936a9f17201266062c8b",
+  "planned_requests": 13,
+  "prior_freeze_hashes": [
+    "4d928c5a38a168ad24a286bdbc448ac6ac3724d855c085e94cc1118251a2a38c",
+    "a290ae0088b4bdf8d72773d2f357731d0bb75712245fbe5cbbd6efe03f3f2adf",
+    "8b1fde955abdf42430d8ce7fe97de2480a4739ab044b0139f8c90eb90577a691"
+  ],
+  "schema_version": "cached_locator_image_margin_sam_development_v1"
+}
