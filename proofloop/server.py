@@ -438,7 +438,8 @@ def main(argv: list[str] | None = None) -> int:
         print("Frontend is not built. From web/, run npm install and npm run build, then start this server again.", file=sys.stderr)
         return 2
     from .interactive import InteractiveEngine
-    from .inference_journal import AttemptJournal, JournaledMetaClient
+    from .inference_journal import AttemptJournal
+    from .bounded_spark import BoundedSparkClient
     from .job_service import InspectionJobService
 
     seed = args.seed if args.seed is not None else _default_seed(ROOT)
@@ -450,7 +451,7 @@ def main(argv: list[str] | None = None) -> int:
 
         def inspect(inspection, binding, job_id, guard):
             def factory(**kwargs):
-                return JournaledMetaClient.from_env(journal=journal, operation_id=job_id, guard=guard, **kwargs)
+                return BoundedSparkClient.from_env(journal=journal, operation_id=job_id, guard=guard, **kwargs)
             return engine.inspect_pair(inspection, expected_binding=binding, runtime_client_factory=factory)
 
         jobs = InspectionJobService(engine, inspect_callback=inspect)

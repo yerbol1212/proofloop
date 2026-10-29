@@ -1,0 +1,55 @@
+{
+  "clip_id": "screwdriver",
+  "concepts": {
+    "target": "light-handled screwdriver with a thin metal shaft"
+  },
+  "config": {
+    "automatic_retry": false,
+    "bounded_spark_version": "bounded_spark_low_reasoning_v1",
+    "max_output_tokens": 4096,
+    "max_requests": 3,
+    "maximum_run_executions": 1,
+    "reasoning_effort": "low"
+  },
+  "created_at_utc": "2026-10-29T05:08:10.940990+00:00",
+  "evaluation_role": "prospective_completion_repair_of_exposed_pair",
+  "freeze_hash": "c8a8d482d33164e336066e81a22b6a4ab86fa60dcec4e8ab844e6243178c89c3",
+  "implementation_sha256": {
+    "bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+    "tracking_completion.py": "60b4539a699d330ce6ec6d7c30a639ccaffd2bd98f9827e6e22cdba41b3e53f5"
+  },
+  "inference_started": false,
+  "original_failure": {
+    "error_code": "incomplete_response",
+    "max_output_tokens": 4096,
+    "model": "muse-spark-1.3",
+    "reasoning_effort_reported_by_provider": "high",
+    "response_status": "incomplete",
+    "status": "unscored",
+    "usage": {
+      "estimated_usd": 0.018872,
+      "input_tokens": 1171,
+      "output_tokens": 4096,
+      "request_attempts": 1,
+      "sam_images": 0,
+      "spark_requests_with_unreported_token_usage": 0,
+      "unsuccessful_spark_requests_with_reported_token_usage": 1
+    }
+  },
+  "original_freeze_hash": "92ee474a66ca90a38d713effd8481fd72392a3dfa201a06e8d4f65338f878512",
+  "original_pair_sha256": "d78d9cea765e2e875b8fb790ab5a5c2c0c2edd7ac3f9bc5bf4c3c80745e74453",
+  "pair_index": 1,
+  "repair_version": "tracking_baseline_completion_repair_v1",
+  "source_frames": [
+    {
+      "frame_index": 8,
+      "sha256": "101acca4337ab2596839b6dcef24c46276472cec427f9afc17afb61a815d0e0c",
+      "timestamp_ms": 1600
+    },
+    {
+      "frame_index": 13,
+      "sha256": "23493b817663049a165e53ef94a3ddf340299cb4306099196de9c969f01d9159",
+      "timestamp_ms": 2600
+    }
+  ]
+}
