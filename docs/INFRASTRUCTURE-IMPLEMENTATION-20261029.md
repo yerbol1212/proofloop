@@ -100,3 +100,7 @@ CI now runs both Python versions, the portable replay, fourteen Node recovery ch
 - The 20 frozen perception implementation hashes remain unchanged. No Meta inference or new model-accuracy experiment occurs in this milestone. The **3/6 and 4/7** perception results, one clear false warning and one unscored network case remain unchanged.
 
 Remote multi-user deployment, actual external-agent interoperability, unseen-video validation and fresh physical operation remain separate work. The service does not turn a repair proposal, operator declaration or historical result into observed physical execution.
+
+## Publication verification
+
+Implementation commit `194b85211d26bffd36697d9270df4569a1903796` passed [all four CI jobs](https://github.com/yerbol1212/proofloop/actions/runs/40849139921): Python 3.9, Python 3.12, frontend and the installed workbench outside the checkout. The [sanitized validation record](../artifacts/feasibility/infrastructure-checks-20261029.json) records the local checks and their limits. The updated workbench was restarted locally; its SDK readiness, existing read-only MCP bridge, cached contact diagnostic and read-only browser rendering passed with zero added provider attempts. The browser smoke found no console or page errors. Private screenshots and detailed browser logs stay in the ignored local infrastructure directory.

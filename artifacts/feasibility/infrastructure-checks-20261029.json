@@ -1,0 +1,144 @@
+{
+  "added_provider_requests": 0,
+  "changes_live_placement_acceptance": false,
+  "ci": {
+    "conclusion": "success",
+    "head_sha": "194b85211d26bffd36697d9270df4569a1903796",
+    "jobs": [
+      {
+        "conclusion": "success",
+        "name": "installed-workbench"
+      },
+      {
+        "conclusion": "success",
+        "name": "unittest (3.12)"
+      },
+      {
+        "conclusion": "success",
+        "name": "unittest (3.9)"
+      },
+      {
+        "conclusion": "success",
+        "name": "frontend"
+      }
+    ],
+    "url": "https://github.com/yerbol1212/proofloop/actions/runs/40849139921"
+  },
+  "date": "2026-10-29",
+  "evaluation_role": "software_infrastructure_validation_no_new_model_accuracy_experiment",
+  "implementation_commit": "194b85211d26bffd36697d9270df4569a1903796",
+  "limitations": [
+    "Software tests and authored fake responses do not establish model accuracy or physical closed-loop recovery.",
+    "Portable replay uses cached measurements; it does not reconstruct original media, decode original masks or independently remeasure contact.",
+    "The known clear-target false warning and unscored positive remain in the historical results.",
+    "Tracking is a separate diagnostic service; its supported state is not placement PASS or physical-action permission.",
+    "Readiness checks local dependencies, workers, storage and request allowance; it does not validate provider connectivity, credentials or credit balance.",
+    "The bounded local telemetry export is OpenTelemetry-shaped JSON; no external collector integration was tested.",
+    "Remote multi-user deployment, external-agent interoperability and unseen-video validation remain untested."
+  ],
+  "local_validation": {
+    "browser_recovery": {
+      "authored_fake_calls": 3,
+      "browser": "installed Chrome controlled through regular Playwright",
+      "checks": {
+        "dropped202_recovered_same_job": true,
+        "mobile_no_horizontal_overflow": true,
+        "no_framework_overlay": true,
+        "no_unexpected_console_errors": true,
+        "nonblank": true,
+        "opaque_storage_only": true,
+        "page_identity": true,
+        "screenshot_evidence": true,
+        "single_admission": true,
+        "single_dispatch": true,
+        "storage_failure_blocks_post": true,
+        "unadmitted_requires_fresh_capture": true
+      },
+      "desktop_viewport": [
+        1440,
+        1000
+      ],
+      "dispatches": 1,
+      "engine_http_store_worker": "actual local software with authored fake inference",
+      "expected_console_errors": [
+        "intentionally aborted acceptance response"
+      ],
+      "fallback_reason": "Browser plugin unavailable",
+      "mobile_viewport": [
+        390,
+        844
+      ],
+      "not_found_policy": "retain opaque intent and fence late original admission across reloads until explicit new binding",
+      "page_errors": 0,
+      "provider_requests": 0,
+      "unexpected_console_errors": 0
+    },
+    "fresh_wheel_install": {
+      "asynchronous_cached_tracking_passed": true,
+      "bundled_frontend_served": true,
+      "offline_replay_passed": true,
+      "outside_checkout": true,
+      "reserved_provider_attempts": 0
+    },
+    "frontend_recovery_tests": {
+      "result": "passed",
+      "tests_run": 14
+    },
+    "production_frontend_build": "passed",
+    "python_3_12": {
+      "result": "passed",
+      "skipped": 0,
+      "tests_run": 1254
+    },
+    "python_3_9": {
+      "result": "passed",
+      "skip_reason": "optional official SAM parser requires Python 3.10 or newer",
+      "skipped": 2,
+      "tests_run": 1254
+    },
+    "running_workbench_smoke": {
+      "added_provider_attempts": 0,
+      "cached_contact_frame_status": "unknown",
+      "cached_tracking_passed": true,
+      "console_messages": 0,
+      "legacy_read_only_mcp_passed": true,
+      "page_errors": 0,
+      "read_only_browser_checks": {
+        "correct_identity": true,
+        "meaningful_render": true,
+        "no_framework_overlay": true,
+        "no_unexpected_console": true,
+        "only_local_GET_requests": true,
+        "screenshot_saved": true
+      },
+      "sdk_readiness_passed": true
+    }
+  },
+  "physical_action_authorized": false,
+  "portable_replay": {
+    "added_provider_requests": 0,
+    "fixture_bytes": 583546,
+    "fixture_sha256": "6c140a3bacd7bab49839cdadf5c633f8be18762b039da7a76759ed7a2e379d0f",
+    "frozen_perception_modules_verified": 20,
+    "method_reports": 6,
+    "recordings": 4,
+    "reviewed_references": 32,
+    "scope": "cached_policy_and_score_replay_only",
+    "unchanged_combined_retention": {
+      "exposed_episode_2": {
+        "positive_count": 6,
+        "positives_retained": 3,
+        "unclear_count": 10,
+        "unclear_states_supported": 0
+      },
+      "new_episode_3": {
+        "positive_count": 7,
+        "positive_unscored": 1,
+        "positives_retained": 4,
+        "unclear_count": 9,
+        "unclear_states_supported": 0
+      }
+    }
+  },
+  "schema_version": "proofloop_infrastructure_validation_v1"
+}
