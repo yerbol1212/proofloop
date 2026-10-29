@@ -113,6 +113,28 @@ def _integer(value, maximum=2**53):
     return type(value) is int and 0 <= value <= maximum
 
 
+def _spark_charge_uncertain(clients):
+    """Do not interpret absent usage after dispatch as a free Spark call.
+
+    The frozen transport's usage total deliberately excludes ambiguous lost
+    responses. Inspect every child ledger as well as that known-cost subtotal:
+    a started/lost/malformed response can have been billed, and any Spark
+    response without both nonnegative integer token counts is incomplete
+    accounting. Reported zero tokens remain valid reported usage.
+    """
+    for client in clients:
+        for attempt in client.ledger:
+            if attempt.get("endpoint") != "responses" or attempt.get("model") != meta.SPARK_MODEL:
+                continue
+            usage = attempt.get("usage")
+            if (attempt.get("status") in {"started", "network_error", "invalid_json"}
+                    or type(usage) is not dict
+                    or any(type(usage.get(field)) is not int or usage[field] < 0
+                           for field in ("input_tokens", "output_tokens"))):
+                return True
+    return False
+
+
 def public_result(result):
     """Closed path-free DTO, validated again when reloading persisted results."""
     try:
@@ -613,6 +635,7 @@ class TrackingService:
         changed, indexed, _ = veto._runtime_veto(entry,corrected,{"source_sha256":source["sha256"],"frames":warning_rows})
         proposed = veto.strict.baseline._policy(entry,changed,current.evaluate_tracking)
         policy = veto._intersect_policy(proposed,base,changed,indexed)
+        unknown_cost |= _spark_charge_uncertain(created_clients)
         from .runtime_control import RuntimeMetaClient
         trusted = self._trusted_factory and bool(created_clients) and all(
             type(adapter) is RuntimeMetaClient and adapter.runtime_control is self.runtime_control

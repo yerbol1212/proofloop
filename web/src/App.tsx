@@ -1371,7 +1371,7 @@ export function App() {
         if (saved.schema_version === 2) unadmittedIntent.current = saved
         setFreshCaptureRequired(true)
         setCaptureGeneration((generation) => generation + 1)
-        setActionError('The original submission was not admitted. Choose New inspection, then capture two new views. Nothing was resubmitted.')
+        setActionError('No original job was found yet; the submission may still be in flight. Reload to check again, or choose New inspection before capturing two new views. Nothing was resubmitted.')
         return
       }
       await awaitInspection(id, controller.signal, saved)

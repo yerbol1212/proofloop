@@ -1,0 +1,888 @@
+{
+  "annotation_review": {
+    "human_reviewed_exact_contract": false,
+    "independent_human_ground_truth": false,
+    "origin": "assistant_under_user_authorization",
+    "reviewers": 2
+  },
+  "authored_label_counts": {
+    "fail": 1,
+    "pass": 2,
+    "unknown": 6
+  },
+  "cases": 9,
+  "cohorts": [
+    {
+      "id": "bridge-scripted-0",
+      "preregistration": {
+        "approval_origin": "assistant_under_user_authorization",
+        "cases": [
+          {
+            "annotation": {
+              "checks": {
+                "fork-right": "fail"
+              },
+              "origin": "source_frames_reviewed_before_inference",
+              "status": "fail"
+            },
+            "case_id": "bridge-scripted-0-pair-0",
+            "evaluation_timestamp_ms": 2169,
+            "frames": [
+              {
+                "sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+                "source_timestamp_ms": 0
+              },
+              {
+                "sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+                "source_timestamp_ms": 2169
+              }
+            ],
+            "regions": {
+              "left": [
+                0,
+                0,
+                0.49,
+                1
+              ],
+              "right": [
+                0.5,
+                0,
+                1,
+                1
+              ]
+            },
+            "role": "benchmark",
+            "source_id": "bridge-scripted-0"
+          },
+          {
+            "annotation": {
+              "checks": {
+                "fork-right": "unknown"
+              },
+              "origin": "source_frames_reviewed_before_inference",
+              "status": "unknown"
+            },
+            "case_id": "bridge-scripted-0-pair-1",
+            "evaluation_timestamp_ms": 6563,
+            "frames": [
+              {
+                "sha256": "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+                "source_timestamp_ms": 5360
+              },
+              {
+                "sha256": "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d",
+                "source_timestamp_ms": 6563
+              }
+            ],
+            "regions": {
+              "left": [
+                0,
+                0,
+                0.49,
+                1
+              ],
+              "right": [
+                0.5,
+                0,
+                1,
+                1
+              ]
+            },
+            "role": "benchmark",
+            "source_id": "bridge-scripted-0"
+          },
+          {
+            "annotation": {
+              "checks": {
+                "fork-right": "unknown"
+              },
+              "origin": "source_frames_reviewed_before_inference",
+              "status": "unknown"
+            },
+            "case_id": "bridge-scripted-0-pair-2",
+            "evaluation_timestamp_ms": 11768,
+            "frames": [
+              {
+                "sha256": "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+                "source_timestamp_ms": 10757
+              },
+              {
+                "sha256": "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a",
+                "source_timestamp_ms": 11768
+              }
+            ],
+            "regions": {
+              "left": [
+                0,
+                0,
+                0.49,
+                1
+              ],
+              "right": [
+                0.5,
+                0,
+                1,
+                1
+              ]
+            },
+            "role": "benchmark",
+            "source_id": "bridge-scripted-0"
+          }
+        ],
+        "concepts": {
+          "fork": "blue-handled fork"
+        },
+        "conditions": [
+          "spark",
+          "guided"
+        ],
+        "contract_hash": "0dc357d9dd8fac03b818e4d49928ae36e917d7e87ac760989f58e7850926e2a0",
+        "created_unix_ms": 1793300624666,
+        "dataset_id": "prospective-bridge-scripted-0",
+        "freeze_sha256": "4d928c5a38a168ad24a286bdbc448ac6ac3724d855c085e94cc1118251a2a38c",
+        "human_reviewed_exact_contract": false,
+        "implementation_sha256": {
+          "benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+          "bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+          "core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+          "grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+          "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+          "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+          "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+          "prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+          "session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869"
+        },
+        "limits": [
+          "Caller-authorized curated recorded-source pilot, not an independent audit or physical correction loop.",
+          "The declaration hash is not a trusted timestamp or proof of no earlier model exposure.",
+          "All predeclared cases remain denominators; missing/error predictions are not UNKNOWN."
+        ],
+        "max_requests": 12,
+        "method_versions": {
+          "guided": "normalized_boxes_v2",
+          "spark": "benchmark_spark_same_pair_v1"
+        },
+        "physical_action_execution_verified": false,
+        "planned_requests": {
+          "guided": 9,
+          "spark": 3
+        },
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "fork-right",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "fork",
+              "region_id": "right",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-bridge-scripted-0",
+          "objects": [
+            "fork"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "requirements": "The declared unique blue-handled fork must be wholly within RIGHT in both source views. Occluded, ambiguous, boundary-crossing or inconsistent evidence stays UNKNOWN. This is visible placement only, not proof of task completion.",
+        "schema_version": "prospective_recorded_pilot_v1",
+        "scope": "caller_authorized_curated_new_source_pilot",
+        "sources": [
+          {
+            "duration_ms": 11769,
+            "id": "bridge-scripted-0",
+            "license": {
+              "attribution": "Homer Walke et al., BridgeData V2: A Dataset for Robot Learning at Scale, CoRL 2023; RAIL-Berkeley scripted data; VyoJ video conversion.",
+              "name": "CC BY 4.0 (upstream data)",
+              "url": "https://rail-berkeley.github.io/bridgedata/"
+            },
+            "media_url": "https://huggingface.co/datasets/VyoJ/BridgeData-V2-Scripted-Videos/resolve/d6c6064ca8aca851cae1b4f05e72732177490420/videos/trajectory_0000_pnp_utensils_11-29_2022-11-29_15-24-23_traj0.mp4",
+            "page_url": "https://rail-berkeley.github.io/bridgedata/",
+            "publisher": "RAIL-Berkeley / VyoJ",
+            "sha256": "e1c8e5f7942ae4bdab72c897b5fa09a53dcc6099b0bea64e5bacb52675085161"
+          }
+        ],
+        "total_planned_requests": 12
+      },
+      "source_family": "BridgeData V2"
+    },
+    {
+      "id": "ur5-cloth-0",
+      "preregistration": {
+        "approval_origin": "assistant_under_user_authorization",
+        "cases": [
+          {
+            "annotation": {
+              "checks": {
+                "cloth-left": "unknown"
+              },
+              "origin": "source_frames_reviewed_before_inference",
+              "status": "unknown"
+            },
+            "case_id": "ur5-cloth-0-pair-0",
+            "evaluation_timestamp_ms": 1000,
+            "frames": [
+              {
+                "sha256": "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+                "source_timestamp_ms": 0
+              },
+              {
+                "sha256": "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115",
+                "source_timestamp_ms": 1000
+              }
+            ],
+            "regions": {
+              "left": [
+                0.1,
+                0.38,
+                0.43,
+                0.8
+              ],
+              "right": [
+                0.44,
+                0.38,
+                0.65,
+                0.8
+              ]
+            },
+            "role": "benchmark",
+            "source_id": "ur5-cloth-0"
+          },
+          {
+            "annotation": {
+              "checks": {
+                "cloth-left": "unknown"
+              },
+              "origin": "source_frames_reviewed_before_inference",
+              "status": "unknown"
+            },
+            "case_id": "ur5-cloth-0-pair-1",
+            "evaluation_timestamp_ms": 7400,
+            "frames": [
+              {
+                "sha256": "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+                "source_timestamp_ms": 6400
+              },
+              {
+                "sha256": "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668",
+                "source_timestamp_ms": 7400
+              }
+            ],
+            "regions": {
+              "left": [
+                0.1,
+                0.38,
+                0.43,
+                0.8
+              ],
+              "right": [
+                0.44,
+                0.38,
+                0.65,
+                0.8
+              ]
+            },
+            "role": "benchmark",
+            "source_id": "ur5-cloth-0"
+          },
+          {
+            "annotation": {
+              "checks": {
+                "cloth-left": "unknown"
+              },
+              "origin": "source_frames_reviewed_before_inference",
+              "status": "unknown"
+            },
+            "case_id": "ur5-cloth-0-pair-2",
+            "evaluation_timestamp_ms": 14000,
+            "frames": [
+              {
+                "sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+                "source_timestamp_ms": 13000
+              },
+              {
+                "sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+                "source_timestamp_ms": 14000
+              }
+            ],
+            "regions": {
+              "left": [
+                0.1,
+                0.38,
+                0.43,
+                0.8
+              ],
+              "right": [
+                0.44,
+                0.38,
+                0.65,
+                0.8
+              ]
+            },
+            "role": "benchmark",
+            "source_id": "ur5-cloth-0"
+          }
+        ],
+        "concepts": {
+          "cloth": "green cloth"
+        },
+        "conditions": [
+          "spark",
+          "guided"
+        ],
+        "contract_hash": "43df910695d1f12dda860bf8eac6cbcbb129c8dd881784cbf99bcee28faa0bc2",
+        "created_unix_ms": 1793300624681,
+        "dataset_id": "prospective-ur5-cloth-0",
+        "freeze_sha256": "a290ae0088b4bdf8d72773d2f357731d0bb75712245fbe5cbbd6efe03f3f2adf",
+        "human_reviewed_exact_contract": false,
+        "implementation_sha256": {
+          "benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+          "bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+          "core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+          "grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+          "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+          "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+          "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+          "prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+          "session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869"
+        },
+        "limits": [
+          "Caller-authorized curated recorded-source pilot, not an independent audit or physical correction loop.",
+          "The declaration hash is not a trusted timestamp or proof of no earlier model exposure.",
+          "All predeclared cases remain denominators; missing/error predictions are not UNKNOWN."
+        ],
+        "max_requests": 12,
+        "method_versions": {
+          "guided": "normalized_boxes_v2",
+          "spark": "benchmark_spark_same_pair_v1"
+        },
+        "physical_action_execution_verified": false,
+        "planned_requests": {
+          "guided": 9,
+          "spark": 3
+        },
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "cloth-left",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "cloth",
+              "region_id": "left",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-ur5-cloth-0",
+          "objects": [
+            "cloth"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "requirements": "The declared unique green cloth must be wholly within LEFT in both source views. Occluded, ambiguous, boundary-crossing or inconsistent evidence stays UNKNOWN. This is visible placement only, not proof of task completion.",
+        "schema_version": "prospective_recorded_pilot_v1",
+        "scope": "caller_authorized_curated_new_source_pilot",
+        "sources": [
+          {
+            "duration_ms": 14001,
+            "id": "ur5-cloth-0",
+            "license": {
+              "attribution": "Lawrence Yunliang Chen, Simeon Adebola and Ken Goldberg, Berkeley UR5 Demonstration Dataset; Hugging Face LeRobot conversion.",
+              "name": "CC BY 4.0 (pinned redistributor dataset declaration; original homepage license unverified)",
+              "url": "https://huggingface.co/datasets/lerobot/berkeley_autolab_ur5/blob/6306aa91c00b9b0de28831b7fceaa42b8096bb4f/README.md"
+            },
+            "media_url": "https://huggingface.co/datasets/lerobot/berkeley_autolab_ur5/resolve/6306aa91c00b9b0de28831b7fceaa42b8096bb4f/videos/chunk-000/observation.images.image/episode_000000.mp4",
+            "page_url": "https://sites.google.com/view/berkeley-ur5/home",
+            "publisher": "Berkeley UR5 / Hugging Face LeRobot",
+            "sha256": "ae5da22ea02178c9336ff04473bbd2c2c0794f1826e2805193de13193ca8a26f"
+          }
+        ],
+        "total_planned_requests": 12
+      },
+      "source_family": "Berkeley UR5"
+    },
+    {
+      "id": "ur5-cup-4",
+      "preregistration": {
+        "approval_origin": "assistant_under_user_authorization",
+        "cases": [
+          {
+            "annotation": {
+              "checks": {
+                "brown_cup-left": "pass"
+              },
+              "origin": "source_frames_reviewed_before_inference",
+              "status": "pass"
+            },
+            "case_id": "ur5-cup-4-pair-0",
+            "evaluation_timestamp_ms": 1000,
+            "frames": [
+              {
+                "sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+                "source_timestamp_ms": 0
+              },
+              {
+                "sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+                "source_timestamp_ms": 1000
+              }
+            ],
+            "regions": {
+              "left": [
+                0.35,
+                0.32,
+                0.52,
+                0.66
+              ],
+              "right": [
+                0.55,
+                0.32,
+                0.8,
+                0.66
+              ]
+            },
+            "role": "benchmark",
+            "source_id": "ur5-cup-4"
+          },
+          {
+            "annotation": {
+              "checks": {
+                "brown_cup-left": "pass"
+              },
+              "origin": "source_frames_reviewed_before_inference",
+              "status": "pass"
+            },
+            "case_id": "ur5-cup-4-pair-1",
+            "evaluation_timestamp_ms": 12600,
+            "frames": [
+              {
+                "sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+                "source_timestamp_ms": 11600
+              },
+              {
+                "sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+                "source_timestamp_ms": 12600
+              }
+            ],
+            "regions": {
+              "left": [
+                0.35,
+                0.32,
+                0.52,
+                0.66
+              ],
+              "right": [
+                0.55,
+                0.32,
+                0.8,
+                0.66
+              ]
+            },
+            "role": "benchmark",
+            "source_id": "ur5-cup-4"
+          },
+          {
+            "annotation": {
+              "checks": {
+                "brown_cup-left": "unknown"
+              },
+              "origin": "source_frames_reviewed_before_inference",
+              "status": "unknown"
+            },
+            "case_id": "ur5-cup-4-pair-2",
+            "evaluation_timestamp_ms": 24400,
+            "frames": [
+              {
+                "sha256": "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+                "source_timestamp_ms": 23400
+              },
+              {
+                "sha256": "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67",
+                "source_timestamp_ms": 24400
+              }
+            ],
+            "regions": {
+              "left": [
+                0.35,
+                0.32,
+                0.52,
+                0.66
+              ],
+              "right": [
+                0.55,
+                0.32,
+                0.8,
+                0.66
+              ]
+            },
+            "role": "benchmark",
+            "source_id": "ur5-cup-4"
+          }
+        ],
+        "concepts": {
+          "brown_cup": "brown drinking cup"
+        },
+        "conditions": [
+          "spark",
+          "guided"
+        ],
+        "contract_hash": "5c51ee26248e06ff39dcf3d5954cbe9077c131ac2299e0cd658878e6435b0a39",
+        "created_unix_ms": 1793300624693,
+        "dataset_id": "prospective-ur5-cup-4",
+        "freeze_sha256": "8b1fde955abdf42430d8ce7fe97de2480a4739ab044b0139f8c90eb90577a691",
+        "human_reviewed_exact_contract": false,
+        "implementation_sha256": {
+          "benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+          "bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+          "core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+          "grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+          "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+          "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+          "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+          "prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+          "session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869"
+        },
+        "limits": [
+          "Caller-authorized curated recorded-source pilot, not an independent audit or physical correction loop.",
+          "The declaration hash is not a trusted timestamp or proof of no earlier model exposure.",
+          "All predeclared cases remain denominators; missing/error predictions are not UNKNOWN."
+        ],
+        "max_requests": 12,
+        "method_versions": {
+          "guided": "normalized_boxes_v2",
+          "spark": "benchmark_spark_same_pair_v1"
+        },
+        "physical_action_execution_verified": false,
+        "planned_requests": {
+          "guided": 9,
+          "spark": 3
+        },
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "brown_cup-left",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "brown_cup",
+              "region_id": "left",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-ur5-cup-4",
+          "objects": [
+            "brown_cup"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "requirements": "The declared unique brown drinking cup must be wholly within LEFT in both source views. Occluded, ambiguous, boundary-crossing or inconsistent evidence stays UNKNOWN. This is visible placement only, not proof of task completion.",
+        "schema_version": "prospective_recorded_pilot_v1",
+        "scope": "caller_authorized_curated_new_source_pilot",
+        "sources": [
+          {
+            "duration_ms": 24401,
+            "id": "ur5-cup-4",
+            "license": {
+              "attribution": "Lawrence Yunliang Chen, Simeon Adebola and Ken Goldberg, Berkeley UR5 Demonstration Dataset; Hugging Face LeRobot conversion.",
+              "name": "CC BY 4.0 (pinned redistributor dataset declaration; original homepage license unverified)",
+              "url": "https://huggingface.co/datasets/lerobot/berkeley_autolab_ur5/blob/6306aa91c00b9b0de28831b7fceaa42b8096bb4f/README.md"
+            },
+            "media_url": "https://huggingface.co/datasets/lerobot/berkeley_autolab_ur5/resolve/6306aa91c00b9b0de28831b7fceaa42b8096bb4f/videos/chunk-000/observation.images.image/episode_000004.mp4",
+            "page_url": "https://sites.google.com/view/berkeley-ur5/home",
+            "publisher": "Berkeley UR5 / Hugging Face LeRobot",
+            "sha256": "2759938cf27fc003f68d01611095f168f95ae6e313c92e49dc2dd3e997adb9be"
+          }
+        ],
+        "total_planned_requests": 12
+      },
+      "source_family": "Berkeley UR5"
+    }
+  ],
+  "distinct_frames": 18,
+  "evidence_role": "caller_authorized_curated_new_to_project_source_family_pilot",
+  "frame_pairs": 9,
+  "hypotheses": [
+    "Measure label agreement, unsupported PASS, clear-target acceptance and abstention for current guided v2 versus the existing same-pair direct Spark prompt on new original source families.",
+    "Preserve every predeclared case and actual incomplete response; no threshold adjustment, favorable-frame search, automatic retry or promotion into live task acceptance."
+  ],
+  "limits": [
+    "Selected normal recorded demonstrations, not natural procedural failures or observed response to a ProofLoop repair.",
+    "New to this project does not establish absence from Meta model pretraining.",
+    "Three recordings from two source families are not nine independent trials or broad generalization.",
+    "Bridge capture metadata is publisher-provided and mapped to decoded ordinals; hashes are consistency checks, not capture-time authentication.",
+    "UR5 rights basis is the pinned LeRobot dataset CC BY4.0 declaration; an explicit original-homepage license was not established.",
+    "No physical action or current-scene preparation is authorized by this experiment."
+  ],
+  "max_total_attempts": 36,
+  "media_preparation": [
+    {
+      "authored_annotation_reasons": {
+        "bridge-scripted-0-pair-0": "Both views show the unique blue-handled fork wholly in LEFT, contradicting the RIGHT requirement.",
+        "bridge-scripted-0-pair-1": "The first view gripper obscures the fork; the second LEFT view cannot supply two fully supported observations.",
+        "bridge-scripted-0-pair-2": "The first fork spans the region boundary while the second lies LEFT; the pair is inconsistent."
+      },
+      "capture_metadata_row_sha256": "9fb8476f1d1ae70fdfeb94d677009ac70f69118f19dfb821595bfe61b11ce55a",
+      "decoded_dimensions": [
+        640,
+        480
+      ],
+      "encoded_video_duration_ms": 50000,
+      "id": "bridge-scripted-0",
+      "pairs": [
+        {
+          "case_id": "bridge-scripted-0-pair-0",
+          "frames": [
+            {
+              "decoded_frame_index": 0,
+              "encoded_pts_ms": 0,
+              "sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+              "source_timestamp_ms": 0,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            },
+            {
+              "decoded_frame_index": 1,
+              "encoded_pts_ms": 1000,
+              "sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+              "source_timestamp_ms": 2169,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            }
+          ]
+        },
+        {
+          "case_id": "bridge-scripted-0-pair-1",
+          "frames": [
+            {
+              "decoded_frame_index": 17,
+              "encoded_pts_ms": 17000,
+              "sha256": "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+              "source_timestamp_ms": 5360,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            },
+            {
+              "decoded_frame_index": 23,
+              "encoded_pts_ms": 23000,
+              "sha256": "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d",
+              "source_timestamp_ms": 6563,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            }
+          ]
+        },
+        {
+          "case_id": "bridge-scripted-0-pair-2",
+          "frames": [
+            {
+              "decoded_frame_index": 44,
+              "encoded_pts_ms": 44000,
+              "sha256": "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+              "source_timestamp_ms": 10757,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            },
+            {
+              "decoded_frame_index": 49,
+              "encoded_pts_ms": 49000,
+              "sha256": "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a",
+              "source_timestamp_ms": 11768,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            }
+          ]
+        }
+      ],
+      "source_capture_timeline_duration_ms": 11769,
+      "time_basis": "original_dataset_capture_timestamps"
+    },
+    {
+      "authored_annotation_reasons": {
+        "ur5-cloth-0-pair-0": "Gripper overlap obscures the green cloth; apparent RIGHT placement does not support the whole target in both views.",
+        "ur5-cloth-0-pair-1": "The cloth crosses the LEFT boundary and has gripper occlusion.",
+        "ur5-cloth-0-pair-2": "The later view is clear LEFT, but the earlier gripper/cloth boundary is ambiguous; the strict pair cannot qualify."
+      },
+      "capture_metadata_row_sha256": null,
+      "decoded_dimensions": [
+        640,
+        480
+      ],
+      "encoded_video_duration_ms": 14200,
+      "id": "ur5-cloth-0",
+      "pairs": [
+        {
+          "case_id": "ur5-cloth-0-pair-0",
+          "frames": [
+            {
+              "decoded_frame_index": 0,
+              "encoded_pts_ms": 0,
+              "sha256": "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+              "source_timestamp_ms": 0,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            },
+            {
+              "decoded_frame_index": 5,
+              "encoded_pts_ms": 1000,
+              "sha256": "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115",
+              "source_timestamp_ms": 1000,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            }
+          ]
+        },
+        {
+          "case_id": "ur5-cloth-0-pair-1",
+          "frames": [
+            {
+              "decoded_frame_index": 32,
+              "encoded_pts_ms": 6400,
+              "sha256": "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+              "source_timestamp_ms": 6400,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            },
+            {
+              "decoded_frame_index": 37,
+              "encoded_pts_ms": 7400,
+              "sha256": "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668",
+              "source_timestamp_ms": 7400,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            }
+          ]
+        },
+        {
+          "case_id": "ur5-cloth-0-pair-2",
+          "frames": [
+            {
+              "decoded_frame_index": 65,
+              "encoded_pts_ms": 13000,
+              "sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+              "source_timestamp_ms": 13000,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            },
+            {
+              "decoded_frame_index": 70,
+              "encoded_pts_ms": 14000,
+              "sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+              "source_timestamp_ms": 14000,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            }
+          ]
+        }
+      ],
+      "source_capture_timeline_duration_ms": 14001,
+      "time_basis": "decoded_video_presentation_timestamps"
+    },
+    {
+      "authored_annotation_reasons": {
+        "ur5-cup-4-pair-0": "The brown receiving cup rim and body are fully visible within LEFT in both views; the separate blue cup is not the target.",
+        "ur5-cup-4-pair-1": "The gripper handles the separate blue cup behind/above the brown receiving cup; the brown cup remains fully visible in LEFT.",
+        "ur5-cup-4-pair-2": "The nested blue cup covers the brown cup upper opening/rim; remaining body location cannot establish whole-target visibility."
+      },
+      "capture_metadata_row_sha256": null,
+      "decoded_dimensions": [
+        640,
+        480
+      ],
+      "encoded_video_duration_ms": 24600,
+      "id": "ur5-cup-4",
+      "pairs": [
+        {
+          "case_id": "ur5-cup-4-pair-0",
+          "frames": [
+            {
+              "decoded_frame_index": 0,
+              "encoded_pts_ms": 0,
+              "sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+              "source_timestamp_ms": 0,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            },
+            {
+              "decoded_frame_index": 5,
+              "encoded_pts_ms": 1000,
+              "sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+              "source_timestamp_ms": 1000,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            }
+          ]
+        },
+        {
+          "case_id": "ur5-cup-4-pair-1",
+          "frames": [
+            {
+              "decoded_frame_index": 58,
+              "encoded_pts_ms": 11600,
+              "sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+              "source_timestamp_ms": 11600,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            },
+            {
+              "decoded_frame_index": 63,
+              "encoded_pts_ms": 12600,
+              "sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+              "source_timestamp_ms": 12600,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            }
+          ]
+        },
+        {
+          "case_id": "ur5-cup-4-pair-2",
+          "frames": [
+            {
+              "decoded_frame_index": 117,
+              "encoded_pts_ms": 23400,
+              "sha256": "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+              "source_timestamp_ms": 23400,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            },
+            {
+              "decoded_frame_index": 122,
+              "encoded_pts_ms": 24400,
+              "sha256": "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67",
+              "source_timestamp_ms": 24400,
+              "transform": "FFmpeg original decoded frame to upright JPEG; no crop, resize, rotation or generated content"
+            }
+          ]
+        }
+      ],
+      "source_capture_timeline_duration_ms": 24401,
+      "time_basis": "decoded_video_presentation_timestamps"
+    }
+  ],
+  "model_calls_before_publication": 0,
+  "models": {
+    "sam": "sam-3.1",
+    "spark": "muse-spark-1.3"
+  },
+  "recordings": 3,
+  "schema_version": "proofloop_new_source_preregistration_v1",
+  "selection_history": [
+    "First named Bridge scripted recording and Berkeley UR5 cloth episode were acquired and sampled before any model call.",
+    "Fixed start/midpoint/end pair rule uses original capture times where published, otherwise decoded source PTS; each pair is at least1000ms apart.",
+    "Blind review found no strict PASS references in the initial6cases. All6are retained; three fixed-schedule brown receiving-cup cases from UR5episode4were added before inference to supply clear-target controls.",
+    "The cup contract concerns the visible brown receiving cup, not blue-cup nesting or action success."
+  ],
+  "source_families": 2,
+  "study_id": "new-source-pilot-20261029",
+  "transport_profile": {
+    "automatic_retries": 0,
+    "hard_dollar_limit": false,
+    "max_output_tokens_per_spark_request": 4096,
+    "persistent_local_attempt_journal": true,
+    "spark_reasoning_effort": "low",
+    "version": "bounded_spark_low_reasoning_v1"
+  }
+}

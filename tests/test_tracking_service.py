@@ -14,6 +14,7 @@ from proofloop import tracking_service as service
 from proofloop.core import ValidationError
 from proofloop.inference_journal import AttemptJournal
 from proofloop.runtime_control import RuntimeControl, RuntimeUnavailable
+from proofloop.meta import MetaClient, SPARK_MODEL
 from tests.test_guided import jpeg_header
 from tests.test_visibility_guard import contract
 from tests import test_contact_experiment as authored
@@ -182,7 +183,7 @@ class TrackingServiceTests(unittest.TestCase):
         self.runner.start(); self.assertTrue(self.runner.capabilities()["worker_available"])
         self.runner.close(); self.assertFalse(self.runner.capabilities()["worker_available"])
 
-    def model_path(self, *, fail_video=False):
+    def model_path(self, *, fail_video=False, spark_outcome="ok", spark_tokens=None):
         adapters = []
         def factory(**kwargs):
             adapter = Mock(ledger=[]); adapter.config = kwargs; adapters.append(adapter); return adapter
@@ -203,13 +204,28 @@ class TrackingServiceTests(unittest.TestCase):
         def prepare_guard(file,box,contract_value,output,**kwargs):
             return {"file":file,"box":box,"contract":contract_value,**kwargs}
         def challenge(adapter,prepared):
-            adapter.ledger.append({"authored_attempt":True})
+            ledger = {"endpoint":"responses","model":SPARK_MODEL,
+                "status":"ok" if spark_outcome == "completed_unreported" else
+                    "invalid_response" if spark_outcome == "incomplete_response" else spark_outcome}
+            if spark_outcome == "ok":
+                ledger["usage"] = {"input_tokens":100,"output_tokens":100}
+            if spark_tokens is not None:
+                ledger["usage"] = deepcopy(spark_tokens)
+            adapter.ledger.append(ledger)
             frames = [{"file":str(self.root/f"frame-{i}.jpg"),"sha256":"b"*64} for i in range(3)]
             index = prepared["frame_index"]
             frames[index] = {"file":str(prepared["file"]),"sha256":hashlib.sha256(prepared["file"].read_bytes()).hexdigest()}
             entry = {"contract":contract(),"prepared":{"source":source},"frames":frames}
             report = authored.ContactExperimentTests.checked(self,entry,index)
-            report["usage"] = {"estimated_usd":.001,"spark_requests_with_unreported_token_usage":0}
+            if spark_outcome != "ok":
+                client = MetaClient("authored-offline-key",max_requests=1,retries=0)
+                client.ledger = adapter.ledger
+                report["usage"] = client.usage_summary()
+                if spark_outcome != "completed_unreported":
+                    report.update(status="unscored",evaluation=None,response=None,
+                        error={"code":spark_outcome,"http_status":None,"response":None})
+            else:
+                report["usage"] = {"estimated_usd":.001,"spark_requests_with_unreported_token_usage":0}
             return report
         warning_rows = [{"frame_index":row["frame_index"],"timestamp_ms":row["timestamp_ms"],"source_sha256":source["sha256"],
             "target_track_id":1,"warning":"near_gripper_proposal" if row["frame_index"] == 1 else "no_near_proposal_observed",
@@ -239,6 +255,45 @@ class TrackingServiceTests(unittest.TestCase):
             self.assertEqual(job["job_id"],adapter.config["operation_id"])
             self.assertEqual((1,0),(adapter.config["max_requests"],adapter.config["retries"]))
         self.assertFalse(job["result"]["changes_live_placement_acceptance"])
+        self.assertFalse(job["result"]["unreported_charge_possible"])
+
+    def test_lost_spark_responses_preserve_charge_uncertainty_without_retry(self):
+        job,adapters = self.model_path(spark_outcome="network_error")
+        self.assertEqual("succeeded",job["state"])
+        self.assertEqual(5,len(adapters))
+        self.assertEqual(5,job["result"]["request_attempts"])
+        self.assertEqual(.02,job["result"]["estimated_usd"])  # Known SAM subtotal only.
+        self.assertTrue(job["result"]["unreported_charge_possible"])
+        self.assertEqual(["unscored"]*3,[row["status"] for row in job["result"]["frames"]])
+        for adapter in adapters:
+            self.assertEqual((1,0),(adapter.config["max_requests"],adapter.config["retries"]))
+
+    def test_malformed_spark_response_preserves_unreported_charge(self):
+        job,adapters = self.model_path(spark_outcome="invalid_json")
+        self.assertEqual("succeeded",job["state"])
+        self.assertTrue(job["result"]["unreported_charge_possible"])
+        self.assertEqual(5,len(adapters))
+
+    def test_incomplete_spark_response_without_usage_is_not_assumed_free(self):
+        job,_ = self.model_path(spark_outcome="incomplete_response")
+        self.assertTrue(job["result"]["unreported_charge_possible"])
+        self.assertEqual(.02,job["result"]["estimated_usd"])
+
+    def test_completed_spark_response_missing_usage_keeps_uncertainty(self):
+        job,_ = self.model_path(spark_outcome="completed_unreported")
+        self.assertTrue(job["result"]["unreported_charge_possible"])
+        self.assertEqual(.02,job["result"]["estimated_usd"])
+
+    def test_reported_zero_tokens_are_distinct_from_absent_usage(self):
+        job,_ = self.model_path(spark_outcome="incomplete_response",
+            spark_tokens={"input_tokens":0,"output_tokens":0})
+        self.assertFalse(job["result"]["unreported_charge_possible"])
+        self.assertEqual(.02,job["result"]["estimated_usd"])
+
+    def test_malformed_spark_token_usage_is_uncertain(self):
+        job,_ = self.model_path(spark_outcome="completed_unreported",
+            spark_tokens={"input_tokens":True,"output_tokens":-1})
+        self.assertTrue(job["result"]["unreported_charge_possible"])
 
     def test_incomplete_video_keeps_all_frames_unscored_without_followup_model_calls(self):
         job,adapters = self.model_path(fail_video=True)
