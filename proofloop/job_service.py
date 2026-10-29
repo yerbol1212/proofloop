@@ -22,7 +22,7 @@ from typing import Any, Callable
 
 from .core import ValidationError
 from .jobs import (JobConflict, JobError, JobIntegrityError, JobLeaseError,
-                   JobStore, JobValidationError, MAX_LEASE_MS)
+                   JobStore, JobValidationError, MAX_LEASE_MS, MAX_PENDING_JOBS, MAX_RETAINED_PAYLOAD_BYTES)
 from .meta import MetaAPIError
 from .runtime_control import RuntimeUnavailable
 from .verification_policy import (POLICY_VERSION, describe_capabilities,
@@ -218,12 +218,9 @@ class InspectionJobService:
         with self._lifecycle_lock:
             if self._stop.is_set():
                 raise JobConflict("The inspection worker is closed")
-        lookup = getattr(self.store, "lookup_submission", None)
-        if lookup is not None:
-            with self._journal_lock:
-                previous = lookup("inspection", request, idempotency_key=idempotency_key, binding=request["binding"])
-            if previous is not None:
-                return self.get(previous["id"])
+        previous = self.lookup_submission(request, idempotency_key=idempotency_key)
+        if previous is not None:
+            return previous
         # Historical idempotent retrieval remains available when allowance is
         # exhausted. Only genuinely new paid work needs operational readiness.
         if self.runtime_control is not None:
@@ -245,6 +242,16 @@ class InspectionJobService:
         self._wake.set()
         return self.get(job["id"])
 
+    def lookup_submission(self, payload: dict[str, Any], *, idempotency_key: str) -> dict[str, Any] | None:
+        """Read an exact original operation without admission or current capture use."""
+        request = self._payload(payload)
+        lookup = getattr(self.store, "lookup_submission", None)
+        if lookup is None:
+            return None
+        with self._journal_lock:
+            job = lookup("inspection", request, idempotency_key=idempotency_key, binding=request["binding"])
+        return self.get(job["id"]) if job is not None else None
+
     def lookup_intent(self, payload: dict[str, Any]) -> dict[str, Any] | None:
         if (type(payload) is not dict or set(payload) != {"schema_version", "idempotency_key", "binding", "submission_fingerprint"}
                 or type(payload["schema_version"]) is not int or payload["schema_version"] != 2):
@@ -259,6 +266,9 @@ class InspectionJobService:
             "asynchronous": True, "automatic_reexecution": False,
             "idempotency": "exact binding and inspection payload",
             "cancellation": "queued_before_dispatch_only", "lease_ms": self._lease_ms,
+            "max_pending_jobs": MAX_PENDING_JOBS,
+            "max_retained_payload_bytes": MAX_RETAINED_PAYLOAD_BYTES,
+            "retention_policy": "reject_new_work_at_capacity_preserve_historical_recovery",
             "states": ["queued", "running", "succeeded", "failed", "interrupted", "cancelled"],
             "stored_result_scope": "historical_completion_snapshot",
             "worker_available": (not self._stop.is_set() and self._worker_error is None

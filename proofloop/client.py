@@ -45,7 +45,8 @@ class ProofLoopClient:
             if accept_not_ready and response.status == 503 and result.get("ready") is False and result.get("schema_version") == "1.0":
                 return result
             if not 200 <= response.status < 300:
-                code = result.get("error", {}).get("code")
+                error = result.get("error")
+                code = error.get("code") if type(error) is dict else None
                 safe = code if type(code) is str and re.fullmatch(r"[a-z][a-z0-9_]{0,63}", code) else "local_request_rejected"
                 raise ClientError(safe)
             return result

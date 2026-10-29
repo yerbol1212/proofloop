@@ -21,7 +21,7 @@ from typing import Any
 from urllib.parse import parse_qs, unquote, urlsplit
 
 from .core import ValidationError
-from .jobs import JobConflict, JobIntegrityError, JobNotFound, JobValidationError
+from .jobs import JobCapacityError, JobConflict, JobIntegrityError, JobNotFound, JobValidationError
 from .verification_policy import describe_capabilities
 from .runtime_control import RuntimeUnavailable
 from .tracking_service import TrackingConflict, TrackingNotFound
@@ -427,12 +427,20 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                                 or not secrets.compare_digest(fingerprints[0], self._body_sha256)):
                             raise _RequestError(400, "invalid_fingerprint", "The submission receipt does not match the request bytes.")
                         options["submission_fingerprint"] = fingerprints[0]
-                    result = job_service.submit_inspection({key: payload[key] for key in ("binding", "inspection")},
-                                                          idempotency_key=payload["idempotency_key"], **options)
+                    request = {key: payload[key] for key in ("binding", "inspection")}
+                    if not inference_enabled:
+                        lookup = getattr(job_service, "lookup_submission", None)
+                        result = lookup(request, idempotency_key=payload["idempotency_key"]) if lookup is not None else None
+                        if result is None:
+                            raise _RequestError(503, "inference_disabled", "Live model dispatch is disabled for this local service.")
+                    else:
+                        result = job_service.submit_inspection(request, idempotency_key=payload["idempotency_key"], **options)
                     self._json(202, {"job": result})
                 return
             if path == "/api/inspect" and job_service is not None:
                 raise _RequestError(409, "durable_inspection_required", "Refresh ProofLoop to submit through the durable inspection service.")
+            if path == "/api/inspect" and not inference_enabled:
+                raise _RequestError(503, "inference_disabled", "Live model dispatch is disabled for this local service.")
             methods = {"/api/repair": "begin_repair", "/api/new": "new_inspection", "/api/inspect": "inspect_pair",
                        "/api/task/draft": "draft_task", "/api/task/activate": "activate_task",
                        "/api/workflow/check": "check_workflow", "/api/workflow/continue": "continue_workflow"}
@@ -440,6 +448,8 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 raise _RequestError(404, "not_found", "This API endpoint is unavailable.")
             limit = MAX_JSON_BYTES if path == "/api/inspect" else MAX_TASK_BYTES if path.startswith("/api/task/") else MAX_CONTROL_BYTES
             payload = self._read_json(limit)
+            if path == "/api/task/draft" and not inference_enabled and payload.get("draft_source", "spark") != "authored_coffee_preset":
+                raise _RequestError(503, "inference_disabled", "Live model dispatch is disabled for this local service.")
             if path in ("/api/repair", "/api/new") and payload:
                 raise _RequestError(400, "invalid_request", "This action does not accept extra fields.")
             method = getattr(engine, methods[path])
@@ -459,6 +469,8 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 self._error(409, "tracking_conflict", "This tracking request conflicts with its stored operation.")
             except JobNotFound:
                 self._error(404, "not_found", "This inspection job is unavailable.")
+            except JobCapacityError:
+                self._error(429, "inspection_capacity_exhausted", "Pending inspection work or retained capture storage is full. Existing jobs remain readable.")
             except JobConflict:
                 self._error(409, "job_conflict", "This request conflicts with an existing job or its current state.")
             except JobValidationError:

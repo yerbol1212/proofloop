@@ -281,6 +281,13 @@ export function TaskEditor({
             unknown. Keep every target fully visible in both views. Guided
             uploads require upright JPEGs up to 1280 pixels.
           </span>
+          <span className="field-hint">
+            Evidence is task-specific: concept prompts worked in the owned
+            fork/spoon demo, but matched 0/8 labels in the historical coffee
+            pilot (all UNKNOWN). On four fresh coffee pairs, guided v2 matched
+            3/4 labels versus Spark alone’s 4/4. These small samples do not
+            establish a universally better mode.
+          </span>
         </label>
         <div className="confirmations">
           <label>

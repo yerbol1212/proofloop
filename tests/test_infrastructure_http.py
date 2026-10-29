@@ -7,7 +7,7 @@ import tempfile
 import threading
 import time
 import unittest
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from proofloop.server import create_server
 from proofloop.inference_journal import AttemptJournal
@@ -36,6 +36,7 @@ class InfrastructureHttpTests(unittest.TestCase):
         self.root = Path(self.temp.name)
         web = self.root / "web"; web.mkdir()
         (web / "index.html").write_text("<html>Infrastructure fixture</html>")
+        self.web = web
         self.control = RuntimeControl(AttemptJournal(self.root / "attempts.sqlite3"), self.root / "runtime", minimum_free_bytes=0)
         self.control.bind_worker("inspection", lambda: {"worker_available": True})
         def cached(payload, identifier, guard):
@@ -46,12 +47,16 @@ class InfrastructureHttpTests(unittest.TestCase):
         self.control.bind_worker("shadow_tracking", self.tracking.readiness)
         self.tracking.start()
         self.jobs = RecoverableService()
-        self.server = create_server(FakeEngine(self.root / "private.jpg"), web_root=web, job_service=self.jobs,
+        self.start_server(inference_enabled=False)
+        self.addCleanup(self.stop)
+
+    def start_server(self, *, inference_enabled):
+        self.http_engine = FakeEngine(self.root / "private.jpg")
+        self.server = create_server(self.http_engine, web_root=self.web, job_service=self.jobs,
             runtime_control=self.control, attempt_journal=self.control.journal, tracking_service=self.tracking,
-            inference_enabled=False)
+            inference_enabled=inference_enabled)
         self.thread = threading.Thread(target=self.server.serve_forever, kwargs={"poll_interval": .01}, daemon=True)
         self.thread.start()
-        self.addCleanup(self.stop)
         self.host = "127.0.0.1:" + str(self.server.server_address[1])
         self.origin = "http://" + self.host
         self.token = self.request("GET", "/api/state")[1]["csrf_token"]
@@ -110,7 +115,40 @@ class InfrastructureHttpTests(unittest.TestCase):
                         {"media_type": "video/mp4", "data": base64.b64encode(b"invalid").decode()}):
             self.assertEqual(400, self.request("POST", "/api/v1/tracking/assets", payload, self.headers())[0])
 
+    def test_offline_inspection_rejects_new_work_without_submitting_or_consuming_capture(self):
+        before = self.request("GET", "/api/state")[1]["capture_token"]
+        body = {"idempotency_key": "new-offline", "binding": BINDING, "inspection": {"images": []}}
+        status, response = self.request("POST", "/api/v1/inspections", body, self.headers())
+        self.assertEqual(503, status)
+        self.assertEqual("inference_disabled", response["error"]["code"])
+        self.assertEqual([], self.jobs.calls)
+        self.assertEqual([], self.http_engine.calls)
+        self.assertEqual(before, self.request("GET", "/api/state")[1]["capture_token"])
+
+    def test_offline_server_rejects_spark_compilation_before_engine_mutation(self):
+        status, response = self.request("POST", "/api/task/draft", {"draft_source": "spark"}, self.headers())
+        self.assertEqual(503, status)
+        self.assertEqual("inference_disabled", response["error"]["code"])
+        self.assertEqual([], self.http_engine.calls)
+
+    def test_offline_authored_draft_source_remains_available(self):
+        body = {"draft_source": "authored_coffee_preset"}
+        self.assertEqual(200, self.request("POST", "/api/task/draft", body, self.headers())[0])
+        self.assertEqual([("task_draft", body)], self.http_engine.calls)
+
+    def test_offline_exact_original_submission_remains_readable_without_resubmitting(self):
+        self.jobs.lookup_submission = Mock(return_value=PUBLIC_JOB)
+        body = {"idempotency_key": "owned-original", "binding": BINDING, "inspection": {"images": []}}
+        status, response = self.request("POST", "/api/v1/inspections", body, self.headers())
+        self.assertEqual(202, status)
+        self.assertEqual(PUBLIC_JOB["id"], response["job"]["id"])
+        self.jobs.lookup_submission.assert_called_once_with({"binding": BINDING, "inspection": {"images": []}},
+                                                           idempotency_key="owned-original")
+        self.assertEqual([], self.jobs.calls)
+
     def test_recovery_body_receipt_is_checked_before_submission_and_lookup_has_no_inspection(self):
+        self.server.shutdown(); self.server.server_close(); self.thread.join(2)
+        self.start_server(inference_enabled=True)
         body = json.dumps({"idempotency_key": "opaque", "binding": BINDING, "inspection": {"images": []}}).encode()
         status, _ = self.request("POST", "/api/v1/inspections", body,
             self.headers(**{"X-ProofLoop-Submission-Fingerprint": "0" * 64}))

@@ -63,3 +63,9 @@ Known boundaries:
 - There is no remote multi-user authentication, robot executor, distributed scheduler or glasses integration.
 
 Primary-source rationale and the next independently evaluated tracking experiment are in [the infrastructure review](INFRASTRUCTURE-REVIEW-20261028.md).
+
+## Review-driven capacity and offline admission
+
+New inspection admission is bounded to 32 queued/running jobs and 256 MiB of retained UTF-8 payload bytes across instances sharing the SQLite store. The transaction resolves an exact existing operation before testing capacity. Retained bytes include terminal and cancelled jobs; the service rejects new work with `inspection_capacity_exhausted` / HTTP 429 rather than silently deleting historical inputs. This is a private-payload ceiling, not a whole-directory disk quota. Existing historical reads and exact recovery remain available at capacity.
+
+Offline HTTP admission rejects genuinely new inspections, legacy direct inspections and Spark drafting before engine capture use or new job storage. It still allows lookup of an exact already admitted job and the no-inference authored preset. This corrects the earlier behavior where an offline inspection could be accepted and consume capture freshness before its disabled provider failed. The offline boundary is explicit admission control, separate from provider connectivity or model quality.

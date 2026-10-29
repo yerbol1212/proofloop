@@ -40,7 +40,8 @@ def main():
             return subprocess.run(command, cwd=root, env=environment, check=True, capture_output=True, text=True).stdout
         run(str(python), "-m", "pip", "install", "--no-index", "--no-deps", str(wheel))
         doctor = json.loads(run(str(executable), "doctor", "--data-dir", str(root / "data")))
-        assert doctor["frontend_available"] and doctor["offline_replay_available"]
+        assert doctor["ready"] and doctor["profile"] == "workbench"
+        assert doctor["frontend_available"] and doctor["offline_replay_valid"]
         assert doctor["provider_requests"] == 0 and not doctor["environment_key_configured"]
         replay = json.loads(run(str(executable), "replay"))
         assert replay["provider_requests"] == 0
@@ -65,6 +66,21 @@ def main():
                     raise AssertionError("Installed server did not become available")
                 with opener.open("http://127.0.0.1:" + str(port) + "/", timeout=2) as response:
                     assert b"<html" in response.read().lower()
+                # This is the public-clone path: no private Video lab recordings
+                # or credentials are available in this isolated installation.
+                with opener.open("http://127.0.0.1:" + str(port) + "/api/lab", timeout=2) as response:
+                    assert json.load(response)["runs"] == []
+                with opener.open("http://127.0.0.1:" + str(port) + "/api/v1/replay", timeout=2) as response:
+                    inspector = json.load(response)["inspector"]
+                assert not inspector["video_pixels_included"] and inspector["provider_requests"] == 0
+                clips = {clip["clip_id"]: clip for clip in inspector["clips"]}
+                assert len(clips) == 4 and sum(len(c["checkpoints"]) for c in clips.values()) == 32
+                checkpoints = {(name, row["frame_index"]): row for name, clip in clips.items() for row in clip["checkpoints"]}
+                assert checkpoints["remote_new", 59]["methods"]["v2_veto_current"]["status"] == "unknown"
+                false_warning = checkpoints["screwdriver_new", 5]
+                assert false_warning["methods"]["v2_current"]["status"] == "supported"
+                assert false_warning["methods"]["v2_veto_current"]["status"] == "unknown"
+                assert checkpoints["remote_3", 5]["scoring_status"] == "unscored"
                 lines = run(str(executable), "track-demo", "--port", str(port), "--wait-seconds", "10").splitlines()
                 job = json.loads(lines[-1])
                 assert job["state"] == "succeeded" and job["result"]["request_attempts"] == 0
@@ -79,7 +95,8 @@ def main():
                 except subprocess.TimeoutExpired:
                     process.kill(); process.wait(timeout=5)
         print(json.dumps({"installed_outside_checkout": True, "packaged_frontend_served": True,
-            "offline_replay_passed": True, "async_cached_tracking_passed": True, "provider_requests": 0}, sort_keys=True))
+            "offline_replay_passed": True, "public_inspector_32_checkpoints_passed": True,
+            "async_cached_tracking_passed": True, "provider_requests": 0}, sort_keys=True))
 
 
 if __name__ == "__main__":

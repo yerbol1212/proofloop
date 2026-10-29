@@ -8,7 +8,7 @@ import threading
 import unittest
 
 from proofloop.core import ValidationError
-from proofloop.jobs import JobConflict, JobNotFound, JobValidationError
+from proofloop.jobs import JobCapacityError, JobConflict, JobNotFound, JobValidationError
 from proofloop.server import create_server, MAX_CONTROL_BYTES, MAX_JSON_BYTES
 from proofloop.verification_policy import describe_capabilities
 from tests.test_server import FakeEngine
@@ -129,6 +129,13 @@ class ServerJobTests(unittest.TestCase):
         serialized = json.dumps(body)
         for secret in ("private-idempotency-key", "private-capture-token", "private-image-1", "csrf_token"):
             self.assertNotIn(secret, serialized)
+
+    def test_new_inspection_capacity_rejection_is_a_redacted_http_limit(self):
+        self.service.fail = JobCapacityError("private diagnostic must not escape")
+        status, _, body = self.request("POST", "/api/v1/inspections", self.body(), self.mutation_headers())
+        self.assertEqual(429, status)
+        self.assertEqual("inspection_capacity_exhausted", body["error"]["code"])
+        self.assertNotIn("private diagnostic", json.dumps(body))
 
     def test_poll_and_event_cursor_are_read_only_and_preserve_safe_public_results(self):
         status, headers, body = self.request("GET", "/api/v1/jobs/" + JOB_ID)

@@ -6,6 +6,7 @@ import { AcquisitionPanel } from './AcquisitionPanel'
 import { EvaluationPanel } from './EvaluationPanel'
 import type { EvaluationDTO } from './EvaluationPanel'
 import { ResearchLab } from './ResearchLab'
+import { ReplayInspector } from './ReplayInspector'
 
 interface FollowupStep {
   case_id: string
@@ -214,7 +215,7 @@ function RecordedFollowups({
   )
 }
 
-export function VideoLab() {
+function RecordedVideoLab() {
   const [runs, setRuns] = useState<LabRun[]>([])
   const [selectedRun, setSelectedRun] = useState('')
   const [selectedCase, setSelectedCase] = useState('')
@@ -289,10 +290,11 @@ export function VideoLab() {
       ) : null}
       {!run ? (
         <section className="panel empty-task">
-          <h2>No reviewed runs are available.</h2>
+          <h2>No private recorded-video runs are available.</h2>
           <p>
-            Run a licensed recorded-video comparison and review its public
-            summary to make it available here.
+            The public tracking replay above remains available. Run a licensed
+            recorded-video comparison and review its summary to add a private
+            run here.
           </p>
         </section>
       ) : (
@@ -550,6 +552,15 @@ export function VideoLab() {
           ) : null}
         </>
       )}
+    </div>
+  )
+}
+
+export function VideoLab() {
+  return (
+    <div className="video-lab">
+      <ReplayInspector />
+      <RecordedVideoLab />
     </div>
   )
 }

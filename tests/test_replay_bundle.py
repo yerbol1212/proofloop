@@ -138,6 +138,82 @@ class PortableReplayTests(unittest.TestCase):
         for forbidden in (b"/Users/", b"artifacts/local/", b"inputs/local/", b"Bearer ", b"data:image", b"data:video", b"encoded_mask"):
             self.assertNotIn(forbidden, data)
 
+    def test_public_inspector_projects_all_recomputed_checkpoint_decisions(self):
+        report = replay.replay()
+        view = report["inspector"]
+        self.assertEqual("tracking_replay_inspector_v1", view["schema_version"])
+        self.assertEqual(4, len(view["clips"]))
+        self.assertEqual(32, sum(len(clip["checkpoints"]) for clip in view["clips"]))
+        self.assertEqual(0, view["provider_requests"])
+        self.assertFalse(view["video_pixels_included"])
+        self.assertFalse(view["physical_action_authorized"])
+        for clip in view["clips"]:
+            cohort = report["cohorts"][clip["cohort"]]
+            for name in replay.METHODS:
+                scored = {row["frame_index"]: row for row in cohort["methods"][name]["frames"]
+                          if row["clip_id"] == clip["clip_id"]}
+                for checkpoint in clip["checkpoints"]:
+                    self.assertEqual(scored[checkpoint["frame_index"]]["status"], checkpoint["methods"][name]["status"])
+
+    def test_public_inspector_preserves_clear_false_warning_and_retention_cost(self):
+        view = replay.replay()["inspector"]
+        cohort = next(c for c in view["cohorts"] if c["id"] == "exposed_episode_2")
+        self.assertEqual(4, cohort["methods"]["v2_current"]["positives_retained"])
+        self.assertEqual(3, cohort["methods"]["v2_veto_current"]["positives_retained"])
+        clip = next(c for c in view["clips"] if c["clip_id"] == "screwdriver_new")
+        frame = next(f for f in clip["checkpoints"] if f["frame_index"] == 5)
+        self.assertEqual("supported", frame["reference"]["expected"])
+        self.assertEqual("supported", frame["methods"]["v2_current"]["status"])
+        self.assertEqual("unknown", frame["methods"]["v2_veto_current"]["status"])
+        near = next(c for c in frame["warning"]["comparisons"] if c["near"])
+        self.assertEqual(3, near["distance_px"])
+        self.assertAlmostEqual(.5444876551628113, near["reported_confidence"])
+
+    def test_public_inspector_preserves_contact_unknown_and_network_unscored(self):
+        clips = {c["clip_id"]: c for c in replay.replay()["inspector"]["clips"]}
+        contact = next(f for f in clips["remote_new"]["checkpoints"] if f["frame_index"] == 59)
+        self.assertTrue(contact["warning"]["veto"])
+        self.assertEqual("unknown", contact["methods"]["v2_veto_current"]["status"])
+        gap = next(f for f in clips["remote_3"]["checkpoints"] if f["frame_index"] == 5)
+        self.assertEqual("unscored", gap["scoring_status"])
+        for method in gap["methods"].values():
+            self.assertEqual("unscored", method["status"])
+            self.assertIn(method["policy_status"], ("supported", "unknown"))
+
+    def test_reference_annotations_cannot_supply_inspector_decisions(self):
+        with patch.object(replay, "_inspector_clip", wraps=replay._inspector_clip) as project:
+            replay.replay()
+        clip, policies = project.call_args_list[0].args
+        before = replay._inspector_clip(clip, policies)
+        changed = deepcopy(clip)
+        for row in changed["references"]:
+            row["expected"] = "unknown" if row["expected"] == "supported" else "supported"
+            row["condition"] = "scoring_annotation_only"
+        after = replay._inspector_clip(changed, policies)
+        self.assertNotEqual(before["checkpoints"][0]["reference"], after["checkpoints"][0]["reference"])
+        for old, new in zip(before["checkpoints"], after["checkpoints"]):
+            self.assertEqual(old["methods"], new["methods"])
+            self.assertEqual(old["warning"], new["warning"])
+
+    def test_public_inspector_only_exposes_closed_receipts_and_current_bound_proofs(self):
+        view = replay.replay()["inspector"]
+        for clip in view["clips"]:
+            for frame in clip["checkpoints"]:
+                self.assertEqual({"frame_index", "timestamp_ms", "frame_sha256", "reference",
+                                  "scoring_status", "methods", "warning"}, set(frame))
+                for name in ("v2_current", "v2_veto_current"):
+                    method = frame["methods"][name]
+                    if method["status"] != "supported":
+                        continue
+                    self.assertTrue(method["confirmation_ends_at_current"])
+                    proofs = method["confirmation_evidence"]
+                    self.assertEqual(frame["frame_index"], proofs[-1]["frame_index"])
+                    self.assertEqual(frame["frame_sha256"], proofs[-1]["frame_sha256"])
+                    self.assertGreaterEqual(proofs[-1]["timestamp_ms"] - proofs[0]["timestamp_ms"], 500)
+        data = json.dumps(view).encode()
+        for forbidden in (b"/Users/", b"artifacts/local/", b"inputs/local/", b"Bearer ", b"data:image", b"encoded_mask"):
+            self.assertNotIn(forbidden, data)
+
 
 if __name__ == "__main__":
     unittest.main()

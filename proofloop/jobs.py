@@ -21,6 +21,8 @@ from typing import Any
 
 
 MAX_PAYLOAD_BYTES = 16 * 1024 * 1024
+MAX_PENDING_JOBS = 32
+MAX_RETAINED_PAYLOAD_BYTES = 256 * 1024 * 1024
 MAX_LEASE_MS = 300_000
 STATES = frozenset({"queued", "running", "succeeded", "failed", "interrupted", "cancelled"})
 TERMINAL_STATES = STATES - {"queued", "running"}
@@ -43,6 +45,10 @@ class JobValidationError(JobError):
 
 class JobConflict(JobError):
     pass
+
+
+class JobCapacityError(JobConflict):
+    """New work exceeds the bounded private queue; historical reads still work."""
 
 
 class JobNotFound(JobError):
@@ -332,6 +338,13 @@ class JobStore:
                     raise JobConflict("Idempotency key was already used for different input")
                 result = self._public(old)
             else:
+                # The same transaction checks every process sharing this
+                # journal. Count all retained payloads, including terminal
+                # jobs: historical recovery must not silently delete inputs.
+                pending = connection.execute("SELECT count(*) FROM jobs WHERE state IN ('queued','running')").fetchone()[0]
+                retained = connection.execute("SELECT coalesce(sum(length(CAST(payload_json AS BLOB))),0) FROM jobs").fetchone()[0]
+                if pending >= MAX_PENDING_JOBS or retained + len(encoded.encode("utf-8")) > MAX_RETAINED_PAYLOAD_BYTES:
+                    raise JobCapacityError("The bounded inspection queue or retained payload allowance is exhausted")
                 job_id = secrets.token_hex(16)
                 connection.execute("""INSERT INTO jobs
                     (id,kind,key_hash,payload_json,payload_sha256,binding_json,state,created_ms,updated_ms,event_head)

@@ -1,0 +1,129 @@
+{
+  "added_meta_provider_requests": 0,
+  "browser_qa": {
+    "browser_plugin": "absent",
+    "checks": {
+      "api_error_and_explicit_retry": true,
+      "clip_and_checkpoint_selection": true,
+      "contact_has_no_unique_warning_credit": true,
+      "empirical_task_mode_note_visible": true,
+      "false_warning_and_proof": true,
+      "live_task_binding_unchanged": true,
+      "malformed_projection_does_not_render_partial_scores": true,
+      "mobile_selection_without_page_overflow": true,
+      "no_framework_overlay_or_page_errors": true,
+      "no_provider_requests": true,
+      "only_local_GET_requests": true,
+      "public_clone_without_key_or_private_lab": true,
+      "source_binding_visible": true,
+      "unmount_during_fetch_and_return": true,
+      "unscored_denominator_disclosed": true
+    },
+    "desktop_viewport": [
+      1440,
+      1000
+    ],
+    "empty_private_data": true,
+    "expected_console_error": "deliberately injected HTTP503",
+    "fallback": "regular Playwright using installed Google Chrome",
+    "meta_key_absent": true,
+    "meta_provider_requests": 0,
+    "mobile_viewport": [
+      390,
+      844
+    ],
+    "unexpected_page_errors": 0
+  },
+  "changes_live_placement_acceptance": false,
+  "coderabbit": {
+    "first_attempt_failure": "Connection failed: WebSocket closed",
+    "issues": 0,
+    "reviewed_files": 24,
+    "scope": "uncommitted milestone changes; final wording-only clarification followed",
+    "status": "completed_on_retry"
+  },
+  "confirmed_defects_fixed": [
+    {
+      "fix": "key-free public policy replay inspector with 4 recordings and 32 authored checkpoints",
+      "id": "empty_public_lab"
+    },
+    {
+      "fix": "default workbench profile validates real replay, frontend and writable data; explicit core-only profile",
+      "id": "misleading_doctor_success"
+    },
+    {
+      "fix": "atomic cross-instance 32-pending and 256-MiB retained UTF-8 payload limits with original idempotence resolved first",
+      "id": "unbounded_inspection_payload_queue"
+    },
+    {
+      "fix": "reject new inspections and Spark compilation before engine/capture mutation; exact original recovery and authored preset remain available",
+      "id": "offline_admission_too_late"
+    },
+    {
+      "fix": "malformed error envelopes produce fixed redacted ClientError",
+      "id": "malformed_sdk_error"
+    },
+    {
+      "fix": "print opaque stable idempotency key before submission",
+      "id": "cached_cli_lost_acceptance_reference"
+    }
+  ],
+  "date": "2026-10-29",
+  "evaluation_role": "review_driven_software_fixes_and_cached_policy_inspector_not_new_model_accuracy",
+  "local_validation": {
+    "clean_wheel_outside_checkout": {
+      "actual_doctor_passed": true,
+      "asynchronous_cached_tracking_passed": true,
+      "bundled_frontend_served": true,
+      "public_inspector_32_checkpoints_passed": true,
+      "reserved_meta_provider_attempts": 0
+    },
+    "node_recovery_tests": {
+      "result": "passed",
+      "tests_run": 14
+    },
+    "python_3_12": {
+      "result": "passed",
+      "skipped": 0,
+      "tests_run": 1278
+    },
+    "python_3_9": {
+      "result": "passed",
+      "skipped": 2,
+      "tests_run": 1278
+    },
+    "strict_frontend_build": "passed"
+  },
+  "physical_action_authorized": false,
+  "preserved_evidence": {
+    "episode2_current_retained": [
+      4,
+      6
+    ],
+    "episode2_current_with_warning_retained": [
+      3,
+      6
+    ],
+    "episode3_positive_unscored": 1,
+    "episode3_retained": [
+      4,
+      7
+    ],
+    "frozen_perception_modules_unchanged": 20,
+    "historical_cohorts_and_thresholds_changed": false,
+    "portable_bundle_sha256": "6c140a3bacd7bab49839cdadf5c633f8be18762b039da7a76759ed7a2e379d0f"
+  },
+  "reviewers": [
+    "independent skeptical product and AI systems agent",
+    "independent adversarial runtime agent",
+    "CodeRabbit CLI 0.9.1"
+  ],
+  "schema_version": "proofloop_harsh_review_validation_v1",
+  "unresolved_review_findings": [
+    "No demonstrated perception superiority over Spark alone.",
+    "The current operator-followed physical correction loop remains unvalidated.",
+    "The replay uses exposed cached inputs, not unseen source-family evaluation or independent mask remeasurement.",
+    "Practical demand and unfamiliar-person usability remain unvalidated.",
+    "Retained-payload capacity rejects new work and preserves history; no automatic evidence purge is implemented."
+  ]
+}

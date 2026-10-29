@@ -134,11 +134,103 @@ def _validate_warnings(clip):
             raise ValidationError("Replay warning cannot create positive geometry evidence")
 
 
+def _inspector_clip(clip, method_policies):
+    """Project recomputed decisions; annotations are a separate scoring field.
+
+    No reference label, box or expected method report is passed to a policy.
+    Keep this public projection closed rather than forwarding cached input rows.
+    """
+    indexed = {name: {row["frame_index"]: row for row in policy["frames"]}
+               for name, policy in method_policies.items()}
+    warnings = {row["frame_index"]: row for row in clip["warning_measurements"]}
+    checkpoints = []
+    for reference in clip["references"]:
+        index = reference["frame_index"]
+        unscored = index in clip["unscored_indices"]
+        current = indexed["v2_current"][index]
+        warning = warnings[index]
+        decisions = {}
+        for name in METHODS:
+            row = indexed[name][index]
+            decisions[name] = {
+                "status": "unscored" if unscored else row["status"],
+                "policy_status": row["status"],
+                "gap_codes": list(row["gap_codes"]),
+                "confirmation_views": row["confirmation_views"],
+                "confirmation_ends_at_current": row.get("confirmation_ends_at_current"),
+                "confirmation_evidence": [
+                    {key: proof[key] for key in ("frame_index", "timestamp_ms", "frame_sha256")}
+                    for proof in row.get("confirmation_evidence", [])],
+                "reported_confidence": row.get("reported_confidence"),
+                "semantic_decision": row["semantic_decision"],
+            }
+        checkpoints.append({
+            "frame_index": index, "timestamp_ms": current["timestamp_ms"],
+            "frame_sha256": current["frame_sha256"],
+            "reference": {key: reference[key] for key in ("expected", "condition")},
+            "scoring_status": "unscored" if unscored else "scored",
+            "methods": decisions,
+            "warning": {"code": warning["warning"], "veto": warning["veto"],
+                "comparisons": [{
+                    "gripper_track_id": comparison["gripper_track_id"],
+                    "reported_confidence": comparison.get("gripper_confidence"),
+                    "distance_px": comparison["min_chebyshev_distance_capped4"],
+                    "distance_is_lower_bound": comparison["distance_is_lower_bound"],
+                    "available": comparison["mask_comparison_available"],
+                    "near": comparison["near_proposal"],
+                } for comparison in warning["comparisons"]]},
+        })
+    return {"clip_id": clip["clip_id"], "cohort": clip["cohort"],
+            "source_sha256": clip["source_sha256"],
+            "source_attribution": {key: clip["source_attribution"][key]
+                for key in ("dataset", "episode", "license", "license_url", "url", "revision")},
+            "checkpoints": checkpoints}
+
+
+def _inspector(cohorts, clips, bundle_sha256):
+    metric_fields = ("positives_retained", "positive_count", "positive_unscored",
+                     "unsupported_support_on_unknown", "unknown_count", "labels_total", "labels_unscored")
+    titles = {"exposed_episode_2": "Exposed recordings: episode 2",
+              "new_episode_3": "Additional recordings: episode 3"}
+    return {
+        "schema_version": "tracking_replay_inspector_v1", "mode": "cached_demo",
+        "scope": "cached_policy_and_score_replay_only", "provider_requests": 0,
+        "video_pixels_included": False, "changes_live_placement_acceptance": False,
+        "physical_action_authorized": False, "bundle_sha256": bundle_sha256,
+        "config": {"min_confidence": _CONFIG["min_confidence"],
+                   "min_stable_views": _CONFIG["min_stable_views"],
+                   "min_spacing_ms": _CONFIG["min_spacing_ms"],
+                   "warning_margin": _CONFIG["warning_margin"], "iou_threshold": .3},
+        "method_order": list(METHODS),
+        "method_labels": {"v2_greedy": "Consecutive confirmation",
+                          "v2_current": "Current-view confirmation",
+                          "v2_veto_current": "Current-view + gripper warning"},
+        "cohorts": [{"id": name, "title": titles[name],
+            "methods": {method: {key: cohort["methods"][method]["metrics"][key]
+                                  for key in metric_fields} for method in METHODS}}
+            for name, cohort in cohorts.items()],
+        "clips": clips,
+        "highlights": [
+            {"id": "contact", "title": "Contact candidate withheld", "clip_id": "remote_new", "frame_index": 59,
+             "note": "The near-gripper proposal adds uncertainty. It is not proof of physical contact."},
+            {"id": "false_warning", "title": "Clear target unnecessarily withheld", "clip_id": "screwdriver_new", "frame_index": 5,
+             "note": "The authored clear label is retained by current-view confirmation and lost after the warning."},
+            {"id": "unscored", "title": "Incomplete assessment stays unscored", "clip_id": "remote_3", "frame_index": 5,
+             "note": "The original network outcome has no completed assessment and stays in the positive denominator."},
+        ],
+        "limitations": list(LIMITS) + [
+            "Reference labels are authored scoring annotations and are never inputs to the tracking policies.",
+            "All four recordings were exposed during development; this inspector provides no independent validation.",
+            "A warning can reject a clear target. No-near-proposal does not establish separation or visibility.",
+        ],
+    }
+
+
 def replay(path: Path | str | None = None, *, expected_sha256: str | None = None):
     bundle = load_bundle(path, expected_sha256=expected_sha256)
     references = {name: [] for name in COHORTS}
     predictions = {name: {method: [] for method in METHODS} for name in COHORTS}
-    policies, seen = [], set()
+    policies, inspector_clips, seen = [], [], set()
     for clip in bundle["clips"]:
         if (type(clip) is not dict or set(clip) != {"cohort", "clip_id", "target_id", "source_attribution",
                 "source_sha256", "seed", "runtime", "warning_measurements", "references", "unscored_indices"}
@@ -160,6 +252,7 @@ def replay(path: Path | str | None = None, *, expected_sha256: str | None = None
         changed, warnings, _ = veto._runtime_veto(entry, clip["runtime"], assessed)
         warned = confirmation_policy.evaluate_tracking(changed, **arguments)
         warned = veto._intersect_policy(warned, current, changed, warnings)
+        inspector_clips.append(_inspector_clip(clip, dict(zip(METHODS, (greedy, current, warned)))))
         for method, policy in zip(METHODS, (greedy, current, warned)):
             indexed = {row["frame_index"]: row for row in policy["frames"]}
             for reference in clip["references"]:
@@ -186,6 +279,7 @@ def replay(path: Path | str | None = None, *, expected_sha256: str | None = None
             "mode": "cached_demo", "scope": bundle["scope"], "evaluation_role": bundle["evaluation_role"],
             "bundle_sha256": expected_sha256 or BUNDLE_SHA256, "canonical_result_sha256": bundle["canonical_result_sha256"],
             "provider_requests": 0, "estimated_incremental_usd": 0.0, "cohorts": cohorts, "policies": policies,
+            "inspector": _inspector(cohorts, inspector_clips, expected_sha256 or BUNDLE_SHA256),
             "physical_action_authorized": False, "changes_live_placement_acceptance": False, "limitations": list(LIMITS)}
 
 
