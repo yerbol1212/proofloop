@@ -1,0 +1,796 @@
+{
+  "changes_live_placement_acceptance": false,
+  "cohorts": {
+    "exposed_episode_2": {
+      "references": [
+        {
+          "clip_id": "screwdriver_new",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.415625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 0,
+          "target_box": [
+            0.484375,
+            0.4625,
+            0.6609375,
+            0.5
+          ]
+        },
+        {
+          "clip_id": "screwdriver_new",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.415625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 3,
+          "target_box": [
+            0.484375,
+            0.4625,
+            0.6609375,
+            0.5
+          ]
+        },
+        {
+          "clip_id": "screwdriver_new",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.415625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 5,
+          "target_box": [
+            0.484375,
+            0.4625,
+            0.6609375,
+            0.5
+          ]
+        },
+        {
+          "clip_id": "screwdriver_new",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.415625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 8,
+          "target_box": null
+        },
+        {
+          "clip_id": "screwdriver_new",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.415625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 13,
+          "target_box": null
+        },
+        {
+          "clip_id": "screwdriver_new",
+          "condition": "hidden_or_unidentifiable",
+          "distractor_boxes": [
+            [
+              0.415625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 17,
+          "target_box": null
+        },
+        {
+          "clip_id": "screwdriver_new",
+          "condition": "hidden_or_unidentifiable",
+          "distractor_boxes": [
+            [
+              0.415625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 30,
+          "target_box": null
+        },
+        {
+          "clip_id": "screwdriver_new",
+          "condition": "hidden_or_unidentifiable",
+          "distractor_boxes": [
+            [
+              0.415625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 37,
+          "target_box": null
+        },
+        {
+          "clip_id": "remote_new",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4078125,
+              0.5916666666666667,
+              0.6,
+              0.6125
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 0,
+          "target_box": [
+            0.4078125,
+            0.5041666666666667,
+            0.59375,
+            0.59375
+          ]
+        },
+        {
+          "clip_id": "remote_new",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4078125,
+              0.5916666666666667,
+              0.6,
+              0.6125
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 3,
+          "target_box": [
+            0.4078125,
+            0.5041666666666667,
+            0.59375,
+            0.59375
+          ]
+        },
+        {
+          "clip_id": "remote_new",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4078125,
+              0.5916666666666667,
+              0.6,
+              0.6125
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 5,
+          "target_box": [
+            0.4078125,
+            0.5041666666666667,
+            0.59375,
+            0.59375
+          ]
+        },
+        {
+          "clip_id": "remote_new",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4078125,
+              0.5916666666666667,
+              0.6,
+              0.6125
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 10,
+          "target_box": null
+        },
+        {
+          "clip_id": "remote_new",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4078125,
+              0.5916666666666667,
+              0.6,
+              0.6125
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 20,
+          "target_box": null
+        },
+        {
+          "clip_id": "remote_new",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4078125,
+              0.5916666666666667,
+              0.6,
+              0.6125
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 30,
+          "target_box": null
+        },
+        {
+          "clip_id": "remote_new",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4078125,
+              0.5916666666666667,
+              0.6,
+              0.6125
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 40,
+          "target_box": null
+        },
+        {
+          "clip_id": "remote_new",
+          "condition": "hidden_or_unidentifiable",
+          "distractor_boxes": [
+            [
+              0.4078125,
+              0.5916666666666667,
+              0.6,
+              0.6125
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 59,
+          "target_box": null
+        }
+      ],
+      "sources": [
+        {
+          "clip_id": "screwdriver_new",
+          "gripper_prepared_hash": "9b526eebb6ba38dd0979794eacc6b2d7dc27532f1f0d2a6c93dac7ac7190a40b",
+          "initial_gripper_seeds": [
+            {
+              "box": {
+                "x1": 0,
+                "x2": 122,
+                "y1": 159,
+                "y2": 258
+              },
+              "frame_index": 0,
+              "object_id": "left_gripper",
+              "track_id": 3
+            },
+            {
+              "box": {
+                "x1": 530,
+                "x2": 639,
+                "y1": 162,
+                "y2": 256
+              },
+              "frame_index": 0,
+              "object_id": "right_gripper",
+              "track_id": 4
+            }
+          ],
+          "source_attribution": {
+            "dataset": "lerobot/aloha_static_screw_driver",
+            "episode": 2,
+            "license": "mit",
+            "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md",
+            "remote_path": "videos/chunk-000/observation.images.cam_high/episode_000002.mp4",
+            "revision": "51448b4e7638c1773fd07c1e7febce8ebb104635",
+            "source_role": "new_source_episode_same_exposed_dataset_family",
+            "url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/resolve/51448b4e7638c1773fd07c1e7febce8ebb104635/videos/chunk-000/observation.images.cam_high/episode_000002.mp4"
+          },
+          "source_sha256": "059b7f9288936f320365f83747d2c579bf409b62981b8c56d925ee3c81f943b0"
+        },
+        {
+          "clip_id": "remote_new",
+          "gripper_prepared_hash": "df3865397800c5c35b13e1cfaf1c46ef98d5a8899ebe6e731421a2c0cbb823f1",
+          "initial_gripper_seeds": [
+            {
+              "box": {
+                "x1": 0,
+                "x2": 115,
+                "y1": 159,
+                "y2": 256
+              },
+              "frame_index": 0,
+              "object_id": "left_gripper",
+              "track_id": 3
+            },
+            {
+              "box": {
+                "x1": 527,
+                "x2": 639,
+                "y1": 164,
+                "y2": 261
+              },
+              "frame_index": 0,
+              "object_id": "right_gripper",
+              "track_id": 4
+            }
+          ],
+          "source_attribution": {
+            "dataset": "lerobot/aloha_static_battery",
+            "episode": 2,
+            "license": "apache-2.0",
+            "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md",
+            "remote_path": "videos/chunk-000/observation.images.cam_high/episode_000002.mp4",
+            "revision": "dd8bda435f5068a0298bd109005828768ecbfa12",
+            "source_role": "new_source_episode_same_exposed_dataset_family",
+            "url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/resolve/dd8bda435f5068a0298bd109005828768ecbfa12/videos/chunk-000/observation.images.cam_high/episode_000002.mp4"
+          },
+          "source_sha256": "b580e9168a7781a0bebb01d6aa7542619492939a958e600470080ffc2c0a4148"
+        }
+      ]
+    },
+    "new_episode_3": {
+      "references": [
+        {
+          "clip_id": "screwdriver_3",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4140625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 0,
+          "target_box": [
+            0.4890625,
+            0.4375,
+            0.665625,
+            0.4791666666666667
+          ]
+        },
+        {
+          "clip_id": "screwdriver_3",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4140625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 3,
+          "target_box": [
+            0.4890625,
+            0.4375,
+            0.665625,
+            0.4791666666666667
+          ]
+        },
+        {
+          "clip_id": "screwdriver_3",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4140625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 5,
+          "target_box": [
+            0.4890625,
+            0.4375,
+            0.665625,
+            0.4791666666666667
+          ]
+        },
+        {
+          "clip_id": "screwdriver_3",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4140625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 8,
+          "target_box": null
+        },
+        {
+          "clip_id": "screwdriver_3",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4140625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 15,
+          "target_box": null
+        },
+        {
+          "clip_id": "screwdriver_3",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4140625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 22,
+          "target_box": null
+        },
+        {
+          "clip_id": "screwdriver_3",
+          "condition": "hidden_or_unidentifiable",
+          "distractor_boxes": [
+            [
+              0.4140625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 32,
+          "target_box": null
+        },
+        {
+          "clip_id": "screwdriver_3",
+          "condition": "hidden_or_unidentifiable",
+          "distractor_boxes": [
+            [
+              0.4140625,
+              0.5854166666666667,
+              0.60625,
+              0.6145833333333334
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 37,
+          "target_box": null
+        },
+        {
+          "clip_id": "remote_3",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4125,
+              0.5916666666666667,
+              0.6015625,
+              0.6125
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 0,
+          "target_box": [
+            0.415625,
+            0.5041666666666667,
+            0.6015625,
+            0.59375
+          ]
+        },
+        {
+          "clip_id": "remote_3",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4125,
+              0.5916666666666667,
+              0.6015625,
+              0.6125
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 3,
+          "target_box": [
+            0.415625,
+            0.5041666666666667,
+            0.6015625,
+            0.59375
+          ]
+        },
+        {
+          "clip_id": "remote_3",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4125,
+              0.5916666666666667,
+              0.6015625,
+              0.6125
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 5,
+          "target_box": [
+            0.415625,
+            0.5041666666666667,
+            0.6015625,
+            0.59375
+          ]
+        },
+        {
+          "clip_id": "remote_3",
+          "condition": "clear",
+          "distractor_boxes": [
+            [
+              0.4125,
+              0.5916666666666667,
+              0.6015625,
+              0.6125
+            ]
+          ],
+          "expected": "supported",
+          "frame_index": 8,
+          "target_box": [
+            0.415625,
+            0.5041666666666667,
+            0.6015625,
+            0.59375
+          ]
+        },
+        {
+          "clip_id": "remote_3",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4125,
+              0.5916666666666667,
+              0.6015625,
+              0.6125
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 15,
+          "target_box": null
+        },
+        {
+          "clip_id": "remote_3",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4125,
+              0.5916666666666667,
+              0.6015625,
+              0.6125
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 25,
+          "target_box": null
+        },
+        {
+          "clip_id": "remote_3",
+          "condition": "partial_occlusion",
+          "distractor_boxes": [
+            [
+              0.4125,
+              0.5916666666666667,
+              0.6015625,
+              0.6125
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 40,
+          "target_box": null
+        },
+        {
+          "clip_id": "remote_3",
+          "condition": "hidden_or_unidentifiable",
+          "distractor_boxes": [
+            [
+              0.4125,
+              0.5916666666666667,
+              0.6015625,
+              0.6125
+            ]
+          ],
+          "expected": "unknown",
+          "frame_index": 59,
+          "target_box": null
+        }
+      ],
+      "sources": [
+        {
+          "clip_id": "screwdriver_3",
+          "gripper_prepared_hash": "0a35ab3fed9ea4693be3d3a51d2ae401a0e09de3a30846d1c565bcd9c5488531",
+          "initial_gripper_seeds": [
+            {
+              "box": {
+                "x1": 0,
+                "x2": 125,
+                "y1": 161,
+                "y2": 260
+              },
+              "frame_index": 0,
+              "object_id": "left_gripper",
+              "track_id": 3
+            },
+            {
+              "box": {
+                "x1": 530,
+                "x2": 639,
+                "y1": 161,
+                "y2": 257
+              },
+              "frame_index": 0,
+              "object_id": "right_gripper",
+              "track_id": 4
+            }
+          ],
+          "source_attribution": {
+            "dataset": "lerobot/aloha_static_screw_driver",
+            "episode": 3,
+            "license": "mit",
+            "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/blob/51448b4e7638c1773fd07c1e7febce8ebb104635/README.md",
+            "remote_path": "videos/chunk-000/observation.images.cam_high/episode_000003.mp4",
+            "revision": "51448b4e7638c1773fd07c1e7febce8ebb104635",
+            "source_role": "new_source_episode_same_exposed_dataset_family",
+            "url": "https://huggingface.co/datasets/lerobot/aloha_static_screw_driver/resolve/51448b4e7638c1773fd07c1e7febce8ebb104635/videos/chunk-000/observation.images.cam_high/episode_000003.mp4"
+          },
+          "source_sha256": "5277a5566e932aaa709b621613a785cc6b118c21d53140c254371959e9f4f8a0"
+        },
+        {
+          "clip_id": "remote_3",
+          "gripper_prepared_hash": "f77c204ad3004c15d5f72487ebba992c1ae27f2661cb15cc25d7707446bf416e",
+          "initial_gripper_seeds": [
+            {
+              "box": {
+                "x1": 0,
+                "x2": 115,
+                "y1": 159,
+                "y2": 257
+              },
+              "frame_index": 0,
+              "object_id": "left_gripper",
+              "track_id": 3
+            },
+            {
+              "box": {
+                "x1": 527,
+                "x2": 639,
+                "y1": 165,
+                "y2": 261
+              },
+              "frame_index": 0,
+              "object_id": "right_gripper",
+              "track_id": 4
+            }
+          ],
+          "source_attribution": {
+            "dataset": "lerobot/aloha_static_battery",
+            "episode": 3,
+            "license": "apache-2.0",
+            "license_url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/blob/dd8bda435f5068a0298bd109005828768ecbfa12/README.md",
+            "remote_path": "videos/chunk-000/observation.images.cam_high/episode_000003.mp4",
+            "revision": "dd8bda435f5068a0298bd109005828768ecbfa12",
+            "source_role": "new_source_episode_same_exposed_dataset_family",
+            "url": "https://huggingface.co/datasets/lerobot/aloha_static_battery/resolve/dd8bda435f5068a0298bd109005828768ecbfa12/videos/chunk-000/observation.images.cam_high/episode_000003.mp4"
+          },
+          "source_sha256": "b703633f4437a8db404a7244ce63ad4dbc946a4767de20e535b14412590b83ef"
+        }
+      ]
+    }
+  },
+  "config": {
+    "automatic_retry": false,
+    "estimated_allocation_usd": 3.0,
+    "gripper_track_ids": [
+      3,
+      4
+    ],
+    "guard_inputs": "unchanged_retained_v2_v3_no_new_semantics_or_reference_boxes",
+    "localization_iou_threshold": 0.3,
+    "localization_sensitivity_thresholds": [
+      0.2,
+      0.3,
+      0.5
+    ],
+    "max_requests": 4,
+    "min_confidence": 0.8,
+    "min_spacing_ms": 500,
+    "min_stable_views": 2,
+    "near_contact_means": "unknown_visibility_not_asserted_physical_occlusion",
+    "new_provider": "SAM_video_only_no_new_Spark",
+    "seed_frame_index": 0,
+    "separation_rule": "only_all_reviewed_grippers_separated_can_qualify",
+    "target_track_id": 1
+  },
+  "contact_freeze_hash": "614ec17ec81a63c2a98668f7e17c94041656247e0b6a1ea6dc7d5a9ee7967352",
+  "contact_public_sha256": "d2e243f93ec5446165e7757d3d610e94f53768f232e2aafd031e0025897e2889",
+  "experiment_version": "frozen_reviewed_gripper_geometry_ablation_v1",
+  "freeze_hash": "923b5f20f77e2805d935027b1cf013f87e71b33f62c52e9b2ef7197ab9e230ef",
+  "geometry_config": {
+    "distance_cap": 4,
+    "distance_metric": "chebyshev_foreground_pixel_centers",
+    "mapping": "box_local_mask_nearest_source_pixel_center_inclusive_xyxy",
+    "max_geometry_seconds": 30.0,
+    "max_source_mapped_pixels": 32000000,
+    "minimum_confidence": 0.8,
+    "requires_all_reviewed_grippers": true,
+    "source_pixel_margin": 3
+  },
+  "geometry_version": "source_gripper_foreground_separation_v1",
+  "implementation_sha256": {
+    "confirmation_policy.py": "9d0e02ad765487239cf5f2b4d8becd5583631fd6c8e4e6785e1d371d4f91b1c1",
+    "contact_experiment.py": "dbe8cf57a2416e89f8bead42f9f3a15684eeae7f83fd01ee005fb3c817b2c5d2",
+    "contact_guard.py": "92da7654980eac313ac59065d69df92deb2be11b4827d08251e249c1d8f0f0a5",
+    "gripper_experiment.py": "5d367885d412ced5c45a7b319a410a4aed4c818064a25bdbba44d728d71f9b7d",
+    "gripper_geometry.py": "20125923b19f95a06c72039f4944de5c014b6a8230f777729c1348a4289d0052",
+    "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+    "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+    "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+    "semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+    "tracking_evaluation.py": "7b91a3ed5eb9572fe718dc4acf21fb94ee2a2d39cd93120b34569d1dfa08a5a0",
+    "tracking_experiment.py": "745ecb9793ec79edb3f84495c498746860259e4339fd15982c08f45037dc63f6",
+    "tracking_geometry.py": "9c5cfdcb513a3839fa82eae19050dc50da2be62842b76329a47a4e4a0b3dfc01",
+    "tracking_guard.py": "4d56c6adac1e554fa6bd8ca3c74da5e69ae3be0a56dc9e63f61f14c5bc059f90",
+    "tracking_mask_replay.py": "94681ecfa930cd2ba0542145134b1bdb37825f2981ec63ca0a2112f62c5dae73",
+    "tracking_policy.py": "3923ba07753ae5208ea281698061031e4613a54b55f6fe568fcc9fba591e12bb",
+    "video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b",
+    "visibility_experiment.py": "a9bfd2286bb868730a5bf54c636a58fd58bf7e1a70c2754a157ee04bb9cb9892",
+    "visibility_guard.py": "0ccfec9aac1bcf4fc60c8b376843a9470bb1036d0fae00615f9aa20bbdb14d5f"
+  },
+  "inference_started": false,
+  "initial_review_sha256": "5f33063ae9773b47894e04570551fb8466861d1bf94bbfdb22656a13fc6d49cf",
+  "input_inventory_sha256": "4a73f54d61fcb415d02e1732af601d7c63ec78807dffc279af28fef24bb577ac",
+  "limitations": [
+    "All four recordings were exposed in the completed contact experiment; this is a development ablation, not a new unseen cohort.",
+    "The two additional gripper seeds per clip are assistant-reviewed frame-zero boxes. Later labels and boxes never enter inference or the geometry veto.",
+    "SAM target and gripper masks can make correlated mistakes. Mask separation is not independent proof of identity, complete visibility or full-disappearance recovery.",
+    "The fixed source-pixel separation margin is conservative. Near contact or unavailable evidence means UNKNOWN, not verified physical occlusion.",
+    "The geometric veto only removes eligibility. Original confidence, mask, semantic identity, visibility, distinct-frame, count and spacing gates remain required.",
+    "All original provider failures, incomplete calls, baselines and costs are retained. No historical call is retried or reclassified as successful abstention.",
+    "Only four new SAM video requests are admitted, with no automatic retries or new Spark calls. Estimated dollars are advisory, not a provider-enforced cap.",
+    "This experiment changes neither live placement acceptance nor physical-action authorization and observes only sampled source views."
+  ],
+  "methods": [
+    "v2_geometry_greedy",
+    "v2_geometry_current",
+    "v3_geometry_greedy",
+    "v3_geometry_current"
+  ]
+}
