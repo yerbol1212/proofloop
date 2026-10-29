@@ -1,0 +1,690 @@
+{
+  "assessment_total": {
+    "automatic_retry": false,
+    "estimated_usd": 0.116607,
+    "request_attempts": 44,
+    "sam_requests": 42,
+    "spark_requests": 2,
+    "unreported_charge_possible": false
+  },
+  "changes_production_acceptance": false,
+  "component_gate": {
+    "all6_views_reported": true,
+    "complete_accounting": true,
+    "near_reference_warning": true,
+    "passed": true,
+    "separated_references_available_without_near_warning": true
+  },
+  "decision": "limited_manual_control_passed_not_production_qualified",
+  "distances_capped4": [
+    2,
+    4,
+    4,
+    4,
+    4,
+    4
+  ],
+  "elapsed_wall_seconds": 9.383,
+  "illustrative_single_parent_case_projection": {
+    "case_id": "ur5-cloth-0-pair-2",
+    "parent_prediction": "pass",
+    "projection": {
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reason": "near_gripper_proposal_withholds_parent",
+      "status": "completed"
+    },
+    "scope": "Single exposed control with assistant-authored manual gripper anchors; not a recomputed nine-case method or an independent physical correction."
+  },
+  "independent_audit_receipt_sha256": "7e0e73c8b54871646a6ffbc5e40e7b586c819a3c3bb5255e6fb93b8d76f70aef",
+  "limits": [
+    "Six exposed views with assistant-authored manual gripper boxes; not automatic localization or independent human ground truth.",
+    "Distance4 means beyond3 sourcepixels, not an exact separation measurement.",
+    "No original nine-case task metric, target confidence, reference label, region or method has been replaced.",
+    "Near masks are negative risk warnings, not verified physical contact, occlusion, safety or executed correction."
+  ],
+  "manual_anchor_visual_qa_receipt_sha256": "27f6c4a94b44b2cdd4bc22a1196c96f6d6c00e2bdff3add3f472f01eb91c991d",
+  "persistent_journal": {
+    "allowance_scope": "this_local_journal_all_processes_and_restarts",
+    "automatic_retry": false,
+    "hard_dollar_limit": false,
+    "operation_attempts": 6,
+    "outcomes": {
+      "ok": 6,
+      "rejected": 0,
+      "reserved": 0,
+      "uncertain": 0
+    },
+    "remaining_attempts": 0,
+    "reported_tokens": {
+      "input_tokens": 0,
+      "output_tokens": 0,
+      "total_tokens": 0
+    },
+    "request_limit": 6,
+    "total_reserved_attempts": 6,
+    "unsettled_outcome_is_unknown": false
+  },
+  "preflight_note": "One private launcher import failed before setup/admission; only its local import path was corrected. Frozen probe code, plan and source bytes stayed unchanged; no paid request was repeated.",
+  "preregistration_commit": "8c95e4efdbe65aef9be90f50e60a02282b510ae7",
+  "preregistration_file_sha256": "66fc03fb5c41be69449d11d9ef38ff079c9ad834c235ca725195797c7863eb32",
+  "preregistration_path": "artifacts/feasibility/spatial-gripper-plan-20261030.json",
+  "reference_matches": {
+    "near": {
+      "matched": 1,
+      "total": 1
+    },
+    "separated": {
+      "matched": 5,
+      "total": 5
+    }
+  },
+  "result": {
+    "admission_stop_code": null,
+    "annotation_origin": "assistant_authored_manual_gripper_boxes",
+    "annotation_sha256": "34efac17dba7665541fd024cedaf0b6aca298300d5aa1132773539485dbd3d53",
+    "completed_views": 6,
+    "dependencies": {
+      "ffmpeg_version": "ffmpeg version 9.0 Copyright (c) 2000-2026 the FFmpeg developers",
+      "meta_sam_parser_distribution": "0.1.0",
+      "sam_model": "sam-3.1",
+      "spark_max_output_tokens": 4096,
+      "spark_model": "muse-spark-1.3",
+      "spark_reasoning_effort": "low"
+    },
+    "entries": [
+      {
+        "box": {
+          "x1": 195,
+          "x2": 312,
+          "y1": 168,
+          "y2": 266
+        },
+        "case_id": "ur5-cloth-0-pair-2",
+        "decoded_frame_index": 65,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 0,
+        "height": 480,
+        "object_id": "cloth",
+        "prompt": "<0f>1<|box;x1=195;y1=168;x2=312;y2=266;w=640;h=480|>",
+        "source_id": "ur5-cloth-0",
+        "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+        "target_sha256": "eb16ad29f7569d9516aa1c30d445d8faa299aceda42ed371ff72488a0f22e04a",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 229,
+          "x2": 344,
+          "y1": 156,
+          "y2": 265
+        },
+        "case_id": "ur5-cloth-0-pair-2",
+        "decoded_frame_index": 70,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 1,
+        "height": 480,
+        "object_id": "cloth",
+        "prompt": "<0f>1<|box;x1=229;y1=156;x2=344;y2=265;w=640;h=480|>",
+        "source_id": "ur5-cloth-0",
+        "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+        "target_sha256": "c60444c44bb625785e403f30156fbb3d75d3071ff592a28526e8681360ff8251",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 347,
+          "x2": 426,
+          "y1": 145,
+          "y2": 249
+        },
+        "case_id": "ur5-cup-4-pair-0",
+        "decoded_frame_index": 0,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 0,
+        "height": 480,
+        "object_id": "brown_cup",
+        "prompt": "<0f>1<|box;x1=347;y1=145;x2=426;y2=249;w=640;h=480|>",
+        "source_id": "ur5-cup-4",
+        "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+        "target_sha256": "f68cba7986f7e46a0de25dae4d28eb964bab6ea7648b20b8977150748018be87",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 347,
+          "x2": 426,
+          "y1": 145,
+          "y2": 249
+        },
+        "case_id": "ur5-cup-4-pair-0",
+        "decoded_frame_index": 5,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 1,
+        "height": 480,
+        "object_id": "brown_cup",
+        "prompt": "<0f>1<|box;x1=347;y1=145;x2=426;y2=249;w=640;h=480|>",
+        "source_id": "ur5-cup-4",
+        "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+        "target_sha256": "4c0b05752b3da4f6f1fcbb2014f519a226fe5be6c877f4b8f55b3fa594146622",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 285,
+          "x2": 342,
+          "y1": 109,
+          "y2": 191
+        },
+        "case_id": "ur5-cup-4-pair-1",
+        "decoded_frame_index": 58,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 0,
+        "height": 480,
+        "object_id": "brown_cup",
+        "prompt": "<0f>1<|box;x1=285;y1=109;x2=342;y2=191;w=640;h=480|>",
+        "source_id": "ur5-cup-4",
+        "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+        "target_sha256": "67654267910d1e5250c4b1e29406ee8690101fb72c0bf3604f229319336f284f",
+        "width": 640
+      },
+      {
+        "box": {
+          "x1": 285,
+          "x2": 342,
+          "y1": 83,
+          "y2": 162
+        },
+        "case_id": "ur5-cup-4-pair-1",
+        "decoded_frame_index": 63,
+        "decoded_frame_index_origin": "parent_source_frame",
+        "frame_index": 1,
+        "height": 480,
+        "object_id": "brown_cup",
+        "prompt": "<0f>1<|box;x1=285;y1=83;x2=342;y2=162;w=640;h=480|>",
+        "source_id": "ur5-cup-4",
+        "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+        "target_sha256": "34d7a7ba98ccf880d091737c2c50e586cd50afc8c69ec3e3d01a11b748e703ca",
+        "width": 640
+      }
+    ],
+    "implementation_sha256": {
+      "proofloop/anchor_padding_experiment.py": "4386f987c575b446b379bb517f6aeb8182873d88c623212585ecd1c9c4ce9bcd",
+      "proofloop/benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+      "proofloop/bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+      "proofloop/capture.py": "77e94f6a5941fc5378037ccef46ba71060821a7457331e04bd35600dcbba682a",
+      "proofloop/concept_verified_experiment.py": "f2eded145ae2c1458374d94fa80da136e7e7f7586cc4a4b61818e3f6e75f5def",
+      "proofloop/core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+      "proofloop/gripper_geometry.py": "20125923b19f95a06c72039f4944de5c014b6a8230f777729c1348a4289d0052",
+      "proofloop/grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+      "proofloop/guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+      "proofloop/image_gripper_experiment.py": "a11fd36099713b781fc1ba372a9858a14074821c1a03eef7d5d1a0993a1371bb",
+      "proofloop/image_gripper_veto.py": "b01e77015615c6dbdcad584750d1c0f5c713a12d3036ed69237f1cecedeccaab",
+      "proofloop/inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+      "proofloop/mask_semantics.py": "de84183204cbc02ca6a4b4b2369a0061845eded7afcc1f9bf4add0b7800a1a9f",
+      "proofloop/meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+      "proofloop/prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+      "proofloop/prospective_audit.py": "50bc6c4e457b416cdf0cb54f793bc121db1eb924ab2a5cfe3a346ea6bbc1a6f5",
+      "proofloop/semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "proofloop/session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869",
+      "proofloop/tracking_geometry.py": "9c5cfdcb513a3839fa82eae19050dc50da2be62842b76329a47a4e4a0b3dfc01",
+      "proofloop/video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b",
+      "tools/probe_spatial_gripper.py": "5f783163cfe8c932a6012fe4484dcb5881efa9f2acb207d36ee70855aec24a0b"
+    },
+    "limits": [
+      "Manual gripper boxes are assistant annotations, not automatic localization or ground-truth masks.",
+      "Only a spatial object token enters SAM; no semantic text, Spark inference or production promotion.",
+      "These six views do not improve or replace the original nine task results or positive-retention denominators.",
+      "Near proposals are negative warnings; far masks do not establish visibility, safety or physical separation."
+    ],
+    "max_requests": 6,
+    "missing_or_failed_views": 0,
+    "parent_plan_sha256": "437737c8e97c5de61ae93d86c19f37ff97e84d5662a51fc918625c51def73dbb",
+    "parent_summary_sha256": "652aa916b7f960b82956534121b4b25bf15ec32a2313038f5d9fcfdb7d21648a",
+    "plan_sha256": "80fecc1e9179d145a17b31bf210912603cf6dbc35bd6e1013e43c75e15735407",
+    "planned_requests": 6,
+    "scope": "exposed_development_manual_anchor_six_view_diagnostic_only",
+    "status": "completed",
+    "task_metrics": null,
+    "usage": {
+      "accounting_incomplete": false,
+      "estimated_usd": 0.015,
+      "reported_input_tokens": 0,
+      "reported_output_tokens": 0,
+      "request_attempts": 6,
+      "request_attempts_incomplete": false,
+      "sam_requests": 6,
+      "spark_requests": 0,
+      "unreported_charge_possible": false,
+      "wall_seconds": 8.25
+    },
+    "version": "manual_spatial_gripper_six_view_diagnostic_v1",
+    "views": [
+      {
+        "diagnostic": {
+          "absence_verified": false,
+          "acceptance_confidence_threshold_changed": false,
+          "changes_production_acceptance": false,
+          "comparisons": [
+            {
+              "distance_is_lower_bound": false,
+              "gripper_confidence": 0.9296875,
+              "gripper_foreground_pixels": 4751,
+              "gripper_mapped_mask_sha256": "5f99a08ec80cdda6e92873a029c54a48707b92dde687853123d2e5afbc014a68",
+              "gripper_raster_sha256": "842f9e8a24059c0a38375a411248bef53718cc8f40f0f035766a246199571f3d",
+              "gripper_sam_object_id": 1,
+              "min_chebyshev_distance_capped4": 2,
+              "near_proposal": true,
+              "target_confidence": 0.941605806350708,
+              "target_foreground_pixels": 7053,
+              "target_mapped_mask_sha256": "0603964f6a0a67803243259b81c3b3e8afee6c486b7eaa7fe30aae03bda12c31",
+              "target_raster_sha256": "bcd75649277bd4d664ad011e980a2330babc590f3db238cf7d3a4a3f427a16c6",
+              "target_sam_object_id": 0
+            }
+          ],
+          "config": {
+            "confidence_usage": "reported_only_for_negative_risk_never_positive_qualification",
+            "distance_cap": 4,
+            "distance_metric": "chebyshev_foreground_pixel_centers",
+            "gripper_concept": "robot gripper",
+            "mapping": "box_local_mask_nearest_source_pixel_center_inclusive_xyxy",
+            "max_geometry_seconds": 30.0,
+            "max_gripper_proposals": 64,
+            "max_source_mapped_pixels": 32000000,
+            "source_pixel_margin": 3
+          },
+          "full_visibility_verified": false,
+          "geometry_available": true,
+          "gripper_raw_result_sha256": "4c31b791f6907cb07a47b9d7a8ef993fef729ae1d42bb8a06adcac730129b543",
+          "height": 480,
+          "identity_independently_verified": false,
+          "mapped_source_pixels": 18304,
+          "method_version": "image_negative_only_gripper_veto_v1",
+          "physical_contact_observed": false,
+          "physical_occlusion_observed": false,
+          "positive_support_can_be_granted": false,
+          "reason_codes": [],
+          "receipt_sha256": "4dd6fc3c1fe3bccddb43b1428926a3b59d3f0c2b07a107a58e74b22dc311f770",
+          "separation_verified": false,
+          "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+          "target_object_id": "cloth",
+          "target_raw_result_sha256": "2df512e7748e34c3f5a6470fd4e17d6cd94815a0e1535066697b09d9bec10d37",
+          "veto": true,
+          "warning": "near_gripper_proposal",
+          "width": 640
+        },
+        "inference_origin": "live_meta_adapter",
+        "object_count": 1,
+        "scores": [
+          0.9296875
+        ],
+        "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+        "status": "completed",
+        "usage": {
+          "accounting_incomplete": false,
+          "estimated_usd": 0.0025,
+          "known_estimated_usd": 0.0025,
+          "request_attempts": 1,
+          "unreported_charge_possible": false
+        },
+        "view_index": 0,
+        "wall_seconds": 0.958
+      },
+      {
+        "diagnostic": {
+          "absence_verified": false,
+          "acceptance_confidence_threshold_changed": false,
+          "changes_production_acceptance": false,
+          "comparisons": [
+            {
+              "distance_is_lower_bound": true,
+              "gripper_confidence": 0.9453125,
+              "gripper_foreground_pixels": 5269,
+              "gripper_mapped_mask_sha256": "6d3ede6345c230267213c4da964ac1f0c59fcab9e1407658873d765dab7eb827",
+              "gripper_raster_sha256": "f8e105d2d2d574cba7190afb4df8c3b7b6d30be43bec281d40b83a612f6a9ab9",
+              "gripper_sam_object_id": 1,
+              "min_chebyshev_distance_capped4": 4,
+              "near_proposal": false,
+              "target_confidence": 0.9259259104728699,
+              "target_foreground_pixels": 6258,
+              "target_mapped_mask_sha256": "a76e106dc4c3d6d0ff8a49d3597e3124061f8b8e3c6b3217b850a00455cb739c",
+              "target_raster_sha256": "f269032411d58beadb022fc3799e59d838cc9482eaa30ae6adc2ea0b1fc36acf",
+              "target_sam_object_id": 0
+            }
+          ],
+          "config": {
+            "confidence_usage": "reported_only_for_negative_risk_never_positive_qualification",
+            "distance_cap": 4,
+            "distance_metric": "chebyshev_foreground_pixel_centers",
+            "gripper_concept": "robot gripper",
+            "mapping": "box_local_mask_nearest_source_pixel_center_inclusive_xyxy",
+            "max_geometry_seconds": 30.0,
+            "max_gripper_proposals": 64,
+            "max_source_mapped_pixels": 32000000,
+            "source_pixel_margin": 3
+          },
+          "full_visibility_verified": false,
+          "geometry_available": true,
+          "gripper_raw_result_sha256": "b66cc6be01b4347453b47dc31c80cfd196786d02308040389c8badc1d0767449",
+          "height": 480,
+          "identity_independently_verified": false,
+          "mapped_source_pixels": 19266,
+          "method_version": "image_negative_only_gripper_veto_v1",
+          "physical_contact_observed": false,
+          "physical_occlusion_observed": false,
+          "positive_support_can_be_granted": false,
+          "reason_codes": [],
+          "receipt_sha256": "c5779c4c08032b284bce8325f7ec7c3b4098ba25667e16c059de90d5cb4f2c44",
+          "separation_verified": false,
+          "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+          "target_object_id": "cloth",
+          "target_raw_result_sha256": "76966abd3bbc99884bc488b2a71859bcd65578cd5fe815002892d751094d9b0c",
+          "veto": false,
+          "warning": "no_near_proposal_observed",
+          "width": 640
+        },
+        "inference_origin": "live_meta_adapter",
+        "object_count": 1,
+        "scores": [
+          0.9453125
+        ],
+        "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+        "status": "completed",
+        "usage": {
+          "accounting_incomplete": false,
+          "estimated_usd": 0.0025,
+          "known_estimated_usd": 0.0025,
+          "request_attempts": 1,
+          "unreported_charge_possible": false
+        },
+        "view_index": 1,
+        "wall_seconds": 1.033
+      },
+      {
+        "diagnostic": {
+          "absence_verified": false,
+          "acceptance_confidence_threshold_changed": false,
+          "changes_production_acceptance": false,
+          "comparisons": [
+            {
+              "distance_is_lower_bound": true,
+              "gripper_confidence": 0.9453125,
+              "gripper_foreground_pixels": 4633,
+              "gripper_mapped_mask_sha256": "93919c16ac2eb2efd052eb99c80e93233de45d0b855f68ad73bffc1b9b487dff",
+              "gripper_raster_sha256": "7425fff432cc6ba3ad67b9bc518bf1435f16a9c6b1f90b0765bbfe0feaa9cb7d",
+              "gripper_sam_object_id": 1,
+              "min_chebyshev_distance_capped4": 4,
+              "near_proposal": false,
+              "target_confidence": 0.7299578189849854,
+              "target_foreground_pixels": 2553,
+              "target_mapped_mask_sha256": "05b8ede260cc0d834edacbc377967713e4c73730a884a71d908a7ba89f76773e",
+              "target_raster_sha256": "05242f1cc12d78ecec0c46b4938769f351e043d0dfdfe29af9e8e8d88257e478",
+              "target_sam_object_id": 0
+            }
+          ],
+          "config": {
+            "confidence_usage": "reported_only_for_negative_risk_never_positive_qualification",
+            "distance_cap": 4,
+            "distance_metric": "chebyshev_foreground_pixel_centers",
+            "gripper_concept": "robot gripper",
+            "mapping": "box_local_mask_nearest_source_pixel_center_inclusive_xyxy",
+            "max_geometry_seconds": 30.0,
+            "max_gripper_proposals": 64,
+            "max_source_mapped_pixels": 32000000,
+            "source_pixel_margin": 3
+          },
+          "full_visibility_verified": false,
+          "geometry_available": true,
+          "gripper_raw_result_sha256": "5b02102ec0d13f9c9a4cddbf4fe5a192002fc5950b3dcf0a71d106324c83cd6c",
+          "height": 480,
+          "identity_independently_verified": false,
+          "mapped_source_pixels": 11821,
+          "method_version": "image_negative_only_gripper_veto_v1",
+          "physical_contact_observed": false,
+          "physical_occlusion_observed": false,
+          "positive_support_can_be_granted": false,
+          "reason_codes": [],
+          "receipt_sha256": "17f97e0be64b2b29fb86cbd5268da587fa534be455ac0363385ef2a842e3d360",
+          "separation_verified": false,
+          "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+          "target_object_id": "brown_cup",
+          "target_raw_result_sha256": "3e174545048995d2442ef141d1b401eebbed92f71c2fad0ea145cfcb6e5cbe88",
+          "veto": false,
+          "warning": "no_near_proposal_observed",
+          "width": 640
+        },
+        "inference_origin": "live_meta_adapter",
+        "object_count": 1,
+        "scores": [
+          0.9453125
+        ],
+        "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+        "status": "completed",
+        "usage": {
+          "accounting_incomplete": false,
+          "estimated_usd": 0.0025,
+          "known_estimated_usd": 0.0025,
+          "request_attempts": 1,
+          "unreported_charge_possible": false
+        },
+        "view_index": 2,
+        "wall_seconds": 2.367
+      },
+      {
+        "diagnostic": {
+          "absence_verified": false,
+          "acceptance_confidence_threshold_changed": false,
+          "changes_production_acceptance": false,
+          "comparisons": [
+            {
+              "distance_is_lower_bound": true,
+              "gripper_confidence": 0.94140625,
+              "gripper_foreground_pixels": 4636,
+              "gripper_mapped_mask_sha256": "0446d8e1bb4450133c04607ac3fcbb7f4cbed15c04551d94409a29dcbc40fb1e",
+              "gripper_raster_sha256": "7ded8171f2360524e897ec82f91005b5f1f448711c9938ceb051ea6ac05a3e7a",
+              "gripper_sam_object_id": 1,
+              "min_chebyshev_distance_capped4": 4,
+              "near_proposal": false,
+              "target_confidence": 0.8709677457809448,
+              "target_foreground_pixels": 2563,
+              "target_mapped_mask_sha256": "71c4ead66499be01c03d42dfbd669452e7232a38a263c9fe31b2fbd47f032a11",
+              "target_raster_sha256": "4f6ae7b58adfe681a7810ceb063c32af64d02c4e0322760e44bd69c0e5befd51",
+              "target_sam_object_id": 0
+            }
+          ],
+          "config": {
+            "confidence_usage": "reported_only_for_negative_risk_never_positive_qualification",
+            "distance_cap": 4,
+            "distance_metric": "chebyshev_foreground_pixel_centers",
+            "gripper_concept": "robot gripper",
+            "mapping": "box_local_mask_nearest_source_pixel_center_inclusive_xyxy",
+            "max_geometry_seconds": 30.0,
+            "max_gripper_proposals": 64,
+            "max_source_mapped_pixels": 32000000,
+            "source_pixel_margin": 3
+          },
+          "full_visibility_verified": false,
+          "geometry_available": true,
+          "gripper_raw_result_sha256": "9f35483d7ff6ea9d4a6d901343284d751148c79604bbf0565ab03ef6480b0392",
+          "height": 480,
+          "identity_independently_verified": false,
+          "mapped_source_pixels": 11638,
+          "method_version": "image_negative_only_gripper_veto_v1",
+          "physical_contact_observed": false,
+          "physical_occlusion_observed": false,
+          "positive_support_can_be_granted": false,
+          "reason_codes": [],
+          "receipt_sha256": "f1398e16ffb51278287bd6dbc72f303df023068d0c0651771d809c21b390a34e",
+          "separation_verified": false,
+          "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+          "target_object_id": "brown_cup",
+          "target_raw_result_sha256": "8b423c0535d40e017108e5326c44be5e3a7176015fcb5bdaae3d5377c56de93d",
+          "veto": false,
+          "warning": "no_near_proposal_observed",
+          "width": 640
+        },
+        "inference_origin": "live_meta_adapter",
+        "object_count": 1,
+        "scores": [
+          0.94140625
+        ],
+        "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+        "status": "completed",
+        "usage": {
+          "accounting_incomplete": false,
+          "estimated_usd": 0.0025,
+          "known_estimated_usd": 0.0025,
+          "request_attempts": 1,
+          "unreported_charge_possible": false
+        },
+        "view_index": 3,
+        "wall_seconds": 1.418
+      },
+      {
+        "diagnostic": {
+          "absence_verified": false,
+          "acceptance_confidence_threshold_changed": false,
+          "changes_production_acceptance": false,
+          "comparisons": [
+            {
+              "distance_is_lower_bound": true,
+              "gripper_confidence": 0.94921875,
+              "gripper_foreground_pixels": 2115,
+              "gripper_mapped_mask_sha256": "ff53e870dfd3608c172fcf80d570c85921b4826302611aa3369f4607dec1bbe3",
+              "gripper_raster_sha256": "f07e066bfefe4c73b98100939deb01c9b48411684ae96472464b4f8ed79b5ba3",
+              "gripper_sam_object_id": 1,
+              "min_chebyshev_distance_capped4": 4,
+              "near_proposal": false,
+              "target_confidence": 0.7142857313156128,
+              "target_foreground_pixels": 2564,
+              "target_mapped_mask_sha256": "97e3850aeea74d8c0b43d505e2b180fe2c9914e8b3056cfd1aaca1723e0ad4be",
+              "target_raster_sha256": "c9e95b4566d5af2d7d143e40ca94ad7eef702b22c040501f270427e22681c966",
+              "target_sam_object_id": 0
+            }
+          ],
+          "config": {
+            "confidence_usage": "reported_only_for_negative_risk_never_positive_qualification",
+            "distance_cap": 4,
+            "distance_metric": "chebyshev_foreground_pixel_centers",
+            "gripper_concept": "robot gripper",
+            "mapping": "box_local_mask_nearest_source_pixel_center_inclusive_xyxy",
+            "max_geometry_seconds": 30.0,
+            "max_gripper_proposals": 64,
+            "max_source_mapped_pixels": 32000000,
+            "source_pixel_margin": 3
+          },
+          "full_visibility_verified": false,
+          "geometry_available": true,
+          "gripper_raw_result_sha256": "5597dbfed837e6f117903cd27b2cf2d4c67573769d10f3eb8353417a332c7769",
+          "height": 480,
+          "identity_independently_verified": false,
+          "mapped_source_pixels": 6974,
+          "method_version": "image_negative_only_gripper_veto_v1",
+          "physical_contact_observed": false,
+          "physical_occlusion_observed": false,
+          "positive_support_can_be_granted": false,
+          "reason_codes": [],
+          "receipt_sha256": "20db16328526c3ec830bc142e69f6686c79f38fc4f99210f35aad82e54ca42ea",
+          "separation_verified": false,
+          "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+          "target_object_id": "brown_cup",
+          "target_raw_result_sha256": "31cf3575d9c95c18b263015269622b1be2a26cc1030119f93e87a661f684422c",
+          "veto": false,
+          "warning": "no_near_proposal_observed",
+          "width": 640
+        },
+        "inference_origin": "live_meta_adapter",
+        "object_count": 1,
+        "scores": [
+          0.94921875
+        ],
+        "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+        "status": "completed",
+        "usage": {
+          "accounting_incomplete": false,
+          "estimated_usd": 0.0025,
+          "known_estimated_usd": 0.0025,
+          "request_attempts": 1,
+          "unreported_charge_possible": false
+        },
+        "view_index": 4,
+        "wall_seconds": 1.163
+      },
+      {
+        "diagnostic": {
+          "absence_verified": false,
+          "acceptance_confidence_threshold_changed": false,
+          "changes_production_acceptance": false,
+          "comparisons": [
+            {
+              "distance_is_lower_bound": true,
+              "gripper_confidence": 0.9609375,
+              "gripper_foreground_pixels": 2431,
+              "gripper_mapped_mask_sha256": "b0083ed173e2ea1fc9ff8a4e848a9c1b2f97ace75a2c6f593fef1dfc902b4830",
+              "gripper_raster_sha256": "e60dca0c325a71975e96fb4b657d46ade537a370d4c78a45c52a7f7260077a8b",
+              "gripper_sam_object_id": 1,
+              "min_chebyshev_distance_capped4": 4,
+              "near_proposal": false,
+              "target_confidence": 0.8750000596046448,
+              "target_foreground_pixels": 2590,
+              "target_mapped_mask_sha256": "2f1b3399ac1ce875b2a031e7988c673124a09aa741b95eb44af2683afaba1723",
+              "target_raster_sha256": "5fe495b6882f338094c51f940cca21360193a0d1d1d701da09dd9ec86b248bd8",
+              "target_sam_object_id": 0
+            }
+          ],
+          "config": {
+            "confidence_usage": "reported_only_for_negative_risk_never_positive_qualification",
+            "distance_cap": 4,
+            "distance_metric": "chebyshev_foreground_pixel_centers",
+            "gripper_concept": "robot gripper",
+            "mapping": "box_local_mask_nearest_source_pixel_center_inclusive_xyxy",
+            "max_geometry_seconds": 30.0,
+            "max_gripper_proposals": 64,
+            "max_source_mapped_pixels": 32000000,
+            "source_pixel_margin": 3
+          },
+          "full_visibility_verified": false,
+          "geometry_available": true,
+          "gripper_raw_result_sha256": "5a4a40e86ed7df0b027a5acfede92bbe355165d71202d9d5735a7b66bad0fe0e",
+          "height": 480,
+          "identity_independently_verified": false,
+          "mapped_source_pixels": 7365,
+          "method_version": "image_negative_only_gripper_veto_v1",
+          "physical_contact_observed": false,
+          "physical_occlusion_observed": false,
+          "positive_support_can_be_granted": false,
+          "reason_codes": [],
+          "receipt_sha256": "dc40c43a350a3f653d893bb5d0c749d0a3dd8d90bc35f04efdc80c137cc58ff2",
+          "separation_verified": false,
+          "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+          "target_object_id": "brown_cup",
+          "target_raw_result_sha256": "4bf66124204df38611a86a87e92804fddae413661a86f7b8701de293ad2acaf2",
+          "veto": false,
+          "warning": "no_near_proposal_observed",
+          "width": 640
+        },
+        "inference_origin": "live_meta_adapter",
+        "object_count": 1,
+        "scores": [
+          0.9609375
+        ],
+        "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+        "status": "completed",
+        "usage": {
+          "accounting_incomplete": false,
+          "estimated_usd": 0.0025,
+          "known_estimated_usd": 0.0025,
+          "request_attempts": 1,
+          "unreported_charge_possible": false
+        },
+        "view_index": 5,
+        "wall_seconds": 1.311
+      }
+    ]
+  },
+  "schema_version": "proofloop_manual_spatial_gripper_control_results_v1",
+  "task_positive_retention_unchanged": {
+    "accepted": 0,
+    "total": 2
+  }
+}

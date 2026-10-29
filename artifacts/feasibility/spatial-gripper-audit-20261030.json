@@ -1,0 +1,229 @@
+{
+  "accounting": {
+    "accounting_incomplete": false,
+    "estimate_basis": "Six completed SAM images at the recorded Standard rate of 0.0025 USD; not an independently reconciled invoice or dollar cap.",
+    "estimated_usd": 0.015,
+    "journal_outcomes": {
+      "ok": 6,
+      "rejected": 0,
+      "reserved": 0,
+      "uncertain": 0
+    },
+    "new_sam_requests": 6,
+    "new_spark_requests": 0,
+    "reported_input_tokens": 0,
+    "reported_output_tokens": 0,
+    "unreported_charge_possible": false
+  },
+  "audit_consistency_passed": true,
+  "changes_production_acceptance": false,
+  "checks": {
+    "all_response_usage_attempt_ledgers_and_journal_totals_consistent": true,
+    "all_six_completed_sam_bodies_officially_reparsed_and_decoded": true,
+    "all_six_distances_match_independent_source_pixel_set_comparison": true,
+    "all_six_exact_spatial_only_request_payload_hashes_match_journal": true,
+    "all_six_manual_source_box_and_index_bindings_verified": true,
+    "all_six_viewed_binary_masks_reproduced_exactly_from_actual_provider_masks": true,
+    "exact_public_private_plan_and_unchanged_parent_artifacts_replayed": true
+  },
+  "component_gate": {
+    "all6_views_reported": true,
+    "complete_accounting": true,
+    "near_reference_warning": true,
+    "passed": true,
+    "separated_references_available_without_near_warning": true
+  },
+  "counts": {
+    "available_without_near_warning": 5,
+    "completed": 6,
+    "matched_authored_visual_references": 6,
+    "missing_or_failed": 0,
+    "near_warning": 1,
+    "new_task_metric_cases": 0,
+    "sam_objects": 6,
+    "views": 6
+  },
+  "illustrative_single_parent_case_projection": {
+    "case_id": "ur5-cloth-0-pair-2",
+    "parent_prediction": "pass",
+    "projection": {
+      "missing_prediction": false,
+      "prediction": "unknown",
+      "reason": "near_gripper_proposal_withholds_parent",
+      "status": "completed"
+    },
+    "scope": "Single exposed control with assistant-authored manual gripper anchors; not a recomputed nine-case method or an independent physical correction."
+  },
+  "limitations": [
+    "Manual localization changes the question: this trial does not establish automatic gripper proposal quality.",
+    "The six references are assistant-authored visual diagnostics on exposed data, not ground-truth mask distances or independent human annotation.",
+    "Distance four means only beyond three source pixels. Projected mask proximity does not prove physical contact or occlusion.",
+    "No obvious wrong-object substitution was observed, but visual plausibility is not independent semantic identity or full-boundary truth.",
+    "The original nine-case results and zero-of-two clear-positive retention remain unchanged. No fresh holdback source was evaluated.",
+    "Local hashes and adapter metadata establish consistency, not cryptographic authenticity of provider origin."
+  ],
+  "local_commit_precedes_first_recorded_admission": true,
+  "manual_annotation_sha256": "34efac17dba7665541fd024cedaf0b6aca298300d5aa1132773539485dbd3d53",
+  "new_model_calls_by_reviewer": 0,
+  "parent_plan_sha256": "437737c8e97c5de61ae93d86c19f37ff97e84d5662a51fc918625c51def73dbb",
+  "physical_action_execution_verified": false,
+  "private_plan_sha256": "80fecc1e9179d145a17b31bf210912603cf6dbc35bd6e1013e43c75e15735407",
+  "production_qualified": false,
+  "public_plan_sha256": "66fc03fb5c41be69449d11d9ef38ff079c9ad834c235ca725195797c7863eb32",
+  "publication_commit": "8c95e4efdbe65aef9be90f50e60a02282b510ae7",
+  "result_summary_sha256": "4db11c9576c2a5f0d8b3c478f2eb311a4e8503a2eb3b1c81892f6b73faddee89",
+  "reviewer": "independent assistant product_value_review",
+  "schema_version": "proofloop_independent_spatial_gripper_audit_v1",
+  "views": [
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "distance_is_lower_bound": false,
+      "expected_diagnostic": "near_warning",
+      "manual_box": {
+        "x1": 195,
+        "x2": 312,
+        "y1": 168,
+        "y2": 266
+      },
+      "manual_index_origin": "parent_source_frame",
+      "minimum_source_pixel_distance_capped4": 2,
+      "object_count": 1,
+      "raw_provider_body_sha256": "438f7ace466e865e8ea2fb048a6891ef8aa1b69f3d1801520152fd5a973086dc",
+      "reference_match": true,
+      "rendered_mask_sha256": "868c8d4636c6a7c68d4a4c0f5affb649ddb781ab0cca1c412aa6d2b967b657be",
+      "sam_score": 0.9296875,
+      "source_decoded_frame_index": 65,
+      "source_pair_frame_index": 0,
+      "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+      "target_result_sha256": "eb16ad29f7569d9516aa1c30d445d8faa299aceda42ed371ff72488a0f22e04a",
+      "view_index": 0,
+      "visual_review": "Foreground plausibly follows the black terminal gripper; no obvious substitution of the cloth, cups or main robot base. Assistant visual review, not mask ground truth.",
+      "warning": "near_gripper_proposal"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "distance_is_lower_bound": true,
+      "expected_diagnostic": "available_without_near_warning",
+      "manual_box": {
+        "x1": 229,
+        "x2": 344,
+        "y1": 156,
+        "y2": 265
+      },
+      "manual_index_origin": "parent_source_frame",
+      "minimum_source_pixel_distance_capped4": 4,
+      "object_count": 1,
+      "raw_provider_body_sha256": "d6a66f70060541f7f8e16b87fe5b1458a0d369cd268fa18b30798ce19e9ab1af",
+      "reference_match": true,
+      "rendered_mask_sha256": "95a9e8adec250eff6f095acf46711f68d784d65b5d25c98df11a59ff2be1406d",
+      "sam_score": 0.9453125,
+      "source_decoded_frame_index": 70,
+      "source_pair_frame_index": 1,
+      "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+      "target_result_sha256": "c60444c44bb625785e403f30156fbb3d75d3071ff592a28526e8681360ff8251",
+      "view_index": 1,
+      "visual_review": "Foreground plausibly follows the black terminal gripper; no obvious substitution of the cloth, cups or main robot base. Assistant visual review, not mask ground truth.",
+      "warning": "no_near_proposal_observed"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "distance_is_lower_bound": true,
+      "expected_diagnostic": "available_without_near_warning",
+      "manual_box": {
+        "x1": 347,
+        "x2": 426,
+        "y1": 145,
+        "y2": 249
+      },
+      "manual_index_origin": "parent_source_frame",
+      "minimum_source_pixel_distance_capped4": 4,
+      "object_count": 1,
+      "raw_provider_body_sha256": "461235ef46b5834eb2661d6d4f3595ab7fa426ba18d42e4ec96b07264aa609c7",
+      "reference_match": true,
+      "rendered_mask_sha256": "5765ac7bb12cacb0e96985e15dc7460bf39d12b7d10d208559942c8e2393fb57",
+      "sam_score": 0.9453125,
+      "source_decoded_frame_index": 0,
+      "source_pair_frame_index": 0,
+      "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+      "target_result_sha256": "f68cba7986f7e46a0de25dae4d28eb964bab6ea7648b20b8977150748018be87",
+      "view_index": 2,
+      "visual_review": "Foreground plausibly follows the black terminal gripper; no obvious substitution of the cloth, cups or main robot base. Assistant visual review, not mask ground truth.",
+      "warning": "no_near_proposal_observed"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "distance_is_lower_bound": true,
+      "expected_diagnostic": "available_without_near_warning",
+      "manual_box": {
+        "x1": 347,
+        "x2": 426,
+        "y1": 145,
+        "y2": 249
+      },
+      "manual_index_origin": "parent_source_frame",
+      "minimum_source_pixel_distance_capped4": 4,
+      "object_count": 1,
+      "raw_provider_body_sha256": "229c8fde148ad5561e6e0adef0f328cd82ee6e60498fdc33fd86d3c51f74ec5f",
+      "reference_match": true,
+      "rendered_mask_sha256": "fbc56007ad6ce0e15b8db4b71031b9187614ae96283e6cef5218190d98c0777b",
+      "sam_score": 0.94140625,
+      "source_decoded_frame_index": 5,
+      "source_pair_frame_index": 1,
+      "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+      "target_result_sha256": "4c0b05752b3da4f6f1fcbb2014f519a226fe5be6c877f4b8f55b3fa594146622",
+      "view_index": 3,
+      "visual_review": "Foreground plausibly follows the black terminal gripper; no obvious substitution of the cloth, cups or main robot base. Assistant visual review, not mask ground truth.",
+      "warning": "no_near_proposal_observed"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "distance_is_lower_bound": true,
+      "expected_diagnostic": "available_without_near_warning",
+      "manual_box": {
+        "x1": 285,
+        "x2": 342,
+        "y1": 109,
+        "y2": 191
+      },
+      "manual_index_origin": "parent_source_frame",
+      "minimum_source_pixel_distance_capped4": 4,
+      "object_count": 1,
+      "raw_provider_body_sha256": "20a19c8aa8425f1d8df457c7d88e5f28c68cca121eda7d2b3da5157d1bd9f468",
+      "reference_match": true,
+      "rendered_mask_sha256": "e3eaa143b5576e4460ab6f017ddf8564dc5ec8067021bc0bfcb51ba4a3a8c458",
+      "sam_score": 0.94921875,
+      "source_decoded_frame_index": 58,
+      "source_pair_frame_index": 0,
+      "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+      "target_result_sha256": "67654267910d1e5250c4b1e29406ee8690101fb72c0bf3604f229319336f284f",
+      "view_index": 4,
+      "visual_review": "Foreground plausibly follows the black terminal gripper; no obvious substitution of the cloth, cups or main robot base. Assistant visual review, not mask ground truth.",
+      "warning": "no_near_proposal_observed"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "distance_is_lower_bound": true,
+      "expected_diagnostic": "available_without_near_warning",
+      "manual_box": {
+        "x1": 285,
+        "x2": 342,
+        "y1": 83,
+        "y2": 162
+      },
+      "manual_index_origin": "parent_source_frame",
+      "minimum_source_pixel_distance_capped4": 4,
+      "object_count": 1,
+      "raw_provider_body_sha256": "078a81b0208901401a0a971391849b0ccfb0297d83fe8c2ab00a195fb49e6eec",
+      "reference_match": true,
+      "rendered_mask_sha256": "36c9c75efb26174f8a200e901e22f3b582341b6be6c270a2a8fc71278da8295a",
+      "sam_score": 0.9609375,
+      "source_decoded_frame_index": 63,
+      "source_pair_frame_index": 1,
+      "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+      "target_result_sha256": "34d7a7ba98ccf880d091737c2c50e586cd50afc8c69ec3e3d01a11b748e703ca",
+      "view_index": 5,
+      "visual_review": "Foreground plausibly follows the black terminal gripper; no obvious substitution of the cloth, cups or main robot base. Assistant visual review, not mask ground truth.",
+      "warning": "no_near_proposal_observed"
+    }
+  ]
+}

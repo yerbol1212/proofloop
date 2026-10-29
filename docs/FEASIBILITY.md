@@ -133,4 +133,6 @@ The [initial live report](../artifacts/feasibility/live-meta-20261026.md) record
 
 ## Publication boundaries
 
+The [30 October competitive assessment](COMPETITIVENESS-20261030.md) adds three separately declared experiments on existing exposed media: concept-SAM plus mask-aware Spark fails its nine-case gate, text-prompt gripper inference returns no masks in 18 views, and six manually anchored spatial gripper controls match their geometry references. Their total is 44 new requests, estimated $0.116607. The last control does not change the earlier nine-case results, recover the two clear task positives or establish automatic localization. All remain outside production. See [concept results](CONCEPT-MASK-RESULTS-20261030.md), [text-gripper failure](IMAGE-GRIPPER-RESULTS-20261030.md), [manual spatial control](SPATIAL-GRIPPER-CONTROL-20261030.md) and the [review record](REVIEW-AND-TESTS-20261030.md). The next [actual operator-trial steps](OPERATOR-TRIAL-20261030.md) are prepared but unexecuted.
+
 This file contains only public-safe access status, not account identifiers, API keys, private Discord content or unreviewed photos. Full raw model output stays in `artifacts/local/` until reviewed. Passing a mock contract test establishes adapter behavior under that mock; it does not establish model access or quality.

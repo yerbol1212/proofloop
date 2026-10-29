@@ -57,3 +57,7 @@ The goal is a small capability that reliably earns its claim. Additional infrast
 ## Result of the first intervention
 
 The [completed concept-mask experiment](CONCEPT-MASK-RESULTS-20261030.md) fails the gate: 5/9 reference matches, 0/2 clear positives and one incorrect PASS on the ambiguous cloth pair. Its separate mixed-mask control succeeds. The 20-call trial costs an estimated $0.056607. Independent raw-response, source and accounting replay passes, but that does not rescue the failed capability. The method remains outside production; the initial competitive verdict remains unchanged.
+
+The [text-gripper follow-up](IMAGE-GRIPPER-RESULTS-20261030.md) also fails: all 18 SAM responses contain no gripper masks, so no proximity comparison is available. A [final six-view manual spatial control](SPATIAL-GRIPPER-CONTROL-20261030.md) produces the expected one near warning and five no-near comparisons. This isolates automatic proposal availability as a measured bottleneck. Manual initialization and correlated exposed images limit the result; it is not a production fix or new task-accuracy score.
+
+The [exact operator-trial guide](OPERATOR-TRIAL-20261030.md) is prepared for later at the participant's request. The remaining priorities are reliable positive support on one narrow workflow, an actual request followed by fresh verification, and an observed unfamiliar user's benefit. Do not raise the competitive score because of test count, additional experimental code or the six manually initialized controls.
