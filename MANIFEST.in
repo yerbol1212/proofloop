@@ -1,0 +1,2 @@
+recursive-include proofloop/data *.json
+recursive-include web/dist *

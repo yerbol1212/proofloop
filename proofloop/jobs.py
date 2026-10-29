@@ -168,6 +168,15 @@ class JobStore:
                 BEGIN SELECT RAISE(ABORT, 'Job events are append only'); END;
                 CREATE TRIGGER IF NOT EXISTS job_events_no_delete BEFORE DELETE ON job_events
                 BEGIN SELECT RAISE(ABORT, 'Job events are append only'); END;
+                CREATE TABLE IF NOT EXISTS job_submission_intents (
+                    job_id TEXT PRIMARY KEY REFERENCES jobs(id), key_hash TEXT NOT NULL UNIQUE,
+                    fingerprint TEXT NOT NULL, binding_json TEXT NOT NULL,
+                    payload_sha256 TEXT NOT NULL, capability_sha256 TEXT NOT NULL
+                );
+                CREATE TRIGGER IF NOT EXISTS job_submission_intents_no_update BEFORE UPDATE ON job_submission_intents
+                BEGIN SELECT RAISE(ABORT, 'Job submission intents are immutable'); END;
+                CREATE TRIGGER IF NOT EXISTS job_submission_intents_no_delete BEFORE DELETE ON job_submission_intents
+                BEGIN SELECT RAISE(ABORT, 'Job submission intents are immutable'); END;
             """)
         finally:
             connection.close()
@@ -280,9 +289,38 @@ class JobStore:
         finally:
             connection.close()
 
+    def lookup_intent(self, kind: str, *, idempotency_key: str, binding: dict[str, Any],
+                      submission_fingerprint: str) -> dict[str, Any] | None:
+        """Recover only the original admitted job without images or redispatch.
+
+        The fingerprint is SHA256 of the original exact UTF-8 HTTP request
+        bytes, verified at admission. Possession of the opaque key, binding and
+        original fingerprint is a read-only recovery capability. It never
+        validates a new payload or admits/claims/retries an external request.
+        """
+        _, _, key_hash, binding_json = self._submission(kind, {}, idempotency_key, binding)
+        _identifier(submission_fingerprint, _HEX64, "Submission fingerprint is invalid")
+        connection = self._connect()
+        try:
+            connection.execute("BEGIN")
+            row = connection.execute("SELECT * FROM jobs WHERE key_hash=?", (key_hash,)).fetchone()
+            if row is None:
+                return None
+            self._verify_stored(connection, row, check_payload=True)
+            capability = connection.execute("SELECT * FROM job_submission_intents WHERE job_id=?", (row["id"],)).fetchone()
+            if (capability is None or row["kind"] != kind or row["binding_json"] != binding_json
+                    or not secrets.compare_digest(capability["fingerprint"], submission_fingerprint)):
+                raise JobConflict("Submission recovery credentials do not match the original request")
+            return self._public(row)
+        finally:
+            connection.close()
+
     def submit(self, kind: str, payload: dict[str, Any], *, idempotency_key: str,
-               binding: dict[str, Any], now_ms: int) -> dict[str, Any]:
+               binding: dict[str, Any], now_ms: int,
+               submission_fingerprint: str | None = None) -> dict[str, Any]:
         encoded, payload_hash, key_hash, binding_json = self._submission(kind, payload, idempotency_key, binding)
+        if submission_fingerprint is not None:
+            _identifier(submission_fingerprint, _HEX64, "Submission fingerprint is invalid")
         now_ms = _time(now_ms)
         connection = self._connect()
         try:
@@ -299,6 +337,12 @@ class JobStore:
                     (id,kind,key_hash,payload_json,payload_sha256,binding_json,state,created_ms,updated_ms,event_head)
                     VALUES (?,?,?,?,?,?,'queued',?,?,?)""",
                     (job_id, kind, key_hash, encoded, payload_hash, binding_json, now_ms, now_ms, _GENESIS))
+                if submission_fingerprint is not None:
+                    capability = {"job_id": job_id, "key_hash": key_hash, "fingerprint": submission_fingerprint,
+                                  "binding_json": binding_json, "payload_sha256": payload_hash}
+                    connection.execute("""INSERT INTO job_submission_intents
+                        (job_id,key_hash,fingerprint,binding_json,payload_sha256,capability_sha256) VALUES (?,?,?,?,?,?)""",
+                        (*capability.values(), _digest(_canonical(capability))))
                 result = self._append(connection, job_id, "submitted", now_ms)
             connection.commit()
             return result
@@ -525,6 +569,14 @@ class JobStore:
         """Validate within the caller's read/write transaction before exposure."""
         try:
             projection = self._public(row)
+            capability = connection.execute("SELECT * FROM job_submission_intents WHERE job_id=?", (row["id"],)).fetchone()
+            if capability is not None:
+                expected_capability = {"job_id": row["id"], "key_hash": row["key_hash"],
+                    "fingerprint": _identifier(capability["fingerprint"], _HEX64, "Stored submission fingerprint is invalid"),
+                    "binding_json": row["binding_json"], "payload_sha256": row["payload_sha256"]}
+                if (any(capability[key] != value for key, value in expected_capability.items())
+                        or capability["capability_sha256"] != _digest(_canonical(expected_capability))):
+                    raise JobIntegrityError("Stored submission recovery capability changed")
             if check_payload:
                 payload = json.loads(row["payload_json"])
                 if (type(payload) is not dict or _canonical(payload) != row["payload_json"]

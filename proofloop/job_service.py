@@ -24,6 +24,7 @@ from .core import ValidationError
 from .jobs import (JobConflict, JobError, JobIntegrityError, JobLeaseError,
                    JobStore, JobValidationError, MAX_LEASE_MS)
 from .meta import MetaAPIError
+from .runtime_control import RuntimeUnavailable
 from .verification_policy import (POLICY_VERSION, describe_capabilities,
                                   public_inspection_result, validate_binding)
 
@@ -146,7 +147,7 @@ class InspectionJobService:
                  db_path: str | Path | None = None, artifact_root: str | Path | None = None,
                  inspect_callback: Callable[..., dict[str, Any]] | None = None,
                  clock_ms: Callable[[], int] | None = None, lease_ms: int = 30_000,
-                 poll_interval: float = .1):
+                 poll_interval: float = .1, runtime_control: Any = None):
         if type(lease_ms) is not int or not 20 <= lease_ms <= MAX_LEASE_MS:
             raise JobValidationError("Service lease duration is invalid")
         if type(poll_interval) not in (int, float) or not math.isfinite(poll_interval) or not .001 <= poll_interval <= 10:
@@ -170,6 +171,28 @@ class InspectionJobService:
         self._thread: threading.Thread | None = None
         self._worker_id = "worker-" + secrets.token_hex(12)
         self._worker_error: str | None = None
+        self.runtime_control = runtime_control
+        if runtime_control is not None:
+            runtime_control.bind_worker("inspection", self._worker_status)
+
+    def _worker_status(self):
+        available = (not self._stop.is_set() and self._worker_error is None
+                     and self._thread is not None and self._thread.is_alive())
+        code = ("worker_closed" if self._stop.is_set() else "worker_failed" if self._worker_error is not None
+                else "worker_unavailable" if not available else "none")
+        return {"worker_available": available, "code": code}
+
+    def readiness(self):
+        if self.runtime_control is not None:
+            return self.runtime_control.readiness("inspection")
+        state = self._worker_status()
+        return {"schema_version": "1.0", "ready": state["worker_available"],
+                "reason_codes": [] if state["worker_available"] else [state["code"]],
+                "physical_action_authorized": False}
+
+    def _record(self, job_id, stage, **kwargs):
+        if self.runtime_control is not None:
+            self.runtime_control.record(job_id, "inspection", stage, **kwargs)
 
     @staticmethod
     def _payload(payload: Any) -> dict[str, Any]:
@@ -188,7 +211,9 @@ class InspectionJobService:
         except (ValueError, TypeError, RecursionError):
             raise ValidationError("Inspection job payload must be finite JSON") from None
 
-    def submit_inspection(self, payload: dict[str, Any], *, idempotency_key: str) -> dict[str, Any]:
+    def submit_inspection(self, payload: dict[str, Any], *, idempotency_key: str,
+                          submission_fingerprint: str | None = None) -> dict[str, Any]:
+        started, monotonic = time.time_ns(), time.monotonic_ns()
         request = self._payload(payload)
         with self._lifecycle_lock:
             if self._stop.is_set():
@@ -199,14 +224,35 @@ class InspectionJobService:
                 previous = lookup("inspection", request, idempotency_key=idempotency_key, binding=request["binding"])
             if previous is not None:
                 return self.get(previous["id"])
+        # Historical idempotent retrieval remains available when allowance is
+        # exhausted. Only genuinely new paid work needs operational readiness.
+        if self.runtime_control is not None:
+            try:
+                self.runtime_control.require_ready("inspection")
+            except RuntimeUnavailable as error:
+                self._record(secrets.token_hex(16), "admission", outcome="rejected", code=error.code,
+                             started_unix_ns=started, duration_ns=max(0, time.monotonic_ns() - monotonic))
+                raise
         with self.engine._lock:
             validate_binding(request["binding"], self.engine.snapshot())
             self.engine._validate_pair(request["inspection"])
             with self._journal_lock:
+                options = {"submission_fingerprint": submission_fingerprint} if submission_fingerprint is not None else {}
                 job = self.store.submit("inspection", request, idempotency_key=idempotency_key,
-                                        binding=request["binding"], now_ms=self._clock_ms())
+                                        binding=request["binding"], now_ms=self._clock_ms(), **options)
+        self._record(job["id"], "admission", started_unix_ns=started,
+                     duration_ns=max(0, time.monotonic_ns() - monotonic))
         self._wake.set()
         return self.get(job["id"])
+
+    def lookup_intent(self, payload: dict[str, Any]) -> dict[str, Any] | None:
+        if (type(payload) is not dict or set(payload) != {"schema_version", "idempotency_key", "binding", "submission_fingerprint"}
+                or type(payload["schema_version"]) is not int or payload["schema_version"] != 2):
+            raise JobValidationError("Use the exact versioned submission intent")
+        with self._journal_lock:
+            job = self.store.lookup_intent("inspection", idempotency_key=payload["idempotency_key"],
+                binding=payload["binding"], submission_fingerprint=payload["submission_fingerprint"])
+        return self.get(job["id"]) if job is not None else None
 
     def capabilities(self) -> dict[str, Any]:
         return {**describe_capabilities(), "enabled": True, "jobs": {
@@ -218,9 +264,25 @@ class InspectionJobService:
             "worker_available": (not self._stop.is_set() and self._worker_error is None
                                  and self._thread is not None and self._thread.is_alive()),
             "worker_error": self._worker_error,
+            "operational_readiness_available": self.runtime_control is not None,
         }}
 
     def get(self, job_id: str) -> dict[str, Any]:
+        started, monotonic = time.time_ns(), time.monotonic_ns()
+        trace_id = job_id if type(job_id) is str and re.fullmatch(r"[0-9a-f]{32}", job_id) else secrets.token_hex(16)
+        try:
+            result = self._get_verified(job_id)
+        except (JobError, OSError, ValueError, TypeError) as error:
+            self._record(trace_id, "result_read", outcome="error", code="integrity_error" if isinstance(error, JobIntegrityError) else "operation_error",
+                         started_unix_ns=started, duration_ns=max(0, time.monotonic_ns() - monotonic))
+            raise
+        valid = result["integrity"]["result_valid"] is not False
+        self._record(trace_id, "result_read", outcome="ok" if valid else "error",
+                     code="none" if valid else "integrity_error", started_unix_ns=started,
+                     duration_ns=max(0, time.monotonic_ns() - monotonic))
+        return result
+
+    def _get_verified(self, job_id: str) -> dict[str, Any]:
         with self._journal_lock:
             integrity = self.store.verify(job_id)
             if not integrity["valid"]:
@@ -335,11 +397,15 @@ class InspectionJobService:
                 # A corrupt queue is not skipped or silently rewritten. Stop
                 # dispatch and expose one fixed diagnostic, never exception text.
                 self._worker_error = "worker_journal_unavailable"
+                self._record("0" * 32, "worker", outcome="error", code="worker_failed")
                 return
             self._wake.wait(self._poll_interval)
             self._wake.clear()
 
     def _execute(self, job: dict[str, Any]) -> None:
+        execution_started, execution_clock = time.time_ns(), time.monotonic_ns()
+        observed_outcome, observed_code = "error", "worker_error"
+        self._record(job["id"], "queue_wait", duration_ns=max(0, self._clock_ms() - job["created_ms"]) * 1_000_000)
         token = job["lease"]["claim_token"]
         binding = job["binding"]
         heartbeat_done = threading.Event()
@@ -368,6 +434,7 @@ class InspectionJobService:
         heartbeat_thread = threading.Thread(target=heartbeat, name="proofloop-job-heartbeat", daemon=True)
         heartbeat_thread.start()
         try:
+            validation_started, validation_clock = time.time_ns(), time.monotonic_ns()
             with self.engine._lock:
                 if self._stop.is_set():
                     raise JobLeaseError("The inspection dispatch is unavailable")
@@ -376,6 +443,8 @@ class InspectionJobService:
                 with claim_lock:
                     with self._journal_lock:
                         self.store.mark_dispatched(job["id"], token, now_ms=self._clock_ms())
+            self._record(job["id"], "job_validation", started_unix_ns=validation_started,
+                         duration_ns=max(0, time.monotonic_ns() - validation_clock))
             if self._inspect_callback is None:
                 state = self.engine.inspect_pair(job["payload"]["inspection"], expected_binding=binding)
             else:
@@ -384,15 +453,24 @@ class InspectionJobService:
                 validate_binding(binding, self.engine.snapshot(), require_ready=False)
                 validate_binding(binding, state, require_ready=False)
                 if state.get("phase") == "error" or state.get("error") is not None:
+                    observed_code = "model_error"
                     self._fail(job, "model_error")
                     return
+                verification_started, verification_clock = time.time_ns(), time.monotonic_ns()
                 result = public_inspection_result(binding, state)
                 if not result["completed"]:
+                    observed_code = "validation_error"
                     self._fail(job, "validation_error")
                     return
                 reference = {"status": result["status"], "revision": binding["revision"]}
                 # Assert the exact closed public contract before publication.
                 _public_result(result, {"binding": binding, "result": reference})
+                self._record(job["id"], "verification", code="verdict_" + result["status"], started_unix_ns=verification_started,
+                             duration_ns=max(0, time.monotonic_ns() - verification_clock))
+                for evidence_request in result["evidence_requests"]:
+                    for gap_code in evidence_request["gap_codes"]:
+                        self._record(job["id"], "evidence_request", code=gap_code)
+                publication_started, publication_clock = time.time_ns(), time.monotonic_ns()
                 reference["result_sha256"] = self._save_result(job["id"], result)
                 recovery = state.get("recovery")
                 if isinstance(recovery, dict) and isinstance(recovery.get("receipt_id"), str) and re.fullmatch(r"[0-9a-f]{24,64}", recovery["receipt_id"]):
@@ -402,14 +480,24 @@ class InspectionJobService:
                         raise JobLeaseError("The inspection claim expired")
                     with self._journal_lock:
                         self.store.complete(job["id"], token, reference, now_ms=self._clock_ms())
+                observed_outcome, observed_code = "ok", "none"
+                self._record(job["id"], "artifact_publication", started_unix_ns=publication_started,
+                             duration_ns=max(0, time.monotonic_ns() - publication_clock))
         except JobLeaseError:
+            observed_outcome, observed_code = "uncertain", "lease_lost"
             with self._journal_lock:
                 self.store.recover_expired(now_ms=self._clock_ms())
+        except RuntimeUnavailable as error:
+            observed_outcome, observed_code = "rejected", error.code
+            self._fail(job, "worker_error")
         except ValidationError:
+            observed_outcome, observed_code = "rejected", "stale_binding"
             self._fail(job, "stale_binding")
         except MetaAPIError:
+            observed_code = "model_error"
             self._fail(job, "provider_error")
         except OSError:
+            observed_code = "artifact_error"
             self._fail(job, "artifact_error")
         except (JobError, ValueError, TypeError, KeyError, AttributeError):
             self._fail(job, "worker_error")
@@ -418,6 +506,8 @@ class InspectionJobService:
         finally:
             heartbeat_done.set()
             heartbeat_thread.join(min(1, self._lease_ms / 1000))
+            self._record(job["id"], "execution", outcome=observed_outcome, code=observed_code,
+                         started_unix_ns=execution_started, duration_ns=max(0, time.monotonic_ns() - execution_clock))
 
 
 JobService = InspectionJobService

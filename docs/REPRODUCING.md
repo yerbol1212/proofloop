@@ -1,5 +1,13 @@
 # Reproduce a small online-video demo
 
+The latest tracking comparison also has a packaged **zero-API policy-and-score replay**:
+
+```sh
+python -m proofloop.replay_bundle
+```
+
+It reproduces the published 3/6 and 4/7 combined retention from cached measurements, preserving zero unclear support and the unscored positive. It does not decode the original videos/masks or authenticate their API origin. No private archive, key, FFmpeg or optional parser is required. [Installed service and clean-wheel instructions](INFRASTRUCTURE-IMPLEMENTATION-20261029.md) also cover the asynchronous cached tracking API and SDK.
+
 A public clone can prepare a bounded, licensed recording example without an API key. Preparation downloads exact pinned source bytes, extracts a fixed set of original frames, retains attribution and license evidence, and writes an **unapproved** contract. It never makes a model request. The original private model responses and recordings are not in Git.
 
 ## Check the dependency-free software first

@@ -7,6 +7,9 @@ It never serves the project directory or reads an API key into the browser.
 from __future__ import annotations
 
 import argparse
+import base64
+import binascii
+import hashlib
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import json
 from pathlib import Path
@@ -20,10 +23,13 @@ from urllib.parse import parse_qs, unquote, urlsplit
 from .core import ValidationError
 from .jobs import JobConflict, JobIntegrityError, JobNotFound, JobValidationError
 from .verification_policy import describe_capabilities
+from .runtime_control import RuntimeUnavailable
+from .tracking_service import TrackingConflict, TrackingNotFound
 
 
+from .installation import web_root as installed_web_root
 ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_WEB_ROOT = ROOT / "web" / "dist"
+DEFAULT_WEB_ROOT = installed_web_root()
 MAX_JSON_BYTES = 16 * 1024 * 1024
 MAX_CONTROL_BYTES = 1024
 MAX_TASK_BYTES = 24 * 1024
@@ -146,7 +152,8 @@ class ProofLoopServer(ThreadingHTTPServer):
 def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                   web_root: Path = DEFAULT_WEB_ROOT, *, video_lab: Any = None,
                   research_lab: Any = None, job_service: Any = None,
-                  attempt_journal: Any = None) -> ThreadingHTTPServer:
+                  attempt_journal: Any = None, runtime_control: Any = None,
+                  tracking_service: Any = None, inference_enabled: bool = True) -> ThreadingHTTPServer:
     """Create, without starting, a server that binds only the IPv4 loopback.
 
     ``engine`` is intentionally injectable so transport tests require no model
@@ -160,10 +167,10 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
     csrf_token = secrets.token_urlsafe(32)
     if video_lab is None:
         from .video_lab import VideoLab
-        video_lab = VideoLab(root=ROOT)
+        video_lab = VideoLab(root=getattr(engine, "root", ROOT))
     if research_lab is None:
         from .research_lab import ResearchLab
-        research_lab = ResearchLab(root=ROOT)
+        research_lab = ResearchLab(root=getattr(engine, "root", ROOT))
 
     class Handler(BaseHTTPRequestHandler):
         server_version = "ProofLoop"
@@ -248,6 +255,7 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 body = self.rfile.read(length)
                 if len(body) != length:
                     raise _RequestError(400, "invalid_body", "The JSON request was incomplete.")
+                self._body_sha256 = hashlib.sha256(body).hexdigest()
                 value = json.loads(body.decode("utf-8"), parse_constant=_reject_json_constant,
                                    object_pairs_hook=_unique_json_object)
             except (UnicodeError, ValueError):
@@ -302,6 +310,7 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
             self._boundary()
             path = self._path()
             job_match = re.fullmatch(r"/api/v1/jobs/([0-9a-f]{32})(/events)?", path)
+            tracking_match = re.fullmatch(r"/api/v1/tracking/jobs/([0-9a-f]{32})(/events)?", path)
             if path == "/api/v1/capabilities":
                 self._json(200, job_service.capabilities() if job_service is not None else
                            {**describe_capabilities(), "enabled": False}, head=head)
@@ -309,6 +318,35 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 if attempt_journal is None:
                     raise _RequestError(503, "service_unavailable", "Persistent request accounting is unavailable.")
                 self._json(200, attempt_journal.summary(), head=head)
+            elif path == "/api/ready":
+                readiness = runtime_control.readiness() if runtime_control is not None else {
+                    "schema_version": "1.0", "ready": False, "reason_codes": ["runtime_not_configured"],
+                    "provider_connectivity_tested": False, "physical_action_authorized": False}
+                self._json(200 if readiness["ready"] else 503, readiness, head=head)
+            elif path in ("/api/v1/operations", "/api/v1/operations/otel"):
+                if runtime_control is None:
+                    raise _RequestError(503, "service_unavailable", "Operational diagnostics are unavailable.")
+                result = runtime_control.export_otel() if path.endswith("/otel") else {
+                    **runtime_control.snapshot(), "inference_enabled": inference_enabled}
+                self._json(200, result, head=head)
+            elif path == "/api/v1/replay":
+                from .replay_bundle import replay
+                self._json(200, replay(), head=head)
+            elif path == "/api/v1/tracking/capabilities":
+                if tracking_service is None:
+                    raise _RequestError(503, "service_unavailable", "Tracking diagnostics are unavailable.")
+                self._json(200, {**tracking_service.capabilities(), "inference_enabled": inference_enabled}, head=head)
+            elif tracking_match:
+                if tracking_service is None:
+                    raise _RequestError(503, "service_unavailable", "Tracking diagnostics are unavailable.")
+                if tracking_match[2]:
+                    query = parse_qs(urlsplit(self.path).query, keep_blank_values=True)
+                    values = query.get("after_sequence", ["0"])
+                    if set(query) - {"after_sequence"} or len(values) != 1 or not re.fullmatch(r"[0-9]{1,9}", values[0]):
+                        raise _RequestError(400, "invalid_request", "Use a nonnegative event sequence.")
+                    self._json(200, {"events": tracking_service.events(tracking_match[1], after_sequence=int(values[0]))}, head=head)
+                else:
+                    self._json(200, {"job": tracking_service.get(tracking_match[1])}, head=head)
             elif job_match:
                 if job_service is None:
                     raise _RequestError(503, "service_unavailable", "The durable inspection service is unavailable.")
@@ -346,6 +384,31 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
             self._boundary(mutation=True)
             path = self._path()
             cancel_match = re.fullmatch(r"/api/v1/jobs/([0-9a-f]{32})/cancel", path)
+            if path == "/api/v1/inspections/lookup":
+                if job_service is None:
+                    raise _RequestError(503, "service_unavailable", "Inspection recovery is unavailable.")
+                job = job_service.lookup_intent(self._read_json(4096))
+                self._json(200, {"found": job is not None, "job": job})
+                return
+            if path in ("/api/v1/tracking/assets", "/api/v1/tracking/jobs"):
+                if tracking_service is None:
+                    raise _RequestError(503, "service_unavailable", "Tracking diagnostics are unavailable.")
+                payload = self._read_json(12 * 1024 * 1024 if path.endswith("/assets") else 24 * 1024)
+                if path.endswith("/assets"):
+                    if set(payload) != {"media_type", "data"} or payload["media_type"] != "video/mp4" or not isinstance(payload["data"], str):
+                        raise _RequestError(400, "invalid_request", "Supply one bounded MP4 asset without filenames or paths.")
+                    try:
+                        data = base64.b64decode(payload["data"], validate=True)
+                    except (binascii.Error, ValueError):
+                        raise _RequestError(400, "invalid_request", "The video encoding is invalid.") from None
+                    result = tracking_service.register_asset(data, mime="video/mp4")
+                    self._json(201, {"asset": result})
+                else:
+                    if payload.get("mode") == "real_meta_video":
+                        if not inference_enabled or runtime_control is None:
+                            raise _RequestError(503, "inference_disabled", "Live model dispatch is disabled for this local service.")
+                    self._json(202, {"job": tracking_service.submit(payload)})
+                return
             if path == "/api/v1/inspections" or cancel_match:
                 if job_service is None:
                     raise _RequestError(503, "service_unavailable", "The durable inspection service is unavailable.")
@@ -357,8 +420,15 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 else:
                     if set(payload) != {"idempotency_key", "binding", "inspection"}:
                         raise _RequestError(400, "invalid_request", "Supply an idempotency key, exact binding and inspection.")
+                    fingerprints = self.headers.get_all("X-ProofLoop-Submission-Fingerprint", [])
+                    options = {}
+                    if fingerprints:
+                        if (len(fingerprints) != 1 or not re.fullmatch(r"[0-9a-f]{64}", fingerprints[0])
+                                or not secrets.compare_digest(fingerprints[0], self._body_sha256)):
+                            raise _RequestError(400, "invalid_fingerprint", "The submission receipt does not match the request bytes.")
+                        options["submission_fingerprint"] = fingerprints[0]
                     result = job_service.submit_inspection({key: payload[key] for key in ("binding", "inspection")},
-                                                          idempotency_key=payload["idempotency_key"])
+                                                          idempotency_key=payload["idempotency_key"], **options)
                     self._json(202, {"job": result})
                 return
             if path == "/api/inspect" and job_service is not None:
@@ -381,6 +451,12 @@ def create_server(engine: Any, host: str = "127.0.0.1", port: int = 0,
                 action()
             except _RequestError as exc:
                 self._error(exc.status, exc.code, exc.message)
+            except RuntimeUnavailable as exc:
+                self._error(503, exc.code, "The runtime cannot admit new paid work. Inspect local readiness and recover existing jobs.")
+            except TrackingNotFound:
+                self._error(404, "not_found", "This tracking diagnostic is unavailable.")
+            except TrackingConflict:
+                self._error(409, "tracking_conflict", "This tracking request conflicts with its stored operation.")
             except JobNotFound:
                 self._error(404, "not_found", "This inspection job is unavailable.")
             except JobConflict:
@@ -431,41 +507,70 @@ def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description="Open ProofLoop's local interactive workbench")
     parser.add_argument("--port", type=int, default=8790)
     parser.add_argument("--seed", type=Path, help="Optional local phone-session report; no report data is published")
+    parser.add_argument("--data-dir", type=Path, help="Private writable data directory; independent of installed package files")
+    parser.add_argument("--web-root", type=Path, help="Optional built frontend directory")
+    parser.add_argument("--offline", action="store_true", help="Disable all live model dispatch; retain cached replay and diagnostic jobs")
     parser.add_argument("--request-limit", type=int, default=120,
                         help="Persistent inspection request allowance; fixed when the local journal is created (default 120)")
     args = parser.parse_args(argv)
-    if not (DEFAULT_WEB_ROOT / "index.html").is_file():
+    frontend = args.web_root if args.web_root is not None else DEFAULT_WEB_ROOT
+    if not (frontend / "index.html").is_file():
         print("Frontend is not built. From web/, run npm install and npm run build, then start this server again.", file=sys.stderr)
         return 2
     from .interactive import InteractiveEngine
     from .inference_journal import AttemptJournal
-    from .bounded_spark import BoundedSparkClient
+    from .runtime_control import RuntimeControl
+    from .installation import data_root
+    from .tracking_service import TrackingService, result_from_policy
     from .job_service import InspectionJobService
 
-    seed = args.seed if args.seed is not None else _default_seed(ROOT)
+    root = data_root(args.data_dir)
+    seed = args.seed if args.seed is not None else _default_seed(root)
     if seed is not None and not seed.is_absolute():
-        seed = ROOT / seed
+        seed = root / seed
     try:
-        engine = InteractiveEngine(root=ROOT, seed_report=seed)
-        journal = AttemptJournal(ROOT / "artifacts/local/job-runtime/attempts.sqlite3", request_limit=args.request_limit)
+        journal = AttemptJournal(root / "artifacts/local/job-runtime/attempts.sqlite3", request_limit=args.request_limit)
+        control = RuntimeControl(journal, root / "artifacts/local/job-runtime", env_file=root / ".env.local")
+        def compile_client():
+            if args.offline:
+                raise RuntimeUnavailable("operation_error")
+            return control.compiler_client()
+        engine = InteractiveEngine(root=root, seed_report=seed, compile_client_factory=compile_client)
 
         def inspect(inspection, binding, job_id, guard):
             def factory(**kwargs):
-                return BoundedSparkClient.from_env(journal=journal, operation_id=job_id, guard=guard, **kwargs)
+                if args.offline:
+                    raise RuntimeUnavailable("operation_error")
+                return control.inspection_client(job_id, guard, **kwargs)
             return engine.inspect_pair(inspection, expected_binding=binding, runtime_client_factory=factory)
 
-        jobs = InspectionJobService(engine, inspect_callback=inspect)
-        server = create_server(engine, port=args.port, job_service=jobs, attempt_journal=journal)
+        def cached(request, job_id, guard):
+            from .replay_bundle import replay
+            guard()
+            selected = next(p for p in replay()["policies"] if p["clip_id"] == "remote_new")
+            return result_from_policy(selected["policy"], selected["warning_measurements"],
+                mode="cached_demo", origin="cached_development_projection", unscored_indices=selected["unscored_indices"])
+        def tracking_client(**kwargs):
+            if args.offline:
+                raise RuntimeUnavailable("operation_error")
+            return control.tracking_client(**kwargs)
+        tracking = TrackingService(root / "artifacts/local/tracking-runtime", client_factory=tracking_client if args.offline else None,
+                                   cached_callback=cached, runtime_control=control)
+        jobs = InspectionJobService(engine, inspect_callback=inspect, runtime_control=control)
+        server = create_server(engine, port=args.port, web_root=frontend, job_service=jobs,
+            attempt_journal=journal, runtime_control=control, tracking_service=tracking, inference_enabled=not args.offline)
     except (OSError, ValueError):
         print("Could not start the local ProofLoop server. Check the local report and choose an available port.", file=sys.stderr)
         return 2
     print(f"ProofLoop is ready at {server.base_url}", flush=True)
     jobs.start()
+    tracking.start()
     try:
         server.serve_forever(poll_interval=0.2)
     except KeyboardInterrupt:
         pass
     finally:
+        tracking.close()
         server.server_close()
         jobs.close()
     return 0

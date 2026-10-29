@@ -40,11 +40,11 @@ Private state and evidence JSON now use same-directory temporary files, file fsy
 
 ## Request allowance and accounting
 
-The production server defaults to a persistent **120 inspection-request attempts** allowance across clients, processes and restarts. The bound operation allowance remains the actual engine budget: two requests per target, plus one Spark localization request in guided mode, at most 13. The initial global allowance is configurable using `--request-limit`; reopening the same journal with a different allowance is rejected. A new adapter cannot silently raise a previously registered operation allowance.
+The production server defaults to a persistent **120 paid runtime attempts** allowance across clients, processes and restarts. Placement inspection retains its engine budget: two requests per target, plus one Spark localization request in guided mode, at most 13. Task compilation now shares this journal with a one-call operation, and tracking diagnostics use a fixed ten-call parent operation with fresh one-call component clients. The initial allowance is configurable using `--request-limit`; reopening the same journal with a different allowance is rejected. A new adapter cannot silently raise a previously registered operation allowance.
 
 Every reservation counts, including unfinished and failed requests. There are no automatic refunds or retries. The journal stores only operation ID, endpoint, supported model, request hash, timestamps, outcome and allowlisted reported token counts. It stores no prompt, source image, credential or provider message body. HTTP/transport `ok` means the response completed; later schema/evidence validation may still reject it.
 
-This is a request-count bound, **not a provider-enforced dollar cap**. Unreported usage and a lost connection can make actual billing unknown. This allowance covers the durable inspection path; separate explicit research commands and the task-drafting call are not routed through this journal. Check provider billing for account-wide spend.
+This is a request-count bound, **not a provider-enforced dollar cap**. Unreported usage and a lost connection can make actual billing unknown. It covers production compilation, inspection and tracking; explicit research commands retain their separately frozen budgets. Check provider billing for account-wide spend. Readiness and redacted timing/UNKNOWN metrics are described in [the implemented infrastructure](INFRASTRUCTURE-IMPLEMENTATION-20261029.md).
 
 Following the separate 2026-10-29 completion probe, the production factory uses `BoundedSparkClient`: an omitted Spark reasoning choice defaults to `low`. Explicit `None` or other supported reasoning choices remain explicit caller choices. Existing output-token caps, SAM payloads, persistent attempt admission and zero retries are preserved. The [tracking result](TRACKING-RESULTS-20261029.md) retains the original high-reasoning incomplete request beside its separately frozen successful repair; this is a completion result, not a general accuracy claim.
 
@@ -56,7 +56,7 @@ Browser QA used an isolated fixture on port 8791 with authored PNGs and injected
 
 Known boundaries:
 
-- If the admission HTTP response is lost before the browser receives/stores its job ID, the UI cannot recover that job by its idempotency key after a reload. It does not automatically resubmit; authoritative engine state remains available. API clients retaining their full request/key can retrieve the original job by exact resubmission.
+- Lost admission responses are now recoverable through a pre-persisted opaque intent and `POST /api/v1/inspections/lookup`, without resending images or inference. A point-in-time not-found result keeps capture blocked across reloads until an explicit authoritative binding change fences late admission. Local storage failure prevents submission; deleting the recovery capability can still lose the browser's reference. Existing job IDs and exact-request API idempotence remain supported.
 - Stored `current_at_snapshot` describes completion time. Polling later does not renew freshness or authorize workflow continuation or physical actions.
 - Reviewed unique-target location checks in two regions are the live supported contract. Broader deterministic predicates are listed separately; live count/absence/procedure correctness are not implied.
 - Semantic crop experiments remain separate from live acceptance. The measured SAM-vs-Spark accuracy limitations are unchanged.

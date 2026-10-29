@@ -13,8 +13,12 @@ dependencies = []
 sam = ["meta-sam-parser==0.1.0"]
 
 [project.scripts]
+proofloop = "proofloop.cli:main"
 proofloop-feasibility = "proofloop.feasibility:main"
 proofloop-smoke = "proofloop.smoke:main"
 
 [tool.setuptools.packages.find]
 include = ["proofloop*"]
+
+[tool.setuptools.package-data]
+proofloop = ["data/*.json", "_web/*", "_web/assets/*"]

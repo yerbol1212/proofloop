@@ -22,6 +22,7 @@ jobs:
         run: python -m pip install meta-sam-parser==0.1.0
       - run: python -m unittest discover -s tests -v
       - run: python -m proofloop.feasibility --output artifacts/feasibility
+      - run: python -m proofloop.replay_bundle
   frontend:
     runs-on: ubuntu-latest
     defaults:
@@ -36,3 +37,21 @@ jobs:
           cache-dependency-path: web/package-lock.json
       - run: npm ci
       - run: npm run build
+      - run: node --test tests/inspectionJobs.test.mjs
+  installed-workbench:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+      - run: npm ci && npm run build
+        working-directory: web
+      - run: python -m pip install build==1.6.1 setuptools==84.2.1 wheel==0.48.0
+      - run: python -m build --wheel --no-isolation
+      - run: python scripts/verify_install.py dist/proofloop-0.1.0-py3-none-any.whl

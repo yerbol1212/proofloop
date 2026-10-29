@@ -7,7 +7,8 @@ import { RecoveryPanel } from './RecoveryPanel'
 import { AcquisitionPanel } from './AcquisitionPanel'
 import { WorkflowPanel } from './WorkflowPanel'
 import { DiagnosticPanel } from './DiagnosticPanel'
-import { awaitInspection, pendingInspection, rememberInspection } from './inspectionJobs'
+import { awaitInspection, finishUnadmittedRecovery, pendingInspection, prepareInspectionSubmission, recoverInspection } from './inspectionJobs'
+import type { InspectionIntent } from './inspectionJobs'
 import type {
   EvidenceImage,
   InspectPayload,
@@ -1301,11 +1302,16 @@ export function App() {
   const [connectionError, setConnectionError] = useState<string | null>(null)
   const [actionError, setActionError] = useState<string | null>(null)
   const [pending, setPending] = useState(false)
+  const [recoveryAvailable, setRecoveryAvailable] = useState(false)
+  const [captureGeneration, setCaptureGeneration] = useState(0)
+  const [freshCaptureRequired, setFreshCaptureRequired] = useState(false)
   const csrfRef = useRef('')
   const currentRef = useRef<Snapshot | null>(null)
   const requestSequence = useRef(0)
   const appliedSequence = useRef(0)
   const live = useRef(true)
+  const recoveryController = useRef<AbortController | null>(null)
+  const unadmittedIntent = useRef<InspectionIntent | null>(null)
   const applyState = useCallback((next: Snapshot, sequence: number) => {
     if (
       !live.current ||
@@ -1344,48 +1350,83 @@ export function App() {
       window.clearInterval(timer)
     }
   }, [refresh])
-  useEffect(() => {
-    const job = pendingInspection()
-    if (!job) return
+  const recoverPending = useCallback(async () => {
+    recoveryController.current?.abort()
     const controller = new AbortController()
+    recoveryController.current = controller
     setPending(true)
-    void awaitInspection(job, controller.signal).catch((error: unknown) => {
+    setActionError(null)
+    try {
+      const saved = pendingInspection()
+      if (!saved) return
+      setRecoveryAvailable(true)
+      // A reload receives a fresh local mutation token; it is never persisted.
+      await refresh()
+      controller.signal.throwIfAborted()
+      if (!csrfRef.current) throw new Error('Reconnect the local server to recover the original inspection status.')
+      const id = saved.schema_version === 2
+        ? await recoverInspection(saved, csrfRef.current, controller.signal)
+        : saved.job_id
+      if (id === null) {
+        if (saved.schema_version === 2) unadmittedIntent.current = saved
+        setFreshCaptureRequired(true)
+        setCaptureGeneration((generation) => generation + 1)
+        setActionError('The original submission was not admitted. Choose New inspection, then capture two new views. Nothing was resubmitted.')
+        return
+      }
+      await awaitInspection(id, controller.signal, saved)
+    } catch (error: unknown) {
       if (!controller.signal.aborted && live.current)
-        setActionError(error instanceof Error ? error.message : 'The inspection status is unavailable.')
-    }).finally(() => {
+        setActionError(error instanceof Error ? error.message : 'The original inspection status is unavailable. It was not resubmitted.')
+    } finally {
       if (!controller.signal.aborted && live.current) {
         setPending(false)
+        try { setRecoveryAvailable(pendingInspection() !== null && unadmittedIntent.current === null) } catch { setRecoveryAvailable(true) }
         void refresh()
       }
-    })
-    return () => controller.abort()
+    }
   }, [refresh])
+  useEffect(() => {
+    try {
+      if (pendingInspection()) void recoverPending()
+    } catch (error: unknown) {
+      setRecoveryAvailable(true)
+      setActionError(error instanceof Error ? error.message : 'The saved inspection reference is unavailable.')
+    }
+    return () => recoveryController.current?.abort()
+  }, [recoverPending])
   async function action(
     path: string,
     payload?: InspectPayload | Record<string, unknown>,
     destination: 'inspection' | 'task' | 'workflow' = 'inspection',
   ): Promise<boolean> {
-    if (pending || currentRef.current?.busy || connectionError) return false
+    if (pending || recoveryAvailable || currentRef.current?.busy || connectionError) return false
     setPending(true)
     setActionError(null)
+    let submittedIntent: InspectionIntent | null = null
     try {
       const current = currentRef.current
       const inspection = path === '/api/inspect'
+      if (inspection && freshCaptureRequired)
+        throw new Error('Choose New inspection before capturing again so the original request cannot be admitted late.')
       if (inspection && !current?.active_task?.reviewed)
         throw new Error('Review and activate the exact task in Task before submitting a bound inspection.')
-      const body = inspection ? {
-        idempotency_key: crypto.randomUUID(),
-        binding: { session_id: current!.session_id, revision: current!.revision,
-          task_hash: current!.active_task!.task_hash, protocol_hash: current!.active_task!.protocol_hash },
-        inspection: payload,
-      } : payload ?? {}
+      const prepared = inspection ? await prepareInspectionSubmission({
+        session_id: current!.session_id, revision: current!.revision,
+        task_hash: current!.active_task!.task_hash!, protocol_hash: current!.active_task!.protocol_hash,
+      }, payload) : null
+      if (prepared) {
+        submittedIntent = prepared.intent
+        setRecoveryAvailable(true)
+      }
       const response = await fetch(inspection ? '/api/v1/inspections' : path, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           'X-ProofLoop-Token': csrfRef.current,
+          ...(submittedIntent ? { 'X-ProofLoop-Submission-Fingerprint': submittedIntent.submission_fingerprint } : {}),
         },
-        body: JSON.stringify(body),
+        body: prepared?.body ?? JSON.stringify(payload ?? {}),
       })
       const result = (await response.json()) as Snapshot & {
         error?: { message?: string }
@@ -1398,24 +1439,36 @@ export function App() {
         )
       if (inspection) {
         if (!result.job?.id) throw new Error('The server did not return an inspection job.')
-        rememberInspection(result.job.id)
-        await awaitInspection(result.job.id)
+        await awaitInspection(result.job.id, undefined, submittedIntent ?? undefined)
         // A persisted job is a historical record. Only the authoritative state
         // endpoint may update the current task and its workflow controls.
         await refresh()
-      } else applyState(result, ++requestSequence.current)
+      } else {
+        applyState(result, ++requestSequence.current)
+        if (unadmittedIntent.current && (path === '/api/new' || path === '/api/task/activate')) {
+          finishUnadmittedRecovery(unadmittedIntent.current, {
+            session_id: result.session_id, revision: result.revision,
+            task_hash: result.active_task!.task_hash!, protocol_hash: result.active_task!.protocol_hash,
+          })
+          unadmittedIntent.current = null
+          setFreshCaptureRequired(false)
+        }
+      }
       setTab(destination)
       return true
     } catch (caught) {
       setActionError(
         caught instanceof Error
-          ? caught.message
+          ? caught.message + (submittedIntent ? ' Recover the original inspection status before starting another capture; it will not be resubmitted.' : '')
           : 'The request could not complete.',
       )
       await refresh()
       return false
     } finally {
-      if (live.current) setPending(false)
+      if (live.current) {
+        setPending(false)
+        try { setRecoveryAvailable(pendingInspection() !== null && unadmittedIntent.current === null) } catch { setRecoveryAvailable(true) }
+      }
     }
   }
   const viewState =
@@ -1439,7 +1492,7 @@ export function App() {
         }
       : state
   const capture = viewState?.phase === 'awaiting_capture'
-  const blocked = pending || Boolean(connectionError) || Boolean(state?.busy)
+  const blocked = pending || recoveryAvailable || Boolean(connectionError) || Boolean(state?.busy)
   const titles = connectionError
     ? [
         'Inspection is unverified.',
@@ -1548,6 +1601,14 @@ export function App() {
         {actionError || state?.error ? (
           <Notice error>{actionError || state?.error}</Notice>
         ) : null}
+        {recoveryAvailable && !pending ? (
+          <div className="connection-actions">
+            <button className="button secondary" disabled={Boolean(connectionError)}
+              onClick={() => void recoverPending()}>
+              Recover original inspection status
+            </button>
+          </div>
+        ) : null}
         {viewState ? (
           tab === 'lab' ? (
             <VideoLab />
@@ -1582,9 +1643,9 @@ export function App() {
               >
                 {capture ? (
                   <CapturePanel
-                    key={`${viewState.session_id}-${viewState.revision}`}
+                    key={`${viewState.session_id}-${viewState.revision}-${captureGeneration}`}
                     state={viewState}
-                    pending={blocked}
+                    pending={blocked || freshCaptureRequired}
                     onInspect={async (payload) => {
                       await action('/api/inspect', payload)
                     }}

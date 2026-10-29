@@ -335,8 +335,10 @@ class InteractiveEngine:
             if (set(protocol.objects) != set(objects) or list(protocol.regions) != regions
                     or not protocol.checks or any(check.kind != "location" or not check.unique_target for check in protocol.checks)):
                 raise CompilerError("The task must contain only declared-unique placement checks in the two named regions")
+            from .runtime_control import RuntimeCompilerClient
             origin = ("authored_frozen_coffee_preset" if source == "authored_coffee_preset" else
-                      "live_meta_api" if self._compile_client_factory is None else "injected_compiler_not_verified_live")
+                      "live_meta_api" if self._compile_client_factory is None or isinstance(client, RuntimeCompilerClient)
+                      else "injected_compiler_not_verified_live")
             draft = {"draft_id": draft_id, "title": title, "requirements": requirements, "objects": objects, "regions": regions,
                      "protocol": protocol.to_dict(), "protocol_hash": protocol.content_hash,
                      "concepts": concepts,
