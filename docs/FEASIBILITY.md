@@ -1,6 +1,6 @@
 # Feasibility status
 
-Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original experiment dates.
+Updated: 29 October 2026, Asia/Almaty. Earlier reports retain their original experiment dates.
 
 ## Gates
 
@@ -9,7 +9,7 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | Full Python 3.12 suite: **626/626 passed**, including loopback HTTP checks; strict production frontend build passed | [Diagnostics milestone CI passed](https://github.com/yerbol1212/proofloop/actions/runs/40680859251); the updated suite also ran 626 tests on Python 3.9 with one expected optional-parser skip. The earlier actual public clone ran 450 tests; software tests are separate from perception accuracy |
+| Local tests | Full Python 3.12 suite: **1,011/1,011 passed**, including loopback HTTP checks; Python 3.9 passes with two expected optional-parser skips | [Frozen visibility implementation CI passed](https://github.com/yerbol1212/proofloop/actions/runs/40826263958), including both Python jobs and production frontend build. The earlier actual public-clone run remains historical; software tests do not establish perception accuracy |
 | Official SAM codec | Official parser independently re-decoded all 16 phone responses; 12 nonempty masks matched saved rasters and four covered responses were empty | Passed on phone inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
 | Positive placement contract | Live Spark fork-left/spoon-right protocol; stable positive location evidence supports wrong-region fail and corrected pass | Passed on one recorded clip |
@@ -40,6 +40,10 @@ Updated: 28 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Real-video distractors | Six manual candidate pairs from two additional licensed recordings: 6/6 completed, 2/2 positives retained, 1/4 distractors falsely supported | Six calls, estimated $0.047778; correlated authored-anchor cohort, not automatic localization accuracy |
 | Crop-only confirmation | Development retest of all three globally supported candidates: 3/3 completed, both targets supported, false-support battery withheld | Three extra calls, estimated $0.015086; observed error addressed on exposed cases, independent validation pending |
 | Semantic candidate v1 (historical) | Four selected cases, two classifications, one positive supported, one positive UNKNOWN; negative and low-contrast glass unscored | Five attempts, three incomplete, estimated $0.076588; disabled from acceptance; no demonstrated distractor rejection |
+| Experimental SAM video tracking | Two episode-1 recordings, 100 sampled frames, sixteen frozen checkpoints: raw tracking retains 7/7 clear targets but supports 3/9 unclear states; semantic policy retains 1/7 and supports 1/9 | [Original comparison preserved](TRACKING-RESULTS-20261029.md); manual seeds differ from automatic still baselines; no full-occlusion or identity-switch proof |
+| Mask-based distractor correction | Validated disjoint foreground removes 57 false rectangle-overlap vetoes using cached responses | Zero new calls; checkpoint outcomes remain 1/7 clear retention and 1/9 unclear support; geometry cleanup does not establish accuracy improvement |
+| Bounded Spark completion repair | Separate once-only low-reasoning repair of the original incomplete tracking baseline pair completes in one call | Both views remain UNKNOWN; original failure/denominator preserved; production client default updated, not a general accuracy claim |
+| Full-frame visibility assessment | Exposed direct clear retention 3/7 → 5/7 and unclear support 2/9 → 0/9; two new recordings 5/6 → 6/6 and 0/10 → 1/10 | [Frozen comparison](VISIBILITY-RESULTS-20261029.md): 50 new calls, estimated $0.415522. The unchanged two-view policy withholds the borderline error but retains only 2/6 new clear states in both versions; outside live placement acceptance |
 | Synthetic scene inputs | Four generated scenes with exact prompts, hashes, annotations and provenance | Used in live Meta calls; not physical evidence |
 | Public repository | [yerbol1212/proofloop](https://github.com/yerbol1212/proofloop), verified public; tested build milestones published | Created |
 
