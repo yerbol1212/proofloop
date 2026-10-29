@@ -1,0 +1,837 @@
+{
+  "combined_request_cap": 28,
+  "gate": {
+    "complete_source_response_accounting": true,
+    "control_completed_and_withheld": true,
+    "main_clear_pass_retention": 2,
+    "main_exact_reference_matches": 9,
+    "main_supported_fail_retention": 1,
+    "main_unknown_withheld": 6
+  },
+  "limitations": [
+    "All nine main cases are exposed development, not independent fresh-source accuracy.",
+    "Control reuses two old spatial SAM results and is outside nine-case metric denominators.",
+    "No physical action verification or production promotion."
+  ],
+  "main": {
+    "cases": [
+      {
+        "case_id": "bridge-scripted-0-pair-0",
+        "concepts": {
+          "fork": "blue-handled fork"
+        },
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 181,
+              "x2": 300,
+              "y1": 158,
+              "y2": 263
+            },
+            "source_sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 181,
+              "x2": 300,
+              "y1": 158,
+              "y2": 263
+            },
+            "source_sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "locator_sha256": "43325bc63321aa6ed96405942e7f08f1a4a183e05e366b70a685be3e362e5bef",
+        "original_contract_hash": "2a4f747826572f76d131c0c5491b64185f5c8c003744361cecbad17ff6b7c8a8",
+        "original_pair_sha256": "83624132ff9ec55ded5d2e56fe3fb80d1eab6e10d21a84b610b0e628b584c2e9",
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "fork-right",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "fork",
+              "region_id": "right",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-bridge-scripted-0",
+          "objects": [
+            "fork"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "regions": {
+          "left": [
+            0,
+            0,
+            0.49,
+            1
+          ],
+          "right": [
+            0.5,
+            0,
+            1,
+            1
+          ]
+        },
+        "source_sha256": [
+          "e1c8e5f7942ae4bdab72c897b5fa09a53dcc6099b0bea64e5bacb52675085161"
+        ],
+        "truth": "fail"
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-1",
+        "concepts": {
+          "fork": "blue-handled fork"
+        },
+        "frames": [
+          {
+            "eligible": false,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": null,
+            "source_sha256": "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+            "width": 640,
+            "withheld_reason": "no_candidate"
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 181,
+              "x2": 299,
+              "y1": 188,
+              "y2": 291
+            },
+            "source_sha256": "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "locator_sha256": "9203a6ce1e93df7f7b5f74e1fbc6e7ee80b384a2ca0e15197c8cffd91c410436",
+        "original_contract_hash": "5bf3871a214be0c792f0a1465e1f2ba9e54dbea8c670e8e20fbb39b44aa045a4",
+        "original_pair_sha256": "8c01c10a95af01b5eddaf2cd602d36a496e97753d2cadfec42b8f3f42e946940",
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "fork-right",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "fork",
+              "region_id": "right",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-bridge-scripted-0",
+          "objects": [
+            "fork"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "regions": {
+          "left": [
+            0,
+            0,
+            0.49,
+            1
+          ],
+          "right": [
+            0.5,
+            0,
+            1,
+            1
+          ]
+        },
+        "source_sha256": [
+          "e1c8e5f7942ae4bdab72c897b5fa09a53dcc6099b0bea64e5bacb52675085161"
+        ],
+        "truth": "unknown"
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-2",
+        "concepts": {
+          "fork": "blue-handled fork"
+        },
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 252,
+              "x2": 392,
+              "y1": 176,
+              "y2": 277
+            },
+            "source_sha256": "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "fork",
+            "original_box": {
+              "x1": 181,
+              "x2": 325,
+              "y1": 188,
+              "y2": 291
+            },
+            "source_sha256": "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "locator_sha256": "1906df21db1a6661050fb9eff3bafe0e2bf82290fe1f762881e3b73f11595e38",
+        "original_contract_hash": "aa0912823d266fc0898e30faf85a293d5068c4bba029c546cc60e88243937c90",
+        "original_pair_sha256": "3e744ee4c2166a06cdb6335f17e5fe46cfb0ab19959722459dd4d2f697e5159e",
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "fork-right",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "fork",
+              "region_id": "right",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-bridge-scripted-0",
+          "objects": [
+            "fork"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "regions": {
+          "left": [
+            0,
+            0,
+            0.49,
+            1
+          ],
+          "right": [
+            0.5,
+            0,
+            1,
+            1
+          ]
+        },
+        "source_sha256": [
+          "e1c8e5f7942ae4bdab72c897b5fa09a53dcc6099b0bea64e5bacb52675085161"
+        ],
+        "truth": "unknown"
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-0",
+        "concepts": {
+          "cloth": "green cloth"
+        },
+        "frames": [
+          {
+            "eligible": false,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": null,
+            "source_sha256": "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+            "width": 640,
+            "withheld_reason": "not_fully_visible"
+          },
+          {
+            "eligible": false,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": null,
+            "source_sha256": "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115",
+            "width": 640,
+            "withheld_reason": "not_fully_visible"
+          }
+        ],
+        "locator_sha256": "76eac24c8ab0af085336b320b25637c36c1b672d2e81820132eb2c18b0532aec",
+        "original_contract_hash": "d7c60f27386a4943e5b0d897b1bbe71d12cce4d96732b88229e63a43479c6e48",
+        "original_pair_sha256": "590bbc88b33c500b2e012527238cea99bd47eda23437027679a3536a7e396e5a",
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "cloth-left",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "cloth",
+              "region_id": "left",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-ur5-cloth-0",
+          "objects": [
+            "cloth"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "regions": {
+          "left": [
+            0.1,
+            0.38,
+            0.43,
+            0.8
+          ],
+          "right": [
+            0.44,
+            0.38,
+            0.65,
+            0.8
+          ]
+        },
+        "source_sha256": [
+          "ae5da22ea02178c9336ff04473bbd2c2c0794f1826e2805193de13193ca8a26f"
+        ],
+        "truth": "unknown"
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-1",
+        "concepts": {
+          "cloth": "green cloth"
+        },
+        "frames": [
+          {
+            "eligible": false,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": null,
+            "source_sha256": "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+            "width": 640,
+            "withheld_reason": "not_fully_visible"
+          },
+          {
+            "eligible": false,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": null,
+            "source_sha256": "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668",
+            "width": 640,
+            "withheld_reason": "not_fully_visible"
+          }
+        ],
+        "locator_sha256": "793b33c2e88b75f30b6d0adacc7f8fd91afa1a742da2c8430530b17e6dc37d4d",
+        "original_contract_hash": "41b0f8e88e66349341f5f360a6f223d7717fdfdf9682832672c3597fc5999165",
+        "original_pair_sha256": "ef25e989ea8473e6b3631b287ad25034e53379cc6b7f1f5406a302061684faa1",
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "cloth-left",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "cloth",
+              "region_id": "left",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-ur5-cloth-0",
+          "objects": [
+            "cloth"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "regions": {
+          "left": [
+            0.1,
+            0.38,
+            0.43,
+            0.8
+          ],
+          "right": [
+            0.44,
+            0.38,
+            0.65,
+            0.8
+          ]
+        },
+        "source_sha256": [
+          "ae5da22ea02178c9336ff04473bbd2c2c0794f1826e2805193de13193ca8a26f"
+        ],
+        "truth": "unknown"
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-2",
+        "concepts": {
+          "cloth": "green cloth"
+        },
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": {
+              "x1": 92,
+              "x2": 201,
+              "y1": 256,
+              "y2": 343
+            },
+            "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "cloth",
+            "original_box": {
+              "x1": 93,
+              "x2": 203,
+              "y1": 264,
+              "y2": 371
+            },
+            "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "locator_sha256": "dc776348ebf1cf2b9a090e52eed994f4d55b8d4e795c01e2a7ff1bf3bd61a53c",
+        "original_contract_hash": "c9dab92186cb7ac0c50c14cea06371dc85a1378f35bffd30f0835f7e9cfc5d18",
+        "original_pair_sha256": "53589f635093dbe5ef308e0d076309d38307f806ae11321e73f78fd3a15a62b9",
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "cloth-left",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "cloth",
+              "region_id": "left",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-ur5-cloth-0",
+          "objects": [
+            "cloth"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "regions": {
+          "left": [
+            0.1,
+            0.38,
+            0.43,
+            0.8
+          ],
+          "right": [
+            0.44,
+            0.38,
+            0.65,
+            0.8
+          ]
+        },
+        "source_sha256": [
+          "ae5da22ea02178c9336ff04473bbd2c2c0794f1826e2805193de13193ca8a26f"
+        ],
+        "truth": "unknown"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-0",
+        "concepts": {
+          "brown_cup": "brown drinking cup"
+        },
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 228,
+              "x2": 277,
+              "y1": 189,
+              "y2": 264
+            },
+            "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 228,
+              "x2": 277,
+              "y1": 189,
+              "y2": 264
+            },
+            "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "locator_sha256": "e591bd614c92447d44ae92887dbf8af79b1e7fc2d8d7865609ba2b23974944af",
+        "original_contract_hash": "b516f4169ced89f2ff8aeba0765426a14973b6e7dabeb307401f52ed4a7d9c49",
+        "original_pair_sha256": "bf75d5b7d8dab7630aa93b51fc0a406de7b1ee13f85be1c89b965458bb09c228",
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "brown_cup-left",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "brown_cup",
+              "region_id": "left",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-ur5-cup-4",
+          "objects": [
+            "brown_cup"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "regions": {
+          "left": [
+            0.35,
+            0.32,
+            0.52,
+            0.66
+          ],
+          "right": [
+            0.55,
+            0.32,
+            0.8,
+            0.66
+          ]
+        },
+        "source_sha256": [
+          "2759938cf27fc003f68d01611095f168f95ae6e313c92e49dc2dd3e997adb9be"
+        ],
+        "truth": "pass"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-1",
+        "concepts": {
+          "brown_cup": "brown drinking cup"
+        },
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 227,
+              "x2": 277,
+              "y1": 189,
+              "y2": 266
+            },
+            "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 227,
+              "x2": 277,
+              "y1": 218,
+              "y2": 293
+            },
+            "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "locator_sha256": "1909d1980d45d3046755a189aa610053f5e95da37158f93fa03be611a6b782d6",
+        "original_contract_hash": "e1c8aa1fadb8709c468801247ac3d778e0cc33abd16827b2d859f2d5ff060db3",
+        "original_pair_sha256": "e26db9dbc6ff16dea3a195311e9cca4e89dc8843e6f68f23cb09ad8527a2b50e",
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "brown_cup-left",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "brown_cup",
+              "region_id": "left",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-ur5-cup-4",
+          "objects": [
+            "brown_cup"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "regions": {
+          "left": [
+            0.35,
+            0.32,
+            0.52,
+            0.66
+          ],
+          "right": [
+            0.55,
+            0.32,
+            0.8,
+            0.66
+          ]
+        },
+        "source_sha256": [
+          "2759938cf27fc003f68d01611095f168f95ae6e313c92e49dc2dd3e997adb9be"
+        ],
+        "truth": "pass"
+      },
+      {
+        "case_id": "ur5-cup-4-pair-2",
+        "concepts": {
+          "brown_cup": "brown drinking cup"
+        },
+        "frames": [
+          {
+            "eligible": true,
+            "frame_index": 0,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 230,
+              "x2": 280,
+              "y1": 175,
+              "y2": 264
+            },
+            "source_sha256": "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+            "width": 640,
+            "withheld_reason": null
+          },
+          {
+            "eligible": true,
+            "frame_index": 1,
+            "height": 480,
+            "object_id": "brown_cup",
+            "original_box": {
+              "x1": 229,
+              "x2": 280,
+              "y1": 175,
+              "y2": 265
+            },
+            "source_sha256": "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67",
+            "width": 640,
+            "withheld_reason": null
+          }
+        ],
+        "locator_sha256": "7318aef853403a02515f26bfcc885a370ca53f0a380ca8caa514e2c0fbf14cd9",
+        "original_contract_hash": "219c440fb0323c4d582c3f8248467678d090d6f67100af901053017f4e452c92",
+        "original_pair_sha256": "d2cc4ad17263eaccabb47ed5e0880af5cf7483b1541a5e81a3c8a413e1f3572c",
+        "protocol": {
+          "checkpoints": [],
+          "checks": [
+            {
+              "id": "brown_cup-left",
+              "kind": "location",
+              "max_age_ms": 30000,
+              "min_confidence": 0.8,
+              "min_stable_samples": 2,
+              "object_id": "brown_cup",
+              "region_id": "left",
+              "unique_target": true
+            }
+          ],
+          "id": "prospective-ur5-cup-4",
+          "objects": [
+            "brown_cup"
+          ],
+          "regions": [
+            "left",
+            "right"
+          ],
+          "steps": [],
+          "version": "1"
+        },
+        "regions": {
+          "left": [
+            0.35,
+            0.32,
+            0.52,
+            0.66
+          ],
+          "right": [
+            0.55,
+            0.32,
+            0.8,
+            0.66
+          ]
+        },
+        "source_sha256": [
+          "2759938cf27fc003f68d01611095f168f95ae6e313c92e49dc2dd3e997adb9be"
+        ],
+        "truth": "unknown"
+      }
+    ],
+    "created_unix_ms": 1793303593495,
+    "dependencies": {
+      "ffmpeg_version": "ffmpeg version 9.0 Copyright (c) 2000-2026 the FFmpeg developers",
+      "meta_sam_parser_distribution": "0.1.0",
+      "sam_model": "sam-3.1",
+      "spark_max_output_tokens": 4096,
+      "spark_model": "muse-spark-1.3",
+      "spark_reasoning_effort": "low"
+    },
+    "evaluation_role": "post_outcome_exposed_development",
+    "implementation_sha256": {
+      "anchor_padding_experiment.py": "4386f987c575b446b379bb517f6aeb8182873d88c623212585ecd1c9c4ce9bcd",
+      "benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+      "bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+      "capture.py": "77e94f6a5941fc5378037ccef46ba71060821a7457331e04bd35600dcbba682a",
+      "concept_verified_experiment.py": "f2eded145ae2c1458374d94fa80da136e7e7f7586cc4a4b61818e3f6e75f5def",
+      "core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+      "grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+      "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+      "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+      "mask_semantics.py": "de84183204cbc02ca6a4b4b2369a0061845eded7afcc1f9bf4add0b7800a1a9f",
+      "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+      "prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+      "prospective_audit.py": "50bc6c4e457b416cdf0cb54f793bc121db1eb924ab2a5cfe3a346ea6bbc1a6f5",
+      "semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869",
+      "tracking_geometry.py": "9c5cfdcb513a3839fa82eae19050dc50da2be62842b76329a47a4e4a0b3dfc01",
+      "video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b"
+    },
+    "limits": [
+      "Post-outcome exposed development on every original pilot case; not fresh-source evaluation.",
+      "Original labels, source images, regions, confidence 0.8 and two-view checks remain unchanged.",
+      "Cached identity/full-visibility/single-candidate vetoes cannot be overridden.",
+      "All original frames receive diagnostic concept SAM; only eligible pairs may receive one semantic challenge.",
+      "A mask-aware Spark assessment is a model judgment, not independently verified identity.",
+      "No production promotion, hidden fallback or physical repair is provided."
+    ],
+    "method": "concept_sam_mask_semantics_exposed_development_v1",
+    "physical_action_execution_verified": false,
+    "plan_sha256": "437737c8e97c5de61ae93d86c19f37ff97e84d5662a51fc918625c51def73dbb",
+    "prior_freeze_hashes": [
+      "4d928c5a38a168ad24a286bdbc448ac6ac3724d855c085e94cc1118251a2a38c",
+      "a290ae0088b4bdf8d72773d2f357731d0bb75712245fbe5cbbd6efe03f3f2adf",
+      "8b1fde955abdf42430d8ce7fe97de2480a4739ab044b0139f8c90eb90577a691"
+    ],
+    "request_caps": {
+      "sam": 18,
+      "spark": 9,
+      "total": 27
+    },
+    "sam_prompt": "unchanged_positive_target_concept_on_each_original_full_image",
+    "schema_version": "concept_sam_mask_semantics_exposed_development_v1",
+    "stage_order": "all_original_sam_frames_then_eligible_pair_challenges"
+  },
+  "publication_before_paid_inference_required": true,
+  "retries": 0,
+  "schema_version": "proofloop_concept_mask_development_plan_v1",
+  "separate_control": {
+    "anchor_origin": "retained_spatial_sam_control",
+    "expected_semantic_decision": "unknown",
+    "frames": [
+      {
+        "crop_sha256": "ce6b71c247012b5aeb910dbf9194dd823daa7f83f1084e1dfb460c51f52a4446",
+        "frame_index": 0,
+        "mask_sha256": "f914b556bb81d8e732de6823227c2508791607b9c5e391dca011ae0328b4df5d",
+        "proposal_sha256": "1666c463a06e93ac9e2994a29e5fa5cc048f5cb90838f7e25354e54f44d6969e",
+        "sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1"
+      },
+      {
+        "crop_sha256": "cffaac6afdbb25ca32524afc3a2b2866ac2e12d27a8e5f7f675931a35b02cca1",
+        "frame_index": 1,
+        "mask_sha256": "292fb60777c3f1adb12ef616bf4c83e2adee081cc0eb28bed1796c8785594202",
+        "proposal_sha256": "a6c291c6d9963475a40a2d098dacd80b85c98adddd67e4ef42ba4e454fbc2855",
+        "sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+      }
+    ],
+    "kind": "known_merged_fork_spoon_foreground",
+    "original_contract_hash": "2a4f747826572f76d131c0c5491b64185f5c8c003744361cecbad17ff6b7c8a8",
+    "prepared_sha256": "22e2da86420aa37e634100ced443335c67276341aac629559f57500aa521e0ea",
+    "request_cap": 1
+  },
+  "stop_http_statuses": [
+    401,
+    402,
+    403,
+    429
+  ]
+}
