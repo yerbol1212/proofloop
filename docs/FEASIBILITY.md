@@ -1,6 +1,6 @@
 # Feasibility status
 
-Updated: 30 October 2026, Asia/Almaty. Earlier reports retain their original experiment dates.
+Updated: 31 October 2026, Asia/Almaty. Earlier reports retain their original experiment dates.
 
 ## Gates
 
@@ -9,7 +9,7 @@ Updated: 30 October 2026, Asia/Almaty. Earlier reports retain their original exp
 | Meta credits | Participant dashboard displays $150 free credits | Confirmed in browser |
 | API readiness | Authenticated model listing and real Spark/SAM requests succeeded | Passed |
 | Deterministic checker and planner | 17/17 authored synthetic episodes, 24/24 stage assertions and 1/1 bounded planner assertion match expectations | Passed on oracle facts |
-| Local tests | Full Python 3.12 suite: **1,356/1,356 passed**, including loopback HTTP checks; Python 3.9 passes with two expected optional-parser skips | [Publication CI](https://github.com/yerbol1212/proofloop/actions/workflows/tests.yml) covers both Python jobs, frontend checks and installed-workbench verification. The earlier actual public-clone run remains historical; software tests do not establish perception accuracy |
+| Local tests | **1,585 tests pass on Python 3.12 and Python 3.9**, with five expected optional-dependency skips on 3.9. Expanded publication CI pending | [Publication CI](https://github.com/yerbol1212/proofloop/actions/workflows/tests.yml) covers both Python jobs, frontend checks and installed-workbench verification. The earlier actual public-clone run remains historical; software tests do not establish perception accuracy |
 | Official SAM codec | Official parser independently re-decoded all 16 phone responses; 12 nonempty masks matched saved rasters and four covered responses were empty | Passed on phone inputs |
 | Real Spark structured output | Strict smoke response and two requirement-dependent protocol drafts matched declared expectations; drafts remain unapproved | Passed initial live checks |
 | Positive placement contract | Live Spark fork-left/spoon-right protocol; stable positive location evidence supports wrong-region fail and corrected pass | Passed on one recorded clip |
@@ -132,6 +132,10 @@ The participant's available objects are a fork and spoon. The [cutlery concept p
 The [initial live report](../artifacts/feasibility/live-meta-20261026.md) records 12 real model calls plus one model listing, measured latency and an estimated Standard list-price cost of $0.03352225. It does not establish camera accuracy or a physical correction. The [capture checklist](CAPTURE.md) defines the next real-media gate.
 
 ## Publication boundaries
+
+The [31 October production corrections](ADMISSION-AND-RECEIPTS-20261031.md) preserve the age of queued uploads through completion, reject expired admitted images before inference, prevent request rekeying/cancellation from granting known bytes a new clock, and bind attached recovery references to the exact replayed task/protocol/revision. Independent fixture-based review reproduces the original failures and verifies the corrections. Historical events and original model thresholds remain unchanged.
+
+The [full-source verification follow-up](CROP-VERIFICATION-RESULTS-20261031.md) spends sixteen requests, estimated **$0.070963**, on the four previously crop-eligible pairs while preserving all nine exposed cases. It matches **7/9 references**, retains **1/2 clear positives**, returns eight UNKNOWN results, and has no unsupported PASS or missing predictions. It fails the unchanged gate by losing the known wrong-side decision and rejecting one clear cup. Always UNKNOWN would match six references. Automatic terminal-tool mask quality and target-extent assessment remain bottlenecks. This method is rejected for production; two prepared additional recordings receive no inference. A separately declared [containment witness control](CONTAINMENT-WITNESS-PLAN-20261031.md) can only explain a conditional geometric property while preserving all original task verdicts, with no repair origin or current authority.
 
 The [subsequent context-crop probe](CONTEXT-CROP-RESULTS-20261030.md) completes fifteen SAM requests for an estimated $0.0375 and supplies eligible proposals for both exposed clear-cup pairs. All eighteen views/nine pairs remain, including the reference-UNKNOWN cloth pair with eligible geometry. This is not a task-accuracy result or production promotion; full-source semantic/gripper/region verification and untouched-source validation remain pending. The separate [freshness corrections](FRESHNESS-INVESTIGATION-20261030.md) fix reproducible production delayed-inference and clock-rollback errors, with 1,517 software tests passing on Python 3.12 and the Python 3.9 suite passing with four expected optional-dependency skips.
 

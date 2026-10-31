@@ -1,0 +1,1501 @@
+{
+  "candidate_status": "rejected_development_gate",
+  "elapsed_wall_seconds": 648.847,
+  "evidence_role": "post_outcome_exposed_development_full_source_verification",
+  "independent_integrity_audit": {
+    "file": "crop-verification-audit-20261031.json",
+    "file_sha256": "ea1c2825e3096fbb0367573b581edc878a4dbfc7d5c8488d38b891b8b41eb568",
+    "model_quality_verified": false,
+    "status": "passed"
+  },
+  "limits": [
+    "All nine cases were exposed before this method was designed.",
+    "Seven of nine reference matches include six UNKNOWN references; always UNKNOWN would match six.",
+    "The method retains one clear positive and loses the formerly supported wrong-side failure.",
+    "Sixteen new calls reuse paid historical locators and target/crop proposals; cost and latency are incremental, not a cold-start comparison.",
+    "Tool mask proximity is a negative warning, not proof of physical contact or separation.",
+    "No active acceptance or automatic repair behavior is changed."
+  ],
+  "new_source_inference_performed": false,
+  "persistent_journal": {
+    "allowance_scope": "this_local_journal_all_processes_and_restarts",
+    "automatic_retry": false,
+    "hard_dollar_limit": false,
+    "operation_attempts": 16,
+    "outcomes": {
+      "ok": 16,
+      "rejected": 0,
+      "reserved": 0,
+      "uncertain": 0
+    },
+    "remaining_attempts": 0,
+    "reported_tokens": {
+      "input_tokens": 18146,
+      "output_tokens": 6654,
+      "total_tokens": 24800
+    },
+    "request_limit": 16,
+    "total_reserved_attempts": 16,
+    "unsettled_outcome_is_unknown": false
+  },
+  "physical_action_execution_verified": false,
+  "production_acceptance_changed": false,
+  "public_plan_file_sha256": "2ba2f1ffcab938bf7b0262f44ca3be7b5c26214e6a5e66ecf58684f24d17df65",
+  "publication_commit": "b89a37b77a22b8db916533c1014731fefa7682c4",
+  "result": {
+    "admission_stop_code": null,
+    "cases": [
+      {
+        "case_id": "bridge-scripted-0-pair-0",
+        "contract_hash": "2a4f747826572f76d131c0c5491b64185f5c8c003744361cecbad17ff6b7c8a8",
+        "eligible": true,
+        "preparation_inventory_sha256": "95422bdbc5b9cd1e744fee432291b70b9382ebad2c03c70408bdae4525dc89ff",
+        "reference": "fail",
+        "source_sha256s": [
+          "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+          "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+        ],
+        "view_indices": [
+          0,
+          1
+        ]
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-1",
+        "contract_hash": "5bf3871a214be0c792f0a1465e1f2ba9e54dbea8c670e8e20fbb39b44aa045a4",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+          "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d"
+        ],
+        "view_indices": [
+          2,
+          3
+        ]
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-2",
+        "contract_hash": "aa0912823d266fc0898e30faf85a293d5068c4bba029c546cc60e88243937c90",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+          "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a"
+        ],
+        "view_indices": [
+          4,
+          5
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-0",
+        "contract_hash": "d7c60f27386a4943e5b0d897b1bbe71d12cce4d96732b88229e63a43479c6e48",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+          "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115"
+        ],
+        "view_indices": [
+          6,
+          7
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-1",
+        "contract_hash": "41b0f8e88e66349341f5f360a6f223d7717fdfdf9682832672c3597fc5999165",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+          "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668"
+        ],
+        "view_indices": [
+          8,
+          9
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-2",
+        "contract_hash": "c9dab92186cb7ac0c50c14cea06371dc85a1378f35bffd30f0835f7e9cfc5d18",
+        "eligible": true,
+        "preparation_inventory_sha256": "c3aab99c7a6701f64c67d0f2cfe287b74ddf40ec9845005644a51690842a07a9",
+        "reference": "unknown",
+        "source_sha256s": [
+          "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+          "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+        ],
+        "view_indices": [
+          10,
+          11
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-0",
+        "contract_hash": "b516f4169ced89f2ff8aeba0765426a14973b6e7dabeb307401f52ed4a7d9c49",
+        "eligible": true,
+        "preparation_inventory_sha256": "4358071a168eb5e173d5670267d7f8fabe2fb2d2575575eb8e878c3c2deb6be5",
+        "reference": "pass",
+        "source_sha256s": [
+          "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+          "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+        ],
+        "view_indices": [
+          12,
+          13
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-1",
+        "contract_hash": "e1c8aa1fadb8709c468801247ac3d778e0cc33abd16827b2d859f2d5ff060db3",
+        "eligible": true,
+        "preparation_inventory_sha256": "692ca9b668d83bd69fcf7709707f0746c3aec2752dfaac4f43cfec50d0eca858",
+        "reference": "pass",
+        "source_sha256s": [
+          "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+          "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+        ],
+        "view_indices": [
+          14,
+          15
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-2",
+        "contract_hash": "219c440fb0323c4d582c3f8248467678d090d6f67100af901053017f4e452c92",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+          "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67"
+        ],
+        "view_indices": [
+          16,
+          17
+        ]
+      }
+    ],
+    "changes_production_acceptance": false,
+    "created_unix_ms": 1793448033555,
+    "dependencies": {
+      "ffmpeg_version": "ffmpeg version 9.0 Copyright (c) 2000-2026 the FFmpeg developers",
+      "meta_sam_parser_distribution": "0.1.0",
+      "sam_model": "sam-3.1",
+      "spark_max_output_tokens": 4096,
+      "spark_model": "muse-spark-1.3",
+      "spark_reasoning_effort": "low"
+    },
+    "eligible_pairs": 4,
+    "gate_passed": false,
+    "implementation_sha256": {
+      "proofloop/anchor_padding_experiment.py": "4386f987c575b446b379bb517f6aeb8182873d88c623212585ecd1c9c4ce9bcd",
+      "proofloop/benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+      "proofloop/bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+      "proofloop/capture.py": "77e94f6a5941fc5378037ccef46ba71060821a7457331e04bd35600dcbba682a",
+      "proofloop/concept_verified_experiment.py": "f2eded145ae2c1458374d94fa80da136e7e7f7586cc4a4b61818e3f6e75f5def",
+      "proofloop/core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+      "proofloop/crop_evidence.py": "808a52dff2f8339251eed56d7c4e1bf875922c4b1fe30ca1ca93f2e3628041bd",
+      "proofloop/crop_verification.py": "00e13693d60967428e8c778e006b0245e0a967a38a4a415c5a162a61a9ff2e62",
+      "proofloop/gripper_geometry.py": "20125923b19f95a06c72039f4944de5c014b6a8230f777729c1348a4289d0052",
+      "proofloop/grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+      "proofloop/guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+      "proofloop/image_gripper_experiment.py": "a11fd36099713b781fc1ba372a9858a14074821c1a03eef7d5d1a0993a1371bb",
+      "proofloop/inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+      "proofloop/mask_semantics.py": "de84183204cbc02ca6a4b4b2369a0061845eded7afcc1f9bf4add0b7800a1a9f",
+      "proofloop/meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+      "proofloop/prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+      "proofloop/prospective_audit.py": "50bc6c4e457b416cdf0cb54f793bc121db1eb924ab2a5cfe3a346ea6bbc1a6f5",
+      "proofloop/semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "proofloop/session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869",
+      "proofloop/tracking_geometry.py": "9c5cfdcb513a3839fa82eae19050dc50da2be62842b76329a47a4e4a0b3dfc01",
+      "proofloop/video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b",
+      "tools/probe_context_crops.py": "b9217c18573b91967c2dc56942c62c94fe6ec6510ceee07e8f5e5c541d9693ed",
+      "tools/verify_context_crops.py": "2cb646caad8798759d0d265b04dfd24eadcf1e05a60fab99faad9be9de036505"
+    },
+    "limits": [
+      "All original exposed cases and source views remain; this is not new-source accuracy.",
+      "Only pairs with two eligible frozen crop projections enter new inference.",
+      "Each eligible pair permits one two-view Spark manipulator locator, at most two spatial SAM requests, and one eight-image Spark mask/contact review.",
+      "No manual manipulator anchors, concept retries, favorable substitution or hidden fallback.",
+      "Derived target geometry is not a provider response on the full original scene.",
+      "Contact, uncertain semantics, incomplete mask coverage or unavailable required evidence cannot authorize a task result.",
+      "A far gripper mask is not proof of separation; semantic assessment is fallible and not independent human truth.",
+      "Completed missing or unsupported evidence yields UNKNOWN; failed required inference remains unscored.",
+      "No production promotion, physical execution or calibrated safety guarantee."
+    ],
+    "max_requests": 16,
+    "metrics": {
+      "correct": 7,
+      "correct_acceptances": 1,
+      "correct_decided_cases": 1,
+      "decided_cases": 1,
+      "incorrect_passes": 0,
+      "missing_predictions": 0,
+      "reference_nonpass_cases": 7,
+      "reference_pass_cases": 2,
+      "scored_cases": 9,
+      "total_cases": 9,
+      "unknown_cases": 8
+    },
+    "parent_inventory_sha256": "a1ddea39303037ae2453b3aed36330fee3215494ee581ef7662c6b440c8455f5",
+    "parent_plan_sha256": "d92eb2c322ed7f92cdb4f430da767f8ef38bb9799f70003b7135b82e67361207",
+    "parent_summary_sha256": "f8609deaed1c53c48fa33c8fb00d0e541d0e3e55a0c03c882c3792be71495790",
+    "physical_action_execution_verified": false,
+    "plan_sha256": "5f3f5064fd092c4a2b719e134003ea195839d3e0d67fa640afc99ce76cccda28",
+    "production_promotion_allowed": false,
+    "request_caps": {
+      "sam": 8,
+      "spark": 8,
+      "total": 16
+    },
+    "results": [
+      {
+        "assessment": {
+          "changes_production_acceptance": false,
+          "crop_projection_sha256s": [
+            "f53bf1f2e6585b164b9f7563a1190daabef223ed1476f483c5e5647fa418edde",
+            "499ff3a667287d04e1b568aa7ff8307efc5e575cfbdce3fe0db5d39bb36668cf"
+          ],
+          "decision": "withheld",
+          "evaluation_sha256": "98bf5fd512ede0cbe660202b50fffee0999f7572a58eb8aa610c57a8c335f6c8",
+          "final_prepared_sha256": "bb0c24ebb9a082a115b4c4b646cbc28eb4af2de48bd25d9dda67e720910c8f81",
+          "frames": [
+            {
+              "classifications": {
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "full_visibility": "supported",
+                "gripper_mask_coverage": "supported",
+                "identity": "supported",
+                "manipulator_relation": "released",
+                "mask_target_only": "supported",
+                "target_extent_covered": "contradicted",
+                "visible_terminal_tool_count": "one"
+              },
+              "decision": "withheld",
+              "frame_index": 0,
+              "geometry": {
+                "comparisons": [
+                  {
+                    "distance_is_lower_bound": true,
+                    "gripper_confidence": 0.96484375,
+                    "gripper_mapped_mask_sha256": "e71ddd2b34818b89ba7f0f31c0550c804129cc4aec167b89a011725c76c8772a",
+                    "gripper_sam_object_id": 1,
+                    "min_chebyshev_distance_capped4": 4,
+                    "near_proposal": false,
+                    "target_mapped_mask_sha256": "b0aa6e1a295999e8588264ea068410cb9a99eaae1d471de7340b4751dcbbf80a"
+                  }
+                ],
+                "geometry_available": true,
+                "mapped_source_pixels": 27672,
+                "physical_contact_observed": false,
+                "positive_support_granted": false,
+                "separation_verified": false,
+                "source_pixel_margin": 3,
+                "veto": false
+              },
+              "withheld_reasons": [
+                "target_extent_covered_contradicted"
+              ]
+            },
+            {
+              "classifications": {
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "full_visibility": "supported",
+                "gripper_mask_coverage": "supported",
+                "identity": "supported",
+                "manipulator_relation": "released",
+                "mask_target_only": "supported",
+                "target_extent_covered": "contradicted",
+                "visible_terminal_tool_count": "one"
+              },
+              "decision": "withheld",
+              "frame_index": 1,
+              "geometry": {
+                "comparisons": [
+                  {
+                    "distance_is_lower_bound": true,
+                    "gripper_confidence": 0.96484375,
+                    "gripper_mapped_mask_sha256": "1777860d972b062883727680977823a5b4792971871859059680827a41017ddc",
+                    "gripper_sam_object_id": 1,
+                    "min_chebyshev_distance_capped4": 4,
+                    "near_proposal": false,
+                    "target_mapped_mask_sha256": "9de3ab50a890a05d3720d2bab588abe06d2ca3d3258dfe5ae9aaa230879d4ea4"
+                  }
+                ],
+                "geometry_available": true,
+                "mapped_source_pixels": 27455,
+                "physical_contact_observed": false,
+                "positive_support_granted": false,
+                "separation_verified": false,
+                "source_pixel_margin": 3,
+                "veto": false
+              },
+              "withheld_reasons": [
+                "target_extent_covered_contradicted"
+              ]
+            }
+          ],
+          "limits": [
+            "Experimental recorded-source model assessments; no physical action or production promotion.",
+            "Original, crop and derived masks are the same physical observation, never extra stable views.",
+            "A near foreground proposal can withhold support; far, missing or weak proposals never prove separation.",
+            "Released and zero-visible-tool classifications are fallible model assessments, not verified physical absence or execution.",
+            "Target and gripper model errors can be correlated; retained hashes prove local consistency, not provider authenticity."
+          ],
+          "locator_sha256": "7326d4453fa670e4ffdf1561e8f265d0e913c0f55babec4944bb9471d519e61e",
+          "new_current_authority": false,
+          "pair_sha256": "185d64748a21858f849c97d979e725b9e6db1114a788d14ce248bcac1b253f8b",
+          "physical_action_execution_verified": false,
+          "raw_final_result_sha256": "9d5a214dd8d9a716f8b254e050d60bf94afc557a12be89b15db559a7851a611b",
+          "source_sha256s": [
+            "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+            "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+          ],
+          "status": "completed",
+          "version": "crop_full_source_terminal_tool_verification_v1"
+        },
+        "attempts": {
+          "final": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.00746,
+              "known_estimated_usd": 0.00746,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 28.811
+          },
+          "gripper-0": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.0025,
+              "known_estimated_usd": 0.0025,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 22.44
+          },
+          "gripper-1": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.0025,
+              "known_estimated_usd": 0.0025,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 22.804
+          },
+          "locator": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.003474,
+              "known_estimated_usd": 0.003474,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 23.886
+          }
+        },
+        "case_id": "bridge-scripted-0-pair-0",
+        "prediction": "unknown",
+        "reference": "fail",
+        "selected_by_parent_geometry": true,
+        "status": "completed",
+        "task_report": {
+          "case_id": "bridge-scripted-0-pair-0",
+          "changes_production_acceptance": false,
+          "checks": [
+            {
+              "check_id": "fork-right",
+              "evidence_ids": [
+                "sam-grounding://b472e961afd8cd113e7b6703d026480b062f103a2b57101f6a53fa7b7d2d4261"
+              ],
+              "reason": "Observation is unavailable or ambiguous",
+              "status": "unknown"
+            }
+          ],
+          "evaluation_sha256": "98bf5fd512ede0cbe660202b50fffee0999f7572a58eb8aa610c57a8c335f6c8",
+          "frame_hashes": [
+            "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+            "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+          ],
+          "grounding": {
+            "evidence": {
+              "bridge_version": "1.1",
+              "check_grounding": [
+                {
+                  "check_id": "fork-right",
+                  "evidence_id": "sam-grounding://b472e961afd8cd113e7b6703d026480b062f103a2b57101f6a53fa7b7d2d4261",
+                  "reason": "Zero or unavailable detections do not prove absence"
+                }
+              ],
+              "limits": [
+                "Origins are caller supplied and preserved; no live-inference status is inferred.",
+                "Confidence is a reported model score, not a correctness probability.",
+                "No region is automatically fully visible and no absence is automatically validated.",
+                "Location uses a caller-approved unique-target contract; detections do not prove scene uniqueness.",
+                "Camera calibration and concept-to-object identity are caller approved."
+              ],
+              "observations": {
+                "sam-grounding://b472e961afd8cd113e7b6703d026480b062f103a2b57101f6a53fa7b7d2d4261": {
+                  "attempt_id": 0,
+                  "check_id": "fork-right",
+                  "grounded_confidence": 0.0,
+                  "grounded_value": null,
+                  "reason": "Zero or unavailable detections do not prove absence",
+                  "response_ids": [
+                    null
+                  ],
+                  "revision": 0,
+                  "session_id": "recorded-2a4f747826572f76-bridge-scripted-0-pair-0",
+                  "source_hashes": [
+                    "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+                  ],
+                  "source_indices": [
+                    1
+                  ],
+                  "spec_hash": "6b6f926c478a54c38dd99dc1296ab6215ac95efb4011c9d4099c8e5ee2ed4201",
+                  "stable_samples": 1,
+                  "timestamp_ms": 2169
+                }
+              },
+              "sources": [
+                {
+                  "concept": "blue-handled fork",
+                  "detections": [],
+                  "evidence_origin": "external_recorded_video_explicit_native_crop_projection",
+                  "mask_decoding": "official_crop_SAM_parser_then_integer_translation",
+                  "object_id": "fork",
+                  "original_source_timestamp_ms": 0,
+                  "raw_source_metadata": {
+                    "crop_projection_sha256": "f53bf1f2e6585b164b9f7563a1190daabef223ed1476f483c5e5647fa418edde",
+                    "derivation": "native_crop_integer_source_projection",
+                    "sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1"
+                  },
+                  "reported_model": null,
+                  "response_id": null,
+                  "sample_index": 0,
+                  "source_sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+                  "timestamp_ms": 0,
+                  "unknown_reason": "Zero or unavailable detections do not prove absence"
+                },
+                {
+                  "concept": "blue-handled fork",
+                  "detections": [],
+                  "evidence_origin": "external_recorded_video_explicit_native_crop_projection",
+                  "mask_decoding": "official_crop_SAM_parser_then_integer_translation",
+                  "object_id": "fork",
+                  "original_source_timestamp_ms": 2169,
+                  "raw_source_metadata": {
+                    "crop_projection_sha256": "499ff3a667287d04e1b568aa7ff8307efc5e575cfbdce3fe0db5d39bb36668cf",
+                    "derivation": "native_crop_integer_source_projection",
+                    "sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+                  },
+                  "reported_model": null,
+                  "response_id": null,
+                  "sample_index": 1,
+                  "source_sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+                  "timestamp_ms": 2169,
+                  "unknown_reason": "Zero or unavailable detections do not prove absence"
+                }
+              ]
+            },
+            "observations": [
+              {
+                "absence_validated": false,
+                "attempt_id": 0,
+                "confidence": 0.0,
+                "evidence_id": "sam-grounding://b472e961afd8cd113e7b6703d026480b062f103a2b57101f6a53fa7b7d2d4261",
+                "fully_visible": false,
+                "kind": "location",
+                "object_id": "fork",
+                "region_id": "right",
+                "revision": 0,
+                "session_id": "recorded-2a4f747826572f76-bridge-scripted-0-pair-0",
+                "spec_hash": "6b6f926c478a54c38dd99dc1296ab6215ac95efb4011c9d4099c8e5ee2ed4201",
+                "stable_samples": 1,
+                "timestamp_ms": 2169,
+                "value": null
+              }
+            ]
+          },
+          "inference_origin": "experimental_native_crop_full_source_verification",
+          "new_current_authority": false,
+          "overall": "unknown",
+          "physical_action_execution_verified": false,
+          "status": "unknown"
+        }
+      },
+      {
+        "attempts": {},
+        "case_id": "bridge-scripted-0-pair-1",
+        "prediction": "unknown",
+        "reference": "unknown",
+        "selected_by_parent_geometry": false,
+        "status": "withheld_original_crop_gate"
+      },
+      {
+        "attempts": {},
+        "case_id": "bridge-scripted-0-pair-2",
+        "prediction": "unknown",
+        "reference": "unknown",
+        "selected_by_parent_geometry": false,
+        "status": "withheld_original_crop_gate"
+      },
+      {
+        "attempts": {},
+        "case_id": "ur5-cloth-0-pair-0",
+        "prediction": "unknown",
+        "reference": "unknown",
+        "selected_by_parent_geometry": false,
+        "status": "withheld_original_crop_gate"
+      },
+      {
+        "attempts": {},
+        "case_id": "ur5-cloth-0-pair-1",
+        "prediction": "unknown",
+        "reference": "unknown",
+        "selected_by_parent_geometry": false,
+        "status": "withheld_original_crop_gate"
+      },
+      {
+        "assessment": {
+          "changes_production_acceptance": false,
+          "crop_projection_sha256s": [
+            "c915ffdb23f5c314ef7d2dc2b4f6000213e4d4447ad5104298de4ed3f4b1496f",
+            "087e109fccac92624a57ef7bb63c2cee184fd074dc00def667b2cfae99deda5a"
+          ],
+          "decision": "withheld",
+          "evaluation_sha256": "3724da4f493f96690c5e9bf2e8e6c404a9a3e7f656d79b787501aba45c76b26d",
+          "final_prepared_sha256": "cbe11a07e2d3c73b35298283a72bc690755f7ac8346ea8a5937dd2c1ef32bdf0",
+          "frames": [
+            {
+              "classifications": {
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "full_visibility": "supported",
+                "gripper_mask_coverage": "contradicted",
+                "identity": "supported",
+                "manipulator_relation": "released",
+                "mask_target_only": "supported",
+                "target_extent_covered": "supported",
+                "visible_terminal_tool_count": "one"
+              },
+              "decision": "withheld",
+              "frame_index": 0,
+              "geometry": {
+                "comparisons": [
+                  {
+                    "distance_is_lower_bound": false,
+                    "gripper_confidence": 0.921875,
+                    "gripper_mapped_mask_sha256": "f5cc515e56637de349c83e21849b0ccaf694d9277f4e08fbb167d7c825ebacde",
+                    "gripper_sam_object_id": 1,
+                    "min_chebyshev_distance_capped4": 2,
+                    "near_proposal": true,
+                    "target_mapped_mask_sha256": "1dc788912ec6463dffc967524465022fd0fb7fba96bcfa1295d91f3e09a79d8c"
+                  }
+                ],
+                "geometry_available": true,
+                "mapped_source_pixels": 20068,
+                "physical_contact_observed": false,
+                "positive_support_granted": false,
+                "separation_verified": false,
+                "source_pixel_margin": 3,
+                "veto": true
+              },
+              "withheld_reasons": [
+                "gripper_mask_coverage_contradicted",
+                "near_terminal_tool_foreground"
+              ]
+            },
+            {
+              "classifications": {
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "full_visibility": "supported",
+                "gripper_mask_coverage": "contradicted",
+                "identity": "supported",
+                "manipulator_relation": "released",
+                "mask_target_only": "supported",
+                "target_extent_covered": "supported",
+                "visible_terminal_tool_count": "one"
+              },
+              "decision": "withheld",
+              "frame_index": 1,
+              "geometry": {
+                "comparisons": [
+                  {
+                    "distance_is_lower_bound": true,
+                    "gripper_confidence": 0.9296875,
+                    "gripper_mapped_mask_sha256": "148ae437e85867b31bf5982367c110b87027329ae715a239289f294020b1e472",
+                    "gripper_sam_object_id": 1,
+                    "min_chebyshev_distance_capped4": 4,
+                    "near_proposal": false,
+                    "target_mapped_mask_sha256": "2a2ddc2686b466335ca540633de2ecf4cd5b1af6e3a7c8a62681000e1efc924a"
+                  }
+                ],
+                "geometry_available": true,
+                "mapped_source_pixels": 18980,
+                "physical_contact_observed": false,
+                "positive_support_granted": false,
+                "separation_verified": false,
+                "source_pixel_margin": 3,
+                "veto": false
+              },
+              "withheld_reasons": [
+                "gripper_mask_coverage_contradicted"
+              ]
+            }
+          ],
+          "limits": [
+            "Experimental recorded-source model assessments; no physical action or production promotion.",
+            "Original, crop and derived masks are the same physical observation, never extra stable views.",
+            "A near foreground proposal can withhold support; far, missing or weak proposals never prove separation.",
+            "Released and zero-visible-tool classifications are fallible model assessments, not verified physical absence or execution.",
+            "Target and gripper model errors can be correlated; retained hashes prove local consistency, not provider authenticity."
+          ],
+          "locator_sha256": "50bd5399810c87acfeffb965fac8b818984f23c7cfc053870a2aa336a07f6056",
+          "new_current_authority": false,
+          "pair_sha256": "7a5eafb3a0922984c2cf82125f03eda407088821bd6ae372fdfbcbc3f07ae92e",
+          "physical_action_execution_verified": false,
+          "raw_final_result_sha256": "21f0f058aacba491f83cd0bdfe497e65d7bff711aebdb8995575a4285efb664b",
+          "source_sha256s": [
+            "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+            "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+          ],
+          "status": "completed",
+          "version": "crop_full_source_terminal_tool_verification_v1"
+        },
+        "attempts": {
+          "final": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.008778,
+              "known_estimated_usd": 0.008778,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 32.696
+          },
+          "gripper-0": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.0025,
+              "known_estimated_usd": 0.0025,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 26.297
+          },
+          "gripper-1": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.0025,
+              "known_estimated_usd": 0.0025,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 25.924
+          },
+          "locator": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.003967,
+              "known_estimated_usd": 0.003967,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 28.016
+          }
+        },
+        "case_id": "ur5-cloth-0-pair-2",
+        "prediction": "unknown",
+        "reference": "unknown",
+        "selected_by_parent_geometry": true,
+        "status": "completed",
+        "task_report": {
+          "case_id": "ur5-cloth-0-pair-2",
+          "changes_production_acceptance": false,
+          "checks": [
+            {
+              "check_id": "cloth-left",
+              "evidence_ids": [
+                "sam-grounding://6ef388f096c6ada2db4a3900477ec20e238125b34004f1e927813e002fc952ac"
+              ],
+              "reason": "Observation is unavailable or ambiguous",
+              "status": "unknown"
+            }
+          ],
+          "evaluation_sha256": "3724da4f493f96690c5e9bf2e8e6c404a9a3e7f656d79b787501aba45c76b26d",
+          "frame_hashes": [
+            "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+            "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+          ],
+          "grounding": {
+            "evidence": {
+              "bridge_version": "1.1",
+              "check_grounding": [
+                {
+                  "check_id": "cloth-left",
+                  "evidence_id": "sam-grounding://6ef388f096c6ada2db4a3900477ec20e238125b34004f1e927813e002fc952ac",
+                  "reason": "Zero or unavailable detections do not prove absence"
+                }
+              ],
+              "limits": [
+                "Origins are caller supplied and preserved; no live-inference status is inferred.",
+                "Confidence is a reported model score, not a correctness probability.",
+                "No region is automatically fully visible and no absence is automatically validated.",
+                "Location uses a caller-approved unique-target contract; detections do not prove scene uniqueness.",
+                "Camera calibration and concept-to-object identity are caller approved."
+              ],
+              "observations": {
+                "sam-grounding://6ef388f096c6ada2db4a3900477ec20e238125b34004f1e927813e002fc952ac": {
+                  "attempt_id": 0,
+                  "check_id": "cloth-left",
+                  "grounded_confidence": 0.0,
+                  "grounded_value": null,
+                  "reason": "Zero or unavailable detections do not prove absence",
+                  "response_ids": [
+                    null
+                  ],
+                  "revision": 0,
+                  "session_id": "recorded-c9dab92186cb7ac0-ur5-cloth-0-pair-2",
+                  "source_hashes": [
+                    "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+                  ],
+                  "source_indices": [
+                    1
+                  ],
+                  "spec_hash": "3b224a98deb22a196dfdeed9dc79f46559ca0096c125e690e9fea7f549fa4442",
+                  "stable_samples": 1,
+                  "timestamp_ms": 14000
+                }
+              },
+              "sources": [
+                {
+                  "concept": "green cloth",
+                  "detections": [],
+                  "evidence_origin": "external_recorded_video_explicit_native_crop_projection",
+                  "mask_decoding": "official_crop_SAM_parser_then_integer_translation",
+                  "object_id": "cloth",
+                  "original_source_timestamp_ms": 13000,
+                  "raw_source_metadata": {
+                    "crop_projection_sha256": "c915ffdb23f5c314ef7d2dc2b4f6000213e4d4447ad5104298de4ed3f4b1496f",
+                    "derivation": "native_crop_integer_source_projection",
+                    "sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c"
+                  },
+                  "reported_model": null,
+                  "response_id": null,
+                  "sample_index": 0,
+                  "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+                  "timestamp_ms": 13000,
+                  "unknown_reason": "Zero or unavailable detections do not prove absence"
+                },
+                {
+                  "concept": "green cloth",
+                  "detections": [],
+                  "evidence_origin": "external_recorded_video_explicit_native_crop_projection",
+                  "mask_decoding": "official_crop_SAM_parser_then_integer_translation",
+                  "object_id": "cloth",
+                  "original_source_timestamp_ms": 14000,
+                  "raw_source_metadata": {
+                    "crop_projection_sha256": "087e109fccac92624a57ef7bb63c2cee184fd074dc00def667b2cfae99deda5a",
+                    "derivation": "native_crop_integer_source_projection",
+                    "sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+                  },
+                  "reported_model": null,
+                  "response_id": null,
+                  "sample_index": 1,
+                  "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+                  "timestamp_ms": 14000,
+                  "unknown_reason": "Zero or unavailable detections do not prove absence"
+                }
+              ]
+            },
+            "observations": [
+              {
+                "absence_validated": false,
+                "attempt_id": 0,
+                "confidence": 0.0,
+                "evidence_id": "sam-grounding://6ef388f096c6ada2db4a3900477ec20e238125b34004f1e927813e002fc952ac",
+                "fully_visible": false,
+                "kind": "location",
+                "object_id": "cloth",
+                "region_id": "left",
+                "revision": 0,
+                "session_id": "recorded-c9dab92186cb7ac0-ur5-cloth-0-pair-2",
+                "spec_hash": "3b224a98deb22a196dfdeed9dc79f46559ca0096c125e690e9fea7f549fa4442",
+                "stable_samples": 1,
+                "timestamp_ms": 14000,
+                "value": null
+              }
+            ]
+          },
+          "inference_origin": "experimental_native_crop_full_source_verification",
+          "new_current_authority": false,
+          "overall": "unknown",
+          "physical_action_execution_verified": false,
+          "status": "unknown"
+        }
+      },
+      {
+        "assessment": {
+          "changes_production_acceptance": false,
+          "crop_projection_sha256s": [
+            "ec27aec34f208267fb95f404e74ae450e7bf6dad5e0e960e0816d51f1047b9d4",
+            "079c547fb8e3557c852c2a6dc8d187c3445e5e591b15a3063e4d4bd56ca5097e"
+          ],
+          "decision": "supported",
+          "evaluation_sha256": "ce8dab2910ce7b49475fd8692e4f80f217992049b4a15b0ed461e8b08aff0edb",
+          "final_prepared_sha256": "020467d6b9c2e01c1a69a330c4fd9f1bb81d8a9a58217eacf9e6bdb64b2b27f6",
+          "frames": [
+            {
+              "classifications": {
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "full_visibility": "supported",
+                "gripper_mask_coverage": "supported",
+                "identity": "supported",
+                "manipulator_relation": "released",
+                "mask_target_only": "supported",
+                "target_extent_covered": "supported",
+                "visible_terminal_tool_count": "one"
+              },
+              "decision": "supported",
+              "frame_index": 0,
+              "geometry": {
+                "comparisons": [
+                  {
+                    "distance_is_lower_bound": true,
+                    "gripper_confidence": 0.8515625,
+                    "gripper_mapped_mask_sha256": "e9d94e8a6cbc498f63e4dd33c52d476f4dce7ee8717f1c9dfaead37f3e7f8ce4",
+                    "gripper_sam_object_id": 1,
+                    "min_chebyshev_distance_capped4": 4,
+                    "near_proposal": false,
+                    "target_mapped_mask_sha256": "15ec25d104680a1c390c5d3f61460b7061d3a504a0027a1d657ff97c21900ade"
+                  }
+                ],
+                "geometry_available": true,
+                "mapped_source_pixels": 18668,
+                "physical_contact_observed": false,
+                "positive_support_granted": false,
+                "separation_verified": false,
+                "source_pixel_margin": 3,
+                "veto": false
+              },
+              "withheld_reasons": []
+            },
+            {
+              "classifications": {
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "full_visibility": "supported",
+                "gripper_mask_coverage": "supported",
+                "identity": "supported",
+                "manipulator_relation": "released",
+                "mask_target_only": "supported",
+                "target_extent_covered": "supported",
+                "visible_terminal_tool_count": "one"
+              },
+              "decision": "supported",
+              "frame_index": 1,
+              "geometry": {
+                "comparisons": [
+                  {
+                    "distance_is_lower_bound": true,
+                    "gripper_confidence": 0.8046875,
+                    "gripper_mapped_mask_sha256": "4b09cafb0f9f8a2c4fda18f42511c752aff92f9e3d521ac2814bf79cb6a3c073",
+                    "gripper_sam_object_id": 1,
+                    "min_chebyshev_distance_capped4": 4,
+                    "near_proposal": false,
+                    "target_mapped_mask_sha256": "c4b00f75d904400d9491d0a3a9f11e009e588f080010aa5fc139ff9e997da1f9"
+                  }
+                ],
+                "geometry_available": true,
+                "mapped_source_pixels": 19134,
+                "physical_contact_observed": false,
+                "positive_support_granted": false,
+                "separation_verified": false,
+                "source_pixel_margin": 3,
+                "veto": false
+              },
+              "withheld_reasons": []
+            }
+          ],
+          "limits": [
+            "Experimental recorded-source model assessments; no physical action or production promotion.",
+            "Original, crop and derived masks are the same physical observation, never extra stable views.",
+            "A near foreground proposal can withhold support; far, missing or weak proposals never prove separation.",
+            "Released and zero-visible-tool classifications are fallible model assessments, not verified physical absence or execution.",
+            "Target and gripper model errors can be correlated; retained hashes prove local consistency, not provider authenticity."
+          ],
+          "locator_sha256": "c50d4f080bbb1d32b7ef78a047f9334a87e3aeec2ed66990e3993d3f026fdc81",
+          "new_current_authority": false,
+          "pair_sha256": "5bb4438841aa1602b95491eb391385a6c1622a618880763ceea84bc00f5b5bc4",
+          "physical_action_execution_verified": false,
+          "raw_final_result_sha256": "292915b0d46e1e19131026c676bfe868d32c46a5d34ae6501f6483237ef6dec1",
+          "source_sha256s": [
+            "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+            "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+          ],
+          "status": "completed",
+          "version": "crop_full_source_terminal_tool_verification_v1"
+        },
+        "attempts": {
+          "final": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.008991,
+              "known_estimated_usd": 0.008991,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 36.987
+          },
+          "gripper-0": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.0025,
+              "known_estimated_usd": 0.0025,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 31.222
+          },
+          "gripper-1": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.0025,
+              "known_estimated_usd": 0.0025,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 29.801
+          },
+          "locator": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.005259,
+              "known_estimated_usd": 0.005259,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 33.153
+          }
+        },
+        "case_id": "ur5-cup-4-pair-0",
+        "prediction": "pass",
+        "reference": "pass",
+        "selected_by_parent_geometry": true,
+        "status": "completed",
+        "task_report": {
+          "case_id": "ur5-cup-4-pair-0",
+          "changes_production_acceptance": false,
+          "checks": [
+            {
+              "check_id": "brown_cup-left",
+              "evidence_ids": [
+                "sam-grounding://5c48f892cad5b1a6e507315e2217ab6475c9e057bc20eadb37ffde8f02c56001"
+              ],
+              "reason": "Declared unique target is positively located in its required region",
+              "status": "pass"
+            }
+          ],
+          "evaluation_sha256": "ce8dab2910ce7b49475fd8692e4f80f217992049b4a15b0ed461e8b08aff0edb",
+          "frame_hashes": [
+            "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+            "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+          ],
+          "grounding": {
+            "evidence": {
+              "bridge_version": "1.1",
+              "check_grounding": [
+                {
+                  "check_id": "brown_cup-left",
+                  "evidence_id": "sam-grounding://5c48f892cad5b1a6e507315e2217ab6475c9e057bc20eadb37ffde8f02c56001",
+                  "reason": "Positive location under the approved unique-target scene contract"
+                }
+              ],
+              "limits": [
+                "Origins are caller supplied and preserved; no live-inference status is inferred.",
+                "Confidence is a reported model score, not a correctness probability.",
+                "No region is automatically fully visible and no absence is automatically validated.",
+                "Location uses a caller-approved unique-target contract; detections do not prove scene uniqueness.",
+                "Camera calibration and concept-to-object identity are caller approved."
+              ],
+              "observations": {
+                "sam-grounding://5c48f892cad5b1a6e507315e2217ab6475c9e057bc20eadb37ffde8f02c56001": {
+                  "attempt_id": 0,
+                  "check_id": "brown_cup-left",
+                  "grounded_confidence": 0.8400000333786011,
+                  "grounded_value": "left",
+                  "reason": "Positive location under the approved unique-target scene contract",
+                  "response_ids": [
+                    null,
+                    null
+                  ],
+                  "revision": 0,
+                  "session_id": "recorded-b516f4169ced89f2-ur5-cup-4-pair-0",
+                  "source_hashes": [
+                    "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+                    "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba"
+                  ],
+                  "source_indices": [
+                    1,
+                    0
+                  ],
+                  "spec_hash": "417158862fdcd7f78eda4b551cd2cce4b594c21605c66f4e40102d738e5ffa5f",
+                  "stable_samples": 2,
+                  "timestamp_ms": 0
+                }
+              },
+              "sources": [
+                {
+                  "concept": "brown drinking cup",
+                  "detections": [
+                    {
+                      "box": [
+                        0.4015625,
+                        0.39791666666666664,
+                        0.4734375,
+                        0.5520833333333334
+                      ],
+                      "confidence": 0.8750000596046448,
+                      "foreground": [
+                        0.4015625,
+                        0.39791666666666664,
+                        0.4734375,
+                        0.5520833333333334
+                      ],
+                      "region_id": "left",
+                      "sam_object_id": 0
+                    }
+                  ],
+                  "evidence_origin": "external_recorded_video_explicit_native_crop_projection",
+                  "mask_decoding": "official_crop_SAM_parser_then_integer_translation",
+                  "object_id": "brown_cup",
+                  "original_source_timestamp_ms": 0,
+                  "raw_source_metadata": {
+                    "crop_projection_sha256": "ec27aec34f208267fb95f404e74ae450e7bf6dad5e0e960e0816d51f1047b9d4",
+                    "derivation": "native_crop_integer_source_projection",
+                    "sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba"
+                  },
+                  "reported_model": null,
+                  "response_id": null,
+                  "sample_index": 0,
+                  "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+                  "timestamp_ms": 0,
+                  "unknown_reason": null
+                },
+                {
+                  "concept": "brown drinking cup",
+                  "detections": [
+                    {
+                      "box": [
+                        0.4015625,
+                        0.39791666666666664,
+                        0.4734375,
+                        0.5520833333333334
+                      ],
+                      "confidence": 0.8400000333786011,
+                      "foreground": [
+                        0.4015625,
+                        0.39791666666666664,
+                        0.4734375,
+                        0.5520833333333334
+                      ],
+                      "region_id": "left",
+                      "sam_object_id": 0
+                    }
+                  ],
+                  "evidence_origin": "external_recorded_video_explicit_native_crop_projection",
+                  "mask_decoding": "official_crop_SAM_parser_then_integer_translation",
+                  "object_id": "brown_cup",
+                  "original_source_timestamp_ms": 1000,
+                  "raw_source_metadata": {
+                    "crop_projection_sha256": "079c547fb8e3557c852c2a6dc8d187c3445e5e591b15a3063e4d4bd56ca5097e",
+                    "derivation": "native_crop_integer_source_projection",
+                    "sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+                  },
+                  "reported_model": null,
+                  "response_id": null,
+                  "sample_index": 1,
+                  "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+                  "timestamp_ms": 1000,
+                  "unknown_reason": null
+                }
+              ]
+            },
+            "observations": [
+              {
+                "absence_validated": false,
+                "attempt_id": 0,
+                "confidence": 0.8400000333786011,
+                "evidence_id": "sam-grounding://5c48f892cad5b1a6e507315e2217ab6475c9e057bc20eadb37ffde8f02c56001",
+                "fully_visible": false,
+                "kind": "location",
+                "object_id": "brown_cup",
+                "region_id": "left",
+                "revision": 0,
+                "session_id": "recorded-b516f4169ced89f2-ur5-cup-4-pair-0",
+                "spec_hash": "417158862fdcd7f78eda4b551cd2cce4b594c21605c66f4e40102d738e5ffa5f",
+                "stable_samples": 2,
+                "timestamp_ms": 0,
+                "value": "left"
+              }
+            ]
+          },
+          "inference_origin": "experimental_native_crop_full_source_verification",
+          "new_current_authority": false,
+          "overall": "pass",
+          "physical_action_execution_verified": false,
+          "status": "pass"
+        }
+      },
+      {
+        "assessment": {
+          "changes_production_acceptance": false,
+          "crop_projection_sha256s": [
+            "664f9628e49e29500389586b48132a375b25bcb6c739a96d5f56885b85679510",
+            "b1408af1473fa8a330b3390081f2c1255dce6c98fc82dce5a5589a494cd34127"
+          ],
+          "decision": "withheld",
+          "evaluation_sha256": "38b81bfec824b7512abe6f2f3d3a55e82aa8d20209251f77019d098f044d0ab1",
+          "final_prepared_sha256": "af14b2f3b4b16a0316029e21b6b19f55426f39905dd2fda2c83761ec8c5e10c7",
+          "frames": [
+            {
+              "classifications": {
+                "frame_index": 0,
+                "full_scene_match_count": "one",
+                "full_visibility": "supported",
+                "gripper_mask_coverage": "contradicted",
+                "identity": "supported",
+                "manipulator_relation": "released",
+                "mask_target_only": "supported",
+                "target_extent_covered": "supported",
+                "visible_terminal_tool_count": "one"
+              },
+              "decision": "withheld",
+              "frame_index": 0,
+              "geometry": {
+                "comparisons": [
+                  {
+                    "distance_is_lower_bound": true,
+                    "gripper_confidence": 0.55859375,
+                    "gripper_mapped_mask_sha256": "2356d0b1b9286d26b889dc39da55361f34f4cbe681278557e831f3ac259f5928",
+                    "gripper_sam_object_id": 1,
+                    "min_chebyshev_distance_capped4": 4,
+                    "near_proposal": false,
+                    "target_mapped_mask_sha256": "c0e6189e20e56d211672ba7f409f78435dd72dcde0a9877e4932a49f690884e1"
+                  }
+                ],
+                "geometry_available": true,
+                "mapped_source_pixels": 9598,
+                "physical_contact_observed": false,
+                "positive_support_granted": false,
+                "separation_verified": false,
+                "source_pixel_margin": 3,
+                "veto": false
+              },
+              "withheld_reasons": [
+                "terminal_tool_sam_confidence_unavailable_or_below_0_8",
+                "gripper_mask_coverage_contradicted"
+              ]
+            },
+            {
+              "classifications": {
+                "frame_index": 1,
+                "full_scene_match_count": "one",
+                "full_visibility": "supported",
+                "gripper_mask_coverage": "contradicted",
+                "identity": "supported",
+                "manipulator_relation": "released",
+                "mask_target_only": "supported",
+                "target_extent_covered": "supported",
+                "visible_terminal_tool_count": "one"
+              },
+              "decision": "withheld",
+              "frame_index": 1,
+              "geometry": {
+                "comparisons": [
+                  {
+                    "distance_is_lower_bound": true,
+                    "gripper_confidence": 0.67578125,
+                    "gripper_mapped_mask_sha256": "ba4e22bd700ca1b85602c361f2e127305ed19c0599e33899fe5545b9f3786e24",
+                    "gripper_sam_object_id": 1,
+                    "min_chebyshev_distance_capped4": 4,
+                    "near_proposal": false,
+                    "target_mapped_mask_sha256": "3d16365f08b369ec900d6d451ce670c9c50a39b984e74bff0fd6bb83a7823379"
+                  }
+                ],
+                "geometry_available": true,
+                "mapped_source_pixels": 8562,
+                "physical_contact_observed": false,
+                "positive_support_granted": false,
+                "separation_verified": false,
+                "source_pixel_margin": 3,
+                "veto": false
+              },
+              "withheld_reasons": [
+                "terminal_tool_sam_confidence_unavailable_or_below_0_8",
+                "gripper_mask_coverage_contradicted"
+              ]
+            }
+          ],
+          "limits": [
+            "Experimental recorded-source model assessments; no physical action or production promotion.",
+            "Original, crop and derived masks are the same physical observation, never extra stable views.",
+            "A near foreground proposal can withhold support; far, missing or weak proposals never prove separation.",
+            "Released and zero-visible-tool classifications are fallible model assessments, not verified physical absence or execution.",
+            "Target and gripper model errors can be correlated; retained hashes prove local consistency, not provider authenticity."
+          ],
+          "locator_sha256": "a4d32a7c96a4045ece8e1d451e944c5bade07b1ac3f089c07f2ed25a2a080c01",
+          "new_current_authority": false,
+          "pair_sha256": "24359ef864a6914de6606f3e61eda63198900333fb8482e42d9eef588eced7f7",
+          "physical_action_execution_verified": false,
+          "raw_final_result_sha256": "baf68cb40419932cd90f14162e974c1cbc7a30302b27d13f69203cda5aef984c",
+          "source_sha256s": [
+            "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+            "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+          ],
+          "status": "completed",
+          "version": "crop_full_source_terminal_tool_verification_v1"
+        },
+        "attempts": {
+          "final": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.007533,
+              "known_estimated_usd": 0.007533,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 36.881
+          },
+          "gripper-0": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.0025,
+              "known_estimated_usd": 0.0025,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 31.684
+          },
+          "gripper-1": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.0025,
+              "known_estimated_usd": 0.0025,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 33.299
+          },
+          "locator": {
+            "inference_origin": "live_meta_adapter",
+            "status": "completed",
+            "usage": {
+              "accounting_incomplete": false,
+              "estimated_usd": 0.005501,
+              "known_estimated_usd": 0.005501,
+              "request_attempts": 1,
+              "unreported_charge_possible": false
+            },
+            "wall_seconds": 36.436
+          }
+        },
+        "case_id": "ur5-cup-4-pair-1",
+        "prediction": "unknown",
+        "reference": "pass",
+        "selected_by_parent_geometry": true,
+        "status": "completed",
+        "task_report": {
+          "case_id": "ur5-cup-4-pair-1",
+          "changes_production_acceptance": false,
+          "checks": [
+            {
+              "check_id": "brown_cup-left",
+              "evidence_ids": [
+                "sam-grounding://2853e3845c06232ca450fb7896b874eaa72843396ba28c399cb9deaf32977845"
+              ],
+              "reason": "Observation is unavailable or ambiguous",
+              "status": "unknown"
+            }
+          ],
+          "evaluation_sha256": "38b81bfec824b7512abe6f2f3d3a55e82aa8d20209251f77019d098f044d0ab1",
+          "frame_hashes": [
+            "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+            "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+          ],
+          "grounding": {
+            "evidence": {
+              "bridge_version": "1.1",
+              "check_grounding": [
+                {
+                  "check_id": "brown_cup-left",
+                  "evidence_id": "sam-grounding://2853e3845c06232ca450fb7896b874eaa72843396ba28c399cb9deaf32977845",
+                  "reason": "Zero or unavailable detections do not prove absence"
+                }
+              ],
+              "limits": [
+                "Origins are caller supplied and preserved; no live-inference status is inferred.",
+                "Confidence is a reported model score, not a correctness probability.",
+                "No region is automatically fully visible and no absence is automatically validated.",
+                "Location uses a caller-approved unique-target contract; detections do not prove scene uniqueness.",
+                "Camera calibration and concept-to-object identity are caller approved."
+              ],
+              "observations": {
+                "sam-grounding://2853e3845c06232ca450fb7896b874eaa72843396ba28c399cb9deaf32977845": {
+                  "attempt_id": 0,
+                  "check_id": "brown_cup-left",
+                  "grounded_confidence": 0.0,
+                  "grounded_value": null,
+                  "reason": "Zero or unavailable detections do not prove absence",
+                  "response_ids": [
+                    null
+                  ],
+                  "revision": 0,
+                  "session_id": "recorded-e1c8aa1fadb8709c-ur5-cup-4-pair-1",
+                  "source_hashes": [
+                    "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+                  ],
+                  "source_indices": [
+                    1
+                  ],
+                  "spec_hash": "417158862fdcd7f78eda4b551cd2cce4b594c21605c66f4e40102d738e5ffa5f",
+                  "stable_samples": 1,
+                  "timestamp_ms": 12600
+                }
+              },
+              "sources": [
+                {
+                  "concept": "brown drinking cup",
+                  "detections": [],
+                  "evidence_origin": "external_recorded_video_explicit_native_crop_projection",
+                  "mask_decoding": "official_crop_SAM_parser_then_integer_translation",
+                  "object_id": "brown_cup",
+                  "original_source_timestamp_ms": 11600,
+                  "raw_source_metadata": {
+                    "crop_projection_sha256": "664f9628e49e29500389586b48132a375b25bcb6c739a96d5f56885b85679510",
+                    "derivation": "native_crop_integer_source_projection",
+                    "sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636"
+                  },
+                  "reported_model": null,
+                  "response_id": null,
+                  "sample_index": 0,
+                  "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+                  "timestamp_ms": 11600,
+                  "unknown_reason": "Zero or unavailable detections do not prove absence"
+                },
+                {
+                  "concept": "brown drinking cup",
+                  "detections": [],
+                  "evidence_origin": "external_recorded_video_explicit_native_crop_projection",
+                  "mask_decoding": "official_crop_SAM_parser_then_integer_translation",
+                  "object_id": "brown_cup",
+                  "original_source_timestamp_ms": 12600,
+                  "raw_source_metadata": {
+                    "crop_projection_sha256": "b1408af1473fa8a330b3390081f2c1255dce6c98fc82dce5a5589a494cd34127",
+                    "derivation": "native_crop_integer_source_projection",
+                    "sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+                  },
+                  "reported_model": null,
+                  "response_id": null,
+                  "sample_index": 1,
+                  "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+                  "timestamp_ms": 12600,
+                  "unknown_reason": "Zero or unavailable detections do not prove absence"
+                }
+              ]
+            },
+            "observations": [
+              {
+                "absence_validated": false,
+                "attempt_id": 0,
+                "confidence": 0.0,
+                "evidence_id": "sam-grounding://2853e3845c06232ca450fb7896b874eaa72843396ba28c399cb9deaf32977845",
+                "fully_visible": false,
+                "kind": "location",
+                "object_id": "brown_cup",
+                "region_id": "left",
+                "revision": 0,
+                "session_id": "recorded-e1c8aa1fadb8709c-ur5-cup-4-pair-1",
+                "spec_hash": "417158862fdcd7f78eda4b551cd2cce4b594c21605c66f4e40102d738e5ffa5f",
+                "stable_samples": 1,
+                "timestamp_ms": 12600,
+                "value": null
+              }
+            ]
+          },
+          "inference_origin": "experimental_native_crop_full_source_verification",
+          "new_current_authority": false,
+          "overall": "unknown",
+          "physical_action_execution_verified": false,
+          "status": "unknown"
+        }
+      },
+      {
+        "attempts": {},
+        "case_id": "ur5-cup-4-pair-2",
+        "prediction": "unknown",
+        "reference": "unknown",
+        "selected_by_parent_geometry": false,
+        "status": "withheld_original_crop_gate"
+      }
+    ],
+    "status": "completed",
+    "usage": {
+      "accounting_incomplete": false,
+      "estimated_usd": 0.070963,
+      "reported_input_tokens": 18146,
+      "reported_output_tokens": 6654,
+      "request_attempts": 16,
+      "request_attempts_incomplete": false,
+      "sam_requests": 8,
+      "spark_requests": 8,
+      "unreported_charge_possible": false,
+      "wall_seconds": 480.337
+    },
+    "version": "crop_full_source_contact_verification_development_v1"
+  },
+  "schema_version": "1.0"
+}

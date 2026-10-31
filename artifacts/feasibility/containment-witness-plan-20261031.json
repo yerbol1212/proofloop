@@ -1,0 +1,146 @@
+{
+  "control": {
+    "cases": [
+      {
+        "case_id": "bridge-scripted-0-pair-0",
+        "contract_hash": "2a4f747826572f76d131c0c5491b64185f5c8c003744361cecbad17ff6b7c8a8",
+        "evaluation_sha256": "98bf5fd512ede0cbe660202b50fffee0999f7572a58eb8aa610c57a8c335f6c8",
+        "original_core_verdict": "unknown",
+        "original_result_row_sha256": "4b43999517e14910f151f9f677dab0dd733b8551e145793055418189c323d75c",
+        "source_sha256s": [
+          "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+          "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+        ]
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-1",
+        "contract_hash": "5bf3871a214be0c792f0a1465e1f2ba9e54dbea8c670e8e20fbb39b44aa045a4",
+        "evaluation_sha256": null,
+        "original_core_verdict": "unknown",
+        "original_result_row_sha256": "5c4fe13274d07db4ef51275907fddf410c7f34f0f1b37f65f6283532333707ae",
+        "source_sha256s": [
+          "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+          "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d"
+        ]
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-2",
+        "contract_hash": "aa0912823d266fc0898e30faf85a293d5068c4bba029c546cc60e88243937c90",
+        "evaluation_sha256": null,
+        "original_core_verdict": "unknown",
+        "original_result_row_sha256": "56546e3e963cd41c2199672d4f17ebdcd2ae1f9b051ffe1db9d9150ff8a6e51d",
+        "source_sha256s": [
+          "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+          "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a"
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-0",
+        "contract_hash": "d7c60f27386a4943e5b0d897b1bbe71d12cce4d96732b88229e63a43479c6e48",
+        "evaluation_sha256": null,
+        "original_core_verdict": "unknown",
+        "original_result_row_sha256": "74115cbf88d680604a521bd394fd07b2b3a30a32d06174922fbdfc31d3e6a346",
+        "source_sha256s": [
+          "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+          "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115"
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-1",
+        "contract_hash": "41b0f8e88e66349341f5f360a6f223d7717fdfdf9682832672c3597fc5999165",
+        "evaluation_sha256": null,
+        "original_core_verdict": "unknown",
+        "original_result_row_sha256": "89dcd29a169277f5e331cb6ed95add649ead513c142dc427972aca79c9c948ce",
+        "source_sha256s": [
+          "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+          "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668"
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-2",
+        "contract_hash": "c9dab92186cb7ac0c50c14cea06371dc85a1378f35bffd30f0835f7e9cfc5d18",
+        "evaluation_sha256": "3724da4f493f96690c5e9bf2e8e6c404a9a3e7f656d79b787501aba45c76b26d",
+        "original_core_verdict": "unknown",
+        "original_result_row_sha256": "335b4f25eddf683d21b4f23a4e0f385a04838739d074121bc5699e7cd9158e31",
+        "source_sha256s": [
+          "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+          "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-0",
+        "contract_hash": "b516f4169ced89f2ff8aeba0765426a14973b6e7dabeb307401f52ed4a7d9c49",
+        "evaluation_sha256": "ce8dab2910ce7b49475fd8692e4f80f217992049b4a15b0ed461e8b08aff0edb",
+        "original_core_verdict": "pass",
+        "original_result_row_sha256": "3db77e948b9e5bc996111eceaa982005210de428159bbbe72609900596e12919",
+        "source_sha256s": [
+          "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+          "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-1",
+        "contract_hash": "e1c8aa1fadb8709c468801247ac3d778e0cc33abd16827b2d859f2d5ff060db3",
+        "evaluation_sha256": "38b81bfec824b7512abe6f2f3d3a55e82aa8d20209251f77019d098f044d0ab1",
+        "original_core_verdict": "unknown",
+        "original_result_row_sha256": "5bb12a75d49671780684c753a6032bd8b7c1b75dbd3a17fc9e3387cf83afd589",
+        "source_sha256s": [
+          "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+          "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-2",
+        "contract_hash": "219c440fb0323c4d582c3f8248467678d090d6f67100af901053017f4e452c92",
+        "evaluation_sha256": null,
+        "original_core_verdict": "unknown",
+        "original_result_row_sha256": "aba1eb12572037f0f5d006e0f8d2c121bc0b13cebc4065f8c8f21c23cf68568c",
+        "source_sha256s": [
+          "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+          "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67"
+        ]
+      }
+    ],
+    "condition_source": "separately_declared_hypothesis_not_inferred_from_original_task",
+    "conditional_predicate": "all_projected_target_material_within_goal",
+    "declaration_sha256": "6d2c3603842d44c9eae5082a8361cbbfccd1cb214d0c60b175d04ce99f203761",
+    "implementation_sha256": {
+      "benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+      "bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+      "capture.py": "77e94f6a5941fc5378037ccef46ba71060821a7457331e04bd35600dcbba682a",
+      "containment_witness.py": "e34b1ff3ffffa1e4d80bdc6a2cf91927d9bc60719a41ff092979266fc4481e0c",
+      "core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+      "crop_evidence.py": "808a52dff2f8339251eed56d7c4e1bf875922c4b1fe30ca1ca93f2e3628041bd",
+      "crop_verification.py": "00e13693d60967428e8c778e006b0245e0a967a38a4a415c5a162a61a9ff2e62",
+      "gripper_geometry.py": "20125923b19f95a06c72039f4944de5c014b6a8230f777729c1348a4289d0052",
+      "grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+      "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+      "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+      "mask_semantics.py": "de84183204cbc02ca6a4b4b2369a0061845eded7afcc1f9bf4add0b7800a1a9f",
+      "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+      "prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+      "prospective_audit.py": "50bc6c4e457b416cdf0cb54f793bc121db1eb924ab2a5cfe3a346ea6bbc1a6f5",
+      "semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869",
+      "tracking_geometry.py": "9c5cfdcb513a3839fa82eae19050dc50da2be62842b76329a47a4e4a0b3dfc01",
+      "video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b"
+    },
+    "membership_assumption": "The nonempty foreground includes positively identified target material. Existing model identity/purity classifications are fallible support, not proof of pixel membership or physical truth.",
+    "never_changes_core_verdict": true,
+    "never_grants_pass": true,
+    "original_gate_passed": false,
+    "original_study_plan_sha256": "5f3f5064fd092c4a2b719e134003ea195839d3e0d67fa640afc99ce76cccda28",
+    "original_summary_sha256": "14a349a4715775713600ef04e5be55ffc250c3db92be0024173555e57eeedad6",
+    "original_task_violation_asserted": false,
+    "policy": "diagnostic_only_whole_projected_containment_no_core_override",
+    "version": "conditional_goal_containment_counterexample_control_v1",
+    "zero_model_calls": 0
+  },
+  "evidence_role": "post_outcome_zero_call_diagnostic_declaration",
+  "no_new_source_inference": true,
+  "original_result_file": "crop-verification-results-20261031.json",
+  "original_result_file_sha256": "a9e4d57502eebb335f0c4963b04ba88e26c5413c02891225103ca2b656cbb552",
+  "original_task_verdicts_must_remain_unchanged": true,
+  "production_acceptance_changed": false,
+  "publication_order": "Publish this declaration and exact code before actual cached-study replay."
+}

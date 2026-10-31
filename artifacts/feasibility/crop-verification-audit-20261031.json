@@ -1,0 +1,702 @@
+{
+  "audit_scope": "retained_source_request_response_geometry_and_accounting_integrity_not_human_ground_truth",
+  "candidate_gate_passed": false,
+  "changes_production_acceptance": false,
+  "checks": {
+    "all16_completed_provider_bodies_and_usage_bound": true,
+    "all8_gripper_mask_unions_exact_source_pixels": true,
+    "all8_native_crops_exact_original_rgb_pixels": true,
+    "all8_negative_geometry_comparisons_independently_recomputed": true,
+    "all8_new_sam_responses_officially_redecoded": true,
+    "all8_retained_crop_target_responses_officially_redecoded": true,
+    "all8_target_masks_exact_source_projection_pixels": true,
+    "all_original_case_and_source_inventory_preserved": true,
+    "confidence_unchanged": true,
+    "exact_published_plan_and_code_source_bindings": true,
+    "exact_request_payload_hash_multiset_equals_journal": true,
+    "failed_gate_blocks_production_promotion": true,
+    "no_extra_stage_response_artifacts": true,
+    "prepared_new_sources_have_no_inference_approval_or_run_artifacts": true,
+    "production_engine_and_server_do_not_import_candidate": true,
+    "raw_crop_response_not_forged_as_full_source_provider_response": true,
+    "single_request_operation_limits_and_shared16_allowance": true,
+    "strict_spark_schema_and_exact_attachment_order_replayed": true
+  },
+  "counts": {
+    "completed": 16,
+    "elapsed_wall_seconds": 648.847,
+    "errors": 0,
+    "estimated_usd": 0.070963,
+    "gripper_union_pixel_checks": 8,
+    "independent_geometry_comparisons": 8,
+    "native_crop_source_rgb_checks": 8,
+    "near_warning_views": 1,
+    "new_requests": 16,
+    "official_new_sam_responses_redecoded": 8,
+    "official_retained_crop_target_responses_redecoded": 8,
+    "original_cases": 9,
+    "original_views": 18,
+    "reported_input_tokens": 18146,
+    "reported_output_tokens": 6654,
+    "reported_provider_latency_seconds": 57.849,
+    "retries": 0,
+    "sam_requests": 8,
+    "selected_pairs": 4,
+    "spark_requests": 8,
+    "target_source_mask_pixel_checks": 8
+  },
+  "diagnostic_observations": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "observation": "Both final Spark assessments contradict target_extent_covered, so the original wrong-side FAIL remains UNKNOWN despite target identity, purity and released classifications. No repair acceptance is inferred."
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "observation": "Final Spark reports released/full visibility but contradicts returned terminal-tool coverage in both views. Independently recomputed first-view foreground distance is two pixels and withholds support. This is an image-plane warning, not physical-contact proof."
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "observation": "Both views meet the frozen semantic, confidence, returned-tool coverage and negative geometry gates, and unchanged whole-region/stable-source checks produce PASS."
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "observation": "Both views retain low terminal-tool SAM confidence and contradicted returned-mask coverage; the second clear-PASS reference stays UNKNOWN."
+    }
+  ],
+  "errors": [],
+  "limitations": [
+    "All references are exposed assistant-authored judgments; this is not human ground truth or new-source accuracy.",
+    "Spark contact, visibility and returned-mask coverage judgments can be correlated and wrong.",
+    "Near foreground is a negative image-plane warning, not proof of physical contact; far masks do not establish separation.",
+    "The original candidate failed unchanged; missing fork extent and one clear cup prevented its gate.",
+    "Local hashes and journals demonstrate retained consistency, not signed provider origin or trusted capture timestamps."
+  ],
+  "metrics": {
+    "correct": 7,
+    "correct_acceptances": 1,
+    "correct_decided_cases": 1,
+    "decided_cases": 1,
+    "incorrect_passes": 0,
+    "missing_predictions": 0,
+    "reference_nonpass_cases": 7,
+    "reference_pass_cases": 2,
+    "scored_cases": 9,
+    "total_cases": 9,
+    "unknown_cases": 8
+  },
+  "new_current_authority": false,
+  "new_source_preparation": {
+    "current_trial_requests_all_bound_to_original_frozen_study": true,
+    "frames": 12,
+    "provider_requests": 0,
+    "scope_limit": "Scoped to these local preparation folders and the sixteen-row study journal, not an account-wide billing audit.",
+    "source_count": 2,
+    "sources": [
+      {
+        "frame_sha256s": [
+          "bc2198fa54b166368e9ff1d1a032b1360c4190d097c1f6ae003e4e169a06d3a0",
+          "31b48704a8159f289f5eb63e06faff8bfb5a95efcdf42d164abd4cc45b1d90fa",
+          "ffedfb6988a3d08eac8e1d06dfc6b55737a91b5fa243f22071385973ecdf6227",
+          "edf8dc3a7a9ca1f90e62f6753a67a9a4cc70adff39d552ace141a8e993676ee0",
+          "0751a16ebdfa406221270449b8c9c7bcac74c816e90fb7fbd7dc86ab1ca77eca",
+          "beaa3167eca27b00b856c4dcfa25a0de3f56732253748f4bd646d6f2ee61a222"
+        ],
+        "inference_approval_present": false,
+        "prepared_frames": 6,
+        "prepared_provider_requests": 0,
+        "prepared_sha256": "276bd650712012a536263f21b18faeb02904dbd5e0791414d7f620aa8a0a61ba",
+        "run_markers_or_response_artifacts_present": false,
+        "source_id": "ur5-cloth-1",
+        "video_sha256": "72e300b2c92152b2c053e08b8ef6a05330c0ee0e82b1adf9960f7dcf8de289ac"
+      },
+      {
+        "frame_sha256s": [
+          "e617f800beda01aa24c5b36754c8f6aa84e4a8f0485f4e3ddc5f459f0d88aff7",
+          "20d015dff8c3da76a4934e9bd2c12322c719b7fcf73d3d20afe91f5ffcfe5522",
+          "6f77de893877eefff25f182472432b2c3a4b45139aa0f82342ea0e35d04bc810",
+          "1097d25a87bcb0f968a8831e5c6a6794f22a36d33639c947f1077b4c0bc16736",
+          "15cfbb6f2644cfd4497bec7ef00c9f6e544afbb06bfe9c0aadbaf25f334d6b94",
+          "1276d8bd8f47e3f5dc228000f78ce8e0ec46ee2f2bd43111e6416efa7e64d5ce"
+        ],
+        "inference_approval_present": false,
+        "prepared_frames": 6,
+        "prepared_provider_requests": 0,
+        "prepared_sha256": "3b6c3cb31bf45f7015a953686fc15c7a7a44fb486edf43802fbc8ef23da127b6",
+        "run_markers_or_response_artifacts_present": false,
+        "source_id": "ur5-cup-10",
+        "video_sha256": "0331794ed344fa7b17c11fe722ac5a47038483037d4b4cbdc0f125226ab011ef"
+      }
+    ]
+  },
+  "physical_action_execution_verified": false,
+  "private_plan_sha256": "5f3f5064fd092c4a2b719e134003ea195839d3e0d67fa640afc99ce76cccda28",
+  "public_plan_byte_sha256": "2ba2f1ffcab938bf7b0262f44ca3be7b5c26214e6a5e66ecf58684f24d17df65",
+  "publication_commit": "b89a37b77a22b8db916533c1014731fefa7682c4",
+  "request_receipts": [
+    {
+      "model": "muse-spark-1.3",
+      "provider_response_sha256": "f1066a131c478c227e396a03c3221a347e6cf79f132822807f6ac8f6021e1656",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "cfffa4cf07a4d95048d8d849174071d237aedcf977584827060bbfc68f642838",
+      "request_sha256": "be9cd2adbdefcd8f0f4c63aa37a12332f3d100cbcd825780d117f5d17e0eff36",
+      "stage": "spark/locator-0",
+      "token_usage": {
+        "input_tokens": 1069,
+        "output_tokens": 503,
+        "total_tokens": 1572
+      }
+    },
+    {
+      "model": "sam-3.1",
+      "provider_response_sha256": "1d20a61cd54dc86d018587fa527fff7d55746b429fb35fbe4e44f46998b7c022",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "0d90e1dadc1a5bd9e63b8c4a966fb8b47ecdbf46108aff73c90f16b3d9c80dec",
+      "request_sha256": "5a06e11993bba4dd2d0b9de92173132b15fe9d892758fddbe1ca280079493b54",
+      "stage": "sam/gripper-0/0",
+      "token_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "model": "sam-3.1",
+      "provider_response_sha256": "c21ddd07abff1c7ace5aeeb495f55a8d15994478964d6c5cb82a016d006a1a01",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "6655a6c4d571405fea9143e19d57e766a16cf5fcd7e9bfc264c58d292ecab640",
+      "request_sha256": "8e62ba7753c4adee62ad0a74b0af4f613b1bebc9605592a238381674fde80608",
+      "stage": "sam/gripper-0/1",
+      "token_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "model": "muse-spark-1.3",
+      "provider_response_sha256": "20502ec46d727a08dd1c38ee37e194ce5139dfddd9277994af4853f509ce3181",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "6da02412acee2f39ec11ec49b5f51b46501149f4569ad8a4a0a39e4d3e1de76a",
+      "request_sha256": "9a428123b3c04058c5667c5807107f428b1ea4f61d506c9f72103f68b831c2b9",
+      "stage": "spark/final-0",
+      "token_usage": {
+        "input_tokens": 3673,
+        "output_tokens": 675,
+        "total_tokens": 4348
+      }
+    },
+    {
+      "model": "muse-spark-1.3",
+      "provider_response_sha256": "1b0129da97ebc28ebcde58ced2fd271f1ca4250e28648b92bfff1125697ce926",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "8b1d96316019dd1a9e20aa65446e7176c776b378917b156683b00d21f1c95969",
+      "request_sha256": "1f28042153006e92ae6eca6e187e8602da356fb2b81e427d662bf6d7a95daf10",
+      "stage": "spark/locator-5",
+      "token_usage": {
+        "input_tokens": 1069,
+        "output_tokens": 619,
+        "total_tokens": 1688
+      }
+    },
+    {
+      "model": "sam-3.1",
+      "provider_response_sha256": "0ac4c974399df3793a93edc0cbebb52e5717bd78986bf9d5bbece0a81099d488",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "e845d53479a04d1a917cc7111dd11186a4eddee09bf7995bd01d433e96e2d25b",
+      "request_sha256": "3558658821ffc71eb07496308bbe3f93e90b94bedabc2e6f8da39a44c7fd9e47",
+      "stage": "sam/gripper-5/0",
+      "token_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "model": "sam-3.1",
+      "provider_response_sha256": "8f1eb3dbcd68465d963bbe85292a0fafd643f7ab5e8719116b8c9946fc860c36",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "101cfa4d99ad8191132f12adcae02953c393ddee5e96f9d86864e10c73179de1",
+      "request_sha256": "87125baddf0484a44972d6a3dc05008ff716c840b17e0e4bc40b8bac533ca6a1",
+      "stage": "sam/gripper-5/1",
+      "token_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "model": "muse-spark-1.3",
+      "provider_response_sha256": "b195ce784ee11cfca50461bd76e6ad7db86cb5ef3465a9c356458355a96d77de",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "42851cf6a9968d15c661d7e91500bd89b6feadc09f9ec0df57eb1732f6acf72c",
+      "request_sha256": "b22150624add4df363a025f89c618ceb1f1e46045b05addfcfaabb014239ad4d",
+      "stage": "spark/final-5",
+      "token_usage": {
+        "input_tokens": 3605,
+        "output_tokens": 1005,
+        "total_tokens": 4610
+      }
+    },
+    {
+      "model": "muse-spark-1.3",
+      "provider_response_sha256": "8eb47ebaceb0458d07f170a5102ae4b4432dff8c935bfbe38feadd1d553e80c1",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "fe80fe6ba32a2cc3a0e089da52a78aabec89f2c9c0e14e718da220d3a52e095f",
+      "request_sha256": "81347666ded4afe3dc56b7925ccac58d4b3ea4e86bf3efde96305664d94d8fb6",
+      "stage": "spark/locator-6",
+      "token_usage": {
+        "input_tokens": 1069,
+        "output_tokens": 923,
+        "total_tokens": 1992
+      }
+    },
+    {
+      "model": "sam-3.1",
+      "provider_response_sha256": "ebda45ccc95a3c7157c5d9cd7181a47ec2dec005efc06462382d4315b66dde3a",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "55fcfc5ff7ebaad2de1993e5896fcf34479b7286d28ac0b3d7bdcb8d6402c550",
+      "request_sha256": "719935efc52b1bbbebe50e2a9218d66e866ac27ed89c7058d10fa5865931ba0e",
+      "stage": "sam/gripper-6/0",
+      "token_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "model": "sam-3.1",
+      "provider_response_sha256": "89efd902af4926c134b704e9cdb9ed7232d60d77218d570609d0446767579bc5",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "da7492dc9f94970603d6499d1bd0a4c5741e980157777401945dbb46fc3977af",
+      "request_sha256": "d8282ee335673b0074512a7e9587382a4d3a20a6255ac3982099a851df4c2015",
+      "stage": "sam/gripper-6/1",
+      "token_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "model": "muse-spark-1.3",
+      "provider_response_sha256": "ae8afdace5a77dfa7aebad6e24e92bac72fba901aec9c1bf51a9f31bfc292f5e",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "04ecc28f9e8adaf926fd3b4a9c9f15a63d3fb131ffd4d0376cb1851460bcd437",
+      "request_sha256": "e27ab3a10528ec3d98a19d89cd2f7d961053b53c620ca002da80644261aec9d1",
+      "stage": "spark/final-6",
+      "token_usage": {
+        "input_tokens": 3296,
+        "output_tokens": 1146,
+        "total_tokens": 4442
+      }
+    },
+    {
+      "model": "muse-spark-1.3",
+      "provider_response_sha256": "0cfe16cf6f6c6c8f6de9bed67232150a71f0099cb8091e6310fea51d3ea8df98",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "1a282561fb543081b151c457a64caf733865088b268db366ceea50318cc7f530",
+      "request_sha256": "63214e77317558045fc0f0d9d7e17dd39d10c73c7ddd48fbebf58fe5e39e2a14",
+      "stage": "spark/locator-7",
+      "token_usage": {
+        "input_tokens": 1069,
+        "output_tokens": 980,
+        "total_tokens": 2049
+      }
+    },
+    {
+      "model": "sam-3.1",
+      "provider_response_sha256": "740d8ab9d4a12c58371b944b8968f2c3c84f7ac9e0243afe757f4ea5ccc23c61",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "87e256703b7507c4f4f5dfe3b26089017921e5d1d5492c9ccf1c3b5c37fb4b19",
+      "request_sha256": "439f978cc44c85ded3bd5707f6db2a0707a87d756ad068a9ed1e45bc911a33bc",
+      "stage": "sam/gripper-7/0",
+      "token_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "model": "sam-3.1",
+      "provider_response_sha256": "5a1ada61558b05d6aa1e38c8ed014bcf833bbd271facc7b1c2d687e39bf17590",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "d839013c9b165be25a0bd54ca7a3796e5b05182cc6fd20543d6a568128353fcb",
+      "request_sha256": "7c320f136aae60733e6e7ab760c94282d8c1e4d1598659616efb1220ec629a6e",
+      "stage": "sam/gripper-7/1",
+      "token_usage": {
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "total_tokens": 0
+      }
+    },
+    {
+      "model": "muse-spark-1.3",
+      "provider_response_sha256": "009b60a9ca6bb58c8ee116e664193030c6f1a65d748a1f8c6c7b13cbb8fc4678",
+      "raw_provider_and_attempt_usage_equal": true,
+      "raw_result_sha256": "d71a9f314ff5dc7f3274848a5685754c095979afc09a139948849abf7a334dee",
+      "request_sha256": "737d5d1917f32acc3989ca5499fd9f52aab83704b3db278db5a9980685bd4dbe",
+      "stage": "spark/final-7",
+      "token_usage": {
+        "input_tokens": 3296,
+        "output_tokens": 803,
+        "total_tokens": 4099
+      }
+    }
+  ],
+  "result_summary_sha256": "14a349a4715775713600ef04e5be55ffc250c3db92be0024173555e57eeedad6",
+  "schema_version": "proofloop_crop_verification_independent_postpaid_audit_v1",
+  "selected_pair_receipts": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "evaluation_sha256": "98bf5fd512ede0cbe660202b50fffee0999f7572a58eb8aa610c57a8c335f6c8",
+      "final_attachments": 8,
+      "frame_receipts": [
+        {
+          "classification": {
+            "frame_index": 0,
+            "full_scene_match_count": "one",
+            "full_visibility": "supported",
+            "gripper_mask_coverage": "supported",
+            "identity": "supported",
+            "manipulator_relation": "released",
+            "mask_target_only": "supported",
+            "target_extent_covered": "contradicted",
+            "visible_terminal_tool_count": "one"
+          },
+          "crop_sha256": "eadb4189de87c5c0b164f5fec72bc2c9fb504e6a32581ac2cb54a28b217ddfa3",
+          "decision": "withheld",
+          "frame_index": 0,
+          "gripper_mask_sha256": "93a537003cce6b2475579a85e12e2e8a1fd9c36ae4910e49743dfd708d1d79cb",
+          "gripper_union_pixels_exact": true,
+          "independent_geometry": [
+            {
+              "confidence": 0.96484375,
+              "distance_capped4": 4,
+              "gripper_mapped_mask_sha256": "e71ddd2b34818b89ba7f0f31c0550c804129cc4aec167b89a011725c76c8772a",
+              "near": false,
+              "object_id": 1,
+              "target_mapped_mask_sha256": "b0aa6e1a295999e8588264ea068410cb9a99eaae1d471de7340b4751dcbbf80a"
+            }
+          ],
+          "native_crop_rgb_exact": true,
+          "source_sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+          "target_confidence_unchanged": true,
+          "target_mask_pixels_exact": true,
+          "target_mask_sha256": "6bc52f4570f431fa39eaf7bdf80c67b47b35f75c8cf9a6f34a6289d4666ce9e5",
+          "target_projection_sha256": "f53bf1f2e6585b164b9f7563a1190daabef223ed1476f483c5e5647fa418edde",
+          "target_raster_sha256": "5656709dc40fa24951bbf2a97463fadd3c4ccc9d684748b35e16b0d736aaa38d",
+          "target_score": 0.8518518805503845,
+          "withheld_reasons": [
+            "target_extent_covered_contradicted"
+          ]
+        },
+        {
+          "classification": {
+            "frame_index": 1,
+            "full_scene_match_count": "one",
+            "full_visibility": "supported",
+            "gripper_mask_coverage": "supported",
+            "identity": "supported",
+            "manipulator_relation": "released",
+            "mask_target_only": "supported",
+            "target_extent_covered": "contradicted",
+            "visible_terminal_tool_count": "one"
+          },
+          "crop_sha256": "25d2dd15671fe8fc7b4d16b625872773d53e30d150457ed9af2af280813e8a2e",
+          "decision": "withheld",
+          "frame_index": 1,
+          "gripper_mask_sha256": "48618d57f134d9b72415ad72ee09df4d356735b08c2ba0a39445c5905409561e",
+          "gripper_union_pixels_exact": true,
+          "independent_geometry": [
+            {
+              "confidence": 0.96484375,
+              "distance_capped4": 4,
+              "gripper_mapped_mask_sha256": "1777860d972b062883727680977823a5b4792971871859059680827a41017ddc",
+              "near": false,
+              "object_id": 1,
+              "target_mapped_mask_sha256": "9de3ab50a890a05d3720d2bab588abe06d2ca3d3258dfe5ae9aaa230879d4ea4"
+            }
+          ],
+          "native_crop_rgb_exact": true,
+          "source_sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+          "target_confidence_unchanged": true,
+          "target_mask_pixels_exact": true,
+          "target_mask_sha256": "e4f6c42eaa21fa029d1d283b4345d4f0647fddbe4d3be1fafa70be178cd11e43",
+          "target_projection_sha256": "499ff3a667287d04e1b568aa7ff8307efc5e575cfbdce3fe0db5d39bb36668cf",
+          "target_raster_sha256": "21472cf49e143478f739820ecb0b40b757a69fac1802520edf47a8d4f6cc6c51",
+          "target_score": 0.8552036285400391,
+          "withheld_reasons": [
+            "target_extent_covered_contradicted"
+          ]
+        }
+      ],
+      "physical_source_views": 2,
+      "prediction": "unknown",
+      "reference": "fail"
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "evaluation_sha256": "3724da4f493f96690c5e9bf2e8e6c404a9a3e7f656d79b787501aba45c76b26d",
+      "final_attachments": 8,
+      "frame_receipts": [
+        {
+          "classification": {
+            "frame_index": 0,
+            "full_scene_match_count": "one",
+            "full_visibility": "supported",
+            "gripper_mask_coverage": "contradicted",
+            "identity": "supported",
+            "manipulator_relation": "released",
+            "mask_target_only": "supported",
+            "target_extent_covered": "supported",
+            "visible_terminal_tool_count": "one"
+          },
+          "crop_sha256": "b2cf88601a699f311cfe36f19e0a9b4480f1877f12f3c60c253e05efa2483ee9",
+          "decision": "withheld",
+          "frame_index": 0,
+          "gripper_mask_sha256": "65b139f547565d93db82a1b2996b918e64c56830af46b47ad9f4b07707785193",
+          "gripper_union_pixels_exact": true,
+          "independent_geometry": [
+            {
+              "confidence": 0.921875,
+              "distance_capped4": 2,
+              "gripper_mapped_mask_sha256": "f5cc515e56637de349c83e21849b0ccaf694d9277f4e08fbb167d7c825ebacde",
+              "near": true,
+              "object_id": 1,
+              "target_mapped_mask_sha256": "1dc788912ec6463dffc967524465022fd0fb7fba96bcfa1295d91f3e09a79d8c"
+            }
+          ],
+          "native_crop_rgb_exact": true,
+          "source_sha256": "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+          "target_confidence_unchanged": true,
+          "target_mask_pixels_exact": true,
+          "target_mask_sha256": "02de50369ce1c2ea33ce11259e7df4815e05ae4dbfc34475f2c922d1b6db1f9b",
+          "target_projection_sha256": "c915ffdb23f5c314ef7d2dc2b4f6000213e4d4447ad5104298de4ed3f4b1496f",
+          "target_raster_sha256": "50569b9b39034959c75e102e10ce6d93788ca909e283b5719c05f9967f330dda",
+          "target_score": 0.9569892287254333,
+          "withheld_reasons": [
+            "gripper_mask_coverage_contradicted",
+            "near_terminal_tool_foreground"
+          ]
+        },
+        {
+          "classification": {
+            "frame_index": 1,
+            "full_scene_match_count": "one",
+            "full_visibility": "supported",
+            "gripper_mask_coverage": "contradicted",
+            "identity": "supported",
+            "manipulator_relation": "released",
+            "mask_target_only": "supported",
+            "target_extent_covered": "supported",
+            "visible_terminal_tool_count": "one"
+          },
+          "crop_sha256": "9b27a9391617514393b2cee5e8d8a4b4044aedfa8a128881fbaf9d93bf32333c",
+          "decision": "withheld",
+          "frame_index": 1,
+          "gripper_mask_sha256": "175d296e8db2632d90d41c388eb4c18014324183f003921b4dfb15e8eec7469d",
+          "gripper_union_pixels_exact": true,
+          "independent_geometry": [
+            {
+              "confidence": 0.9296875,
+              "distance_capped4": 4,
+              "gripper_mapped_mask_sha256": "148ae437e85867b31bf5982367c110b87027329ae715a239289f294020b1e472",
+              "near": false,
+              "object_id": 1,
+              "target_mapped_mask_sha256": "2a2ddc2686b466335ca540633de2ecf4cd5b1af6e3a7c8a62681000e1efc924a"
+            }
+          ],
+          "native_crop_rgb_exact": true,
+          "source_sha256": "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8",
+          "target_confidence_unchanged": true,
+          "target_mask_pixels_exact": true,
+          "target_mask_sha256": "98de08639e0cf65482b21fb081edb948181f00405c17a0ca698e8f6d37948889",
+          "target_projection_sha256": "087e109fccac92624a57ef7bb63c2cee184fd074dc00def667b2cfae99deda5a",
+          "target_raster_sha256": "35dea28032ed418ac47121e6fb952004fe4630aa36226e54af0482339a4d4638",
+          "target_score": 0.9336099624633789,
+          "withheld_reasons": [
+            "gripper_mask_coverage_contradicted"
+          ]
+        }
+      ],
+      "physical_source_views": 2,
+      "prediction": "unknown",
+      "reference": "unknown"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "evaluation_sha256": "ce8dab2910ce7b49475fd8692e4f80f217992049b4a15b0ed461e8b08aff0edb",
+      "final_attachments": 8,
+      "frame_receipts": [
+        {
+          "classification": {
+            "frame_index": 0,
+            "full_scene_match_count": "one",
+            "full_visibility": "supported",
+            "gripper_mask_coverage": "supported",
+            "identity": "supported",
+            "manipulator_relation": "released",
+            "mask_target_only": "supported",
+            "target_extent_covered": "supported",
+            "visible_terminal_tool_count": "one"
+          },
+          "crop_sha256": "95dc0fcb6fc0e5e9b5e2c32de5de91609d36ca61f0657ca3565e3fcd9f26c621",
+          "decision": "supported",
+          "frame_index": 0,
+          "gripper_mask_sha256": "3e131fc2ca4d8df48248eb761fa952f2340fa9c625beb6445e52d57d9f316d1e",
+          "gripper_union_pixels_exact": true,
+          "independent_geometry": [
+            {
+              "confidence": 0.8515625,
+              "distance_capped4": 4,
+              "gripper_mapped_mask_sha256": "e9d94e8a6cbc498f63e4dd33c52d476f4dce7ee8717f1c9dfaead37f3e7f8ce4",
+              "near": false,
+              "object_id": 1,
+              "target_mapped_mask_sha256": "15ec25d104680a1c390c5d3f61460b7061d3a504a0027a1d657ff97c21900ade"
+            }
+          ],
+          "native_crop_rgb_exact": true,
+          "source_sha256": "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+          "target_confidence_unchanged": true,
+          "target_mask_pixels_exact": true,
+          "target_mask_sha256": "7f85d886af935e9f2cb31ecaf8d76abdd68a2f9df1c66f9044eb9f8966744990",
+          "target_projection_sha256": "ec27aec34f208267fb95f404e74ae450e7bf6dad5e0e960e0816d51f1047b9d4",
+          "target_raster_sha256": "e7462103329e0cfe80332a5a66103e63c346c24e0f87baf4f6867b425ced210d",
+          "target_score": 0.8750000596046448,
+          "withheld_reasons": []
+        },
+        {
+          "classification": {
+            "frame_index": 1,
+            "full_scene_match_count": "one",
+            "full_visibility": "supported",
+            "gripper_mask_coverage": "supported",
+            "identity": "supported",
+            "manipulator_relation": "released",
+            "mask_target_only": "supported",
+            "target_extent_covered": "supported",
+            "visible_terminal_tool_count": "one"
+          },
+          "crop_sha256": "26a8f0f77ab63d2aeb1de3313af12805d406133ee5b4efe9c7998c4087aa962e",
+          "decision": "supported",
+          "frame_index": 1,
+          "gripper_mask_sha256": "d298dabf593f0cafa5285d3409d307a28c54d2c48e4a23a15228a3b2083883ef",
+          "gripper_union_pixels_exact": true,
+          "independent_geometry": [
+            {
+              "confidence": 0.8046875,
+              "distance_capped4": 4,
+              "gripper_mapped_mask_sha256": "4b09cafb0f9f8a2c4fda18f42511c752aff92f9e3d521ac2814bf79cb6a3c073",
+              "near": false,
+              "object_id": 1,
+              "target_mapped_mask_sha256": "c4b00f75d904400d9491d0a3a9f11e009e588f080010aa5fc139ff9e997da1f9"
+            }
+          ],
+          "native_crop_rgb_exact": true,
+          "source_sha256": "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a",
+          "target_confidence_unchanged": true,
+          "target_mask_pixels_exact": true,
+          "target_mask_sha256": "e3086f4c8294e709a64992ef4fdc35fddc9caeff984dd8781bf9742472cede6f",
+          "target_projection_sha256": "079c547fb8e3557c852c2a6dc8d187c3445e5e591b15a3063e4d4bd56ca5097e",
+          "target_raster_sha256": "a4f97ac23467fd19b292f22842a2a5d65b905dd1f5d19565259c40634ef95f0d",
+          "target_score": 0.8400000333786011,
+          "withheld_reasons": []
+        }
+      ],
+      "physical_source_views": 2,
+      "prediction": "pass",
+      "reference": "pass"
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "evaluation_sha256": "38b81bfec824b7512abe6f2f3d3a55e82aa8d20209251f77019d098f044d0ab1",
+      "final_attachments": 8,
+      "frame_receipts": [
+        {
+          "classification": {
+            "frame_index": 0,
+            "full_scene_match_count": "one",
+            "full_visibility": "supported",
+            "gripper_mask_coverage": "contradicted",
+            "identity": "supported",
+            "manipulator_relation": "released",
+            "mask_target_only": "supported",
+            "target_extent_covered": "supported",
+            "visible_terminal_tool_count": "one"
+          },
+          "crop_sha256": "53acf96c472ecb2935ba16bc85f9729236597d63b5c3cc1972dc91b5643a6d97",
+          "decision": "withheld",
+          "frame_index": 0,
+          "gripper_mask_sha256": "8e308bf6e35c8ccf7ad70bcf08ea1766e64458672c949781764782cda9b733a0",
+          "gripper_union_pixels_exact": true,
+          "independent_geometry": [
+            {
+              "confidence": 0.55859375,
+              "distance_capped4": 4,
+              "gripper_mapped_mask_sha256": "2356d0b1b9286d26b889dc39da55361f34f4cbe681278557e831f3ac259f5928",
+              "near": false,
+              "object_id": 1,
+              "target_mapped_mask_sha256": "c0e6189e20e56d211672ba7f409f78435dd72dcde0a9877e4932a49f690884e1"
+            }
+          ],
+          "native_crop_rgb_exact": true,
+          "source_sha256": "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+          "target_confidence_unchanged": true,
+          "target_mask_pixels_exact": true,
+          "target_mask_sha256": "be5c6a5a7f017f553a47af6c9969c1ef8565ce22463055b0118e9ba8c4ac3ed7",
+          "target_projection_sha256": "664f9628e49e29500389586b48132a375b25bcb6c739a96d5f56885b85679510",
+          "target_raster_sha256": "bc242d7098a3cb18e22be8795a55385981d0be9273ec2eec7d075166d4346cf5",
+          "target_score": 0.8518518805503845,
+          "withheld_reasons": [
+            "terminal_tool_sam_confidence_unavailable_or_below_0_8",
+            "gripper_mask_coverage_contradicted"
+          ]
+        },
+        {
+          "classification": {
+            "frame_index": 1,
+            "full_scene_match_count": "one",
+            "full_visibility": "supported",
+            "gripper_mask_coverage": "contradicted",
+            "identity": "supported",
+            "manipulator_relation": "released",
+            "mask_target_only": "supported",
+            "target_extent_covered": "supported",
+            "visible_terminal_tool_count": "one"
+          },
+          "crop_sha256": "426ab9366bc6baca2c7e056d67bce1e4817f60840a50291120a6927a636059e3",
+          "decision": "withheld",
+          "frame_index": 1,
+          "gripper_mask_sha256": "bda640bb2c8238a48511bdf1519cb4f7255412f48917ddebc4577f4267de61e6",
+          "gripper_union_pixels_exact": true,
+          "independent_geometry": [
+            {
+              "confidence": 0.67578125,
+              "distance_capped4": 4,
+              "gripper_mapped_mask_sha256": "ba4e22bd700ca1b85602c361f2e127305ed19c0599e33899fe5545b9f3786e24",
+              "near": false,
+              "object_id": 1,
+              "target_mapped_mask_sha256": "3d16365f08b369ec900d6d451ce670c9c50a39b984e74bff0fd6bb83a7823379"
+            }
+          ],
+          "native_crop_rgb_exact": true,
+          "source_sha256": "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3",
+          "target_confidence_unchanged": true,
+          "target_mask_pixels_exact": true,
+          "target_mask_sha256": "cda3a88352f5f63f0601df8d20e77ad6727bde6d6433c86e41dc61bd254fe426",
+          "target_projection_sha256": "b1408af1473fa8a330b3390081f2c1255dce6c98fc82dce5a5589a494cd34127",
+          "target_raster_sha256": "d7e2b5d04eee1745f0caf35a76a1f99b039b635dd287c7b0683868b0a3430357",
+          "target_score": 0.8518518805503845,
+          "withheld_reasons": [
+            "terminal_tool_sam_confidence_unavailable_or_below_0_8",
+            "gripper_mask_coverage_contradicted"
+          ]
+        }
+      ],
+      "physical_source_views": 2,
+      "prediction": "unknown",
+      "reference": "pass"
+    }
+  ],
+  "status": "integrity_passed_candidate_gate_failed",
+  "timing_interpretation": "648.847 seconds is the one-shot diagnostic experiment including repeated local hashing/rendering/replay. Reported provider latencies sum57.849 seconds. This is not a measurement of the existing interactive UI path."
+}
