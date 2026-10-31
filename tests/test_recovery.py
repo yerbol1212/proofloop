@@ -99,9 +99,13 @@ class RecoveryTests(unittest.TestCase):
                                        "confirm_unique_targets": True})["task_draft"]
         state = self.engine.activate_task({"draft_id": draft["draft_id"], "draft_hash": draft["draft_hash"],
                                           "confirm_requirements": True, "confirm_unique_targets": True})
-        self.assertEqual("cancelled_task_change", state["recovery"]["outcome"])
-        self.assertEqual(old_hash, self.engine._recovery_record["contract_hash"])
-        self.assertTrue(self.engine.verify_recovery()["valid"])
+        self.assertIsNone(state["recovery"])
+        self.assertIsNone(self.engine._recovery_record)
+        cancelled = [(path, json.loads(path.read_text())) for path in self.engine._directory.glob("recovery-*.json")
+                     if json.loads(path.read_text())["outcome"] == "cancelled_task_change"]
+        self.assertEqual(1, len(cancelled))
+        self.assertEqual(old_hash, cancelled[0][1]["contract_hash"])
+        self.assertTrue(verify_recovery_receipt(cancelled[0][0], root=self.root)["valid"])
 
     def test_old_views_cannot_close_a_requested_repair(self):
         self.requested_repair()

@@ -41,11 +41,16 @@ FRESHNESS_MS = 30000
 DEFAULT_REGIONS = {"left": [0.02, 0.08, 0.48, 0.94], "right": [0.52, 0.08, 0.98, 0.94]}
 MAX_PIXELS = 16_000_000
 MAX_TASK_OBJECTS = 6
+MAX_JOB_CAPTURE_ANCHORS = 32
 PERCEPTION_NOTES = {
     "concept": "SAM detects reviewed text concepts; reported confidence is not a calibrated correctness probability.",
     "guided": "Spark assigns object identity from the two images; SAM refines its prompted boundaries and does not independently verify identity. Both views must support full target visibility; ambiguous identity or unsupported visibility stays unknown.",
 }
 UPRIGHT_IMAGE_MESSAGE = "JPEG orientation metadata requires rotation. Export an upright PNG or JPEG with orientation removed, or use camera capture."
+
+
+class CaptureAdmissionError(ValidationError):
+    """A queued capture lost or exceeded its original server receipt clock."""
 
 
 def _perception_details(mode: str) -> dict[str, Any]:
@@ -200,6 +205,8 @@ class InteractiveEngine:
         self._workflow_replay = None
         self._evidence_received_monotonic_ms: int | None = None
         self._evidence_elapsed_floor_ms = 0
+        self._job_capture_anchors: dict[str, dict[str, Any]] = {}
+        self._active_capture_job_id: str | None = None
         self._reset_acquisition()
         self._recovery_record: dict[str, Any] | None = None
         self._recovery_path: Path | None = None
@@ -431,6 +438,13 @@ class InteractiveEngine:
             # Persist approval before changing the in-memory executable task.
             self._write(self._directory / ("task-approval-" + draft["draft_id"] + ".json"), approval)
             self._cancel_recovery()
+            # Historical files keep their original contract. They are no longer
+            # the active task's recovery and cannot label a new inspection job.
+            self._recovery_record, self._recovery_path = None, None
+            self._recovery_sequence = 0
+            self._state["recovery"] = None
+            for identifier in tuple(self._job_capture_anchors):
+                self._forget_job_capture(identifier)
             changed_regions = set(self._protocol.regions) != set(protocol.regions)
             self._protocol, self._concepts = protocol, dict(draft["concepts"])
             metadata = self._task_metadata(draft["title"], draft["requirements"], draft["origin"],
@@ -821,9 +835,13 @@ class InteractiveEngine:
             if (source not in ("camera", "upload") or type(received) is not int
                     or type(monotonic_anchor) is not int):
                 return None, None
+            active_anchor = self._job_capture_anchors.get(self._active_capture_job_id)
             elapsed = max(0, _now_ms() - received, _monotonic_ms() - monotonic_anchor,
-                          self._evidence_elapsed_floor_ms)
+                          self._evidence_elapsed_floor_ms,
+                          active_anchor["elapsed_floor_ms"] if active_anchor else 0)
             self._evidence_elapsed_floor_ms = elapsed
+            if active_anchor is not None:
+                active_anchor["elapsed_floor_ms"] = elapsed
             if source == "upload":
                 return 1000 + elapsed, elapsed
             first_capture = self._state["evidence_observed_at_ms"]
@@ -1006,7 +1024,66 @@ class InteractiveEngine:
         basis += "; freshness_uses_non_decreasing_server_elapsed_not_trusted_capture_time"
         return source, deepcopy(regions), decoded, hashes, times, basis
 
-    def inspect_pair(self, payload: dict[str, Any], *, expected_binding=None,
+    def _prepare_job_capture(self, request: dict[str, Any], scope: str) -> dict[str, Any]:
+        """Private server receipt; never accepted from an HTTP payload or saved job."""
+        return {"received_at_ms": _now_ms(), "monotonic_ms": _monotonic_ms(),
+                "request_sha256": digest(request), "elapsed_floor_ms": 0, "scope": scope}
+
+    def _remember_job_capture(self, job: dict[str, Any], anchor: dict[str, Any]) -> None:
+        with self._lock:
+            if job["payload_sha256"] != anchor["request_sha256"]:
+                raise CaptureAdmissionError("Queued capture does not match its admitted payload")
+            if job["id"] not in self._job_capture_anchors:
+                if len(self._job_capture_anchors) >= MAX_JOB_CAPTURE_ANCHORS:
+                    self._seen_hashes.update(anchor["source_sha256"])
+                    raise CaptureAdmissionError("The bounded current capture registry is full")
+                # A new key, calibration or view order cannot make known bytes
+                # younger. Either source may have appeared in an earlier pair.
+                overlapping = [value for value in self._job_capture_anchors.values()
+                               if set(value["source_sha256"]) & set(anchor["source_sha256"])]
+                if overlapping:
+                    earliest = min(overlapping + [anchor], key=lambda value: value["monotonic_ms"])
+                    anchor = {**anchor, "received_at_ms": earliest["received_at_ms"],
+                              "monotonic_ms": earliest["monotonic_ms"],
+                              "elapsed_floor_ms": max(value["elapsed_floor_ms"] for value in overlapping + [anchor])}
+                self._job_capture_anchors[job["id"]] = {**deepcopy(anchor), "binding": deepcopy(job["binding"])}
+
+    def _job_capture_ids(self, scope: str) -> list[str]:
+        with self._lock:
+            return [key for key, value in self._job_capture_anchors.items() if value["scope"] == scope]
+
+    def _forget_job_capture(self, job_id: str) -> None:
+        with self._lock:
+            anchor = self._job_capture_anchors.pop(job_id, None)
+            if anchor is not None:
+                # A cancelled/finished admission ends that capture intent even
+                # before inference. Retain the existing exact-byte reuse guard
+                # instead of evicting its clock and making old images fresh.
+                self._seen_hashes.update(anchor["source_sha256"])
+            if anchor is not None and self._active_capture_job_id == job_id:
+                self._evidence_elapsed_floor_ms = max(self._evidence_elapsed_floor_ms, anchor["elapsed_floor_ms"])
+
+    def _observe_job_capture(self, job: dict[str, Any], *, require_current: bool = False) -> dict[str, Any] | None:
+        with self._lock:
+            anchor = self._job_capture_anchors.get(job["id"])
+            if anchor is None:
+                if require_current:
+                    raise CaptureAdmissionError("The original capture clock is unavailable; capture two new views")
+                return None
+            if (anchor["request_sha256"] != job["payload_sha256"] or anchor["binding"] != job["binding"]):
+                raise CaptureAdmissionError("Queued capture differs from its original admission")
+            anchor["elapsed_floor_ms"] = max(anchor["elapsed_floor_ms"], 0,
+                _now_ms() - anchor["received_at_ms"], _monotonic_ms() - anchor["monotonic_ms"])
+            for related in self._job_capture_anchors.values():
+                if (related["received_at_ms"], related["monotonic_ms"]) == (anchor["received_at_ms"], anchor["monotonic_ms"]):
+                    related["elapsed_floor_ms"] = max(related["elapsed_floor_ms"], anchor["elapsed_floor_ms"])
+            if self._active_capture_job_id == job["id"]:
+                self._evidence_elapsed_floor_ms = max(self._evidence_elapsed_floor_ms, anchor["elapsed_floor_ms"])
+            if require_current and anchor["elapsed_floor_ms"] > FRESHNESS_MS:
+                raise CaptureAdmissionError("The queued capture expired; capture two new views")
+            return deepcopy(anchor)
+
+    def inspect_pair(self, payload: dict[str, Any], *, expected_binding=None, admission_job_id=None,
                      runtime_client_factory=None) -> dict[str, Any]:
         with self._lock:
             if expected_binding is not None:
@@ -1014,10 +1091,28 @@ class InteractiveEngine:
                 validate_binding(expected_binding, self.snapshot())
             if self._state["busy"]:
                 raise ValidationError("An inspection is already running")
+            admitted = None
+            clock_job_id = admission_job_id
+            if admission_job_id is not None:
+                if (not isinstance(admission_job_id, str) or not re.fullmatch(r"[0-9a-f]{32}", admission_job_id)
+                        or expected_binding is None):
+                    raise CaptureAdmissionError("Queued inspection requires its exact server admission")
+                admitted = self._observe_job_capture({"id": admission_job_id, "binding": expected_binding,
+                    "payload_sha256": digest({"binding": expected_binding, "inspection": payload})}, require_current=True)
             plan = self._current_acquisition(self._state)
             if plan and plan["status"] not in ("ready", "not_needed"):
                 raise ValidationError("Evidence acquisition stopped. Review the task or capture setup before continuing")
             source, regions, decoded, hashes, times, basis = self._validate_pair(payload)
+            if admitted is None:
+                # The direct inspection entry point also knows how old bytes
+                # are once they were admitted to a queue. Changing routes must
+                # not grant the same source a new receipt-time window.
+                pending = [(identifier, anchor) for identifier, anchor in self._job_capture_anchors.items()
+                           if set(anchor["source_sha256"]) & set(hashes)]
+                if pending:
+                    clock_job_id, anchor = min(pending, key=lambda item: item[1]["monotonic_ms"])
+                    admitted = self._observe_job_capture({"id": clock_job_id, "binding": anchor["binding"],
+                        "payload_sha256": anchor["request_sha256"]}, require_current=True)
             if plan and plan["status"] == "ready":
                 check_source_pair(plan, hashes, timestamps_ms=times)
             if self._acquisition_pending:
@@ -1035,9 +1130,10 @@ class InteractiveEngine:
             self._state["capture_token"] = None
             self._seen_hashes.update(hashes)
             self._evidence_record = None
-            received_at_ms = _now_ms()
-            self._evidence_received_monotonic_ms = _monotonic_ms()
-            self._evidence_elapsed_floor_ms = 0
+            received_at_ms = admitted["received_at_ms"] if admitted else _now_ms()
+            self._evidence_received_monotonic_ms = admitted["monotonic_ms"] if admitted else _monotonic_ms()
+            self._evidence_elapsed_floor_ms = admitted["elapsed_floor_ms"] if admitted else 0
+            self._active_capture_job_id = clock_job_id
             self._state.update(phase="checking", status="unknown", busy=True, busy_operation="inspection", error=None, source_kind=source,
                                proposal=None, verified_at_ms=None, regions=regions, images=[], usage=None, perception_provenance=None,
                                source_note=("Inspecting two new views with task-independent Spark localization and Meta SAM. "

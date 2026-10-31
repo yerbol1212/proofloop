@@ -1,0 +1,223 @@
+{
+  "automatic_retries": 0,
+  "evidence_role": "post_outcome_exposed_development_full_source_crop_semantic_and_contact_verification",
+  "experiment": {
+    "cases": [
+      {
+        "case_id": "bridge-scripted-0-pair-0",
+        "contract_hash": "2a4f747826572f76d131c0c5491b64185f5c8c003744361cecbad17ff6b7c8a8",
+        "eligible": true,
+        "preparation_inventory_sha256": "95422bdbc5b9cd1e744fee432291b70b9382ebad2c03c70408bdae4525dc89ff",
+        "reference": "fail",
+        "source_sha256s": [
+          "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+          "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+        ],
+        "view_indices": [
+          0,
+          1
+        ]
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-1",
+        "contract_hash": "5bf3871a214be0c792f0a1465e1f2ba9e54dbea8c670e8e20fbb39b44aa045a4",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+          "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d"
+        ],
+        "view_indices": [
+          2,
+          3
+        ]
+      },
+      {
+        "case_id": "bridge-scripted-0-pair-2",
+        "contract_hash": "aa0912823d266fc0898e30faf85a293d5068c4bba029c546cc60e88243937c90",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+          "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a"
+        ],
+        "view_indices": [
+          4,
+          5
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-0",
+        "contract_hash": "d7c60f27386a4943e5b0d897b1bbe71d12cce4d96732b88229e63a43479c6e48",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+          "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115"
+        ],
+        "view_indices": [
+          6,
+          7
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-1",
+        "contract_hash": "41b0f8e88e66349341f5f360a6f223d7717fdfdf9682832672c3597fc5999165",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+          "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668"
+        ],
+        "view_indices": [
+          8,
+          9
+        ]
+      },
+      {
+        "case_id": "ur5-cloth-0-pair-2",
+        "contract_hash": "c9dab92186cb7ac0c50c14cea06371dc85a1378f35bffd30f0835f7e9cfc5d18",
+        "eligible": true,
+        "preparation_inventory_sha256": "c3aab99c7a6701f64c67d0f2cfe287b74ddf40ec9845005644a51690842a07a9",
+        "reference": "unknown",
+        "source_sha256s": [
+          "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+          "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+        ],
+        "view_indices": [
+          10,
+          11
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-0",
+        "contract_hash": "b516f4169ced89f2ff8aeba0765426a14973b6e7dabeb307401f52ed4a7d9c49",
+        "eligible": true,
+        "preparation_inventory_sha256": "4358071a168eb5e173d5670267d7f8fabe2fb2d2575575eb8e878c3c2deb6be5",
+        "reference": "pass",
+        "source_sha256s": [
+          "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+          "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+        ],
+        "view_indices": [
+          12,
+          13
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-1",
+        "contract_hash": "e1c8aa1fadb8709c468801247ac3d778e0cc33abd16827b2d859f2d5ff060db3",
+        "eligible": true,
+        "preparation_inventory_sha256": "692ca9b668d83bd69fcf7709707f0746c3aec2752dfaac4f43cfec50d0eca858",
+        "reference": "pass",
+        "source_sha256s": [
+          "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+          "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+        ],
+        "view_indices": [
+          14,
+          15
+        ]
+      },
+      {
+        "case_id": "ur5-cup-4-pair-2",
+        "contract_hash": "219c440fb0323c4d582c3f8248467678d090d6f67100af901053017f4e452c92",
+        "eligible": false,
+        "preparation_inventory_sha256": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "reference": "unknown",
+        "source_sha256s": [
+          "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+          "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67"
+        ],
+        "view_indices": [
+          16,
+          17
+        ]
+      }
+    ],
+    "created_unix_ms": 1793448033555,
+    "dependencies": {
+      "ffmpeg_version": "ffmpeg version 9.0 Copyright (c) 2000-2026 the FFmpeg developers",
+      "meta_sam_parser_distribution": "0.1.0",
+      "sam_model": "sam-3.1",
+      "spark_max_output_tokens": 4096,
+      "spark_model": "muse-spark-1.3",
+      "spark_reasoning_effort": "low"
+    },
+    "eligible_pairs": 4,
+    "implementation_sha256": {
+      "proofloop/anchor_padding_experiment.py": "4386f987c575b446b379bb517f6aeb8182873d88c623212585ecd1c9c4ce9bcd",
+      "proofloop/benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+      "proofloop/bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+      "proofloop/capture.py": "77e94f6a5941fc5378037ccef46ba71060821a7457331e04bd35600dcbba682a",
+      "proofloop/concept_verified_experiment.py": "f2eded145ae2c1458374d94fa80da136e7e7f7586cc4a4b61818e3f6e75f5def",
+      "proofloop/core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+      "proofloop/crop_evidence.py": "808a52dff2f8339251eed56d7c4e1bf875922c4b1fe30ca1ca93f2e3628041bd",
+      "proofloop/crop_verification.py": "00e13693d60967428e8c778e006b0245e0a967a38a4a415c5a162a61a9ff2e62",
+      "proofloop/gripper_geometry.py": "20125923b19f95a06c72039f4944de5c014b6a8230f777729c1348a4289d0052",
+      "proofloop/grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+      "proofloop/guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+      "proofloop/image_gripper_experiment.py": "a11fd36099713b781fc1ba372a9858a14074821c1a03eef7d5d1a0993a1371bb",
+      "proofloop/inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+      "proofloop/mask_semantics.py": "de84183204cbc02ca6a4b4b2369a0061845eded7afcc1f9bf4add0b7800a1a9f",
+      "proofloop/meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+      "proofloop/prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+      "proofloop/prospective_audit.py": "50bc6c4e457b416cdf0cb54f793bc121db1eb924ab2a5cfe3a346ea6bbc1a6f5",
+      "proofloop/semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+      "proofloop/session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869",
+      "proofloop/tracking_geometry.py": "9c5cfdcb513a3839fa82eae19050dc50da2be62842b76329a47a4e4a0b3dfc01",
+      "proofloop/video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b",
+      "tools/probe_context_crops.py": "b9217c18573b91967c2dc56942c62c94fe6ec6510ceee07e8f5e5c541d9693ed",
+      "tools/verify_context_crops.py": "2cb646caad8798759d0d265b04dfd24eadcf1e05a60fab99faad9be9de036505"
+    },
+    "limits": [
+      "All original exposed cases and source views remain; this is not new-source accuracy.",
+      "Only pairs with two eligible frozen crop projections enter new inference.",
+      "Each eligible pair permits one two-view Spark manipulator locator, at most two spatial SAM requests, and one eight-image Spark mask/contact review.",
+      "No manual manipulator anchors, concept retries, favorable substitution or hidden fallback.",
+      "Derived target geometry is not a provider response on the full original scene.",
+      "Contact, uncertain semantics, incomplete mask coverage or unavailable required evidence cannot authorize a task result.",
+      "A far gripper mask is not proof of separation; semantic assessment is fallible and not independent human truth.",
+      "Completed missing or unsupported evidence yields UNKNOWN; failed required inference remains unscored.",
+      "No production promotion, physical execution or calibrated safety guarantee."
+    ],
+    "max_requests": 16,
+    "parent_inventory_sha256": "a1ddea39303037ae2453b3aed36330fee3215494ee581ef7662c6b440c8455f5",
+    "parent_plan_sha256": "d92eb2c322ed7f92cdb4f430da767f8ef38bb9799f70003b7135b82e67361207",
+    "parent_summary_sha256": "f8609deaed1c53c48fa33c8fb00d0e541d0e3e55a0c03c882c3792be71495790",
+    "plan_sha256": "5f3f5064fd092c4a2b719e134003ea195839d3e0d67fa640afc99ce76cccda28",
+    "production_promotion_allowed": false,
+    "request_caps": {
+      "sam": 8,
+      "spark": 8,
+      "total": 16
+    },
+    "version": "crop_full_source_contact_verification_development_v1"
+  },
+  "gate": {
+    "all_original_cases": 9,
+    "all_original_views": 18,
+    "complete_accounting_required": true,
+    "missing_predictions": 0,
+    "retained_clear_task_positives": 2,
+    "retained_wrong_side_failures": 1,
+    "unknown_references_withheld": 6
+  },
+  "new_source_inference_only_if_gate_passes": true,
+  "physical_action_execution_verified": false,
+  "preregister_before_paid_inference": true,
+  "production_promotion_allowed": false,
+  "request_cap": 16,
+  "schema_version": "1.0",
+  "stop_candidate_if_gate_fails": true,
+  "stop_http_statuses": [
+    401,
+    402,
+    403,
+    429
+  ]
+}

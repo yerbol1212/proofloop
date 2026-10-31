@@ -554,7 +554,8 @@ def main(argv: list[str] | None = None) -> int:
                 if args.offline:
                     raise RuntimeUnavailable("operation_error")
                 return control.inspection_client(job_id, guard, **kwargs)
-            return engine.inspect_pair(inspection, expected_binding=binding, runtime_client_factory=factory)
+            return engine.inspect_pair(inspection, expected_binding=binding, admission_job_id=job_id,
+                                       runtime_client_factory=factory)
 
         def cached(request, job_id, guard):
             from .replay_bundle import replay

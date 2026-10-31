@@ -21,6 +21,7 @@ import time
 from typing import Any, Callable
 
 from .core import ValidationError
+from .interactive import CaptureAdmissionError
 from .jobs import (JobConflict, JobError, JobIntegrityError, JobLeaseError,
                    JobStore, JobValidationError, MAX_LEASE_MS, MAX_PENDING_JOBS, MAX_RETAINED_PAYLOAD_BYTES)
 from .meta import MetaAPIError
@@ -171,6 +172,7 @@ class InspectionJobService:
         self._thread: threading.Thread | None = None
         self._worker_id = "worker-" + secrets.token_hex(12)
         self._worker_error: str | None = None
+        self._capture_scope = str(Path(self.store.db_path).resolve())
         self.runtime_control = runtime_control
         if runtime_control is not None:
             runtime_control.bind_worker("inspection", self._worker_status)
@@ -215,6 +217,8 @@ class InspectionJobService:
                           submission_fingerprint: str | None = None) -> dict[str, Any]:
         started, monotonic = time.time_ns(), time.monotonic_ns()
         request = self._payload(payload)
+        capture_anchor = (self.engine._prepare_job_capture(request, self._capture_scope)
+                          if hasattr(self.engine, "_prepare_job_capture") else None)
         with self._lifecycle_lock:
             if self._stop.is_set():
                 raise JobConflict("The inspection worker is closed")
@@ -231,12 +235,27 @@ class InspectionJobService:
                              started_unix_ns=started, duration_ns=max(0, time.monotonic_ns() - monotonic))
                 raise
         with self.engine._lock:
+            # A competing service for this engine may have admitted the same
+            # immutable request before we acquired its lock. Never refresh that
+            # job's original capture clock on an idempotent repeat.
+            previous = self.lookup_submission(request, idempotency_key=idempotency_key)
+            if previous is not None:
+                return previous
             validate_binding(request["binding"], self.engine.snapshot())
-            self.engine._validate_pair(request["inspection"])
+            checked_pair = self.engine._validate_pair(request["inspection"])
+            if capture_anchor is not None:
+                capture_anchor["source_sha256"] = list(checked_pair[3])
             with self._journal_lock:
+                if capture_anchor is not None:
+                    for identifier in self.engine._job_capture_ids(self._capture_scope):
+                        retained = self.store.get(identifier)
+                        if retained["state"] not in ("queued", "running"):
+                            self.engine._forget_job_capture(identifier)
                 options = {"submission_fingerprint": submission_fingerprint} if submission_fingerprint is not None else {}
                 job = self.store.submit("inspection", request, idempotency_key=idempotency_key,
                                         binding=request["binding"], now_ms=self._clock_ms(), **options)
+                if capture_anchor is not None:
+                    self.engine._remember_job_capture(job, capture_anchor)
         self._record(job["id"], "admission", started_unix_ns=started,
                      duration_ns=max(0, time.monotonic_ns() - monotonic))
         self._wake.set()
@@ -298,6 +317,10 @@ class InspectionJobService:
             if not integrity["valid"]:
                 raise JobIntegrityError("Stored job verification failed")
             job = self.store.get(job_id)
+        if job["state"] in ("queued", "running") and hasattr(self.engine, "_observe_job_capture"):
+            # Observe wall-clock high-water while queued too. Reading an
+            # existing job never replaces or reconstructs its original anchor.
+            self.engine._observe_job_capture(job)
         normalized = None
         result_valid: bool | None = None
         if job["state"] == "succeeded":
@@ -326,6 +349,8 @@ class InspectionJobService:
     def cancel(self, job_id: str) -> dict[str, Any]:
         with self._journal_lock:
             self.store.cancel(job_id, now_ms=self._clock_ms())
+        if hasattr(self.engine, "_forget_job_capture"):
+            self.engine._forget_job_capture(job_id)
         return self.get(job_id)
 
     def start(self) -> "InspectionJobService":
@@ -449,6 +474,8 @@ class InspectionJobService:
                 if self._stop.is_set():
                     raise JobLeaseError("The inspection dispatch is unavailable")
                 validate_binding(binding, self.engine.snapshot())
+                if hasattr(self.engine, "_observe_job_capture"):
+                    self.engine._observe_job_capture(job, require_current=True)
                 self.engine._validate_pair(job["payload"]["inspection"])
                 with claim_lock:
                     with self._journal_lock:
@@ -456,7 +483,8 @@ class InspectionJobService:
             self._record(job["id"], "job_validation", started_unix_ns=validation_started,
                          duration_ns=max(0, time.monotonic_ns() - validation_clock))
             if self._inspect_callback is None:
-                state = self.engine.inspect_pair(job["payload"]["inspection"], expected_binding=binding)
+                admission = {"admission_job_id": job["id"]} if hasattr(self.engine, "_observe_job_capture") else {}
+                state = self.engine.inspect_pair(job["payload"]["inspection"], expected_binding=binding, **admission)
             else:
                 state = self._inspect_callback(job["payload"]["inspection"], binding, job["id"], guard)
             with self.engine._lock:
@@ -482,8 +510,17 @@ class InspectionJobService:
                         self._record(job["id"], "evidence_request", code=gap_code)
                 publication_started, publication_clock = time.time_ns(), time.monotonic_ns()
                 reference["result_sha256"] = self._save_result(job["id"], result)
-                recovery = state.get("recovery")
-                if isinstance(recovery, dict) and isinstance(recovery.get("receipt_id"), str) and re.fullmatch(r"[0-9a-f]{24,64}", recovery["receipt_id"]):
+                recovery = self.engine.recovery_receipt() if hasattr(self.engine, "recovery_receipt") else None
+                verification = recovery.get("verification") if isinstance(recovery, dict) else None
+                if (isinstance(recovery, dict) and isinstance(recovery.get("receipt_id"), str)
+                        and re.fullmatch(r"[0-9a-f]{24,64}", recovery["receipt_id"])
+                        and recovery.get("task_hash") == binding["task_hash"]
+                        and recovery.get("protocol_hash") == binding["protocol_hash"]
+                        and type(recovery.get("after_revision")) is int and recovery["after_revision"] == binding["revision"]
+                        and isinstance(verification, dict) and verification.get("valid") is True
+                        and verification.get("scope") == "completed"
+                        and verification.get("receipt_hash") == recovery.get("receipt_hash")
+                        and verification.get("outcome") == recovery.get("outcome")):
                     reference["receipt_id"] = recovery["receipt_id"]
                 with claim_lock:
                     if lease_lost.is_set():
@@ -500,6 +537,9 @@ class InspectionJobService:
         except RuntimeUnavailable as error:
             observed_outcome, observed_code = "rejected", error.code
             self._fail(job, "worker_error")
+        except CaptureAdmissionError:
+            observed_outcome, observed_code = "rejected", "validation_error"
+            self._fail(job, "validation_error")
         except ValidationError:
             observed_outcome, observed_code = "rejected", "stale_binding"
             self._fail(job, "stale_binding")
@@ -514,6 +554,8 @@ class InspectionJobService:
         except Exception:
             self._fail(job, "worker_error")
         finally:
+            if hasattr(self.engine, "_forget_job_capture"):
+                self.engine._forget_job_capture(job["id"])
             heartbeat_done.set()
             heartbeat_thread.join(min(1, self._lease_ms / 1000))
             self._record(job["id"], "execution", outcome=observed_outcome, code=observed_code,
