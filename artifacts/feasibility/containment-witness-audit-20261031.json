@@ -1,0 +1,220 @@
+{
+  "case_receipts": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "certificate_file_sha256": "44a6d3eb1940c8b098ba8210063f545e43b2df41d21a06a41b47b0af75b402ff",
+      "certificate_sha256": "d56f60e99a94966b633461825d9e968f322d4d2c1578efbdd0c7d7d241dc1786",
+      "confidence_threshold": 0.8,
+      "diagnostic_status": "supported_counterexample",
+      "evaluation_file_sha256": "afadb5a95399f0b26b2d34056221ac739ac8fbc8168a8b20a75d38a9ffec6fd6",
+      "evaluation_sha256": "98bf5fd512ede0cbe660202b50fffee0999f7572a58eb8aa610c57a8c335f6c8",
+      "goal_region_id": "right",
+      "historical_evaluation_timestamp_ms": 2169,
+      "minimum_reported_target_score": 0.8518518805503845,
+      "oldest_source_timestamp_ms": 0,
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "sole_extent_withhold_only": true,
+      "source_sha256s": [
+        "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+        "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+      ],
+      "strictly_disjoint_reviewed_region": true,
+      "two_physical_sources": true,
+      "witness_material_region_id": "left"
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-1",
+      "certificate_sha256": null,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "source_sha256s": [
+        "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+        "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d"
+      ]
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-2",
+      "certificate_sha256": null,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "source_sha256s": [
+        "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+        "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-0",
+      "certificate_sha256": null,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "source_sha256s": [
+        "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+        "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-1",
+      "certificate_sha256": null,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "source_sha256s": [
+        "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+        "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "certificate_file_sha256": "7cd87af3d00ba36f7073f8494b4930788b9dbdd55d19bcb71090541cdd555c74",
+      "certificate_sha256": "2665fdaaec445b7f18e26bb6ed42b03e41711808d7dfca7081aa7912a07e6ea3",
+      "diagnostic_status": "withheld",
+      "evaluation_file_sha256": "774b8267aedbd215d39efc0a9c89168add5db36408e7cae87f8180941bbe4930",
+      "evaluation_sha256": "3724da4f493f96690c5e9bf2e8e6c404a9a3e7f656d79b787501aba45c76b26d",
+      "original_core_verdict": "unknown",
+      "source_sha256s": [
+        "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+        "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+      ]
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "certificate_file_sha256": "349f9176d93a1d2914c6c70360d94dacd219ccce74273d612ce0984d50e466cf",
+      "certificate_sha256": "fbbae202b9cf887041dd9099712f79205fd5aab76b0b162c5c89b00a8170a99f",
+      "diagnostic_status": "withheld",
+      "evaluation_file_sha256": "5e2c76b1061de7c31b42ed78b8e61845a6899e339bb5179f6f266c41e790142c",
+      "evaluation_sha256": "ce8dab2910ce7b49475fd8692e4f80f217992049b4a15b0ed461e8b08aff0edb",
+      "original_core_verdict": "pass",
+      "source_sha256s": [
+        "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+        "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+      ]
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "certificate_file_sha256": "0c42bae84a2962c89f1182b918d3dc9ab0a1445b5d94b30f6e0d067beffbce00",
+      "certificate_sha256": "048f83075ba6166d13b69184e0f56e02a39f79d43407e1a177af05f01631724d",
+      "diagnostic_status": "withheld",
+      "evaluation_file_sha256": "eac6b8305023b4635ecac3b5d77fa391ee141e09494639a2e2dd57ef6e8dd08a",
+      "evaluation_sha256": "38b81bfec824b7512abe6f2f3d3a55e82aa8d20209251f77019d098f044d0ab1",
+      "original_core_verdict": "unknown",
+      "source_sha256s": [
+        "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+        "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+      ]
+    },
+    {
+      "case_id": "ur5-cup-4-pair-2",
+      "certificate_sha256": null,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "source_sha256s": [
+        "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+        "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67"
+      ]
+    }
+  ],
+  "changes_production_acceptance": false,
+  "checks": {
+    "all_four_completed_certificates_independently_replayed": true,
+    "all_original_cases_verdicts_sources_and_order_preserved": true,
+    "candidate_not_imported_by_production_engine_or_server": true,
+    "exact_code_declaration_published_before_control": true,
+    "failed_original_gate_not_rewritten": true,
+    "five_missing_final_reviews_left_explicitly_unavailable": true,
+    "journal_exact_request_hashes_unchanged": true,
+    "new_sources_still_no_inference": true,
+    "no_whole_target_location_pass_repair_origin_current_authority_or_task_violation_granted": true,
+    "provider_construction_and_request_calls_blocked_during_audit": true,
+    "supported_witness_confidence_age_stability_geometry_and_all_semantic_gates_verified": true
+  },
+  "condition_source": "separately_declared_hypothesis_not_inferred_from_original_task",
+  "conditional_predicate": "all_projected_target_material_within_goal",
+  "control_result_byte_sha256": "37c734393be7f066233640bd1e54e49c07591641b968f9fdee87bc972e60a59b",
+  "counts": {
+    "journal_attempts_after": 16,
+    "journal_attempts_before": 16,
+    "new_model_requests": 0,
+    "original_cases": 9,
+    "original_distinct_views": 18,
+    "original_verdicts_changed": 0,
+    "supported_conditional_counterexamples": 1,
+    "unavailable_no_completed_final_review": 5,
+    "withheld_completed_diagnostics": 3
+  },
+  "declaration_sha256": "6d2c3603842d44c9eae5082a8361cbbfccd1cb214d0c60b175d04ce99f203761",
+  "errors": [],
+  "implementation_sha256": {
+    "benchmark.py": "0b74f7c0824f0cded3eef8356ce9e36c1957f6b195275bcae867f389155b100c",
+    "bounded_spark.py": "3cc3615f21529ee4a329beb8b539de789688b232f2ad45fef369333b38f97b91",
+    "capture.py": "77e94f6a5941fc5378037ccef46ba71060821a7457331e04bd35600dcbba682a",
+    "containment_witness.py": "e34b1ff3ffffa1e4d80bdc6a2cf91927d9bc60719a41ff092979266fc4481e0c",
+    "core.py": "35eef6f5d9b90978c33cd76820fe8e50d48127e5f5837099954f330acac98130",
+    "crop_evidence.py": "808a52dff2f8339251eed56d7c4e1bf875922c4b1fe30ca1ca93f2e3628041bd",
+    "crop_verification.py": "00e13693d60967428e8c778e006b0245e0a967a38a4a415c5a162a61a9ff2e62",
+    "gripper_geometry.py": "20125923b19f95a06c72039f4944de5c014b6a8230f777729c1348a4289d0052",
+    "grounding.py": "8e980f033a2bf2a4b651f2c04215985037185d73a3c488f57b528c069eea139f",
+    "guided.py": "8f77c12f32911d28c3a17bf53d47f2bf30ac021bea0d68a20d6c1dd0487a3a23",
+    "inference_journal.py": "c6547888482dbfe2c21652508c097d6c7854ac30df3ceef0d5724a7b19660828",
+    "mask_semantics.py": "de84183204cbc02ca6a4b4b2369a0061845eded7afcc1f9bf4add0b7800a1a9f",
+    "meta.py": "aa330dc908b2505fd30376833a13442b2238efdfb6a713f94e06c9b85554ae2b",
+    "prospective.py": "c7a2978d55da5d5dc1113385c2e59c551554b5f277e7aeaee531f73038da4604",
+    "prospective_audit.py": "50bc6c4e457b416cdf0cb54f793bc121db1eb924ab2a5cfe3a346ea6bbc1a6f5",
+    "semantic.py": "cd74e34d95f1c8a824ed7d18d9b35f64d0c9c22978ef3ba9e6f33a26cd8a7d2f",
+    "session.py": "580e1021d4b4f5f50eab134f35877dfb337a398c2cd361bf43f799a99380e869",
+    "tracking_geometry.py": "9c5cfdcb513a3839fa82eae19050dc50da2be62842b76329a47a4e4a0b3dfc01",
+    "video_tracking.py": "447d5cd062a96b848cce9fb58e699b5c400f3aa8667eb0d1e54bbd0381a3cc5b"
+  },
+  "limits": [
+    "Post-outcome cached diagnostic under a separately declared whole-projection hypothesis, not an original-task FAIL or a new accuracy result.",
+    "Identity and mask-purity judgments remain fallible membership assumptions.",
+    "Historical source timing and local hashes are not independently trusted capture or provider provenance."
+  ],
+  "new_current_authority": false,
+  "original_gate_passed": false,
+  "original_metrics_unchanged": {
+    "correct": 7,
+    "correct_acceptances": 1,
+    "correct_decided_cases": 1,
+    "decided_cases": 1,
+    "incorrect_passes": 0,
+    "missing_predictions": 0,
+    "reference_nonpass_cases": 7,
+    "reference_pass_cases": 2,
+    "scored_cases": 9,
+    "total_cases": 9,
+    "unknown_cases": 8
+  },
+  "original_result_byte_sha256": "a9e4d57502eebb335f0c4963b04ba88e26c5413c02891225103ca2b656cbb552",
+  "original_task_violation_asserted": false,
+  "physical_truth_verified": false,
+  "public_declaration_byte_sha256": "e2d9a778ece7691dd724ba8e243387c90e10640afac897c5a0c3ae66e5435343",
+  "publication_commit": "ebd39daf7d4d139451d6a39c18447df81ffab140",
+  "repair_origin_available": false,
+  "schema_version": "proofloop_containment_control_independent_audit_v1",
+  "status": "passed_conditional_diagnostic_original_candidate_still_failed",
+  "supported_diagnostic_detail": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "certificate_file_sha256": "44a6d3eb1940c8b098ba8210063f545e43b2df41d21a06a41b47b0af75b402ff",
+      "certificate_sha256": "d56f60e99a94966b633461825d9e968f322d4d2c1578efbdd0c7d7d241dc1786",
+      "confidence_threshold": 0.8,
+      "diagnostic_status": "supported_counterexample",
+      "evaluation_file_sha256": "afadb5a95399f0b26b2d34056221ac739ac8fbc8168a8b20a75d38a9ffec6fd6",
+      "evaluation_sha256": "98bf5fd512ede0cbe660202b50fffee0999f7572a58eb8aa610c57a8c335f6c8",
+      "goal_region_id": "right",
+      "historical_evaluation_timestamp_ms": 2169,
+      "minimum_reported_target_score": 0.8518518805503845,
+      "oldest_source_timestamp_ms": 0,
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "sole_extent_withhold_only": true,
+      "source_sha256s": [
+        "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+        "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+      ],
+      "strictly_disjoint_reviewed_region": true,
+      "two_physical_sources": true,
+      "witness_material_region_id": "left"
+    }
+  ]
+}

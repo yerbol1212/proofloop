@@ -1,0 +1,364 @@
+{
+  "condition_source": "separately_declared_hypothesis_not_inferred_from_original_task",
+  "conditional_predicate": "all_projected_target_material_within_goal",
+  "counts": {
+    "supported_counterexample": 1,
+    "unavailable_no_completed_final_review": 5,
+    "withheld": 3
+  },
+  "current_authority_created": false,
+  "declaration_sha256": "6d2c3603842d44c9eae5082a8361cbbfccd1cb214d0c60b175d04ce99f203761",
+  "evidence_role": "post_outcome_zero_call_conditional_property_diagnostic_not_task_accuracy",
+  "independent_integrity_audit": {
+    "file": "containment-witness-audit-20261031.json",
+    "file_sha256": "c1fd2d0c57fcd2b84e2c2362a3ab449467fab53551979bac6116a890f2f555ac",
+    "model_quality_verified": false,
+    "physical_truth_verified": false,
+    "status": "passed"
+  },
+  "journal_after": {
+    "allowance_scope": "this_local_journal_all_processes_and_restarts",
+    "automatic_retry": false,
+    "hard_dollar_limit": false,
+    "operation_attempts": 16,
+    "outcomes": {
+      "ok": 16,
+      "rejected": 0,
+      "reserved": 0,
+      "uncertain": 0
+    },
+    "remaining_attempts": 0,
+    "reported_tokens": {
+      "input_tokens": 18146,
+      "output_tokens": 6654,
+      "total_tokens": 24800
+    },
+    "request_limit": 16,
+    "total_reserved_attempts": 16,
+    "unsettled_outcome_is_unknown": false
+  },
+  "journal_before": {
+    "allowance_scope": "this_local_journal_all_processes_and_restarts",
+    "automatic_retry": false,
+    "hard_dollar_limit": false,
+    "operation_attempts": 16,
+    "outcomes": {
+      "ok": 16,
+      "rejected": 0,
+      "reserved": 0,
+      "uncertain": 0
+    },
+    "remaining_attempts": 0,
+    "reported_tokens": {
+      "input_tokens": 18146,
+      "output_tokens": 6654,
+      "total_tokens": 24800
+    },
+    "request_limit": 16,
+    "total_reserved_attempts": 16,
+    "unsettled_outcome_is_unknown": false
+  },
+  "limits": [
+    "The diagnostic was designed after the paid-study outcomes were known.",
+    "It evaluates a separately declared whole-projection hypothesis, not an inferred original-task requirement.",
+    "Model identity and purity remain fallible assumptions, not physical truth or trusted pixel membership.",
+    "It never recovers a task FAIL, whole-object location, repair origin or PASS."
+  ],
+  "model_requests": 0,
+  "new_source_inference_performed": false,
+  "original_case_count": 9,
+  "original_gate_passed": false,
+  "original_result_file_sha256": "a9e4d57502eebb335f0c4963b04ba88e26c5413c02891225103ca2b656cbb552",
+  "original_task_violation_asserted": false,
+  "original_verdicts_changed": 0,
+  "original_view_count": 18,
+  "production_acceptance_changed": false,
+  "public_plan_file_sha256": "e2d9a778ece7691dd724ba8e243387c90e10640afac897c5a0c3ae66e5435343",
+  "publication_commit": "ebd39daf7d4d139451d6a39c18447df81ffab140",
+  "repair_origin_available": false,
+  "results": [
+    {
+      "case_id": "bridge-scripted-0-pair-0",
+      "certificate": {
+        "boundary_crossing_unknown_policy_unchanged": true,
+        "case_id": "bridge-scripted-0-pair-0",
+        "certificate_sha256": "d56f60e99a94966b633461825d9e968f322d4d2c1578efbdd0c7d7d241dc1786",
+        "claim": "Some model-supported target material lies outside the goal region.",
+        "condition_source": "separately_declared_hypothesis_not_inferred_from_original_task",
+        "conditional_predicate": "all_projected_target_material_within_goal",
+        "declaration_sha256": "6d2c3603842d44c9eae5082a8361cbbfccd1cb214d0c60b175d04ce99f203761",
+        "evaluation_sha256": "98bf5fd512ede0cbe660202b50fffee0999f7572a58eb8aa610c57a8c335f6c8",
+        "goal_region_id": "right",
+        "kind": "goal_containment_counterexample",
+        "membership_assumption": "The nonempty foreground includes positively identified target material. Existing model identity/purity classifications are fallible support, not proof of pixel membership or physical truth.",
+        "minimum_reported_target_score": 0.8518518805503845,
+        "model_requests": 0,
+        "never_changes_core_verdict": true,
+        "never_grants_pass": true,
+        "no_current_authority": true,
+        "oldest_source_timestamp_ms": 0,
+        "original_core_verdict": "unknown",
+        "original_task_violation_asserted": false,
+        "physical_truth_verified": false,
+        "policy": "diagnostic_only_whole_projected_containment_no_core_override",
+        "repair_origin_available": false,
+        "stable_source_count": 2,
+        "status": "supported_counterexample",
+        "version": "conditional_goal_containment_counterexample_control_v1",
+        "whole_target_region_id": null,
+        "withheld_reasons": [],
+        "witness_material_region_id": "left",
+        "witnesses": [
+          {
+            "foreground_extent": [
+              0.2859375,
+              0.3333333333333333,
+              0.465625,
+              0.5479166666666667
+            ],
+            "projection_sha256": "f53bf1f2e6585b164b9f7563a1190daabef223ed1476f483c5e5647fa418edde",
+            "raster_sha256": "5656709dc40fa24951bbf2a97463fadd3c4ccc9d684748b35e16b0d736aaa38d",
+            "reported_confidence": 0.8518518805503845,
+            "returned_box": [
+              0.2859375,
+              0.3333333333333333,
+              0.465625,
+              0.5479166666666667
+            ],
+            "source_sha256": "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+            "witness_material_region_id": "left"
+          },
+          {
+            "foreground_extent": [
+              0.2859375,
+              0.33541666666666664,
+              0.4640625,
+              0.5479166666666667
+            ],
+            "projection_sha256": "499ff3a667287d04e1b568aa7ff8307efc5e575cfbdce3fe0db5d39bb36668cf",
+            "raster_sha256": "21472cf49e143478f739820ecb0b40b757a69fac1802520edf47a8d4f6cc6c51",
+            "reported_confidence": 0.8552036285400391,
+            "returned_box": [
+              0.2859375,
+              0.33541666666666664,
+              0.4640625,
+              0.5479166666666667
+            ],
+            "source_sha256": "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05",
+            "witness_material_region_id": "left"
+          }
+        ]
+      },
+      "contract_hash": "2a4f747826572f76d131c0c5491b64185f5c8c003744361cecbad17ff6b7c8a8",
+      "core_verdict_changed": false,
+      "diagnostic_status": "supported_counterexample",
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "source_sha256s": [
+        "9c17a7ab78018205b40a1b403b756981945a8ab9c160569c4f8230c207fca7d1",
+        "736a6b0057e4628b3f0874018b307da8ad15fc610255323226d60a54d1a84b05"
+      ]
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-1",
+      "certificate": null,
+      "contract_hash": "5bf3871a214be0c792f0a1465e1f2ba9e54dbea8c670e8e20fbb39b44aa045a4",
+      "core_verdict_changed": false,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "source_sha256s": [
+        "41abbed338317421e5a973297f7689d3c890999b8e2faf607812d1ac48e1307b",
+        "dcd7f2916ab2a29aff9a6ae29ab13e6ae77450110ec40fee5661773ccd0d372d"
+      ]
+    },
+    {
+      "case_id": "bridge-scripted-0-pair-2",
+      "certificate": null,
+      "contract_hash": "aa0912823d266fc0898e30faf85a293d5068c4bba029c546cc60e88243937c90",
+      "core_verdict_changed": false,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "source_sha256s": [
+        "099fac4d3bb701229dfb473f2dad91f00a8b4f7fc8c3764f7eb675ba313271b3",
+        "41a5fe8fac033985ae6e52c6ae0249b0bb2afb8984282fcb1a2ca4a0e426686a"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-0",
+      "certificate": null,
+      "contract_hash": "d7c60f27386a4943e5b0d897b1bbe71d12cce4d96732b88229e63a43479c6e48",
+      "core_verdict_changed": false,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "source_sha256s": [
+        "177c3007702d77cbad19833ceccff75e097bfe48dc537de3c107204e298e1ab8",
+        "490d24706356243e44a5324b292f7c7c7d672956dc43268a5d2c7dc946146115"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-1",
+      "certificate": null,
+      "contract_hash": "41b0f8e88e66349341f5f360a6f223d7717fdfdf9682832672c3597fc5999165",
+      "core_verdict_changed": false,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "source_sha256s": [
+        "bf7d3d34b3992478cb2253bc2de12d409dc1b4036a99e87e6aeeb54f68f2c235",
+        "5e41a41a6d32689f9960befb1ee120a695a5f385cb9de8ae639fa83b4721f668"
+      ]
+    },
+    {
+      "case_id": "ur5-cloth-0-pair-2",
+      "certificate": {
+        "boundary_crossing_unknown_policy_unchanged": true,
+        "case_id": "ur5-cloth-0-pair-2",
+        "certificate_sha256": "2665fdaaec445b7f18e26bb6ed42b03e41711808d7dfca7081aa7912a07e6ea3",
+        "claim": null,
+        "condition_source": "separately_declared_hypothesis_not_inferred_from_original_task",
+        "conditional_predicate": "all_projected_target_material_within_goal",
+        "declaration_sha256": "6d2c3603842d44c9eae5082a8361cbbfccd1cb214d0c60b175d04ce99f203761",
+        "evaluation_sha256": "3724da4f493f96690c5e9bf2e8e6c404a9a3e7f656d79b787501aba45c76b26d",
+        "goal_region_id": "left",
+        "kind": "goal_containment_counterexample",
+        "membership_assumption": "The nonempty foreground includes positively identified target material. Existing model identity/purity classifications are fallible support, not proof of pixel membership or physical truth.",
+        "minimum_reported_target_score": null,
+        "model_requests": 0,
+        "never_changes_core_verdict": true,
+        "never_grants_pass": true,
+        "no_current_authority": true,
+        "oldest_source_timestamp_ms": 13000,
+        "original_core_verdict": "unknown",
+        "original_task_violation_asserted": false,
+        "physical_truth_verified": false,
+        "policy": "diagnostic_only_whole_projected_containment_no_core_override",
+        "repair_origin_available": false,
+        "stable_source_count": 0,
+        "status": "withheld",
+        "version": "conditional_goal_containment_counterexample_control_v1",
+        "whole_target_region_id": null,
+        "withheld_reasons": [
+          "not_exclusively_incomplete_target_extent"
+        ],
+        "witness_material_region_id": null,
+        "witnesses": []
+      },
+      "contract_hash": "c9dab92186cb7ac0c50c14cea06371dc85a1378f35bffd30f0835f7e9cfc5d18",
+      "core_verdict_changed": false,
+      "diagnostic_status": "withheld",
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "source_sha256s": [
+        "7efe5e3c45dfbd5d868d2d050cc672fdfb8fddcee441ff40897d5c3cd4c7786c",
+        "afa3c2ec791129195ed1a1d8ef1d1994a1555df72f04ddfd9e930f91268b71a8"
+      ]
+    },
+    {
+      "case_id": "ur5-cup-4-pair-0",
+      "certificate": {
+        "boundary_crossing_unknown_policy_unchanged": true,
+        "case_id": "ur5-cup-4-pair-0",
+        "certificate_sha256": "fbbae202b9cf887041dd9099712f79205fd5aab76b0b162c5c89b00a8170a99f",
+        "claim": null,
+        "condition_source": "separately_declared_hypothesis_not_inferred_from_original_task",
+        "conditional_predicate": "all_projected_target_material_within_goal",
+        "declaration_sha256": "6d2c3603842d44c9eae5082a8361cbbfccd1cb214d0c60b175d04ce99f203761",
+        "evaluation_sha256": "ce8dab2910ce7b49475fd8692e4f80f217992049b4a15b0ed461e8b08aff0edb",
+        "goal_region_id": "left",
+        "kind": "goal_containment_counterexample",
+        "membership_assumption": "The nonempty foreground includes positively identified target material. Existing model identity/purity classifications are fallible support, not proof of pixel membership or physical truth.",
+        "minimum_reported_target_score": null,
+        "model_requests": 0,
+        "never_changes_core_verdict": true,
+        "never_grants_pass": true,
+        "no_current_authority": true,
+        "oldest_source_timestamp_ms": 0,
+        "original_core_verdict": "pass",
+        "original_task_violation_asserted": false,
+        "physical_truth_verified": false,
+        "policy": "diagnostic_only_whole_projected_containment_no_core_override",
+        "repair_origin_available": false,
+        "stable_source_count": 0,
+        "status": "withheld",
+        "version": "conditional_goal_containment_counterexample_control_v1",
+        "whole_target_region_id": null,
+        "withheld_reasons": [
+          "not_exclusively_incomplete_target_extent"
+        ],
+        "witness_material_region_id": null,
+        "witnesses": []
+      },
+      "contract_hash": "b516f4169ced89f2ff8aeba0765426a14973b6e7dabeb307401f52ed4a7d9c49",
+      "core_verdict_changed": false,
+      "diagnostic_status": "withheld",
+      "original_core_verdict": "pass",
+      "original_task_violation_asserted": false,
+      "source_sha256s": [
+        "0ebb9888fd773b0eaa684692e85849f668733deb981f2b1e0644a5b24ec3c7ba",
+        "8526d7711c142d3f56a60a9221918432fcc7d041b76da90744f474bd9dc4839a"
+      ]
+    },
+    {
+      "case_id": "ur5-cup-4-pair-1",
+      "certificate": {
+        "boundary_crossing_unknown_policy_unchanged": true,
+        "case_id": "ur5-cup-4-pair-1",
+        "certificate_sha256": "048f83075ba6166d13b69184e0f56e02a39f79d43407e1a177af05f01631724d",
+        "claim": null,
+        "condition_source": "separately_declared_hypothesis_not_inferred_from_original_task",
+        "conditional_predicate": "all_projected_target_material_within_goal",
+        "declaration_sha256": "6d2c3603842d44c9eae5082a8361cbbfccd1cb214d0c60b175d04ce99f203761",
+        "evaluation_sha256": "38b81bfec824b7512abe6f2f3d3a55e82aa8d20209251f77019d098f044d0ab1",
+        "goal_region_id": "left",
+        "kind": "goal_containment_counterexample",
+        "membership_assumption": "The nonempty foreground includes positively identified target material. Existing model identity/purity classifications are fallible support, not proof of pixel membership or physical truth.",
+        "minimum_reported_target_score": null,
+        "model_requests": 0,
+        "never_changes_core_verdict": true,
+        "never_grants_pass": true,
+        "no_current_authority": true,
+        "oldest_source_timestamp_ms": 11600,
+        "original_core_verdict": "unknown",
+        "original_task_violation_asserted": false,
+        "physical_truth_verified": false,
+        "policy": "diagnostic_only_whole_projected_containment_no_core_override",
+        "repair_origin_available": false,
+        "stable_source_count": 0,
+        "status": "withheld",
+        "version": "conditional_goal_containment_counterexample_control_v1",
+        "whole_target_region_id": null,
+        "withheld_reasons": [
+          "not_exclusively_incomplete_target_extent"
+        ],
+        "witness_material_region_id": null,
+        "witnesses": []
+      },
+      "contract_hash": "e1c8aa1fadb8709c468801247ac3d778e0cc33abd16827b2d859f2d5ff060db3",
+      "core_verdict_changed": false,
+      "diagnostic_status": "withheld",
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "source_sha256s": [
+        "8e9f91575c59afaf162e6b64aaa0a4a7f77ce9190a82bd752f6e4474d864a636",
+        "4c281781827c84a4b63087aebdf2362f27ad6e2cdaa0ef90dee6997bf67990c3"
+      ]
+    },
+    {
+      "case_id": "ur5-cup-4-pair-2",
+      "certificate": null,
+      "contract_hash": "219c440fb0323c4d582c3f8248467678d090d6f67100af901053017f4e452c92",
+      "core_verdict_changed": false,
+      "diagnostic_status": "unavailable_no_completed_final_review",
+      "original_core_verdict": "unknown",
+      "original_task_violation_asserted": false,
+      "source_sha256s": [
+        "7d3bd53483c9c87bd394a841e7bb75a2784e3f4283b159be2a948f03c5a3eedd",
+        "165405d32e72af458de201e3158a2ed22c17fdab588b2c97b62ecf664c9f0c67"
+      ]
+    }
+  ],
+  "retained_control_result_sha256": "37c734393be7f066233640bd1e54e49c07591641b968f9fdee87bc972e60a59b"
+}
